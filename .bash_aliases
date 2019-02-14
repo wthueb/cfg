@@ -46,3 +46,13 @@ alias la='ls -a'
 alias ll='ls -l'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+alias ..="cd .."
+alias cd..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+alias mv='mv -v'
+alias rm='rm -i -v'
+alias cp='cp -v'
