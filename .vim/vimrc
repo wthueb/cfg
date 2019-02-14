@@ -1,0 +1,31 @@
+filetype off
+
+so ~/.vim/plugins.vim
+
+filetype plugin indent on
+
+syntax on
+
+set visualbell noerrorbells
+
+set ruler
+set number
+set nowrap
+set gdefault " global replace
+
+set backspace=indent,eol,start
+"set mouse=a
+
+set laststatus=2
+set ttimeoutlen=30
+
+set noshowmode
+
+set hidden
+
+set encoding=utf-8
+
+set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+
+let mapleader=','
+let maplocalleader='\\'
