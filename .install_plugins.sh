@@ -4,4 +4,4 @@ vim +PluginInstall +qall
 
 cd $HOME/.vim/bundle/YouCompleteMe/
 
-./install.py
+python3 install.py --clang-completer
