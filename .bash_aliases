@@ -44,6 +44,8 @@ alias sqlite=sqlite3
 alias l='ls'
 alias la='ls -a'
 alias ll='ls -l'
+alias lla='ls -la'
+alias lal='lla'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
