@@ -54,5 +54,5 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
 alias mv='mv -v'
-alias rm='rm -i -v'
+alias rm='rm -v'
 alias cp='cp -v'
