@@ -1,9 +1,3 @@
-alias ssh-laptop='echo "sshing into wil@laptop.wi1.xyz";ssh wil@laptop.wi1.xyz'
-alias ssh-site='echo "sshing into wilhueb@wi1.xyz";ssh wilhueb@wi1.xyz'
-alias ssh-ts='echo "sshing into wilhueb@ts.wi1.xyz";ssh wilhueb@ts.wi1.xyz'
-alias ssh-remote='echo "sshing into whuebne1@harvey.cc.binghamton.edu";ssh whuebne1@harvey.cc.binghamton.edu'
-alias ssh-funding='echo "sshing into ubuntu@63.32.64.21";ssh ubuntu@63.32.64.21'
-
 mkcdir()
 {
     mkdir -p -- $@ && cd -P -- $@
@@ -11,25 +5,25 @@ mkcdir()
 
 mkcdirp()
 {
-	mkcdir $1 && virtualenv env
+    mkcdir $1 && virtualenv env
 }
 
 p()
 {
-	if [ -d 'env' ]; then
-		env/bin/python $@
-	else
-		python3 $@
-	fi
+    if [ -d 'env' ]; then
+        env/bin/python $@
+    else
+        python3 $@
+    fi
 }
 
 pi()
 {
-	if [ -d 'env' ]; then
-		env/bin/python -i $@
-	else
-		python3 -i $@
-	fi
+    if [ -d 'env' ]; then
+        env/bin/python -i $@
+    else
+        python3 -i $@
+    fi
 }
 
 #alias p='env/bin/python'
@@ -58,3 +52,5 @@ alias .....="cd ../../../.."
 alias mv='mv -v'
 alias rm='rm -v'
 alias cp='cp -v'
+
+alias vi=vim
