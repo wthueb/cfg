@@ -11,7 +11,7 @@ mkcdirp()
 p()
 {
     if [ -d 'env' ]; then
-        env/bin/python $@
+        env/bin/python3 $@
     else
         python3 $@
     fi
@@ -54,3 +54,8 @@ alias rm='rm -v'
 alias cp='cp -v'
 
 alias vi=vim
+
+alias grep='grep -I'
+
+alias python='python3'
+alias pip='pip3'
