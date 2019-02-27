@@ -27,6 +27,9 @@
     cam = commit -am
     cd = commit --amend
     cad = commit -a --amend
+    ch = checkout
+    chm = checkout master
+    chb = checkout -b
     cl = clone
     d = diff
     dt = difftool
@@ -42,9 +45,6 @@
     ma = merge --abort
     mc = merge --continue
     ms = merge --skip
-    o = checkout
-    om = checkout master
-    ob = checkout -b
     ps = push
     psf = push -f
     psu = push -u
