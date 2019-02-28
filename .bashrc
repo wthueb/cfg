@@ -91,8 +91,12 @@ __prompt_command() {
     PS1+="${debian_chroot:+($debian_chroot)}"
     PS1+="${green}${bold}\u@\h${remove}:${cyan}${bold}\w"
 
-    if [ -d "./.git/" ]; then
+    if [ "$(git rev-parse --git-dir 2>/dev/null)" ]; then
         PS1+="${remove}:${magenta}$(git branch 2>/dev/null | grep '^*' | colrm 1 2)"
+
+        if [ "$(git diff-index HEAD)" ]; then
+            PS1+="+"
+        fi
     fi
 
     PS1+="${remove}\$ "
