@@ -31,13 +31,13 @@ pi()
 
 cl()
 {
-    local count=$(find . -name '__pycache__' | wc -l | tr -d '[:space:]')
+    local count=$(find . -name '__pycache__' | wc -l | sed 's/ *//')
 
     find . -name '__pycache__' -delete
 
     echo "deleted $count __pycache__ folders"
 
-    count=$(find . -name '*.pyc' | wc -l | tr -d '[:space:]')
+    count=$(find . -name '*.pyc' | wc -l | sed 's/ *//')
 
     find . -name '*.pyc' -delete
 
