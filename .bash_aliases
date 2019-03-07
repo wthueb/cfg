@@ -29,6 +29,21 @@ pi()
 #alias p='env/bin/python'
 #alias pi='env/bin/python -i'
 
+cl()
+{
+    local count=$(find . -name '__pycache__' | wc -l | tr -d '[:space:]')
+
+    find . -name '__pycache__' -delete
+
+    echo "deleted $count __pycache__ folders"
+
+    count=$(find . -name '*.pyc' | wc -l | tr -d '[:space:]')
+
+    find . -name '*.pyc' -delete
+
+    echo "deleted $count *.pyc files"
+}
+
 alias jc='echo compiling java files...;javac -d . *.java'
 
 alias activate='source env/bin/activate'
