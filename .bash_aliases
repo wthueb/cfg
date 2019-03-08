@@ -26,8 +26,7 @@ pi()
     fi
 }
 
-#alias p='env/bin/python'
-#alias pi='env/bin/python -i'
+alias dp="DEBUG=1 p"
 
 cl()
 {
@@ -58,19 +57,21 @@ alias lal='lla'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
-alias ..="cd .."
-alias cd..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
+alias ..='cd ..'
+alias cd..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
 
 alias mv='mv -v'
 alias rm='rm -v'
 alias cp='cp -v'
 
-alias vi=vim
+alias vi='vim'
 
 alias grep='grep -I'
 
 alias python='python3'
 alias pip='pip3'
+
+alias refresh='echo "source ~/.bashrc" && source ~/.bashrc'
