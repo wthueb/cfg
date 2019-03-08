@@ -69,8 +69,8 @@ alias cp='cp -v'
 
 alias vi='vim'
 
-alias grep='grep -I'
-alias grepr='grep -RI --exclude-dir=env'
+alias grep='grep -In'
+alias grepr='grep -RIn --exclude-dir=env'
 
 alias python='python3'
 alias pip='pip3'

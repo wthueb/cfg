@@ -10,10 +10,10 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 HISTSIZE=
-HISTFILESIZE=
+HISTFILESIZE=100000
 
 # check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
+# update the values of LINES and COLUMNS
 shopt -s checkwinsize
 
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
@@ -41,7 +41,7 @@ __prompt_command() {
     PS1+="${green}${bold}\u@\h${remove}:${cyan}${bold}\w${remove}"
 
     if [ "$(git rev-parse --git-dir 2>/dev/null)" ]; then
-        PS1+=":${magenta}$(git branch 2>/dev/null | grep '^*' | colrm 1 2)"
+        PS1+=":${magenta}$(git branch 2>/dev/null | 'grep' '^*' | colrm 1 2)"
 
         if [ "$(git diff-index HEAD)" ]; then
             PS1+="+"
