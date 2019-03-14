@@ -77,8 +77,8 @@ fun! s:create_palette_color(color_name, color_data)
 endf
 
 call s:create_palette_color('brightwhite', { 'gui': '#FFFFFF', 'cterm': '231' })
-call s:create_palette_color('white',       { 'gui': '#E8E8E3', 'cterm': '252' })
-call s:create_palette_color('black',       { 'gui': '#272822', 'cterm': '234' })
+call s:create_palette_color('white',       { 'gui': '#EEEEEE', 'cterm': '255' })
+call s:create_palette_color('black',       { 'gui': '#262626', 'cterm': '235' })
 call s:create_palette_color('lightblack',  { 'gui': '#2D2E27', 'cterm': '235' })
 call s:create_palette_color('lightblack2', { 'gui': '#383a3e', 'cterm': '236' })
 call s:create_palette_color('darkblack',   { 'gui': '#211F1C', 'cterm': '233' })
@@ -452,7 +452,7 @@ hi! link htmlTagName        Keyword
 "   Common groups
 hi! link javaAssert           SublimeFunctionCall
 hi! link javaExternal         Keyword
-hi! link javaClassDecl        SublimeType
+hi! link javaClassDecl        Keyword
 hi! link javaConditional      Keyword
 hi! link javaExceptions       Keyword
 hi! link javaRepeat           Keyword
@@ -624,7 +624,7 @@ hi! link phpVarSelector     Identifier
 " This configuration assumed python-mode
 hi! link pythonConditional Conditional
 hi! link pythonException   Keyword
-hi! link pythonFunction    Tag
+hi! link pythonFunction    SublimeType
 hi! link pythonInclude     Keyword
 " XXX: def parens are, for some reason, included in this group.
 hi! link pythonParam       SublimeContextParam
