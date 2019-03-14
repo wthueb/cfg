@@ -49,6 +49,7 @@ alias activate='source env/bin/activate'
 
 alias sqlite=sqlite3
 
+alias ls='ls --color=auto --group-directories-first'
 alias l='ls'
 alias la='ls -a'
 alias ll='ls -l'
