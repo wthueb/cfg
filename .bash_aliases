@@ -74,6 +74,7 @@ alias grep='grep -In'
 alias grepr='grep -RIn --exclude-dir=env'
 
 alias python='python3'
+alias python2="'python'"
 alias pip='pip3'
 
 alias refresh='echo "source ~/.bashrc" && source ~/.bashrc'
