@@ -205,7 +205,8 @@ hi! link SpecialComment SublimeAqua
 call s:h('Underlined',    { 'format': 'underline' })
 " call s:h('Ignore',        {})
 call s:h('Error',         { 'fg': s:red, 'bg': s:darkred })
-hi! link Todo           Comment
+call s:h('Todoo',         { 'fg': s:black, 'bg': s:yellow })
+hi! link Todo           Todoo
 
 " Some highlighting groups custom to the Sublime Monokai theme
 
@@ -226,6 +227,9 @@ hi! link shLoop        Keyword
 hi! link shQuote       String
 hi! link shSet         Keyword
 hi! link shStatement   SublimePink
+
+hi! link bashSpecialVariables SublimeAqua
+
 " XXX: Other known deficiencies:
 "
 " * Can't highlight POSIX builtins right because shStatement is later in the
@@ -631,6 +635,8 @@ hi! link pythonParam       SublimeContextParam
 " XXX: pythonStatement covers a bit too much...unfortunately, this means that
 " some keywords, like `def`, can't be highlighted like in Sublime yet.
 hi! link pythonStatement   Keyword
+
+hi! link pythonBuiltin     SublimeAqua
 " XXX: Other known deficiencies:
 "
 " * Python special regexp sequences aren't highlighted. :\

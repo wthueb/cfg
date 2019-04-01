@@ -8,17 +8,16 @@ filetype plugin indent on
 
 syntax on
 
-colorscheme monokai "desert
+colorscheme monokai
 
 set visualbell noerrorbells
 
 set ruler
 set number
 set nowrap
-set gdefault " global replace
+set gdefault
 
 set backspace=indent,eol,start
-"set mouse=a
 
 set laststatus=2
 set ttimeoutlen=30
