@@ -79,6 +79,7 @@ export EDITOR=ex
 export VISUAL=vim
 
 PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+PATH="/usr/local/opt/sqlite/bin:$PATH"
 
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
