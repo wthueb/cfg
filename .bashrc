@@ -40,11 +40,17 @@ __prompt_command() {
 
     PS1+="${green}${bold}\u@\h${remove}:${cyan}${bold}\w${remove}"
 
-    if [ "$(git rev-parse --git-dir 2>/dev/null)" ]; then
-        PS1+=":${magenta}$(git branch 2>/dev/null | 'grep' '^*' | colrm 1 2)"
+    git rev-parse --git-dir &>/dev/null
+    if [ $? -eq 0 ]; then
+        local branch=$(git branch 2>/dev/null | 'grep' '^*' | colrm 1 2)
+        PS1+=":${magenta}$branch"
 
-        if [ "$(git diff-index HEAD)" ]; then
-            PS1+="+"
+        if [ "$branch" ]; then
+            if [ "$(git diff-index HEAD)" ] || [ "$(git ls-files --others --exclude-standard)" ]; then
+                PS1+="+"
+            fi
+        else
+            PS1+="++"
         fi
 
         PS1+="${remove}"
