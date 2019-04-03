@@ -78,3 +78,5 @@ alias python2="'python'"
 alias pip='pip3'
 
 alias refresh='echo "source ~/.bashrc" && source ~/.bashrc'
+
+alias notify='tput bel'
