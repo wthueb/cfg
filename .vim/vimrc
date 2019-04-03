@@ -37,3 +37,6 @@ let maplocalleader='\\'
 
 inoremap kj <Esc>
 cnoremap kj <C-C>
+
+nnoremap <leader><leader> :w<Enter>:sus<Enter>
+nnoremap \\ :wq<Enter>
