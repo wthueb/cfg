@@ -43,7 +43,17 @@ cl()
     echo "deleted $count *.pyc files"
 }
 
-alias jc='echo compiling java files...;javac -d . *.java'
+jc()
+{
+    if [ $# -eq 0 ]; then
+        echo "compiling all .java files..."
+        javac -d . -cp .:/usr/local/share/java/* *.java
+    else
+        javac -d . -cp .:/usr/local/share/java/* $@
+    fi
+}
+
+alias junit='java -jar /usr/local/share/java/junit-platform-console-standalone-1.5.0-M1.jar -cp . --disable-banner --include-classname ".*" --scan-class-path'
 
 alias activate='source env/bin/activate'
 

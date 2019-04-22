@@ -50,7 +50,7 @@ __prompt_command() {
                 PS1+="+"
             fi
         else
-            PS1+="++"
+            PS1+="+"
         fi
 
         PS1+="${remove}"
