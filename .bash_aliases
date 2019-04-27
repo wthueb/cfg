@@ -53,7 +53,22 @@ jc()
     fi
 }
 
-alias junit='java -jar /usr/local/share/java/junit-platform-console-standalone-1.5.0-M1.jar -cp . --disable-banner --include-classname ".*" --scan-class-path'
+jr()
+{
+    if [ $# -lt 1 ]; then
+        echo "pass a java file to run"
+
+        return 1
+    fi
+
+    if [[ $1 =~ .*\.class ]]; then
+        java $(sed 's/\.class.*//g' <<< $1) ${@:2}
+    else
+        java $@
+    fi
+}
+
+alias junit='java -jar /usr/local/share/java/junit-platform-console-standalone-1.5.0-M1.jar -cp . --disable-banner --include-classname ".*" --scan-class-path --fail-if-no-tests'
 
 alias activate='source env/bin/activate'
 
