@@ -68,6 +68,23 @@ jr()
     fi
 }
 
+retab()
+{
+    if [ $# -ne 2 ]; then
+        echo "usage: retab FILE_NAME MAX_DEPTH (0 for MAX_DEPTH if unlimited)"
+
+        return
+    fi
+
+    if [ $2 -gt 0 ]; then
+        find . -name "$1" -maxdepth $2 ! -type d -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
+    elif [ $2 -eq 0 ]; then
+        find . -name "$1" ! -type d -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
+    else
+        echo "usage: retab FILE_NAME MAX_DEPTH (0 for MAX_DEPTH if unlimited)"
+    fi
+}
+
 alias junit='java -jar /usr/local/share/java/junit-platform-console-standalone-1.5.0-M1.jar -cp . --disable-banner --include-classname ".*" --scan-class-path --fail-if-no-tests'
 
 alias activate='source env/bin/activate'
