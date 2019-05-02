@@ -112,7 +112,7 @@ alias cp='cp -v'
 
 alias vi='vim'
 
-alias grep='grep -In'
+alias grep='grep -I'
 alias grepr='grep -RIn --exclude-dir=env'
 
 alias python='python3'
