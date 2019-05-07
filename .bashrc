@@ -27,12 +27,12 @@ PROMPT_COMMAND=__prompt_command
 __prompt_command() {
     PS1=""
 
-    local remove="\e[0m"
-    local bold="\e[1m"
+    local remove="\[\e[0m\]"
+    local bold="\[\e[1m\]"
 
-    local green="\e[32m"
-    local magenta="\e[35m"
-    local cyan="\e[36m"
+    local green="\[\e[32m\]"
+    local magenta="\[\e[35m\]"
+    local cyan="\[\e[36m\]"
 
     if test -n "$VIRTUAL_ENV"; then
         PS1+="($(basename $VIRTUAL_ENV)) "
