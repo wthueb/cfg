@@ -9,8 +9,8 @@ HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-export HISTSIZE=
-export HISTFILESIZE=100000
+HISTSIZE=
+HISTFILESIZE=100000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS
