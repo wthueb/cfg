@@ -112,8 +112,8 @@ alias cp='cp -v'
 
 alias vi='vim'
 
-alias grep='grep -I'
-alias grepr='grep -RIn --exclude-dir=env'
+alias grep='grep -I --color=auto'
+alias grepr='grep -RIn --exclude-dir=env --color=auto'
 
 alias python='python3'
 alias python2="'python'"
