@@ -32,6 +32,8 @@ set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 let g:ycm_autoclose_preview_window_after_completion = 1
 
+let g:eregex_force_case = 1
+
 let mapleader=','
 let maplocalleader='\\'
 
