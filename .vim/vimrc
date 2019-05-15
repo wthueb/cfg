@@ -32,10 +32,16 @@ set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 
 let g:ycm_autoclose_preview_window_after_completion = 1
 
+let g:eregex_default_enable = 0
 let g:eregex_force_case = 1
+let g:eregex_forward_delim ='/'
+let g:eregex_backward_delim ='?'
+
+" eregex search
+nnoremap . :M/
 
 let mapleader=','
-let maplocalleader='\\'
+let maplocalleader='='
 
 inoremap kj <Esc>
 cnoremap kj <C-C>
