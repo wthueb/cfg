@@ -26,8 +26,6 @@ pi()
     fi
 }
 
-alias dp="DEBUG=1 p"
-
 cl()
 {
     local count=$(find . -name '__pycache__' | wc -l | sed 's/ *//')
@@ -85,6 +83,17 @@ retab()
     fi
 }
 
+refresh()
+{
+    echo "pulling https://github.com/wthueb/cfg"
+
+    config pl
+
+    echo "source ~/.bashrc"
+
+    source ~/.bashrc
+}
+
 alias junit='java -jar /usr/local/share/java/junit-platform-console-standalone-1.5.0-M1.jar -cp . --disable-banner --include-classname ".*" --scan-class-path --fail-if-no-tests'
 
 alias activate='source env/bin/activate'
@@ -119,7 +128,5 @@ alias grepr='grep -EIR --exclude-dir=env --color=auto'
 alias python='python3'
 alias python2="'python'"
 alias pip='pip3'
-
-alias refresh='echo "source ~/.bashrc" && source ~/.bashrc'
 
 alias notify='tput bel'
