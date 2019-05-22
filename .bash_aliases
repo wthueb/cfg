@@ -83,17 +83,6 @@ retab()
     fi
 }
 
-refresh()
-{
-    echo "pulling https://github.com/wthueb/cfg"
-
-    config pl
-
-    echo "source ~/.bashrc"
-
-    source ~/.bashrc
-}
-
 alias junit='java -jar /usr/local/share/java/junit-platform-console-standalone-1.5.0-M1.jar -cp . --disable-banner --include-classname ".*" --scan-class-path --fail-if-no-tests'
 
 alias activate='source env/bin/activate'
@@ -108,6 +97,17 @@ alias lla='ls -lah'
 alias lal='lla'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+refresh()
+{
+    echo "pulling https://github.com/wthueb/cfg"
+
+    config pl
+
+    echo "source ~/.bashrc"
+
+    source ~/.bashrc
+}
 
 alias ..='cd ..'
 alias cd..='cd ..'
