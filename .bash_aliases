@@ -26,8 +26,6 @@ pi()
     fi
 }
 
-alias dp="DEBUG=1 p"
-
 cl()
 {
     local count=$(find . -name '__pycache__' | wc -l | sed 's/ *//')
@@ -100,6 +98,17 @@ alias lal='lla'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
+refresh()
+{
+    echo "pulling https://github.com/wthueb/cfg"
+
+    config pl
+
+    echo "source ~/.bashrc"
+
+    source ~/.bashrc
+}
+
 alias ..='cd ..'
 alias cd..='cd ..'
 alias ...='cd ../..'
@@ -119,7 +128,5 @@ alias grepr='grep -EIR --exclude-dir=env --color=auto'
 alias python='python3'
 alias python2="'python'"
 alias pip='pip3'
-
-alias refresh='echo "source ~/.bashrc" && source ~/.bashrc'
 
 alias notify='tput bel'
