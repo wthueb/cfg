@@ -122,8 +122,8 @@ alias cp='cp -v'
 alias vi='vim'
 alias vim-upgrade='vim +PluginInstall +PluginUpdate +PluginClean +q +q'
 
-alias grep='grep -EI --color=auto'
-alias grepr='grep -EIR --exclude-dir=env --color=auto'
+alias grep='grep -PI --color=auto'
+alias grepr='grep -PIR --exclude-dir=env --color=auto'
 
 alias python='python3'
 alias python2="'python'"
