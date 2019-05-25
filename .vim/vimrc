@@ -8,6 +8,10 @@ filetype plugin indent on
 
 syntax on
 
+if &term =~ '256color'
+    set t_ut=
+endif
+
 colorscheme monokai
 
 set visualbell noerrorbells
