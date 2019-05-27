@@ -5,15 +5,15 @@ mkcdir()
 
 mkcdirp()
 {
-    mkcdir $1 && virtualenv env
+    mkcdir $1 && python -m venv env
 }
 
 p()
 {
     if [ -d 'env' ]; then
-        env/bin/python3 $@
+        env/bin/python $@
     else
-        python3 $@
+        python $@
     fi
 }
 
@@ -22,7 +22,7 @@ pi()
     if [ -d 'env' ]; then
         env/bin/python -i $@
     else
-        python3 -i $@
+        python -i $@
     fi
 }
 
@@ -125,9 +125,8 @@ alias vim-upgrade='vim +PluginInstall +PluginUpdate +PluginClean +q +q'
 alias grep='grep -PI --color=auto'
 alias grepr='grep -PIR --exclude-dir=env --color=auto'
 
-alias python2='python2.7'
 alias python3='python3.7'
 alias python='python3'
-alias pip='pip3'
+alias pip='pip3.7'
 
 alias notify='tput bel'
