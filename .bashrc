@@ -19,8 +19,8 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 export CLICOLOR=1
-export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-export LS_COLORS="di=36:ln=1;31:so=37:pi=1;33:ex=35:bd=37:cd=37:su=37:sg=37:tw=32:ow=32"
+export LSCOLORS=GxBxHxDxFxhxhxhxhxcxcx
+export LS_COLORS="di=1;36:ln=1;31:so=1;37:pi=1;33:ex=1;35:bd=37:cd=37:su=37:sg=37:tw=32:ow=32"
 
 PROMPT_COMMAND=__prompt_command
 
@@ -43,7 +43,7 @@ __prompt_command() {
     git rev-parse --git-dir &>/dev/null
     if [ $? -eq 0 ]; then
         local branch=$(git branch 2>/dev/null | 'grep' '^*' | colrm 1 2)
-        PS1+=":${magenta}$branch"
+        PS1+=":${bold}${magenta}$branch"
 
         if [ "$branch" ]; then
             if [ "$(git diff-index HEAD)" ] || [ "$(git ls-files --others --exclude-standard)" ]; then
