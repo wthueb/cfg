@@ -125,8 +125,7 @@ alias vim-upgrade='vim +PluginInstall +PluginUpdate +PluginClean +q +q'
 alias grep='grep -PI --color=auto'
 alias grepr='grep -PIR --exclude-dir=env --color=auto'
 
-alias python3='python3.7'
 alias python='python3'
-alias pip='pip3.7'
+alias pip='pip3'
 
 alias notify='tput bel'
