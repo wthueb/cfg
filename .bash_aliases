@@ -13,7 +13,7 @@ p()
     if [ -d 'env' ]; then
         env/bin/python $@
     else
-        python $@
+        /usr/bin/env python3 $@
     fi
 }
 
@@ -22,7 +22,7 @@ pi()
     if [ -d 'env' ]; then
         env/bin/python -i $@
     else
-        python -i $@
+        /usr/bin/env python3 -i $@
     fi
 }
 
