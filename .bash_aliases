@@ -129,3 +129,16 @@ alias python='python3'
 alias pip='pip3'
 
 alias notify='tput bel'
+
+confirm()
+{
+    read -r -p "${1:-are you sure?} [y/n]: " response
+
+    response=${response,,} # to lower
+
+    if [[ "$response" =~ ^(yes|y)$ ]]; then
+        return 0
+    fi
+
+    return 1
+}
