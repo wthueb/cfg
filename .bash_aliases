@@ -8,6 +8,8 @@ mkcdirp()
     mkcdir $1 && python -m venv env
 }
 
+alias virtualenv='python -m venv env'
+
 p()
 {
     if [ -d 'env' ]; then
