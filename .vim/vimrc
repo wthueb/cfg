@@ -46,6 +46,8 @@ let g:eregex_backward_delim ='?'
 
 nnoremap <leader>/ :call eregex#toggle()<CR>
 
+nnoremap S :%S/
+
 inoremap kj <Esc>
 cnoremap kj <C-C>
 
