@@ -31,3 +31,5 @@ Thumbs.db
 *.lock
 
 env/
+__pycache__
+*.pyc
