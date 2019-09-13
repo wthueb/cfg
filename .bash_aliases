@@ -85,16 +85,23 @@ retab()
     fi
 }
 
-deactivate()
+__deactivate()
 {
-    if test -n "$CONDA_PROMPT_MODIFIER"; then
-        conda deactivate
-    elif test -n "$VIRTUAL_ENV"; then
-        'deactivate'
-    fi
+    conda deactivate
+
+    unalias deactivate
 }
 
-alias activate='source env/bin/activate'
+activate()
+{
+    if [ -n "$*" ]; then
+        conda activate $@
+
+        alias deactivate=__deactivate
+    else
+        source env/bin/activate
+    fi
+}
 
 alias junit='java -jar /usr/local/share/java/junit-platform-console-standalone-1.5.0-M1.jar -cp . --disable-banner --include-classname ".*" --scan-class-path --fail-if-no-tests'
 
