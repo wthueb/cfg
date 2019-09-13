@@ -38,6 +38,10 @@ __prompt_command() {
         PS1+="($(basename $VIRTUAL_ENV)) "
     fi
 
+    if test -n "$CONDA_PROMPT_MODIFIER"; then
+        PS1+="$CONDA_PROMPT_MODIFIER"
+    fi
+
     PS1+="${green}${bold}\u@\h${remove}:${cyan}${bold}\w${remove}"
 
     git rev-parse --git-dir &>/dev/null
