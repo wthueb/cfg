@@ -28,7 +28,7 @@ pi()
     fi
 }
 
-cl()
+clean()
 {
     local count=$(find . -name '__pycache__' | wc -l | sed 's/ *//')
 
@@ -85,9 +85,18 @@ retab()
     fi
 }
 
-alias junit='java -jar /usr/local/share/java/junit-platform-console-standalone-1.5.0-M1.jar -cp . --disable-banner --include-classname ".*" --scan-class-path --fail-if-no-tests'
+deactivate()
+{
+    if test -n "$CONDA_PROMPT_MODIFIER"; then
+        conda deactivate
+    elif test -n "$VIRTUAL_ENV"; then
+        'deactivate'
+    fi
+}
 
 alias activate='source env/bin/activate'
+
+alias junit='java -jar /usr/local/share/java/junit-platform-console-standalone-1.5.0-M1.jar -cp . --disable-banner --include-classname ".*" --scan-class-path --fail-if-no-tests'
 
 alias sqlite=sqlite3
 
@@ -97,6 +106,8 @@ alias la='ls -a'
 alias ll='ls -lh'
 alias lla='ls -lah'
 alias lal='lla'
+
+alias cl='clear'
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
