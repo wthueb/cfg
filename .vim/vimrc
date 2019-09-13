@@ -53,3 +53,6 @@ cnoremap kj <C-C>
 
 nnoremap <leader><leader> :retab<CR>:w<CR>:sus<CR>
 nnoremap \\ :retab<CR>:wq<CR>
+
+autocmd Filetype css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+autocmd Filetype html setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
