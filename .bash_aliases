@@ -10,24 +10,6 @@ mkcdirp()
 
 alias virtualenv='python -m venv env'
 
-p()
-{
-    if [ -d 'env' ]; then
-        env/bin/python $@
-    else
-        /usr/bin/env python3 $@
-    fi
-}
-
-pi()
-{
-    if [ -d 'env' ]; then
-        env/bin/python -i $@
-    else
-        /usr/bin/env python3 -i $@
-    fi
-}
-
 clean()
 {
     local count=$(find . -name '__pycache__' | wc -l | sed 's/ *//')
@@ -147,6 +129,9 @@ alias grepr='grep -PIR --exclude-dir=env --color=auto'
 
 alias python='python3'
 alias pip='pip3'
+
+alias p='python'
+alias pi='p -i'
 
 alias notify='tput bel'
 

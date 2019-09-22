@@ -34,11 +34,11 @@ __prompt_command() {
     local magenta="\[\e[35m\]"
     local cyan="\[\e[36m\]"
 
-    if test -n "$VIRTUAL_ENV"; then
+    if [ -n "$VIRTUAL_ENV" ]; then
         PS1+="($(basename $VIRTUAL_ENV)) "
     fi
 
-    if test -n "$CONDA_PROMPT_MODIFIER"; then
+    if [ -n "$CONDA_PROMPT_MODIFIER" ]; then
         PS1+="$CONDA_PROMPT_MODIFIER"
     fi
 
