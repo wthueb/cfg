@@ -14,6 +14,9 @@ endif
 
 colorscheme monokai
 
+set colorcolumn=100
+highlight ColorColumn ctermbg=darkgray
+
 set visualbell noerrorbells
 
 set ruler
