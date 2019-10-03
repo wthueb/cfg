@@ -22,9 +22,7 @@ export CLICOLOR=1
 export LSCOLORS=GxBxHxDxFxhxhxhxhxcxcx
 export LS_COLORS="di=1;36:ln=1;31:so=1;37:pi=1;33:ex=1;35:bd=37:cd=37:su=37:sg=37:tw=32:ow=32"
 
-PROMPT_COMMAND=__prompt_command
-
-__prompt_command() {
+_prompt_command() {
     PS1=""
 
     local remove="\[\e[0m\]"
@@ -45,6 +43,7 @@ __prompt_command() {
     PS1+="${green}${bold}\u@\h${remove}:${cyan}${bold}\w${remove}"
 
     git rev-parse --git-dir &>/dev/null
+
     if [ $? -eq 0 ]; then
         local branch=$(git branch 2>/dev/null | 'grep' '^*' | colrm 1 2)
         PS1+=":${bold}${magenta}$branch"
@@ -62,6 +61,8 @@ __prompt_command() {
 
     PS1+="\$ "
 }
+
+PROMPT_COMMAND=_prompt_command
 
 # enable color support of ls
 if [ -x /usr/bin/dircolors ]; then
