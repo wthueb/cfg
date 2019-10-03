@@ -1,3 +1,4 @@
+# executables / object files
 *.com
 *.class
 *.dll
@@ -5,10 +6,12 @@
 *.o
 *.so
 
-*.swp
-*.swo
-*~
+# python stuff
+env/
+__pycache__
+*.pyc
 
+# data files
 *.7z
 *.dmg
 *.gz
@@ -18,18 +21,25 @@
 *.tar
 *.zip
 
-*.log
+# databases
 *.sql
 *.sqlite
 *.db
 
+# vim stuff
+compile_commands.json
+*.swp
+*.swo
+*~
+
+# log files
+*.log
+
+# mac stuff
 .DS_Store*
 ehthumbs.db
 Icon?
 Thumbs.db
 
+# misc
 *.lock
-
-env/
-__pycache__
-*.pyc
