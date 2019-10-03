@@ -3,20 +3,12 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'itchyny/lightline.vim'
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
-Plugin 'lervag/vimtex'
-Plugin 'mattn/emmet-vim'
-Plugin 'othree/eregex.vim'
-Plugin 'pangloss/vim-javascript'
-Plugin 'scrooloose/nerdtree'
-Plugin 'tbastos/vim-lua'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-eunuch'
-Plugin 'tpope/vim-surround'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'vim-latex/vim-latex'
+Plugin 'itchyny/lightline.vim' " status bar
+Plugin 'othree/eregex.vim' " regex everything
+Plugin 'scrooloose/nerdtree' " file browser in a tab
+Plugin 'tpope/vim-eunuch' " unix helper
+Plugin 'tpope/vim-surround' " change quotes and stuff
+Plugin 'Valloric/YouCompleteMe' " auto completion and syntax checking
+Plugin 'vim-scripts/a.vim' " switch to header file
 
 call vundle#end()

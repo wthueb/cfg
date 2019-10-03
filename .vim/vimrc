@@ -40,7 +40,13 @@ set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
 let mapleader=','
 let maplocalleader='='
 
+autocmd Filetype css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+autocmd Filetype html setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+
 let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_python_interpreter_path = 'env/bin'
+let g:ycm_extra_conf_vim_data = [ 'g:ycm_python_interpreter_path' ]
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 
 let g:eregex_default_enable = 1
 let g:eregex_force_case = 1
@@ -57,5 +63,21 @@ cnoremap kj <C-C>
 nnoremap <leader><leader> :retab<CR>:w<CR>:sus<CR>
 nnoremap \\ :retab<CR>:wq<CR>
 
-autocmd Filetype css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
-autocmd Filetype html setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+nnoremap <C-d> :YcmCompleter GoTo<Enter>
+
+nnoremap <Leader>l :ls<CR>
+nnoremap <Leader>b :bp<CR>
+nnoremap <Leader>f :bn<CR>
+nnoremap <Leader>g :e#<CR>
+nnoremap <Leader>1 :1b<CR>
+nnoremap <Leader>2 :2b<CR>
+nnoremap <Leader>3 :3b<CR>
+nnoremap <Leader>4 :4b<CR>
+nnoremap <Leader>5 :5b<CR>
+nnoremap <Leader>6 :6b<CR>
+nnoremap <Leader>7 :7b<CR>
+nnoremap <Leader>8 :8b<CR>
+nnoremap <Leader>9 :9b<CR>
+nnoremap <Leader>0 :10b<CR>
+
+set laststatus=2 statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
