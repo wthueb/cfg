@@ -65,6 +65,8 @@ nnoremap \\ :retab<CR>:wq<CR>
 
 nnoremap <C-d> :YcmCompleter GoTo<Enter>
 
+command NT NERDTree
+
 nnoremap <Leader>l :ls<CR>
 nnoremap <Leader>b :bp<CR>
 nnoremap <Leader>f :bn<CR>
