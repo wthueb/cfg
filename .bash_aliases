@@ -4,7 +4,7 @@ confirm()
 
     response=${response,,} # to lower
 
-    if [[ "$response" =~ ^(yes|y)$ ]]; then
+    if [[ $response =~ ^(yes|y)$ ]]; then
         return 0
     fi
 
