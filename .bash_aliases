@@ -33,7 +33,9 @@ pclean()
 
     local count=$(find . -name '__pycache__' | wc -l | sed 's/ *//')
 
-    find . -name '__pycache__' -delete
+    if [[ $count > 0 ]]; then
+        find . -name '__pycache__' -print0 | xargs -0 rm -r
+    fi
 
     echo "deleted $count __pycache__ folders"
 
