@@ -52,7 +52,7 @@ _prompt_command() {
         if [[ $PWD == $HOME ]]; then
             PS1+="${cyan}${bold}~${remove}"
         else
-            PS1+="${cyan}${bold}$(basename $PWD)${remove}"
+            PS1+="${cyan}${bold}$(basename "$PWD")${remove}"
         fi
     fi
 
