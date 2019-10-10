@@ -89,10 +89,18 @@ activate()
 
 path()
 {
+    if [ ! -f ~/.bash_options ]; then
+        echo 'full_dir=' > ~/.bash_options
+    fi
+
     if [[ $full_dir ]]; then
         unset full_dir
+
+        sed -i '' 's/full_dir=.*/full_dir=/' ~/.bash_options
     else
         full_dir=1
+
+        sed -i '' 's/full_dir=.*/full_dir=1/' ~/.bash_options
     fi
 }
 
@@ -130,6 +138,8 @@ alias vim-upgrade='vim +PluginInstall +PluginUpdate +PluginClean +q +q'
 
 alias grep='grep -PI --color=auto'
 alias grepr='grep -PIR --exclude-dir=env --color=auto'
+
+alias sed='sed -E'
 
 alias p='python'
 alias pi='python -i'
