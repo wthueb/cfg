@@ -22,6 +22,10 @@ export CLICOLOR=1
 export LSCOLORS=GxBxHxDxFxhxhxhxhxcxcx
 export LS_COLORS="di=1;36:ln=1;31:so=1;37:pi=1;33:ex=1;35:bd=37:cd=37:su=37:sg=37:tw=32:ow=32"
 
+if [ -f ~/.bash_options ]; then
+    source ~/.bash_options
+fi
+
 _prompt_command() {
     PS1=""
 
@@ -32,23 +36,33 @@ _prompt_command() {
     local magenta="\[\e[35m\]"
     local cyan="\[\e[36m\]"
 
-    if [ -n "$VIRTUAL_ENV" ]; then
+    if [[ "$VIRTUAL_ENV" ]]; then
         PS1+="($(basename $VIRTUAL_ENV)) "
     fi
 
-    if [ -n "$CONDA_PROMPT_MODIFIER" ]; then
+    if [[ $CONDA_PROMPT_MODIFIER ]]; then
         PS1+="$CONDA_PROMPT_MODIFIER"
     fi
 
-    PS1+="${green}${bold}\u@\h${remove}:${cyan}${bold}\w${remove}"
+    PS1+="${green}${bold}\u@\h${remove}:"
+    
+    if [[ $full_dir ]]; then
+        PS1+="${cyan}${bold}\w${remove}"
+    else
+        if [[ $PWD == $HOME ]]; then
+            PS1+="${cyan}${bold}~${remove}"
+        else
+            PS1+="${cyan}${bold}$(basename $PWD)${remove}"
+        fi
+    fi
 
     git rev-parse --git-dir &>/dev/null
 
-    if [ $? -eq 0 ]; then
+    if [[ $? == 0 ]]; then
         local branch=$(git branch 2>/dev/null | 'grep' '^*' | colrm 1 2)
         PS1+=":${bold}${magenta}$branch"
 
-        if [ "$branch" ]; then
+        if [[ $branch ]]; then
             if [ "$(git diff-index HEAD)" ] || [ "$(git ls-files --others --exclude-standard)" ]; then
                 PS1+="+"
             fi

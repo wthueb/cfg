@@ -2,7 +2,7 @@ confirm()
 {
     read -r -p "${1:-are you sure?} [y/n]: " response
 
-    response=${response,,} # to lower
+    local response=${response,,} # to lower
 
     if [[ $response =~ ^(yes|y)$ ]]; then
         return 0
@@ -48,7 +48,7 @@ pclean()
 
 retab()
 {
-    if [ $# -ne 2 ]; then
+    if [[ $# != 2 ]]; then
         echo "usage: retab FILE_NAME MAX_DEPTH (0 for MAX_DEPTH if unlimited)"
 
         return
@@ -60,9 +60,9 @@ retab()
         return 1
     fi
 
-    if [ $2 -gt 0 ]; then
+    if [[ $2 > 0 ]]; then
         find . -name "$1" -maxdepth $2 ! -type d -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
-    elif [ $2 -eq 0 ]; then
+    elif [[ $2 == 0 ]]; then
         find . -name "$1" ! -type d -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
     else
         echo "usage: retab FILE_NAME MAX_DEPTH (0 for MAX_DEPTH if unlimited)"
@@ -78,12 +78,21 @@ _deactivate()
 
 activate()
 {
-    if [ -n "$*" ]; then
+    if [[ $* ]]; then
         conda activate $@
 
         alias deactivate=_deactivate
     else
         source env/bin/activate
+    fi
+}
+
+path()
+{
+    if [[ $full_dir ]]; then
+        unset full_dir
+    else
+        full_dir=1
     fi
 }
 
