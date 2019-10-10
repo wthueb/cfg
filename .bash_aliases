@@ -96,11 +96,11 @@ path()
     if [[ $full_dir ]]; then
         unset full_dir
 
-        sed -i '' 's/full_dir=.*/full_dir=/' ~/.bash_options
+        sed -i 's/full_dir=.*/full_dir=/' ~/.bash_options
     else
         full_dir=1
 
-        sed -i '' 's/full_dir=.*/full_dir=1/' ~/.bash_options
+        sed -i 's/full_dir=.*/full_dir=1/' ~/.bash_options
     fi
 }
 
