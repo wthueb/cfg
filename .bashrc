@@ -60,7 +60,8 @@ _prompt_command() {
 
     if [[ $? == 0 ]]; then
         local branch=$(git branch 2>/dev/null | 'grep' '^*' | colrm 1 2)
-        PS1+=":${bold}${magenta}$branch"
+
+        PS1+="@${bold}${magenta}$branch"
 
         if [[ $branch ]]; then
             if [ "$(git diff-index HEAD)" ] || [ "$(git ls-files --others --exclude-standard)" ]; then
