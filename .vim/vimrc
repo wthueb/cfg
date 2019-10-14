@@ -44,8 +44,6 @@ autocmd Filetype css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd Filetype html setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_python_interpreter_path = 'env/bin'
-let g:ycm_extra_conf_vim_data = [ 'g:ycm_python_interpreter_path' ]
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 
 let g:eregex_default_enable = 1
