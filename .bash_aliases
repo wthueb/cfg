@@ -146,3 +146,5 @@ alias pi='python -i'
 
 alias ffmpeg='ffmpeg -hide_banner'
 alias ffplay='ffplay -hide_banner'
+
+alias gdb='gdb -q'
