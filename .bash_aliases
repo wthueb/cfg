@@ -18,7 +18,7 @@ mkcd()
 
 mkcdp()
 {
-    mkcdir $1 && python -m venv env
+    mkcd $1 && python -m venv env
 }
 
 alias virtualenv='python -m venv env'
