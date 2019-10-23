@@ -104,7 +104,7 @@ path()
     fi
 }
 
-alias ls='ls --color=auto --group-directories-first'
+alias ls='LC_COLLATE=C ls --color=auto --group-directories-first'
 alias l='ls'
 alias la='ls -a'
 alias ll='ls -lh'
