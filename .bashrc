@@ -91,8 +91,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # less syntax highlighting with source-highlight
-export LESSOPEN="| /usr/local/bin/src-hilite-lesspipe.sh %s"
-export LESS=" -RN "
+export LESS=" -R "
 
 # colored gcc warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
