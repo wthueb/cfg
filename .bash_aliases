@@ -89,7 +89,7 @@ activate()
 
 path()
 {
-    if [ ! -f ~/.bash_options ]; then
+    if [[ ! -f ~/.bash_options ]]; then
         echo 'full_dir=' > ~/.bash_options
     fi
 
@@ -104,17 +104,6 @@ path()
     fi
 }
 
-alias ls='LC_COLLATE=C ls --color=auto --group-directories-first'
-alias l='ls'
-alias la='ls -a'
-alias ll='ls -lh'
-alias lla='ls -lah'
-alias lal='lla'
-
-alias cl='clear'
-
-alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-
 refresh()
 {
     echo "pulling https://github.com/wthueb/cfg"
@@ -125,6 +114,17 @@ refresh()
 
     source ~/.bashrc
 }
+
+alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+alias ls='LC_COLLATE=C ls --color=auto --group-directories-first'
+alias l='ls'
+alias la='ls -a'
+alias ll='ls -lh'
+alias lla='ls -lah'
+alias lal='lla'
+
+alias cl='clear'
 
 alias ..='cd ..'
 alias cd..='cd ..'
