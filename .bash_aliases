@@ -1,3 +1,39 @@
+alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+alias ls='LC_COLLATE=C ls --color=auto --group-directories-first'
+alias l='ls'
+alias la='ls -a'
+alias ll='ls -lh'
+alias lla='ls -lah'
+alias lal='lla'
+
+alias cl='clear'
+
+alias ..='cd ..'
+alias cd..='cd ..'
+
+alias mv='mv -v'
+alias rm='rm -v'
+alias cp='cp -v'
+
+alias vi='vim'
+alias vim-upgrade='vim +PluginInstall +PluginUpdate +PluginClean +q +q'
+
+alias grep='grep -PI --color=auto'
+alias grepr='grep -PIR --exclude-dir=env --color=auto'
+
+alias sed='sed -E'
+
+alias p='python'
+alias pi='python -i'
+
+alias virtualenv='python -m venv env'
+
+alias ffmpeg='ffmpeg -hide_banner'
+alias ffplay='ffplay -hide_banner'
+
+alias gdb='gdb -q'
+
 confirm()
 {
     read -r -p "${1:-are you sure?} [y/n]: " response
@@ -20,8 +56,6 @@ mkcdp()
 {
     mkcd $1 && python -m venv env
 }
-
-alias virtualenv='python -m venv env'
 
 pclean()
 {
@@ -114,37 +148,3 @@ refresh()
 
     source ~/.bashrc
 }
-
-alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-
-alias ls='LC_COLLATE=C ls --color=auto --group-directories-first'
-alias l='ls'
-alias la='ls -a'
-alias ll='ls -lh'
-alias lla='ls -lah'
-alias lal='lla'
-
-alias cl='clear'
-
-alias ..='cd ..'
-alias cd..='cd ..'
-
-alias mv='mv -v'
-alias rm='rm -v'
-alias cp='cp -v'
-
-alias vi='vim'
-alias vim-upgrade='vim +PluginInstall +PluginUpdate +PluginClean +q +q'
-
-alias grep='grep -PI --color=auto'
-alias grepr='grep -PIR --exclude-dir=env --color=auto'
-
-alias sed='sed -E'
-
-alias p='python'
-alias pi='python -i'
-
-alias ffmpeg='ffmpeg -hide_banner'
-alias ffplay='ffplay -hide_banner'
-
-alias gdb='gdb -q'
