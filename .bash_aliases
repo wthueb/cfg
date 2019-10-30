@@ -83,7 +83,7 @@ pclean()
 retab()
 {
     if [[ $# != 2 ]]; then
-        echo "usage: retab FILE_NAME MAX_DEPTH (0 for MAX_DEPTH if unlimited)"
+        echo 'usage: retab FILE_NAME MAX_DEPTH (0 for MAX_DEPTH if unlimited)'
 
         return
     fi
@@ -99,7 +99,7 @@ retab()
     elif [[ $2 == 0 ]]; then
         find . -name "$1" ! -type d -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
     else
-        echo "usage: retab FILE_NAME MAX_DEPTH (0 for MAX_DEPTH if unlimited)"
+        echo 'usage: retab FILE_NAME MAX_DEPTH (0 for MAX_DEPTH if unlimited)'
     fi
 }
 
@@ -140,11 +140,11 @@ path()
 
 refresh()
 {
-    echo "pulling https://github.com/wthueb/cfg"
+    echo 'pulling https://github.com/wthueb/cfg'
 
     config pl
 
-    echo "source ~/.bashrc"
+    echo 'source ~/.bashrc'
 
     source ~/.bashrc
 }
