@@ -10,6 +10,9 @@ shopt -s histappend
 # update the values of LINES and COLUMNS
 shopt -s checkwinsize
 
+# include dotfiles in globs
+shopt -s dotglob
+
 [[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
 
 if ! shopt -oq posix; then

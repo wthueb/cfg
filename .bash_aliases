@@ -40,11 +40,7 @@ confirm()
 
     local response=${response,,} # to lower
 
-    if [[ $response =~ ^(yes|y)$ ]]; then
-        return 0
-    fi
-
-    return 1
+    [[ $response =~ ^(yes|y)$ ]]
 }
 
 mkcd()
@@ -59,45 +55,47 @@ mkcdp()
 
 pclean()
 {
-    confirm
-
-    if [[ $? != 0 ]]; then
+    if ! confirm; then
         return 1
     fi
 
-    local count=$(find . -name '__pycache__' | wc -l | sed 's/ *//')
+    local count=$(find . -name '__pycache__' 2>/dev/null | wc -l | sed 's/ *//')
+
+    echo "found $count __pycache__ folders"
 
     if [[ $count > 0 ]]; then
-        find . -name '__pycache__' -print0 | xargs -0 rm -r
+        find . -name '__pycache__' -print0 2>/dev/null | xargs -0 rm -r
+
+        echo "deleted $count __pycache__ folders"
     fi
 
-    echo "deleted $count __pycache__ folders"
+    count=$(find . -name '*.pyc' 2>/dev/null | wc -l | sed 's/ *//')
 
-    count=$(find . -name '*.pyc' | wc -l | sed 's/ *//')
+    echo "found $count *.pyc files"
+    
+    if [[ $count > 0 ]]; then
+        find . -name '*.pyc' -delete 2>/dev/null
 
-    find . -name '*.pyc' -delete
-
-    echo "deleted $count *.pyc files"
+        echo "deleted $count *.pyc files"
+    fi
 }
 
 retab()
 {
     if [[ $# != 2 ]]; then
-        echo 'usage: retab FILE_NAME MAX_DEPTH (0 for MAX_DEPTH if unlimited)'
+        echo 'usage: retab FILE_NAME MAX_DEPTH (-1 for MAX_DEPTH if unlimited)'
 
         return
     fi
 
-    confirm
-
-    if [[ $? != 0 ]]; then
+    if ! confirm; then
         return 1
     fi
 
-    if [[ $2 > 0 ]]; then
-        find . -name "$1" -maxdepth $2 ! -type d -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
-    elif [[ $2 == 0 ]]; then
-        find . -name "$1" ! -type d -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
+    if [[ $2 > -1 ]]; then
+        find . -maxdepth $2 -name "$1" -type f -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
+    elif [[ $2 == -1 ]]; then
+        find . -name "$1" -type f -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
     else
         echo 'usage: retab FILE_NAME MAX_DEPTH (0 for MAX_DEPTH if unlimited)'
     fi
@@ -140,11 +138,7 @@ path()
 
 refresh()
 {
-    echo 'pulling https://github.com/wthueb/cfg'
+    echo 'pulling https://github.com/wthueb/cfg' && config pull
 
-    config pl
-
-    echo 'source ~/.bashrc'
-
-    source ~/.bashrc
+    echo 'source ~/.bashrc' && source ~/.bashrc
 }
