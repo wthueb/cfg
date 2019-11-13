@@ -27,8 +27,6 @@ alias sed='sed -E'
 alias p='python'
 alias pi='python -i'
 
-alias virtualenv='python -m venv env'
-
 alias ffmpeg='ffmpeg -hide_banner'
 alias ffplay='ffplay -hide_banner'
 
@@ -101,6 +99,15 @@ retab()
     fi
 }
 
+virtualenv()
+{
+    if [[ $1 ]]; then
+        python -m venv $1
+    else
+        python -m venv env
+    fi
+}
+
 _deactivate()
 {
     conda deactivate
@@ -116,6 +123,17 @@ activate()
         alias deactivate=_deactivate
     else
         source env/bin/activate
+    fi
+}
+
+upgrade-requirements()
+{
+    if [[ $VIRTUAL_ENV ]]; then
+        cat requirements.txt | 'grep' -PIo '.*(?===)' | xargs -t pip install --upgrade --
+
+        pip freeze > requirements.txt
+    else
+        return 1
     fi
 }
 
