@@ -25,3 +25,5 @@ export VISUAL=vim
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
 [[ -f ~/.customprofile ]] && source ~/.customprofile
+
+refresh &> /dev/null
