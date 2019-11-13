@@ -20,7 +20,7 @@ alias vi='vim'
 alias vim-upgrade='vim +PluginInstall +PluginUpdate +PluginClean +q +q'
 
 alias grep='grep -PI --color=auto'
-alias grepr='grep -PIR --exclude-dir=env --color=auto'
+alias grepr='grep -PIR --exclude-dir=env --exclude-dir=.git --color=auto'
 
 alias sed='sed -E'
 
