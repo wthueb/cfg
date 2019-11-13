@@ -133,6 +133,8 @@ upgrade-requirements()
 
         pip freeze > requirements.txt
     else
+        echo 'must be inside of a virtualenv'
+
         return 1
     fi
 }
