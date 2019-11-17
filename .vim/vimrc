@@ -29,6 +29,7 @@ set backspace=indent,eol,start
 set laststatus=2
 set ttimeoutlen=30
 
+set laststatus=2 statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set noshowmode
 
 set hidden
@@ -36,9 +37,6 @@ set hidden
 set encoding=utf-8
 
 set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-
-let mapleader=','
-let maplocalleader='='
 
 autocmd Filetype css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd Filetype html setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
@@ -54,33 +52,36 @@ let g:eregex_force_case = 1
 let g:eregex_forward_delim ='/'
 let g:eregex_backward_delim ='?'
 
+let mapleader=','
+let maplocalleader='='
+
 nnoremap <leader>/ :call eregex#toggle()<CR>
 
 nnoremap S :%S/
 
+nnoremap ; :
+vnoremap ; :
 inoremap kj <Esc>
-cnoremap kj <C-C>
+cnoremap kj <C-c>
 
 nnoremap <leader><leader> :retab<CR>:w<CR>:sus<CR>
 nnoremap \\ :retab<CR>:wq<CR>
 
-nnoremap <C-d> :YcmCompleter GoTo<Enter>
+nnoremap <C-d> :YcmCompleter GoTo<CR>
 
 command NT NERDTree
 
-nnoremap <Leader>l :ls<CR>
-nnoremap <Leader>b :bp<CR>
-nnoremap <Leader>f :bn<CR>
-nnoremap <Leader>g :e#<CR>
-nnoremap <Leader>1 :1b<CR>
-nnoremap <Leader>2 :2b<CR>
-nnoremap <Leader>3 :3b<CR>
-nnoremap <Leader>4 :4b<CR>
-nnoremap <Leader>5 :5b<CR>
-nnoremap <Leader>6 :6b<CR>
-nnoremap <Leader>7 :7b<CR>
-nnoremap <Leader>8 :8b<CR>
-nnoremap <Leader>9 :9b<CR>
-nnoremap <Leader>0 :10b<CR>
-
-set laststatus=2 statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+nnoremap <leader>l :ls<CR>
+nnoremap <leader>b :bp<CR>
+nnoremap <leader>f :bn<CR>
+nnoremap <leader>g :e#<CR>
+nnoremap <leader>1 :1b<CR>
+nnoremap <leader>2 :2b<CR>
+nnoremap <leader>3 :3b<CR>
+nnoremap <leader>4 :4b<CR>
+nnoremap <leader>5 :5b<CR>
+nnoremap <leader>6 :6b<CR>
+nnoremap <leader>7 :7b<CR>
+nnoremap <leader>8 :8b<CR>
+nnoremap <leader>9 :9b<CR>
+nnoremap <leader>0 :10b<CR>
