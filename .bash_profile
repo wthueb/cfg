@@ -22,6 +22,8 @@ export CXX='g++'
 export EDITOR=ex
 export VISUAL=vim
 
+export TERM='xterm-256color'
+
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
 [[ -f ~/.customprofile ]] && source ~/.customprofile
