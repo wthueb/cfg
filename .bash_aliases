@@ -32,7 +32,7 @@ alias ffplay='ffplay -hide_banner'
 
 alias gdb='gdb -q'
 
-confirm()
+function confirm()
 {
     read -r -p "${1:-are you sure?} [y/n]: " response
 
@@ -41,17 +41,17 @@ confirm()
     [[ $response =~ ^(yes|y)$ ]]
 }
 
-mkcd()
+function mkcd()
 {
     mkdir -p -- $@ && cd -P -- $@
 }
 
-mkcdp()
+function mkcdp()
 {
     mkcd $1 && python -m venv env
 }
 
-pclean()
+function pclean()
 {
     if ! confirm; then
         return 1
@@ -78,7 +78,7 @@ pclean()
     fi
 }
 
-retab()
+function retab()
 {
     if [[ $# != 2 ]]; then
         echo 'usage: retab FILE_NAME MAX_DEPTH (-1 for MAX_DEPTH if unlimited)'
@@ -99,7 +99,7 @@ retab()
     fi
 }
 
-virtualenv()
+function virtualenv()
 {
     if [[ $1 ]]; then
         python -m venv $1
@@ -108,14 +108,14 @@ virtualenv()
     fi
 }
 
-_deactivate()
+function _deactivate()
 {
     conda deactivate
 
     unalias deactivate
 }
 
-activate()
+function activate()
 {
     if [[ $* ]]; then
         conda activate $@
@@ -126,7 +126,7 @@ activate()
     fi
 }
 
-upgrade-requirements()
+function upgrade-requirements()
 {
     if [[ $VIRTUAL_ENV ]]; then
         cat requirements.txt | 'grep' -PIo '.*(?===)' | xargs -t pip install --upgrade --
@@ -139,7 +139,7 @@ upgrade-requirements()
     fi
 }
 
-path()
+function path()
 {
     if [[ ! -f ~/.bash_options ]]; then
         echo 'full_dir=' > ~/.bash_options
@@ -156,7 +156,7 @@ path()
     fi
 }
 
-refresh()
+function refresh()
 {
     echo 'pulling https://github.com/wthueb/cfg' && config pull
 
