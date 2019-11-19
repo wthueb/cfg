@@ -22,6 +22,8 @@ alias vim-upgrade='vim +PluginInstall +PluginUpdate +PluginClean +q +q'
 alias grep='grep -PI --color=auto'
 alias grepr='grep -PIR --exclude-dir=env --exclude-dir=.git --color=auto'
 
+alias pgrep='pcre2grep --color=auto'
+
 alias sed='sed -E'
 
 alias p='python'
@@ -158,7 +160,7 @@ function path()
 
 function refresh()
 {
-    echo 'pulling https://github.com/wthueb/cfg' && config pull
+    echo '> config pull' && config pull
 
-    echo 'source ~/.bashrc' && source ~/.bashrc
+    echo '> source ~/.bashrc' && source ~/.bashrc
 }
