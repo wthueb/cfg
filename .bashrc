@@ -23,7 +23,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
-function _prompt_command() {
+function _prompt_command()
+{
     PS1=""
 
     local remove='\[\e[0m\]'
