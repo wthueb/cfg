@@ -7,6 +7,7 @@ so ~/.vim/plugins.vim
 filetype plugin indent on
 
 syntax on
+let c_comment_strings=1 " use string highlighting in comments: "like this"
 
 if &term =~ '256color'
     set t_ut=
@@ -19,7 +20,7 @@ highlight ColorColumn ctermbg=darkgray
 
 set visualbell noerrorbells
 
-set ruler
+set ruler " show cursor position at all times
 set number
 set nowrap
 set gdefault
@@ -27,7 +28,9 @@ set gdefault
 set backspace=indent,eol,start
 
 set laststatus=2
-set ttimeoutlen=30
+
+set ttimeout " time out for key codes
+set ttimeoutlen=30 " 30 ms
 
 set laststatus=2 statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set noshowmode
@@ -36,10 +39,33 @@ set hidden
 
 set encoding=utf-8
 
-set tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+set tabstop=4 shiftwidth=4 softtabstop=4 expandtab " 4 space tabs
 
+" unless it's css or html
 autocmd Filetype css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd Filetype html setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+
+set hlsearch " highlight last search
+
+set history=200 " keep 200 lines of command line history
+set showcmd	" display incomplete commands
+set wildmenu " display completion matches in a status line
+
+set display=truncate " show @@@ in the last line if it is truncated
+
+set scrolloff=5 " scroll with N extra lines on the top/bottom
+
+if has('reltime')
+  set incsearch " do incremental searching
+endif
+
+if has('mouse')
+  if &term =~ 'xterm'
+    set mouse=a
+  else
+    set mouse=nvi
+  endif
+endif
 
 autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview
