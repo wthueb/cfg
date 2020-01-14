@@ -99,7 +99,7 @@ function retab()
     fi
 }
 
-function virtualenv()
+function venv()
 {
     if [[ $1 ]]; then
         python -m venv $1
@@ -108,19 +108,10 @@ function virtualenv()
     fi
 }
 
-function _deactivate()
-{
-    conda deactivate
-
-    unalias deactivate
-}
-
 function activate()
 {
-    if [[ $* ]]; then
-        conda activate $@
-
-        alias deactivate=_deactivate
+    if [[ $1 ]]; then
+        source $1/bin/activate
     else
         source env/bin/activate
     fi
