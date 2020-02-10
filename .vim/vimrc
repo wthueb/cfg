@@ -48,7 +48,7 @@ autocmd Filetype html setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 set hlsearch " highlight last search
 
 set history=200 " keep 200 lines of command line history
-set showcmd	" display incomplete commands
+set showcmd " display incomplete commands
 set wildmenu " display completion matches in a status line
 
 set display=truncate " show @@@ in the last line if it is truncated
@@ -59,13 +59,13 @@ if has('reltime')
   set incsearch " do incremental searching
 endif
 
-if has('mouse')
-  if &term =~ 'xterm'
-    set mouse=a
-  else
-    set mouse=nvi
-  endif
-endif
+"if has('mouse')
+"  if &term =~ 'xterm'
+"    set mouse=a
+"  else
+"    set mouse=nvi
+"  endif
+"endif
 
 autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview
