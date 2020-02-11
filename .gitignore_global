@@ -40,6 +40,7 @@ compile_commands.json
 ehthumbs.db
 Icon?
 Thumbs.db
+*.dSYM
 
 # misc
 *.lock
