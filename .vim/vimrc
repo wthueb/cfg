@@ -14,7 +14,10 @@ if &term =~ '256color'
 endif
 
 let g:dracula_colorterm = 0
-let g:dracula_italic = 0
+
+" enable italics
+let &t_ZH="\e[3m"
+let &t_ZR="\e[23m"
 
 colorscheme dracula
 
