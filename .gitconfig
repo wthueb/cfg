@@ -9,14 +9,14 @@
     excludesfile = ~/.gitignore_global
     symlinks = true
 [web]
-    browser = google-chrome
+    browser = firefox
 [diff]
     tool = vimdiff
 [difftool]
     prompt = false
 [alias]
     a = add --all
-    b = branch
+    b = branch -v
     ba = branch -a
     bd = branch -d
     bdd = branch -D
