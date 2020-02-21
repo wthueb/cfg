@@ -48,7 +48,7 @@ function mkcd()
 
 function mkcdp()
 {
-    mkcd $1 && python -m venv env
+    mkcd $1 && venv
 }
 
 function pclean()
@@ -80,10 +80,33 @@ function pclean()
 
 function retab()
 {
-    if [[ $# != 2 ]]; then
-        echo 'usage: retab FILE_NAME MAX_DEPTH (-1 for MAX_DEPTH if unlimited)'
+    if [[ $# != 1 ]]; then
+        echo 'usage: retab FILE'
 
-        return
+        return 1
+    fi
+
+    if ! file $1 | grep text &>/dev/null; then
+        return 1
+    fi
+
+    local perms=$(stat --format='%a' $1)
+
+    expand -t 4 "$1" > /tmp/e && 'mv' /tmp/e "$1"
+
+    chmod $perms $1
+
+    return 0
+}
+
+export -f retab
+
+function retabr()
+{
+    if [[ $# != 2 ]]; then
+        echo 'usage: retabr DIRECTORY MAX_DEPTH (-1 for MAX_DEPTH if unlimited)'
+
+        return 1
     fi
 
     if ! confirm; then
@@ -91,12 +114,16 @@ function retab()
     fi
 
     if [[ $2 > -1 ]]; then
-        find . -maxdepth $2 -name "$1" -type f -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
+        find $1 -maxdepth $2 -type f 2>/dev/null | grep -v .git/ | grep -v .vim/ | xargs -n1 -I{} bash -c 'retab "{}" && echo "{} has been retabbed"'
     elif [[ $2 == -1 ]]; then
-        find . -name "$1" -type f -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
+        find $1 -type f 2>/dev/null | grep -v .git/ | grep -v .vim/ | xargs -n1 -I{} bash -c 'retab "{}" && echo "{} has been retabbed"' 
     else
-        echo 'usage: retab FILE_NAME MAX_DEPTH (0 for MAX_DEPTH if unlimited)'
+        echo 'usage: retabr DIRECTORY MAX_DEPTH (-1 for MAX_DEPTH if unlimited)'
+
+        return 1
     fi
+
+    return 0
 }
 
 function venv()
@@ -106,6 +133,8 @@ function venv()
     else
         python -m venv env
     fi
+
+    activate
 }
 
 function activate()
