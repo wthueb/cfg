@@ -22,6 +22,8 @@ export CXX='g++'
 export EDITOR=ex
 export VISUAL=vim
 
+export PATH="$HOME/.local/bin:$PATH"
+
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
 [[ -f ~/.customprofile ]] && source ~/.customprofile
