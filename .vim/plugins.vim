@@ -5,6 +5,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'dracula/vim', {'name': 'dracula'} " dracula colorscheme
 Plugin 'itchyny/lightline.vim' " status bar
+Plugin 'nvie/vim-flake8' " flake8!
 Plugin 'othree/eregex.vim' " regex everything
 Plugin 'scrooloose/nerdtree' " file browser in a tab
 Plugin 'tpope/vim-eunuch' " unix helper
