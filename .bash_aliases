@@ -182,3 +182,8 @@ function refresh()
 
     echo '> source ~/.bashrc' && source ~/.bashrc
 }
+
+function growl()
+{
+    echo -e $'\e]9;'${*}'\007'
+}
