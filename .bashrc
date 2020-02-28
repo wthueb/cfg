@@ -28,9 +28,9 @@ function _prompt_command()
     local remove='\[\e[0m\]'
     local bold='\[\e[1m\]'
 
-    local green='\[\e[32m\]'
+    local green='\[\e[38;5;119m\]'
     local magenta='\[\e[35m\]'
-    local cyan='\[\e[36m\]'
+    local cyan='\[\e[38;5;117m\]'
 
     if [[ $VIRTUAL_ENV ]]; then
         PS1+="($(basename $VIRTUAL_ENV)) "
@@ -48,7 +48,7 @@ function _prompt_command()
         if [[ $PWD == $HOME ]]; then
             PS1+="${cyan}${bold}~${remove}"
         else
-            PS1+="${cyan}${bold}$(basename "$PWD")${remove}"
+            PS1+="${cyan}${bold}`basename "$PWD"`${remove}"
         fi
     fi
 
