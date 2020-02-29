@@ -28,6 +28,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 [[ -f ~/.customprofile ]] && source ~/.customprofile
 
-refresh &> /dev/null
+config pull &> /dev/null
 
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"

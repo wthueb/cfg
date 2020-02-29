@@ -70,7 +70,7 @@ function pclean()
     count=$(find . -name '*.pyc' 2>/dev/null | wc -l | sed 's/ *//')
 
     echo "found $count *.pyc files"
-    
+
     if [[ $count > 0 ]]; then
         find . -name '*.pyc' -delete 2>/dev/null
 
@@ -116,7 +116,7 @@ function retabr()
     if [[ $2 > -1 ]]; then
         find $1 -maxdepth $2 -type f 2>/dev/null | grep -v .git/ | grep -v .vim/ | xargs -n1 -I{} bash -c 'retab "{}" && echo "{} has been retabbed"'
     elif [[ $2 == -1 ]]; then
-        find $1 -type f 2>/dev/null | grep -v .git/ | grep -v .vim/ | xargs -n1 -I{} bash -c 'retab "{}" && echo "{} has been retabbed"' 
+        find $1 -type f 2>/dev/null | grep -v .git/ | grep -v .vim/ | xargs -n1 -I{} bash -c 'retab "{}" && echo "{} has been retabbed"'
     else
         echo 'usage: retabr DIRECTORY MAX_DEPTH (-1 for MAX_DEPTH if unlimited)'
 
@@ -174,13 +174,6 @@ function path()
 
         sed -i 's/full_dir=.*/full_dir=1/' ~/.bash_options
     fi
-}
-
-function refresh()
-{
-    echo '> config pull' && config pull
-
-    echo '> source ~/.bashrc' && source ~/.bashrc
 }
 
 function growl()
