@@ -24,10 +24,10 @@ export VISUAL=vim
 
 export PATH="$HOME/.local/bin:$PATH"
 
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
 [[ -f ~/.customprofile ]] && source ~/.customprofile
 
 refresh &> /dev/null
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
