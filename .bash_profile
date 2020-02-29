@@ -26,6 +26,8 @@ export PATH="$HOME/.local/bin:$PATH"
 
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
-refresh &> /dev/null
+[[ -f ~/.bashrc ]] && source ~/.bashrc
 
 [[ -f ~/.customprofile ]] && source ~/.customprofile
+
+refresh &> /dev/null
