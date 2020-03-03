@@ -52,6 +52,10 @@ set tabstop=4 shiftwidth=4 softtabstop=4 expandtab " 4 space tabs
 autocmd Filetype css setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd Filetype html setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
+" and make and asm are archaic
+autocmd FileType make setlocal shiftwidth=8 softtabstop=0 noexpandtab
+autocmd FileType asm setlocal shiftwidth=8 softtabstop=0 noexpandtab syntax=nasm
+
 set hlsearch " highlight last search
 
 set history=200 " keep 200 lines of command line history
