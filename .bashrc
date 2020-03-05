@@ -29,7 +29,7 @@ function _prompt_command()
     local bold='\[\e[1m\]'
 
     local green='\[\e[38;5;119m\]'
-    local magenta='\[\e[35m\]'
+    local magenta='\[\e[38;5;205m\]'
     local cyan='\[\e[38;5;117m\]'
 
     if [[ $VIRTUAL_ENV ]]; then
