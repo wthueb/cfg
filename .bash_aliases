@@ -163,6 +163,7 @@ function path()
 {
     if [[ ! -f ~/.bash_options ]]; then
         echo 'full_dir=' > ~/.bash_options
+        echo 'newline_prompt=' >> ~/.bash_options
     fi
 
     if [[ $full_dir ]]; then
@@ -173,6 +174,24 @@ function path()
         full_dir=1
 
         sed -i 's/full_dir=.*/full_dir=1/' ~/.bash_options
+    fi
+}
+
+function newline-prompt()
+{
+    if [[ ! -f ~/.bash_options ]]; then
+        echo 'full_dir=' > ~/.bash_options
+        echo 'newline_prompt=' >> ~/.bash_options
+    fi
+
+    if [[ $newline_prompt ]]; then
+        unset newline_prompt
+
+        sed -i 's/newline_prompt=.*/newline_prompt=/' ~/.bash_options
+    else
+        newline_prompt=1
+
+        sed -i 's/newline_prompt=.*/newline_prompt=1/' ~/.bash_options
     fi
 }
 

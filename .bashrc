@@ -70,6 +70,10 @@ function _prompt_command()
         PS1+="${remove}"
     fi
 
+    if [[ $newline_prompt ]]; then
+        PS1+='\n'
+    fi
+
     PS1+='$ '
 }
 
