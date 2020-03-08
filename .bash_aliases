@@ -1,26 +1,28 @@
 alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
-alias ls='LC_COLLATE=C ls --color=auto --group-directories-first'
-alias l='ls'
-alias la='ls -a'
-alias ll='ls -lh'
-alias lla='ls -lha'
-alias lal='lla'
-
-alias cl='clear'
-
 alias ..='cd ..'
 alias cd..='cd ..'
 
 alias mv='mv -v'
-alias rm='rm -v'
 alias cp='cp -v'
+alias rm='rm -v'
+
+# LC_COLLATE=C sorts uppercase before lowercase (ABCabc)
+alias ls='LC_COLLATE=C ls --color=auto --group-directories-first'
+
+alias l='ls'
+alias la='ls -a'
+alias ll='ls -lh'
+alias lla='ls -lha'
+alias lal='ls -lha'
+
+alias cl='clear'
 
 alias vi='vim'
 alias vim-upgrade='vim +PluginInstall +PluginUpdate +PluginClean +q +q'
 
 alias grep='grep -PI --color=auto'
-alias grepr='grep -R --exclude-dir=env --exclude-dir=.git'
+alias grepr='grep -PIr --exclude-dir=env --exclude-dir=.git --color=auto'
 
 alias sed='sed -E'
 
