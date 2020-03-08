@@ -1,11 +1,5 @@
 [[ -f ~/.bash_options ]] && source ~/.bash_options
 
-# don't put duplicate lines or lines starting with space in the history
-HISTCONTROL=ignoreboth
-
-export HISTSIZE=
-export HISTFILESIZE=100000
-
 export CLICOLOR=1
 export LSCOLORS=GxBxHxDxFxhxhxhxhxcxcx
 export LS_COLORS='di=1;38;5;117:ln=1;31:so=1;37:pi=1;33:ex=1;35:bd=37:cd=37:su=37:sg=37:tw=32:ow=32'

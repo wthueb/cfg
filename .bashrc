@@ -1,8 +1,14 @@
 # if not running interactively, don't do anything :)
 [[ $- != *i* ]] && return
 
-# append to the history file, don't overwrite it
+# append to the history file (helps when running multiple bash instances
 shopt -s histappend
+
+# don't put duplicate lines or lines starting with space in the history
+HISTCONTROL=ignoreboth
+
+HISTSIZE=
+HISTFILESIZE=100000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS
