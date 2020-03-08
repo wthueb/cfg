@@ -8,7 +8,7 @@ filetype plugin indent on
 
 syntax on
 
-let c_comment_strings=1 " use string highlighting in comments: "like this"
+let c_comment_strings = 1 " use string highlighting in comments: "like this"
 
 if &term =~ '256color'
     set t_ut=
@@ -18,8 +18,8 @@ let g:dracula_colorterm = 0
 "let g:dracula_italic = 0
 
 " enable italics
-let &t_ZH="\e[3m"
-let &t_ZR="\e[23m"
+let &t_ZH = "\e[3m"
+let &t_ZR = "\e[23m"
 
 colorscheme dracula
 
@@ -88,12 +88,12 @@ let g:ycm_filetype_blacklist = { 'vimshell': 1 }
 
 let g:eregex_default_enable = 1
 let g:eregex_force_case = 1
-let g:eregex_forward_delim ='/'
-let g:eregex_backward_delim ='?'
+let g:eregex_forward_delim = '/'
+let g:eregex_backward_delim = '?'
 
-let g:kite_auto_complete=1
-let g:kite_tab_complete=1
-let g:kite_snippets=1
+let g:kite_auto_complete = 1
+let g:kite_tab_complete = 1
+let g:kite_snippets = 1
 
 set completeopt-=menu
 set completeopt+=menuone   " Show the completions UI even with only 1 item
@@ -102,14 +102,14 @@ set completeopt-=preview   " Hide the documentation preview window
 set completeopt+=noinsert  " Don't insert text automatically
 set completeopt-=noselect  " Highlight the first completion automatically
 
-let mapleader=','
-let maplocalleader='='
+let mapleader = ','
+let maplocalleader = '='
 
 nnoremap <leader>/ :call eregex#toggle()<CR>
-
 nnoremap S :%S/
 
-nnoremap <leader>p :call flake8#Flake8()<CR>
+autocmd FileType python nnoremap <leader>p :call flake8#Flake8()<CR>
+let g:flake8_show_in_file = 1
 
 nnoremap ; :
 vnoremap ; :
