@@ -78,52 +78,13 @@ function pclean()
     fi
 }
 
-function retab()
+function activate()
 {
-    if [[ $# != 1 ]]; then
-        echo 'usage: retab FILE'
-
-        return 1
-    fi
-
-    if ! file $1 | grep text &>/dev/null; then
-        return 1
-    fi
-
-    local perms=$(stat --format='%a' $1)
-
-    expand -t 4 "$1" > /tmp/e && 'mv' /tmp/e "$1"
-
-    chmod $perms $1
-
-    return 0
-}
-
-export -f retab
-
-function retabr()
-{
-    if [[ $# != 2 ]]; then
-        echo 'usage: retabr DIRECTORY MAX_DEPTH (-1 for MAX_DEPTH if unlimited)'
-
-        return 1
-    fi
-
-    if ! confirm; then
-        return 1
-    fi
-
-    if [[ $2 > -1 ]]; then
-        find $1 -maxdepth $2 -type f 2>/dev/null | grep -v .git/ | grep -v .vim/ | xargs -n1 -I{} bash -c 'retab "{}" && echo "{} has been retabbed"'
-    elif [[ $2 == -1 ]]; then
-        find $1 -type f 2>/dev/null | grep -v .git/ | grep -v .vim/ | xargs -n1 -I{} bash -c 'retab "{}" && echo "{} has been retabbed"'
+    if [[ $1 ]]; then
+        source $1/bin/activate
     else
-        echo 'usage: retabr DIRECTORY MAX_DEPTH (-1 for MAX_DEPTH if unlimited)'
-
-        return 1
+        source env/bin/activate
     fi
-
-    return 0
 }
 
 function venv()
@@ -135,28 +96,6 @@ function venv()
     fi
 
     activate
-}
-
-function activate()
-{
-    if [[ $1 ]]; then
-        source $1/bin/activate
-    else
-        source env/bin/activate
-    fi
-}
-
-function upgrade-requirements()
-{
-    if [[ $VIRTUAL_ENV ]]; then
-        cat requirements.txt | 'grep' -PIo '.*(?===)' | xargs -t pip install --upgrade --
-
-        pip freeze > requirements.txt
-    else
-        echo 'must be inside of a virtualenv'
-
-        return 1
-    fi
 }
 
 function path()
