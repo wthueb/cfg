@@ -21,4 +21,4 @@ export PATH="$HOME/.local/bin:$PATH"
 
 config pull &> /dev/null
 
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+[[ $TERM_PROGRAM == "iTerm.app" ]] && test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
