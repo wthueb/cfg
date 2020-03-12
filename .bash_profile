@@ -15,10 +15,17 @@ export VISUAL=vim
 
 export PATH="$HOME/.local/bin:$PATH"
 
+in_iterm2=1
+
+if [[ -f ~/.iterm2/it2check ]]; then
+    ~/.iterm2/it2check
+    in_iterm2=$?
+fi
+
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
 [[ -f ~/.customprofile ]] && source ~/.customprofile
 
 config pull &> /dev/null
 
-[[ $TERM_PROGRAM == "iTerm.app" ]] && test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+[[ $in_iterm2 ]] && [[ -f ~/.iterm2_shell_integration.bash ]] && source ~/.iterm2_shell_integration.bash
