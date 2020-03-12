@@ -28,4 +28,4 @@ fi
 
 config pull &> /dev/null
 
-[[ $in_iterm2 ]] && [[ -f ~/.iterm2_shell_integration.bash ]] && source ~/.iterm2_shell_integration.bash
+[[ $in_iterm2 == 0 ]] && [[ -f ~/.iterm2_shell_integration.bash ]] && source ~/.iterm2_shell_integration.bash
