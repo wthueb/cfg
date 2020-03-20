@@ -109,7 +109,7 @@ nnoremap <leader>/ :call eregex#toggle()<CR>
 nnoremap S :%S/
 
 autocmd FileType python nnoremap <leader>p :call flake8#Flake8()<CR>
-"let g:flake8_show_in_file = 1
+let g:flake8_show_in_file = 1
 
 nnoremap ; :
 vnoremap ; :
