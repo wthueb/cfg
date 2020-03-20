@@ -18,8 +18,10 @@ export PATH="$HOME/.local/bin:$PATH"
 in_iterm2=1
 
 if [[ -f ~/.iterm2/it2check ]]; then
-    ~/.iterm2/it2check
-    in_iterm2=$?
+    if ! grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
+        ~/.iterm2/it2check
+        in_iterm2=$?
+    fi
 fi
 
 [[ -f ~/.bashrc ]] && source ~/.bashrc
