@@ -57,6 +57,8 @@ autocmd Filetype html setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd FileType make setlocal shiftwidth=8 softtabstop=0 noexpandtab
 autocmd FileType asm setlocal shiftwidth=8 softtabstop=0 noexpandtab syntax=nasm
 
+autocmd FileType tex setlocal colorcolumn= wrap
+
 set hlsearch " highlight last search
 
 set history=200 " keep 200 lines of command line history
