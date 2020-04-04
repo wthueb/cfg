@@ -97,7 +97,7 @@ function venv()
         python -m venv env
     fi
 
-    activate
+    activate $@
 }
 
 function path()
