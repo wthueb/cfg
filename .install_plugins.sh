@@ -7,12 +7,12 @@ if [[ $# == 0 ]]; then
 else
     if [[ $(which cmake) == '' ]]; then
         echo 'cmake not installed'
-        return
+        exit
     fi
 
     if [[ $(which npm) == '' ]]; then
         echo 'npm not installed'
-        return
+        exit
     fi
 
     cd ~/.vim/bundle/YouCompleteMe/
