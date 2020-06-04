@@ -97,3 +97,5 @@
     sb = status -s -b
     subup = submodule update --init --recursive
     subpull = !git submodule foreach git pull --tags origin master
+[pull]
+	rebase = false
