@@ -7,8 +7,7 @@ alias mv='mv -v'
 alias cp='cp -v'
 alias rm='rm -v'
 
-# LC_COLLATE=C sorts uppercase before lowercase (ABCabc)
-alias ls='LC_COLLATE=C ls --color=auto --group-directories-first'
+alias ls='ls --color=auto --group-directories-first'
 
 alias l='ls'
 alias la='ls -a'
