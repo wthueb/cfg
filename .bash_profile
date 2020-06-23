@@ -13,7 +13,9 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export EDITOR=ex
 export VISUAL=vim
 
-export PATH="$HOME/.local/bin:$PATH"
+default_path=$PATH
+
+PATH="$HOME/.local/bin:$PATH"
 
 [[ -f ~/.bashrc ]] && source ~/.bashrc
 
@@ -21,4 +23,9 @@ export PATH="$HOME/.local/bin:$PATH"
 
 config pull &> /dev/null
 
+new_path=$PATH
+PATH=$default_path
+
 [[ -f ~/.iterm2/it2check ]] && ~/.iterm2/it2check && [[ -f ~/.iterm2_shell_integration.bash ]] && source ~/.iterm2_shell_integration.bash
+
+PATH=$new_path
