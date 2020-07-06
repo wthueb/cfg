@@ -73,29 +73,37 @@ if has('reltime')
   set incsearch " do incremental searching
 endif
 
-"if has('mouse')
-"  if &term =~ 'xterm'
-"    set mouse=a
-"  else
-"    set mouse=nvi
-"  endif
-"endif
-
-autocmd BufWinLeave *.* mkview
 autocmd BufWinEnter *.* silent loadview
+autocmd BufWinLeave *.* mkview
+
+
+" youcompleteme
 
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 let g:ycm_filetype_blacklist = { 'vimshell': 1 }
+
+if !exists("g:ycm_semantic_triggers")
+  let g:ycm_semantic_triggers = {}
+endif
+
+let g:ycm_semantic_triggers['typescript'] = ['.']
+
+
+" eregex
 
 let g:eregex_default_enable = 1
 let g:eregex_force_case = 1
 let g:eregex_forward_delim = '/'
 let g:eregex_backward_delim = '?'
 
+
+" kite
+
 let g:kite_auto_complete = 1
 let g:kite_tab_complete = 1
 let g:kite_snippets = 1
+
 
 set completeopt-=menu
 set completeopt+=menuone   " Show the completions UI even with only 1 item
@@ -104,8 +112,12 @@ set completeopt-=preview   " Hide the documentation preview window
 set completeopt+=noinsert  " Don't insert text automatically
 set completeopt-=noselect  " Highlight the first completion automatically
 
+
 let mapleader = ','
 let maplocalleader = '='
+
+
+" key mappings
 
 nnoremap <leader>/ :call eregex#toggle()<CR>
 nnoremap S :%S/
