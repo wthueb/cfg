@@ -139,3 +139,8 @@ function growl()
 {
     echo -e $'\e]9;'${*}'\007'
 }
+
+function calc()
+{
+    awk "BEGIN { print $* }"
+}
