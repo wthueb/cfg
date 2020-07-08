@@ -41,6 +41,10 @@ set ttimeoutlen=30 " 30 ms
 set statusline=%<%f\ %h%m%r%{kite#statusline()}%=%-14.(%l,%c%V%)\ %P
 set laststatus=2
 
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
+
 set noshowmode
 
 set hidden
@@ -151,3 +155,8 @@ nnoremap <leader>7 :7b<CR>
 nnoremap <leader>8 :8b<CR>
 nnoremap <leader>9 :9b<CR>
 nnoremap <leader>0 :10b<CR>
+
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-l> <C-w><C-l>
+nnoremap <C-h> <C-w><C-h>
