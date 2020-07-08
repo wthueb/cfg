@@ -8,17 +8,26 @@ filetype plugin indent on
 
 syntax on
 
-let c_comment_strings = 1 " use string highlighting in comments: "like this"
-
 if &term =~ '256color'
     set t_ut=
 endif
 
-set termguicolors
+" i'll be honest i'm not really sure what this is doing but it works in tmux
+if has('termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+    set termguicolors
+endif
 
 " enable italics
 let &t_ZH = "\e[3m"
 let &t_ZR = "\e[23m"
+
+" use string highlighting in comments: "like this"
+let c_comment_strings = 1
+
+"let g:dracula_colorterm = 0
 
 colorscheme dracula
 
