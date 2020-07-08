@@ -14,8 +14,7 @@ if &term =~ '256color'
     set t_ut=
 endif
 
-let g:dracula_colorterm = 0
-"let g:dracula_italic = 0
+set termguicolors
 
 " enable italics
 let &t_ZH = "\e[3m"
