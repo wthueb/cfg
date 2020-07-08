@@ -13,7 +13,7 @@ class Dracula(ColorScheme):
         foreground = 253
         bglighter = 238
         bglight = 237
-        background = 236
+        background = 0
         bgdark = 235
         bgdarker = 234
 
