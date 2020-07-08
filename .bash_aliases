@@ -20,6 +20,9 @@ alias cl='clear'
 alias vi='vim'
 alias vim-upgrade='vim +PluginInstall +PluginUpdate +PluginClean +q +q'
 
+alias less='vimpager'
+alias zless='vimpager'
+
 alias grep='grep -PI --color=auto'
 alias grepr='grep -PIr --exclude-dir=env --exclude-dir=.git --color=auto'
 
