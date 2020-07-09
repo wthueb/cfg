@@ -2,6 +2,9 @@
 
 vim +PluginInstall +qall
 
+ln -s $HOME/.vim/bundle/vimpager/vimpager $HOME/.local/bin/
+ln -s $HOME/.vim/bundle/vimpager/vimcat $HOME/.local/bin/
+
 if [[ $# == 0 ]]; then
     echo 'run with an argument to fully install youcompleteme'
 else
