@@ -21,8 +21,6 @@ export VISUAL=vim
 
 export PAGER=vimpager
 
-default_path=$PATH
-
 PATH="$HOME/.local/bin:$PATH"
 
 [[ -f ~/.bashrc ]] && source ~/.bashrc
@@ -31,9 +29,8 @@ PATH="$HOME/.local/bin:$PATH"
 
 config pull &> /dev/null
 
-new_path=$PATH
-PATH=$default_path
+if [[ -f ~/.iterm2/it2check ]]; then
+    PATH="/usr/bin:/bin:/usr/sbin:/sbin" ~/.iterm2/it2check
 
-[[ -f ~/.iterm2/it2check ]] && ~/.iterm2/it2check && [[ -f ~/.iterm2_shell_integration.bash ]] && source ~/.iterm2_shell_integration.bash
-
-PATH=$new_path
+    [[ $? ]] && [[ -f ~/.iterm2_shell_integration.bash ]] && source ~/.iterm2_shell_integration.bash
+fi

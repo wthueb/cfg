@@ -26,7 +26,7 @@ alias zless='vimpager'
 alias grep='grep -PI --color=auto'
 alias grepr='grep -PIr --exclude-dir=env --exclude-dir=.git --color=auto'
 
-alias sed='sed -E'
+#alias sed='sed -E'
 
 alias p='python'
 alias pi='p -i'
