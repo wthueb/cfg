@@ -123,6 +123,8 @@ let maplocalleader = '='
 
 " key mappings
 
+nnoremap S :perldo s/
+
 autocmd FileType python nnoremap <leader>p :call flake8#Flake8()<CR>
 let g:flake8_show_in_file = 1
 
