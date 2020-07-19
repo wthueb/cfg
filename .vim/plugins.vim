@@ -10,7 +10,6 @@ Plugin 'leafgarland/typescript-vim' " typescript syntax files
 Plugin 'nvie/vim-flake8' " flake8!
 Plugin 'plasticboy/vim-markdown' " markdown!
 Plugin 'preservim/nerdcommenter' " comment stuff
-Plugin 'othree/eregex.vim' " regex everything
 Plugin 'rkitover/vimpager' " pager
 Plugin 'scrooloose/nerdtree' " file browser in a tab
 Plugin 'tpope/vim-eunuch' " unix helper
