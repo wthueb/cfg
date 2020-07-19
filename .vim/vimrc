@@ -122,6 +122,9 @@ autocmd FileType asm setlocal tabstop=4 shiftwidth=0 softtabstop=0 noexpandtab s
 " disable colorcolumn and enable wrapping for tex files
 autocmd FileType tex setlocal colorcolumn= wrap
 
+" enable spellcheck in markdown files
+autocmd FileType markdown setlocal spell spelllang=en_us
+
 let mapleader = ','
 let maplocalleader = '='
 
