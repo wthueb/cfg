@@ -3,6 +3,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'ctrlpvim/ctrlp.vim' " fuzzy file finder/opener
 Plugin 'dracula/vim', {'name': 'dracula'} " dracula colorscheme
 Plugin 'godlygeek/tabular' " aligning text
 Plugin 'leafgarland/typescript-vim' " typescript syntax files
