@@ -34,6 +34,16 @@ let c_comment_strings = 1
 
 colorscheme dracula
 
+if has('gui_running')
+    if has('gui_gtk2')
+        set guifont=Inconsolata\ 11
+    elseif has('gui_macvim')
+        set guifont=SF\ Mono\ Powerline:h11
+    elseif has('gui_win32')
+        set guifont=SF\ Mono\ Powerline:h11:cANSI:qCLEARTYPE
+    endif
+endif
+
 set colorcolumn=100
 highlight ColorColumn ctermbg=darkgray
 
@@ -96,6 +106,8 @@ set wildmenu
 autocmd BufWinEnter *.* silent loadview
 autocmd BufWinLeave *.* mkview
 
+set completeopt="menuone,preview"
+
 " 4 spaces for tabs
 set tabstop=4 shiftwidth=0 softtabstop=4 expandtab
 
@@ -110,6 +122,9 @@ autocmd FileType asm setlocal tabstop=4 shiftwidth=0 softtabstop=0 noexpandtab s
 " disable colorcolumn and enable wrapping for tex files
 autocmd FileType tex setlocal colorcolumn= wrap
 
+let mapleader = ','
+let maplocalleader = '='
+
 
 " flake8
 
@@ -119,6 +134,12 @@ autocmd FileType python nnoremap <leader>p :call flake8#Flake8()<CR>
 
 " nerdtree
 command NT NERDTree
+
+
+" vim-json
+
+" show quotes
+let g:vim_json_syntax_conceal = 0
 
 
 " youcompleteme
@@ -141,18 +162,6 @@ let g:ycm_semantic_triggers['typescript'] = ['.']
 let g:kite_auto_complete = 1
 let g:kite_tab_complete = 1
 let g:kite_snippets = 1
-
-
-set completeopt-=menu
-set completeopt+=menuone   " Show the completions UI even with only 1 item
-set completeopt-=longest   " Don't insert the longest common text
-set completeopt-=preview   " Hide the documentation preview window
-set completeopt+=noinsert  " Don't insert text automatically
-set completeopt-=noselect  " Highlight the first completion automatically
-
-
-let mapleader = ','
-let maplocalleader = '='
 
 
 " non-plugin key mappings

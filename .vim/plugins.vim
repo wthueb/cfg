@@ -5,6 +5,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'ctrlpvim/ctrlp.vim' " fuzzy file finder/opener
 Plugin 'dracula/vim', {'name': 'dracula'} " dracula colorscheme
+Plugin 'elzr/vim-json' " json syntax highlighting
 Plugin 'godlygeek/tabular' " aligning text, required for vim-markdown
 Plugin 'leafgarland/typescript-vim' " typescript syntax files
 Plugin 'nvie/vim-flake8' " flake8!
