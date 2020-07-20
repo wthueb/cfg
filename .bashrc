@@ -27,16 +27,19 @@ if ! shopt -oq posix; then
   fi
 fi
 
+REMOVE='\e[0m'
+
+BRIGHTRED='\e[1;31m'
+BRIGHTGREEN='\e[1;32m'
+YELLOW='\e[0;33m'
+BRIGHTYELLOW='\e[1;33m'
+BRIGHTCYAN='\e[1;36m'
+
 function _prompt_command()
 {
+    local status=$?
+
     PS1=""
-
-    local remove='\e[0m'
-    local bold='\e[1m'
-
-    local green='\e[32m'
-    local orange='\e[33m'
-    local cyan='\e[36m'
 
     if [[ $VIRTUAL_ENV ]]; then
         PS1+="(`basename $VIRTUAL_ENV`) "
@@ -46,15 +49,15 @@ function _prompt_command()
         PS1+="$CONDA_PROMPT_MODIFIER"
     fi
 
-    PS1+="${green}${bold}\u@\h${remove}:"
+    PS1+="$BRIGHTGREEN\u@\h$REMOVE:"
     
     if [[ $full_dir ]]; then
-        PS1+="${cyan}${bold}\w${remove}"
+        PS1+="$BRIGHTCYAN\w$REMOVE"
     else
         if [[ $PWD == $HOME ]]; then
-            PS1+="${cyan}${bold}~${remove}"
+            PS1+="$BRIGHTCYAN~$REMOVE"
         else
-            PS1+="${cyan}${bold}`basename "$PWD"`${remove}"
+            PS1+="$BRIGHTCYAN`basename "$PWD"`$REMOVE"
         fi
     fi
 
@@ -63,7 +66,7 @@ function _prompt_command()
     if [[ $? == 0 ]]; then
         local branch="$(git branch 2>/dev/null | 'grep' '^*' | colrm 1 2)"
 
-        PS1+="@${orange}$branch"
+        PS1+="@$YELLOW$branch"
 
         if [[ $branch ]]; then
             if [ "$(git diff-index HEAD)" ] || [ "$(git ls-files --others --exclude-standard)" ]; then
@@ -73,7 +76,11 @@ function _prompt_command()
             PS1+='+'
         fi
 
-        PS1+="${remove}"
+        PS1+="$REMOVE"
+    fi
+
+    if [[ $status != 0 ]]; then
+        PS1+=" $BRIGHTRED$status$REMOVE"
     fi
 
     if [[ $newline_prompt ]]; then
