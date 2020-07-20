@@ -2,7 +2,7 @@
 
 export CLICOLOR=1
 export LSCOLORS=GxBxHxDxFxhxhxhxhxcxcx
-export LS_COLORS='di=1;38;5;117:ln=1;31:so=1;37:pi=1;33:ex=1;35:bd=37:cd=37:su=37:sg=37:tw=32:ow=32'
+export LS_COLORS='di=1;36:ln=1;31:so=1;37:pi=1;33:ex=1;35:bd=37:cd=37:su=37:sg=37:tw=32:ow=32'
 
 # less syntax highlighting with source-highlight
 export LESS=' -R '
