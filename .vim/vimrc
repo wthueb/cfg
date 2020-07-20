@@ -175,7 +175,7 @@ vnoremap ; :
 inoremap kj <Esc>
 cnoremap kj <C-c>
 
-nnoremap S :perldo s/
+nnoremap S :%s/
 
 nnoremap <leader><leader> :w<CR>:sus<CR>
 nnoremap \\ :wq<CR>
