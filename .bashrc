@@ -31,15 +31,15 @@ function _prompt_command()
 {
     PS1=""
 
-    local remove='\[\e[0m\]'
-    local bold='\[\e[1m\]'
+    local remove='\e[0m'
+    local bold='\e[1m'
 
-    local green='\[\e[38;5;119m\]'
-    local magenta='\[\e[38;5;205m\]'
-    local cyan='\[\e[38;5;117m\]'
+    local green='\e[32m'
+    local orange='\e[33m'
+    local cyan='\e[36m'
 
     if [[ $VIRTUAL_ENV ]]; then
-        PS1+="($(basename $VIRTUAL_ENV)) "
+        PS1+="(`basename $VIRTUAL_ENV`) "
     fi
 
     if [[ $CONDA_PROMPT_MODIFIER ]]; then
@@ -63,7 +63,7 @@ function _prompt_command()
     if [[ $? == 0 ]]; then
         local branch="$(git branch 2>/dev/null | 'grep' '^*' | colrm 1 2)"
 
-        PS1+="@${bold}${magenta}$branch"
+        PS1+="@${orange}$branch"
 
         if [[ $branch ]]; then
             if [ "$(git diff-index HEAD)" ] || [ "$(git ls-files --others --exclude-standard)" ]; then
