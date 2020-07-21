@@ -1,16 +1,38 @@
 " vi sucks
 set nocompatible
 
-filetype off
-
-so ~/.vim/plugins.vim
-
-filetype plugin indent on
-
 set encoding=utf-8
+
+" install plugins with vundle
+filetype off
+so ~/.vim/plugins.vim
+filetype plugin indent on
 
 syntax on
 
+" set font if in a gui
+if has('gui_running')
+    if has('gui_gtk2')
+        set guifont=Inconsolata\ 11
+    elseif has('gui_macvim')
+        set guifont=SF\ Mono\ Powerline:h11
+    elseif has('gui_win32')
+        set guifont=SF\ Mono\ Powerline:h11:cANSI:qCLEARTYPE
+    endif
+endif
+
+" save and load view for each buffer (for persistent cursor position, folds, etc)
+set viewoptions-=options " don't save working directory
+autocmd BufWinEnter *.* silent loadview
+autocmd BufWinLeave *.* mkview
+
+" powerline status line (pip package powerline-status)
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
+
+
+" {{{ colorscheme stuff (dracula)
 if &term =~ '256color'
     set t_ut=
 endif
@@ -30,22 +52,11 @@ let &t_ZR = "\e[23m"
 " use string highlighting in comments: "like this"
 let c_comment_strings = 1
 
-"let g:dracula_colorterm = 0
-
 colorscheme dracula
+" }}}
 
-if has('gui_running')
-    if has('gui_gtk2')
-        set guifont=Inconsolata\ 11
-    elseif has('gui_macvim')
-        set guifont=SF\ Mono\ Powerline:h11
-    elseif has('gui_win32')
-        set guifont=SF\ Mono\ Powerline:h11:cANSI:qCLEARTYPE
-    endif
-endif
 
-set colorcolumn=100
-highlight ColorColumn ctermbg=darkgray
+" {{{ settings
 
 " flash screen instead of making noise
 set visualbell
@@ -74,10 +85,6 @@ set ttimeoutlen=30 " 30 ms
 " always show status line
 set laststatus=2
 
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
-
 " don't show mode on the last line when in insert/visual mode
 " since we have powerline to tell us
 set noshowmode
@@ -85,8 +92,8 @@ set noshowmode
 " hide buffers when abandoned
 set hidden
 
+" incremental search, update in real time
 if has('reltime')
-    " incremental search, update in real time
     set incsearch
 endif
 
@@ -102,18 +109,27 @@ set showcmd
 " better command completion
 set wildmenu
 
-" save and load view for each buffer (for persistent cursor position, mostly)
-autocmd BufWinEnter *.* silent loadview
-autocmd BufWinLeave *.* mkview
-
+" autocompletion settings
 set completeopt="menuone,preview"
 
-" 4 spaces for tabs
+" 4 spaces for tabs by default
 set tabstop=4 shiftwidth=0 softtabstop=4 expandtab
 
 " show tabs as characters
 set list
 set listchars=tab:>·,trail:·
+
+" highlight column to suggest making a new line
+set colorcolumn=100
+hi ColorColumn ctermbg=darkgray
+
+" fold on triple braces
+set foldmethod=marker
+
+" }}}
+
+
+" {{{ filetype specific settings
 
 " make and asm are archaic and insist on tab characters instead of spaces
 autocmd FileType make setlocal tabstop=4 shiftwidth=0 softtabstop=0 noexpandtab
@@ -125,49 +141,13 @@ autocmd FileType tex setlocal colorcolumn= wrap
 " enable spellcheck in markdown files
 autocmd FileType markdown setlocal spell spelllang=en_us
 
+" }}}
+
+
+" {{{ (non-plugin) key mappings
+
 let mapleader = ','
 let maplocalleader = '='
-
-
-" flake8
-
-let g:flake8_show_in_file = 1
-autocmd FileType python nnoremap <leader>p :call flake8#Flake8()<CR>
-
-
-" nerdtree
-command NT NERDTree
-
-
-" vim-json
-
-" show quotes
-let g:vim_json_syntax_conceal = 0
-
-
-" youcompleteme
-
-nnoremap <C-d> :YcmCompleter GoTo<CR>
-
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
-let g:ycm_filetype_blacklist = { 'vimshell': 1 }
-
-if !exists("g:ycm_semantic_triggers")
-  let g:ycm_semantic_triggers = {}
-endif
-
-let g:ycm_semantic_triggers['typescript'] = ['.']
-
-
-" kite
-
-let g:kite_auto_complete = 1
-let g:kite_tab_complete = 1
-let g:kite_snippets = 1
-
-
-" non-plugin key mappings
 
 nnoremap ; :
 vnoremap ; :
@@ -204,3 +184,38 @@ nnoremap <leader>7 :7b<CR>
 nnoremap <leader>8 :8b<CR>
 nnoremap <leader>9 :9b<CR>
 nnoremap <leader>0 :10b<CR>
+
+" }}}
+
+
+" {{{ plugin configuration/key mappings
+
+" elzr/vim-json
+let g:vim_json_syntax_conceal = 0 " show quotes
+
+" kiteco/vim-plugin, installed with kite engine
+let g:kite_auto_complete = 1
+let g:kite_tab_complete = 1
+let g:kite_snippets = 1
+
+" nvie/vim-flake8
+let g:flake8_show_in_file = 1
+autocmd FileType python nnoremap <leader>p :call flake8#Flake8()<CR>
+
+" scrooloose/nerdtree
+command NT NERDTree
+
+" Valloric/YouCompleteMe
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
+let g:ycm_filetype_blacklist = { 'vimshell': 1 }
+if !exists("g:ycm_semantic_triggers")
+  let g:ycm_semantic_triggers = {}
+endif
+let g:ycm_semantic_triggers['typescript'] = ['.']
+nnoremap <C-d> :YcmCompleter GoTo<CR>
+
+" vim-python/python-syntax
+let g:python_highlight_all = 1
+
+" }}}
