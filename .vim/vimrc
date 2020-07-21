@@ -126,6 +126,11 @@ hi ColorColumn ctermbg=darkgray
 " fold on triple braces
 set foldmethod=marker
 
+hi! link Folded DraculaOrange
+
+autocmd Syntax * hi link FoldMarker DraculaOrange
+autocmd Syntax * call matchadd('FoldMarker', '{{{\|}}}')
+
 " }}}
 
 
@@ -192,6 +197,9 @@ nnoremap <leader>0 :10b<CR>
 
 
 " {{{ plugin configuration/key mappings
+
+" ctrlpvim/ctrlp.vim
+let g:ctrlp_show_hidden = 1
 
 " elzr/vim-json
 let g:vim_json_syntax_conceal = 0 " show quotes
