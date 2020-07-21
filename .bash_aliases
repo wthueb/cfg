@@ -35,6 +35,20 @@ alias ffplay='ffplay -hide_banner'
 
 alias gdb='gdb -q'
 
+function activate()
+{
+    if [[ $1 ]]; then
+        source $1/bin/activate
+    else
+        source env/bin/activate
+    fi
+}
+
+function calc()
+{
+    awk "BEGIN { print $* }"
+}
+
 function confirm()
 {
     read -r -p "${1:-are you sure?} [y/n]: " response
@@ -44,14 +58,51 @@ function confirm()
     [[ $response =~ ^(yes|y)$ ]]
 }
 
+function growl()
+{
+    # for iterm
+    echo -e $'\e]9;'${*}'\007'
+}
+
 function mkcd()
 {
     mkdir -p -- $@ && cd -P -- $@
 }
 
-function mkcdp()
+function newline-prompt()
 {
-    mkcd $1 && venv
+    if [[ ! -f ~/.bash_options ]]; then
+        echo 'full_dir=' > ~/.bash_options
+        echo 'newline_prompt=' >> ~/.bash_options
+    fi
+
+    if [[ $newline_prompt ]]; then
+        unset newline_prompt
+
+        sed -i 's/newline_prompt=.*/newline_prompt=/' ~/.bash_options
+    else
+        newline_prompt=1
+
+        sed -i 's/newline_prompt=.*/newline_prompt=1/' ~/.bash_options
+    fi
+}
+
+function path()
+{
+    if [[ ! -f ~/.bash_options ]]; then
+        echo 'full_dir=' > ~/.bash_options
+        echo 'newline_prompt=' >> ~/.bash_options
+    fi
+
+    if [[ $full_dir ]]; then
+        unset full_dir
+
+        sed -i 's/full_dir=.*/full_dir=/' ~/.bash_options
+    else
+        full_dir=1
+
+        sed -i 's/full_dir=.*/full_dir=1/' ~/.bash_options
+    fi
 }
 
 function pclean()
@@ -81,15 +132,6 @@ function pclean()
     fi
 }
 
-function activate()
-{
-    if [[ $1 ]]; then
-        source $1/bin/activate
-    else
-        source env/bin/activate
-    fi
-}
-
 function venv()
 {
     if [[ $1 ]]; then
@@ -101,54 +143,10 @@ function venv()
     activate $@
 }
 
-function path()
-{
-    if [[ ! -f ~/.bash_options ]]; then
-        echo 'full_dir=' > ~/.bash_options
-        echo 'newline_prompt=' >> ~/.bash_options
-    fi
-
-    if [[ $full_dir ]]; then
-        unset full_dir
-
-        sed -i 's/full_dir=.*/full_dir=/' ~/.bash_options
-    else
-        full_dir=1
-
-        sed -i 's/full_dir=.*/full_dir=1/' ~/.bash_options
-    fi
-}
-
-function newline-prompt()
-{
-    if [[ ! -f ~/.bash_options ]]; then
-        echo 'full_dir=' > ~/.bash_options
-        echo 'newline_prompt=' >> ~/.bash_options
-    fi
-
-    if [[ $newline_prompt ]]; then
-        unset newline_prompt
-
-        sed -i 's/newline_prompt=.*/newline_prompt=/' ~/.bash_options
-    else
-        newline_prompt=1
-
-        sed -i 's/newline_prompt=.*/newline_prompt=1/' ~/.bash_options
-    fi
-}
-
-function growl()
-{
-    echo -e $'\e]9;'${*}'\007'
-}
-
-function calc()
-{
-    awk "BEGIN { print $* }"
-}
-
 function vim-upgrade()
 {
+    # TODO: :VundleChangelog after :PluginUpdate
+
     echo '> vim +PluginInstall +PluginUpdate +PluginClean +qa!'
 
     vim +PluginInstall +PluginUpdate +VundleLog +'w! /tmp/vundle.log' +PluginClean +qa!
