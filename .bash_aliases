@@ -25,8 +25,6 @@ alias zless='vimpager'
 alias grep='grep -PI --color=auto'
 alias grepr='grep -PIr --exclude-dir=env --exclude-dir=.git --color=auto'
 
-#alias sed='sed -E'
-
 alias p='python'
 alias pi='p -i'
 
@@ -34,6 +32,7 @@ alias ffmpeg='ffmpeg -hide_banner'
 alias ffplay='ffplay -hide_banner'
 
 alias gdb='gdb -q'
+
 
 function activate()
 {
@@ -145,31 +144,52 @@ function venv()
 
 function vim-upgrade()
 {
-    # TODO: :VundleChangelog after :PluginUpdate
+    # TODO: :VundleLog after :PluginInstall
 
-    echo '> vim +PluginInstall +PluginUpdate +PluginClean +qa!'
+    echo '> vim +PluginInstall +qa!'
 
-    vim +PluginInstall +PluginUpdate +VundleLog +'w! /tmp/vundle.log' +PluginClean +qa!
+    vim +PluginInstall \
+        +qa!
 
-    cat /tmp/vundle.log |
-        sed -r 's/\[.*\] (> )?//' |          # remove timestamps; allows perl to do paragraph mode
+    echo '> vim +PluginUpdate +qa!'
+
+    vim +PluginUpdate \
+        +VundleLog \
+        +'w! /tmp/vundle_update.log' \
+        +qa!
+
+    cat /tmp/vundle_update.log |
+        sed -r 's/\[.*\] (> )?//' |    # remove timestamps; allows perl to do paragraph mode
         perl -00 -ne '
-            $_ =~ s/:?[Hh]elptag.*//g;       # remove helptag lines
+            next if ($_ =~ /Already up to date/);
 
-            $_ =~ s/^\s+|\s+$//g;            # strip start and end whitespace of paragraph
+            $_ =~ s/:?[Hh]elptag.*//g; # remove helptag lines
 
-            if ($_ =~ /Already up to date/)
-            {
-                ($_) = $_ =~ m/(.*)$/m;      # get first line (plugin name)
-                $_ .= " -> up to date\n";
-            }
-            else
-            {
-                $_ .= "\n";
-            }
+            $_ =~ s/^\s+|\s+$//g;      # strip start and end whitespace of paragraph
 
-            print $_ if /\w/;                # make sure there are characters
+            $_ .= "\n";
+
+            print $_ if /\w/;          # make sure there are characters
         '
 
-    rm /tmp/vundle.log &> /dev/null
+    echo '> vim +PluginClean! +qa!'
+
+    vim +PluginClean! \
+        +VundleLog \
+        +'w! /tmp/vundle_clean.log' \
+        +qa!
+
+    cat /tmp/vundle_clean.log |
+        sed -r 's/\[.*\] (> )?//' |   # remove timestamps; allows perl to do paragraph mode
+        perl -00 -ne '
+            $_ =~ s/^\s+|\s+$//g;     # strip start and end whitespace of paragraph
+
+            $_ =~ s/$/ -> removing/m;
+
+            $_ =~ s/\$/   /g;
+
+            print $_ . "\n" if /\w/;
+        '
+
+    rm /tmp/vundle_*.log &> /dev/null
 }
