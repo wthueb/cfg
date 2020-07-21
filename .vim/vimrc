@@ -141,6 +141,9 @@ autocmd FileType tex setlocal colorcolumn= wrap
 " enable spellcheck in markdown files
 autocmd FileType markdown setlocal spell spelllang=en_us
 
+" run python files with <leader>r
+autocmd FileType python nnoremap <buffer> <leader>r :w<CR>:!echo python %;python %<CR>
+
 " }}}
 
 
