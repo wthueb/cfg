@@ -18,7 +18,6 @@ alias lal='ls -lha'
 alias cl='clear'
 
 alias vi='vim'
-alias vim-upgrade='vim +PluginInstall +PluginUpdate +PluginClean +q +q'
 
 alias less='vimpager'
 alias zless='vimpager'
@@ -146,4 +145,33 @@ function growl()
 function calc()
 {
     awk "BEGIN { print $* }"
+}
+
+function vim-upgrade()
+{
+    echo '> vim +PluginInstall +PluginUpdate +PluginClean +qa!'
+
+    vim +PluginInstall +PluginUpdate +VundleLog +'w! /tmp/vundle.log' +PluginClean +qa!
+
+    cat /tmp/vundle.log |
+        sed -r 's/\[.*\] (> )?//' |          # remove timestamps; allows perl to do paragraph mode
+        perl -00 -ne '
+            $_ =~ s/:?[Hh]elptag.*//g;       # remove helptag lines
+
+            $_ =~ s/^\s+|\s+$//g;            # strip start and end whitespace of paragraph
+
+            if ($_ =~ /Already up to date/)
+            {
+                ($_) = $_ =~ m/(.*)$/m;      # get first line (plugin name)
+                $_ .= " -> up to date\n";
+            }
+            else
+            {
+                $_ .= "\n";
+            }
+
+            print $_ if /\w/;                # make sure there are characters
+        '
+
+    rm /tmp/vundle.log &> /dev/null
 }
