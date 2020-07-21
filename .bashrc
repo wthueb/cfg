@@ -64,16 +64,17 @@ function _prompt_command()
     git rev-parse --git-dir &>/dev/null
 
     if [[ $? == 0 ]]; then
-        local branch="$(git branch 2>/dev/null | 'grep' '^*' | colrm 1 2)"
+        local branch="$(git rev-parse --abbrev-ref HEAD)"
 
         PS1+="@$YELLOW$branch"
 
         if [[ $branch ]]; then
-            if [ "$(git diff-index HEAD)" ] || [ "$(git ls-files --others --exclude-standard)" ]; then
+            if [[ $(git diff-index HEAD) ]] || \
+               [[ $(git ls-files --others --exclude-standard) ]]; then
                 PS1+='+'
             fi
         else
-            PS1+='+'
+            PS1+='+' # there is no branch, waiting on first commit
         fi
 
         PS1+="$REMOVE"
