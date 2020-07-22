@@ -200,9 +200,6 @@ nnoremap <leader>0 :10b<CR>
 
 " {{{ plugin configuration/key mappings
 
-" ctrlpvim/ctrlp.vim
-let g:ctrlp_show_hidden = 1
-
 " elzr/vim-json
 let g:vim_json_syntax_conceal = 0 " show quotes
 
