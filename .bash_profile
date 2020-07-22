@@ -4,6 +4,9 @@ export CLICOLOR=1
 export LSCOLORS=GxBxHxDxFxhxhxhxhxcxcx
 export LS_COLORS='di=1;36:ln=1;31:so=1;37:pi=1;33:ex=1;35:bd=37:cd=37:su=37:sg=37:tw=32:ow=32'
 
+export FZF_DEFAULT_OPTS='--color=dark,fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f
+    --color=info:#af87ff,prompt:#5fff87,pointer:#ff87d7,marker:#ff87d7,spinner:#ff87d7'
+
 # less syntax highlighting with source-highlight
 export LESS=' -R '
 
