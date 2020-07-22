@@ -1,24 +1,20 @@
-set rtp+=~/.vim/bundle/Vundle.vim
-
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin('~/.vim/bundle')
 
 " kiteco/vim-plugin is installed with kite engine
 
-Plugin 'dracula/vim', {'name': 'dracula'} " dracula colorscheme
-Plugin 'elzr/vim-json' " json syntax
-Plugin 'godlygeek/tabular' " aligning text; required for vim-markdown
-Plugin 'junegunn/fzf' " fuzzy file finder
-Plugin 'leafgarland/typescript-vim' " typescript syntax
-Plugin 'nvie/vim-flake8' " flake8!
-Plugin 'plasticboy/vim-markdown' " markdown syntax
-Plugin 'preservim/nerdcommenter' " better commenting
-Plugin 'rkitover/vimpager' " pager
-Plugin 'scrooloose/nerdtree' " file browser
-Plugin 'tpope/vim-fugitive' " git
-Plugin 'tpope/vim-surround' " change quotes and stuff
-Plugin 'Valloric/YouCompleteMe' " auto completion and syntax checking
-Plugin 'vim-python/python-syntax' " better python syntax
+Plug 'dracula/vim', { 'as': 'dracula' } " dracula colorscheme
+Plug 'elzr/vim-json' " json syntax
+Plug 'godlygeek/tabular' " aligning text; required for vim-markdown
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy file finder
+Plug 'leafgarland/typescript-vim' " typescript syntax
+Plug 'nvie/vim-flake8' " flake8!
+Plug 'plasticboy/vim-markdown' " markdown syntax
+Plug 'preservim/nerdcommenter' " better commenting
+Plug 'rkitover/vimpager' " pager
+Plug 'scrooloose/nerdtree' " file browser
+Plug 'tpope/vim-fugitive' " git
+Plug 'tpope/vim-surround' " change quotes and stuff
+Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clang-completer --ts-completer --java-completer' } " auto completion and syntax checking
+Plug 'vim-python/python-syntax' " better python syntax
 
-call vundle#end()
+call plug#end()
