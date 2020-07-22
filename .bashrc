@@ -96,3 +96,5 @@ PROMPT_COMMAND=_prompt_command
 [[ -f ~/.bash_aliases ]] && source ~/.bash_aliases
 
 [[ -f ~/.customrc ]] && source ~/.customrc
+
+[[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
