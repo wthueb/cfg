@@ -16,10 +16,12 @@ Plug 'tpope/vim-fugitive' " git
 Plug 'tpope/vim-surround' " change quotes and stuff
 Plug 'vim-python/python-syntax' " better python syntax
 
-if !empty($YCM_ENABLE) && $YCM_ENABLE == "1"
-    Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py --clang-completer --ts-completer --java-completer' }
-else
-    Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py' }
+let args = ''
+
+if $YCM_ENABLE == '1'
+    let args = ' --clang-completer --ts-completer --java-completer'
 endif
+
+Plug 'Valloric/YouCompleteMe', { 'do': 'python3 install.py' . args }
 
 call plug#end()
