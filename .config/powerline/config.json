@@ -30,7 +30,7 @@
         },
         "vim": {
             "colorscheme": "default",
-            "theme": "default",
+            "theme": "custom",
             "local_themes": {
                 "__tabline__": "tabline",
 
