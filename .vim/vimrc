@@ -5,6 +5,10 @@ set nocompatible
 
 set encoding=utf-8
 
+" have to do this now so mappings in plugins.vim work :)
+let mapleader = ','
+let maplocalleader = '='
+
 " install plugins with vundle
 filetype off
 so ~/.vim/plugins.vim
@@ -33,6 +37,7 @@ python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
 
+command! -nargs=0 Pretty :CocCommand prettier.formatFile
 
 " {{{ colorscheme stuff (dracula)
 if &term =~ '256color'
@@ -56,7 +61,6 @@ let c_comment_strings = 1
 
 colorscheme dracula
 " }}}
-
 
 " {{{ settings
 
@@ -82,7 +86,16 @@ set backspace=indent,eol,start
 " time out on mappings and key codes
 set timeout
 set ttimeout
-set ttimeoutlen=30 " 30 ms
+set ttimeoutlen=30 " ms
+
+" how quickly swp file is written after stopping typing
+set updatetime=500 " ms
+
+" don't pass ins-completion-menu messages
+set shortmess+=c
+
+" put diagnositic symbol in number column
+set signcolumn=number
 
 " always show status line
 set laststatus=2
@@ -135,7 +148,6 @@ autocmd Syntax * call matchadd('FoldMarker', '{{{\|}}}')
 
 " }}}
 
-
 " {{{ filetype specific settings
 
 " make and asm are archaic and insist on tab characters instead of spaces
@@ -149,15 +161,11 @@ autocmd FileType tex setlocal colorcolumn= wrap
 autocmd FileType markdown setlocal spell spelllang=en_us
 
 " run python files with <leader>r
-autocmd FileType python nnoremap <buffer> <leader>r :w<CR>:!echo python %;python %<CR>
+"autocmd FileType python nnoremap <buffer> <leader>r :w<CR>:!echo python %;python %<CR>
 
 " }}}
 
-
-" {{{ (non-plugin) key mappings
-
-let mapleader = ','
-let maplocalleader = '='
+" {{{ key mappings
 
 nnoremap ; :
 vnoremap ; :
@@ -182,8 +190,6 @@ nnoremap <C-h> <C-w><C-h>
 " buffers
 nnoremap <leader>l :ls<CR>
 nnoremap <leader>b :bp<CR>
-nnoremap <leader>f :bn<CR>
-nnoremap <leader>g :e#<CR>
 nnoremap <leader>1 :1b<CR>
 nnoremap <leader>2 :2b<CR>
 nnoremap <leader>3 :3b<CR>
@@ -194,41 +200,5 @@ nnoremap <leader>7 :7b<CR>
 nnoremap <leader>8 :8b<CR>
 nnoremap <leader>9 :9b<CR>
 nnoremap <leader>0 :10b<CR>
-
-" }}}
-
-
-" {{{ plugin configuration/key mappings
-
-" elzr/vim-json
-let g:vim_json_syntax_conceal = 0 " show quotes
-
-" junegunn/fzf
-nnoremap <C-p> :FZF<CR>
-
-" kiteco/vim-plugin, installed with kite engine
-let g:kite_auto_complete = 1
-let g:kite_tab_complete = 1
-let g:kite_snippets = 1
-
-" nvie/vim-flake8
-let g:flake8_show_in_file = 1
-autocmd FileType python nnoremap <leader>p :call flake8#Flake8()<CR>
-
-" scrooloose/nerdtree
-command NT NERDTree
-
-" Valloric/YouCompleteMe
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
-let g:ycm_filetype_blacklist = { 'vimshell': 1 }
-if !exists("g:ycm_semantic_triggers")
-  let g:ycm_semantic_triggers = {}
-endif
-let g:ycm_semantic_triggers['typescript'] = ['.']
-nnoremap <C-d> :YcmCompleter GoTo<CR>
-
-" vim-python/python-syntax
-let g:python_highlight_all = 1
 
 " }}}
