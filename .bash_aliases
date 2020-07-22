@@ -144,52 +144,17 @@ function venv()
 
 function vim-upgrade()
 {
-    # TODO: :VundleLog after :PluginInstall
+    # TODO: print vim-plug logs to stdout?
 
-    echo '> vim +PluginInstall +qa!'
+    echo '> vim +PlugUpgrade +qa!'
+    vim +PlugUpgrade +qa!
 
-    vim +PluginInstall \
-        +qa!
+    echo '> vim +PlugInstall +qa!'
+    vim +PlugInstall +qa!
 
-    echo '> vim +PluginUpdate +qa!'
-
-    vim +PluginUpdate \
-        +VundleLog \
-        +'w! /tmp/vundle_update.log' \
-        +qa!
-
-    cat /tmp/vundle_update.log |
-        sed -r 's/\[.*\] (> )?//' |    # remove timestamps; allows perl to do paragraph mode
-        perl -00 -ne '
-            next if ($_ =~ /Already up to date/);
-
-            $_ =~ s/:?[Hh]elptag.*//g; # remove helptag lines
-
-            $_ =~ s/^\s+|\s+$//g;      # strip start and end whitespace of paragraph
-
-            $_ .= "\n";
-
-            print $_ if /\w/;          # make sure there are characters
-        '
+    echo '> vim +PlugUpdate +qa!'
+    vim +PlugUpdate +qa!
 
     echo '> vim +PluginClean! +qa!'
-
-    vim +PluginClean! \
-        +VundleLog \
-        +'w! /tmp/vundle_clean.log' \
-        +qa!
-
-    cat /tmp/vundle_clean.log |
-        sed -r 's/\[.*\] (> )?//' |   # remove timestamps; allows perl to do paragraph mode
-        perl -00 -ne '
-            $_ =~ s/^\s+|\s+$//g;     # strip start and end whitespace of paragraph
-
-            $_ =~ s/$/ -> removing/m;
-
-            $_ =~ s/\$/   /g;
-
-            print $_ . "\n" if /\w/;
-        '
-
-    rm /tmp/vundle_*.log &> /dev/null
+    vim +PlugClean! +qa!
 }
