@@ -11,6 +11,7 @@ env/
 __pycache__
 *.pyc
 *.pyo
+.python-version
 
 # data files
 *.7z
