@@ -1,15 +1,13 @@
-" TODO: move plugin configuration to plugins.vim and bindings to bindings.vim
-
 " vi sucks
 set nocompatible
 
 set encoding=utf-8
 
-" have to do this now so mappings in plugins.vim work :)
+" have to do this now so mappings work :)
 let mapleader = ','
 let maplocalleader = '='
 
-" install plugins with vundle
+" install plugins with vim-plug
 filetype off
 so ~/.vim/plugins.vim
 filetype plugin indent on
@@ -38,6 +36,9 @@ python3 powerline_setup()
 python3 del powerline_setup
 
 command! -nargs=0 Pretty :CocCommand prettier.formatFile
+
+" custom key bindings
+so ~/.vim/bindings.vim
 
 " {{{ colorscheme stuff (dracula)
 if &term =~ '256color'
@@ -162,43 +163,5 @@ autocmd FileType markdown setlocal spell spelllang=en_us
 
 " run python files with <leader>r
 "autocmd FileType python nnoremap <buffer> <leader>r :w<CR>:!echo python %;python %<CR>
-
-" }}}
-
-" {{{ key mappings
-
-nnoremap ; :
-vnoremap ; :
-
-inoremap kj <Esc>
-cnoremap kj <C-c>
-
-nnoremap S :%s/
-
-nnoremap <leader><leader> :w<CR>:sus<CR>
-nnoremap \\ :wq<CR>
-
-" get rid of highlighting
-nnoremap <leader>c :nohl<CR>
-
-" switching between panes
-nnoremap <C-j> <C-w><C-j>
-nnoremap <C-k> <C-w><C-k>
-nnoremap <C-l> <C-w><C-l>
-nnoremap <C-h> <C-w><C-h>
-
-" buffers
-nnoremap <leader>l :ls<CR>
-nnoremap <leader>b :bp<CR>
-nnoremap <leader>1 :1b<CR>
-nnoremap <leader>2 :2b<CR>
-nnoremap <leader>3 :3b<CR>
-nnoremap <leader>4 :4b<CR>
-nnoremap <leader>5 :5b<CR>
-nnoremap <leader>6 :6b<CR>
-nnoremap <leader>7 :7b<CR>
-nnoremap <leader>8 :8b<CR>
-nnoremap <leader>9 :9b<CR>
-nnoremap <leader>0 :10b<CR>
 
 " }}}
