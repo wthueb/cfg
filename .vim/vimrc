@@ -1,3 +1,5 @@
+" TODO: move plugin configuration to plugins.vim and bindings to bindings.vim
+
 " vi sucks
 set nocompatible
 
@@ -203,6 +205,9 @@ let g:ctrlp_show_hidden = 1
 
 " elzr/vim-json
 let g:vim_json_syntax_conceal = 0 " show quotes
+
+" junegunn/fzf
+nnoremap <C-p> :FZF<CR>
 
 " kiteco/vim-plugin, installed with kite engine
 let g:kite_auto_complete = 1

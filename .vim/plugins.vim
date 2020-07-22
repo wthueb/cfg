@@ -6,10 +6,10 @@ Plugin 'VundleVim/Vundle.vim'
 
 " kiteco/vim-plugin is installed with kite engine
 
-Plugin 'ctrlpvim/ctrlp.vim' " fuzzy file finder/opener
 Plugin 'dracula/vim', {'name': 'dracula'} " dracula colorscheme
 Plugin 'elzr/vim-json' " json syntax
 Plugin 'godlygeek/tabular' " aligning text; required for vim-markdown
+Plugin 'junegunn/fzf' " fuzzy file finder
 Plugin 'leafgarland/typescript-vim' " typescript syntax
 Plugin 'nvie/vim-flake8' " flake8!
 Plugin 'plasticboy/vim-markdown' " markdown syntax
