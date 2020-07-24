@@ -25,13 +25,13 @@ if ! shopt -oq posix; then
   fi
 fi
 
-REMOVE='\e[0m'
+REMOVE='\[\e[0m\]'
 
-BRIGHTRED='\e[1;31m'
-BRIGHTGREEN='\e[1;32m'
-YELLOW='\e[0;33m'
-BRIGHTYELLOW='\e[1;33m'
-BRIGHTCYAN='\e[1;36m'
+BRIGHTRED='\[\e[1;31m\]'
+BRIGHTGREEN='\[\e[1;32m\]'
+YELLOW='\[\e[0;33m\]'
+BRIGHTYELLOW='\[\e[1;33m\]'
+BRIGHTCYAN='\[\e[1;36m\]'
 
 function _prompt_command()
 {
