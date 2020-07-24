@@ -26,11 +26,9 @@ export PAGER=vimpager
 
 PATH="$HOME/.local/bin:$PATH"
 
-[[ -f ~/.bashrc ]] && source ~/.bashrc
-
 [[ -f ~/.customprofile ]] && source ~/.customprofile
 
-config pull &> /dev/null
+[[ -f ~/.bashrc ]] && source ~/.bashrc
 
 if [[ -f ~/.iterm2/it2check ]]; then
     PATH="/usr/bin:/bin:/usr/sbin:/sbin" ~/.iterm2/it2check
