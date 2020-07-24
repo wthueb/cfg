@@ -17,8 +17,6 @@ shopt -s checkwinsize
 # include dotfiles in globs
 shopt -s dotglob
 
-[[ -x /usr/bin/lesspipe ]] && eval "$(SHELL=/bin/sh lesspipe)"
-
 if ! shopt -oq posix; then
   if [[ -f /usr/share/bash-completion/bash_completion ]]; then
     source /usr/share/bash-completion/bash_completion
@@ -92,6 +90,10 @@ function _prompt_command()
 }
 
 PROMPT_COMMAND=_prompt_command
+
+if command -v pyenv &> /dev/null; then
+    eval "$(pyenv init -)"
+fi
 
 [[ -f ~/.bash_aliases ]] && source ~/.bash_aliases
 

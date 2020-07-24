@@ -26,6 +26,12 @@ export PAGER=vimpager
 
 PATH="$HOME/.local/bin:$PATH"
 
+if [[ -d ~/.pyenv ]]; then
+    PATH="$HOME/.pyenv/bin:$PATH"
+fi
+
+export PATH
+
 [[ -f ~/.customprofile ]] && source ~/.customprofile
 
 [[ -f ~/.bashrc ]] && source ~/.bashrc
