@@ -25,6 +25,14 @@ if ! shopt -oq posix; then
   fi
 fi
 
+if [[ $(uname -r) == *microsoft* ]]; then
+    OS='wsl'
+elif [[ $(uname) == Darwin ]]; then
+    OS='mac'
+elif [[ $(uname) == Linux ]]; then
+    OS='linux'
+fi
+
 REMOVE='\[\e[0m\]'
 
 BRIGHTRED='\[\e[1;31m\]'

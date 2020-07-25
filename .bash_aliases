@@ -34,6 +34,25 @@ alias ffplay='ffplay -hide_banner'
 alias gdb='gdb -q'
 
 
+# $OS is set in .bashrc
+case $OS in
+    wsl)
+        alias copy='clip.exe'
+        alias paste='powershell.exe Get-Clipboard'
+        ;;
+    mac)
+        alias copy='pbcopy'
+        alias paste='pbpaste'
+        ;;
+    linux)
+        alias copy='xclip -selection clipboard'
+        alias paste='xclip -selection clipboard -o'
+        ;;
+    *)
+        ;;
+esac
+
+
 function activate()
 {
     if [[ $1 ]]; then
