@@ -9,7 +9,7 @@ let g:vim_json_syntax_conceal = 0 " show quotes
 
 Plug 'godlygeek/tabular' " aligning text; required for vim-markdown
 
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --completion --key-bindings --no-update-rc' } " fuzzy file finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy file finder
 " {{{
 nnoremap <C-p> :FZF<CR>
 " }}}
