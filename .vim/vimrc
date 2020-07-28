@@ -23,6 +23,8 @@ if has('gui_running')
     elseif has('gui_win32')
         set guifont=SF\ Mono\ Powerline:h11:cANSI:qCLEARTYPE
     endif
+
+    set lines=50 columns=105
 endif
 
 " save and load view for each buffer (for persistent cursor position, folds, etc)
@@ -85,9 +87,7 @@ set display=lastline
 set backspace=indent,eol,start
 
 " time out on mappings and key codes
-set timeout
-set ttimeout
-set ttimeoutlen=30 " ms
+set timeout ttimeout ttimeoutlen=30 " ms
 
 " how quickly swp file is written after stopping typing
 set updatetime=500 " ms
@@ -132,8 +132,7 @@ set completeopt="menuone,preview"
 set tabstop=4 shiftwidth=0 softtabstop=4 expandtab
 
 " show tabs as characters
-set list
-set listchars=tab:>·,trail:·
+set list listchars=tab:>·,trail:·
 
 " highlight column to suggest making a new line
 set colorcolumn=100
