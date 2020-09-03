@@ -176,4 +176,7 @@ function vim-upgrade()
 
     echo '> vim +PluginClean! +qa!'
     vim +PlugClean! +qa!
+
+    echo '> vim +CocUpdate +qa!'
+    vim +CocUpdate +qa!
 }
