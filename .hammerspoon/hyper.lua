@@ -9,10 +9,6 @@ local hyper_apps_map = {
     { 's', 'Spotify' },
 }
 
-hs.hotkey.bind(hyper_key, 'r', function()
-    hs.execute('/usr/local/bin/blueutil --disconnect AirPods; /usr/local/bin/blueutil --connect AirPods')
-end)
-
 for i, mapping in ipairs(hyper_apps_map) do
     local key, app = table.unpack(mapping)
 
