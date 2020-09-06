@@ -1,11 +1,10 @@
 logger.i('loading hyper')
 
 local hyper_apps_map = {
+    { 'c', 'Google Chrome' },
     { 'e', 'Finder' },
-    { 'f', 'Firefox' },
     { 't', 'iTerm' },
     { 'm', 'Messages' },
-    { 'n', 'Notable' },
     { 's', 'Spotify' },
 }
 
