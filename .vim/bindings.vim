@@ -10,7 +10,7 @@ nnoremap <leader><leader> :w<CR>:sus<CR>
 nnoremap \\ :wq<CR>
 
 " get rid of highlighting
-nnoremap <leader>c :nohl<CR>
+nnoremap <leader>. :nohl<CR>
 
 " switching between panes
 nnoremap <C-j> <C-w><C-j>
