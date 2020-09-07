@@ -12,6 +12,8 @@ filetype off
 so ~/.vim/plugins.vim
 filetype plugin indent on
 
+so ~/.vim/coc-config.vim
+
 syntax on
 
 " set font if in a gui
