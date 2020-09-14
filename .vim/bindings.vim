@@ -4,6 +4,16 @@ vnoremap ; :
 inoremap kj <Esc>
 cnoremap kj <C-c>
 
+" C-hjkl for left/down/up/right in insert and command mode
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
+cnoremap <C-h> <Left>
+cnoremap <C-j> <Down>
+cnoremap <C-k> <Up>
+cnoremap <C-l> <Right>
+
 nnoremap S :%s/
 
 nnoremap <leader><leader> :w<CR>:sus<CR>
