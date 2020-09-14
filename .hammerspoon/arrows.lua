@@ -20,29 +20,7 @@ local arrows_map = {
     },
 }
 
--- use control + h/l for left/right a word
--- have to do this outside of arrows_map due to iterm
-
-local function left_word()
-    if in_terminal() then
-        key_press({}, 'escape')
-        key_press({}, 'b')
-    else
-        key_press({'alt'}, 'left')
-    end
-end
-
-local function right_word()
-    if in_terminal() then
-        key_press({}, 'escape')
-        key_press({}, 'f')
-    else
-        key_press({'alt'}, 'right')
-    end
-end
-
-hs.hotkey.bind({'alt'}, 'h', left_word, nil, left_word)
-hs.hotkey.bind({'alt'}, 'l', right_word, nil, right_word)
+local not_iterm = hs.window.filter.new(true):rejectApp('iTerm2')
 
 for i, mapping in ipairs(arrows_map) do
     local from_mods, from_key = table.unpack(mapping.from)
@@ -52,5 +30,5 @@ for i, mapping in ipairs(arrows_map) do
         key_press(to_mods, to_key)
     end
 
-    hs.hotkey.bind(from_mods, from_key, fn, nil, fn)
+    enable_hk_for_wf(not_iterm, hs.hotkey.new(from_mods, from_key, fn, nil, fn))
 end

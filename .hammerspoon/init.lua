@@ -12,16 +12,16 @@ hs.hotkey.bind(hyper_key, '`', function()
     hs.reload()
 end)
 
-EVENTPROPERTY_EVENTSOURCEUSERDATA = 42
-USER_DATA = 42069
+--EVENTPROPERTY_EVENTSOURCEUSERDATA = 42
+--USER_DATA = 42069
 
 key_press = function(modifiers, key)
     --hs.eventtap.keyStroke(modifiers, key)
     --
-    hs.eventtap.event.newKeyEvent(modifiers, key, true):setProperty(EVENTPROPERTY_EVENTSOURCEUSERDATA, 42069):post()
+    hs.eventtap.event.newKeyEvent(modifiers, key, true):post()
 
     hs.timer.delayed.new(.005, function()
-        hs.eventtap.event.newKeyEvent(modifiers, key, false):setProperty(EVENTPROPERTY_EVENTSOURCEUSERDATA, 42069):post()
+        hs.eventtap.event.newKeyEvent(modifiers, key, false):post()
     end):start()
 end
 
@@ -53,11 +53,10 @@ end
 
 local help_msg = hs.execute('cat $HOME/.hammerspoon/keybinds.txt', true)
 
-local message = require('status-message').new(help_msg, 9)
+local message = require('status-message').new(help_msg, 11)
 local showing_help = false
 
 hs.hotkey.bind(hyper_key, 'h', function()
-    logger.i('here')
     if showing_help then
         message:hide()
         showing_help = false
@@ -69,10 +68,7 @@ end):enable()
 
 require('applications')
 require('arrows')
-require('delete-lines')
-require('fn')
 require('hyper')
-require('superduper')
 require('wifi')
 require('windows')
 

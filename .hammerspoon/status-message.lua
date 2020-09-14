@@ -15,7 +15,8 @@ status_msg.new = function(msg_text, size)
     local build_parts = function(msg_text)
         local frame = screen.primaryScreen():frame()
     
-        local styled_text_attribs = {
+        local styled_text_attribs = 
+        {
             font = { name = 'SF Mono', size = size },
         }
     
@@ -23,7 +24,8 @@ status_msg.new = function(msg_text, size)
     
         local text_size = drawing.getTextDrawingSize(text)
 
-        local text_rect = {
+        local text_rect = 
+        {
             x = frame.w - text_size.w - 10,
             y = frame.h - text_size.h - 5,
             w = text_size.w,

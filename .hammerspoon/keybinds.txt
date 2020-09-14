@@ -1,3 +1,6 @@
+hyper-` := reload hammerspoon config
+hyper-h := show help message
+
 modifiers:
     caps := C- or caps if tapped (defined in karabiner-elements)
     ralt (hyper) := C-shift-alt-cmd (defined in karabiner-elements)
@@ -8,33 +11,14 @@ arrow keys:
     C-k := up
     C-l := right
 
-    alt-h := alt-left (move left one word)
-    alt-l := alt-right (move right one word)
-
-deleting words:
-    fn-h := alt-delete (delete left word)
-    fn-l := alt-forwarddelete (delete right word)
-
-    C-u := delete to beginning of line
-    C-; := delete to end of line
-
-superduper:
-    sd-u := cmd-1 (first tab)
-    sd-i := cmd-shift-[ (prev tab)
-    sd-o := cmd-shift-] (next tab)
-    sd-p := cmd-9 (last tab)
-
 application specific:
     finder:
         delete := File->Move To Trash
 
-    firefox:
-        C-shift-n := File->New Private Window
-
 hyper:
     application launching:
+        hyper-c := chrome
         hyper-e := finder
-        hyper-f := firefox
         hyper-t := iterm
         hyper-m := messages
         hyper-s := spotify

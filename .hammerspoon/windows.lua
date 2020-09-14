@@ -37,6 +37,7 @@ function hs.window.fullscreen(win)
   
     win:setFrame(f)
 end
+
 -- +-----------------+
 -- |   |        |    |
 -- |   |  HERE  |    |
@@ -217,9 +218,9 @@ function win_layout_mode.bind_and_exit(mode, modifiers, key, fn)
 end
 
 local modifiers = window_map.modifiers
-local trigger   = window_map.trigger
-local show_help  = window_map.show_help
-local mappings  = window_map.mappings
+local trigger = window_map.trigger
+local show_help = window_map.show_help
+local mappings = window_map.mappings
 
 function get_mods_str(modifiers)
     local modMap = { shift = '⇧', ctrl = '⌃', alt = '⌥', cmd = '⌘' }
