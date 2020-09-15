@@ -70,12 +70,12 @@ function _prompt_command()
     git rev-parse --git-dir &>/dev/null
 
     if [[ $? == 0 ]]; then
-        local branch="$(git rev-parse --abbrev-ref HEAD)"
+        local branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
         PS1+="@$YELLOW$branch"
 
         if [[ $branch ]]; then
-            if [[ $(git diff-index HEAD) ]] || \
+            if [[ $(git diff-index HEAD 2>/dev/null) ]] || \
                [[ $(git ls-files --others --exclude-standard) ]]; then
                 PS1+='+'
             fi
