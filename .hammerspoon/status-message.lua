@@ -26,8 +26,8 @@ status_msg.new = function(msg_text, size)
 
         local text_rect = 
         {
-            x = frame.w - text_size.w - 10,
-            y = frame.h - text_size.h - 5,
+            x = frame.w - text_size.w - 20,
+            y = frame.h - text_size.h,
             w = text_size.w,
             h = text_size.h,
         }
@@ -37,13 +37,13 @@ status_msg.new = function(msg_text, size)
         local background = drawing.rectangle(
             {
                 x = text_rect.x - 10,
-                y = text_rect.y,
-                w = text_rect.w + 15,
-                h = text_rect.h + 6,
+                y = text_rect.y - 5,
+                w = text_rect.w + 20,
+                h = text_rect.h + 10,
             }
         )
 
-        background:setRoundedRectRadii(10, 10)
+        background:setRoundedRectRadii(5, 5)
         background:setFillColor({ red = 200, green = 200, blue = 200, alpha=0.9 })
     
         return background, text
