@@ -1,9 +1,6 @@
-" vi sucks
-set nocompatible
-
 set encoding=utf-8
 
-" have to do this now so mappings work :)
+" have to do this now so mappings work
 let mapleader = ','
 let maplocalleader = '='
 
@@ -11,8 +8,6 @@ let maplocalleader = '='
 filetype off
 so ~/.vim/plugins.vim
 filetype plugin indent on
-
-so ~/.vim/coc-config.vim
 
 syntax on
 
@@ -30,30 +25,29 @@ if has('gui_running')
 endif
 
 " save and load view for each buffer (for persistent cursor position, folds, etc)
-set viewoptions-=options " don't save working directory
+" don't save working directory
+set viewoptions-=options
 autocmd BufWinEnter *.* silent loadview
 autocmd BufWinLeave *.* mkview
+
+" keep undo history
+if has('persistent_undo')
+    silent !mkdir ~/.vim/backups &> /dev/null
+
+    set undodir=~/.vim/backups
+    set undofile
+endif
 
 " powerline status line (pip package powerline-status)
 python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
 
-command! -nargs=0 Pretty :CocCommand prettier.formatFile
-
 " custom key bindings
 so ~/.vim/bindings.vim
 
 " {{{ colorscheme stuff (dracula)
-if &term =~ '256color'
-    set t_ut=
-endif
-
-" i'll be honest i'm not really sure what this is doing but it works in tmux
 if has('termguicolors')
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-
     set termguicolors
 endif
 
@@ -77,25 +71,25 @@ set number
 
 " have 5 lines above/below the cursor at all times if possible
 set scrolloff=5
+set sidescrolloff=5
+set sidescroll=1
 
 " disable text wrapping
 set nowrap
 
 " show @@@ in the last columns if the last line continues off screen
 " only really applicable if 'wrap' is set
+set nowrap
 set display=lastline
 
 " backspace will delete newlines and indents ~normally~
 set backspace=indent,eol,start
 
-" time out on mappings and key codes
-set timeout ttimeout ttimeoutlen=30 " ms
+" time out on mappings and key codes (in milliseconds)
+set timeout ttimeout ttimeoutlen=30
 
 " how quickly swp file is written after stopping typing
 set updatetime=500 " ms
-
-" don't pass ins-completion-menu messages
-set shortmess+=c
 
 " put diagnositic symbol in number column
 set signcolumn=number
@@ -127,14 +121,18 @@ set showcmd
 " better command completion
 set wildmenu
 
-" autocompletion settings
-set completeopt="menuone,preview"
+" 4 spaces for tabs by default. sw=0 sts=0 means it uses tabstop value
+set tabstop=4 shiftwidth=0 softtabstop=-1 expandtab
 
-" 4 spaces for tabs by default
-set tabstop=4 shiftwidth=0 softtabstop=4 expandtab
+set autoindent
+
+if has('smartindent')
+    set smartindent
+endif
 
 " show tabs as characters
-set list listchars=tab:>·,trail:·
+set list
+set listchars=tab:>·,trail:·
 
 " highlight column to suggest making a new line
 set colorcolumn=100
@@ -142,10 +140,12 @@ hi ColorColumn ctermbg=darkgray
 
 " fold on triple braces
 set foldmethod=marker
+" folds disabled by default, toggle with zi
+set nofoldenable
 
 hi! link Folded DraculaOrange
 
-autocmd Syntax * hi link FoldMarker DraculaOrange
+autocmd Syntax * hi! link FoldMarker DraculaOrange
 autocmd Syntax * call matchadd('FoldMarker', '{{{\|}}}')
 
 " }}}
@@ -162,7 +162,7 @@ autocmd FileType tex setlocal colorcolumn= wrap
 " enable spellcheck in markdown files
 autocmd FileType markdown setlocal spell spelllang=en_us
 
-" run python files with <leader>r
-"autocmd FileType python nnoremap <buffer> <leader>r :w<CR>:!echo python %;python %<CR>
+" enable spellcheck in git commit messages
+autocmd FileType gitcommit setlocal spell
 
 " }}}
