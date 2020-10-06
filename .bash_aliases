@@ -19,9 +19,6 @@ alias cl='clear'
 
 alias vi='vim'
 
-alias less='vimpager'
-alias zless='vimpager'
-
 alias grep='grep -PI --color=auto'
 alias grepr='grep -PIr --exclude-dir=env --exclude-dir=.git --color=auto'
 
