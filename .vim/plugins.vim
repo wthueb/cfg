@@ -28,6 +28,26 @@ Plug 'leafgarland/typescript-vim' " typescript syntax
 Plug 'plasticboy/vim-markdown' " markdown syntax
 
 Plug 'preservim/nerdcommenter' " better commenting
+" {{{
+" space after delimiter
+let g:NERDSpaceDelims = 0
+
+" compact multi-line comments
+let g:NERDCompactSexyComs = 1
+
+let g:NERDCommentEmptyLines = 1
+
+" trim trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+let g:NERDCreateDefaultMappings = 0
+
+nmap <silent> ,cc <Plug>NERDCommenterToggle
+vmap <silent> ,cc <Plug>NERDCommenterToggle
+
+nmap <silent> ,cs <Plug>NERDCommenterSexy
+vmap <silent> ,cs <Plug>NERDCommenterSexy
+" }}}
 
 Plug 'scrooloose/nerdtree' " file browser
 " {{{
