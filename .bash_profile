@@ -23,7 +23,7 @@ export LC_COLLATE='C'
 export EDITOR=vim
 export VISUAL=vim
 
-export PAGER="less -RF"
+export PAGER='less -RF'
 
 PATH="$HOME/.local/bin:$PATH"
 
