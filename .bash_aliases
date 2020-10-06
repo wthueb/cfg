@@ -33,6 +33,9 @@ alias ffplay='ffplay -hide_banner'
 
 alias gdb='gdb -q'
 
+if command -v bat; then
+    alias cat='bat'
+fi
 
 # $OS is set in .bashrc
 case $OS in
