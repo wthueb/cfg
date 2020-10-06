@@ -88,8 +88,8 @@ set backspace=indent,eol,start
 " time out on mappings and key codes (in milliseconds)
 set timeout ttimeout ttimeoutlen=30
 
-" how quickly swp file is written after stopping typing
-set updatetime=500 " ms
+" how quickly swp file is written after stopping typing in ms
+set updatetime=100
 
 " put diagnositic symbol in number column
 set signcolumn=number
