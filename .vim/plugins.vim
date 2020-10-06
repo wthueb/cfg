@@ -8,6 +8,8 @@ endif
 
 call plug#begin('~/.vim/bundle')
 
+Plug 'airblade/vim-gitgutter' " show git diff in line numbers
+
 Plug 'dracula/vim', { 'as': 'dracula' } " dracula colorscheme
 
 Plug 'elzr/vim-json' " json syntax
@@ -72,6 +74,8 @@ let NERDTreeMinimalUI = 1
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " }}}
+
+Plug 'tpope/vim-repeat' " repeat plugin maps too
 
 Plug 'tpope/vim-surround' " change quotes and stuff
 
