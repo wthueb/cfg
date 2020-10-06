@@ -30,7 +30,7 @@ alias ffplay='ffplay -hide_banner'
 
 alias gdb='gdb -q'
 
-if command -v bat; then
+if command -v bat &> /dev/null; then
     alias cat='bat'
 fi
 
