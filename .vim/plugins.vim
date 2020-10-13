@@ -8,28 +8,42 @@ endif
 
 call plug#begin('~/.vim/bundle')
 
-Plug 'airblade/vim-gitgutter' " show git diff in line numbers
+" colorscheme
+Plug 'dracula/vim', { 'as': 'dracula' }
 
-Plug 'dracula/vim', { 'as': 'dracula' } " dracula colorscheme
-
-Plug 'elzr/vim-json' " json syntax
-" {{{
-" don't hide quotes
-let g:vim_json_syntax_conceal = 0
-" }}}
-
-Plug 'godlygeek/tabular' " aligning text; required for vim-markdown
-
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " fuzzy file finder
+" fuzzy file finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 "" {{{
 nnoremap <C-p> :FZF<CR>
 "" }}}
 
-Plug 'leafgarland/typescript-vim' " typescript syntax
+" file browser
+Plug 'scrooloose/nerdtree'
+" {{{
+abbrev nt NERDTree
 
-Plug 'plasticboy/vim-markdown' " markdown syntax
+" toggle using ,n
+nnoremap <silent> <leader>n :NERDTreeToggle<CR>
 
-Plug 'preservim/nerdcommenter' " better commenting
+" open to current file using ,v
+nnoremap <silent> <leader>v :NERDTreeFind<CR>
+
+" close when opening file
+let NERDTreeQuitOnOpen = 1
+
+" when you delete a file delete its buffer
+let NERDTreeAutoDeleteBuffer = 1
+
+" disable press ? for help
+let NERDTreeMinimalUI = 1
+
+" open when no command line arguments or stdin is passed
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" }}}
+
+" better commenting
+Plug 'preservim/nerdcommenter'
 " {{{
 " space after delimiter
 let g:NERDSpaceDelims = 0
@@ -37,7 +51,7 @@ let g:NERDSpaceDelims = 0
 " compact multi-line comments
 let g:NERDCompactSexyComs = 1
 
-let g:NERDCommentEmptyLines = 1
+let g:NERDCommentEmptyLines = 0
 
 " trim trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
@@ -51,37 +65,70 @@ nmap <silent> ,cs <Plug>NERDCommenterSexy
 vmap <silent> ,cs <Plug>NERDCommenterSexy
 " }}}
 
-Plug 'scrooloose/nerdtree' " file browser
+" show registers when using " or @
+Plug 'junegunn/vim-peekaboo'
+
+if has('signs')
+    " show marks
+    Plug 'kshenoy/vim-signature'
+endif
+
+" change quotes/parens
+Plug 'tpope/vim-surround'
+
+" git diff as line numbers
+Plug 'airblade/vim-gitgutter'
+
+" repeat plugin maps with . too
+Plug 'tpope/vim-repeat'
+
+if has('terminal')
+    " slime from emacs, required for vim-ipython-cell
+    Plug 'jpalardy/vim-slime', { 'for': 'python' }
+    " {{{
+    let g:slime_target = 'vimterminal'
+    let g:slime_python_ipython = 1
+    let g:slime_vimterminal_cmd = 'ipython --matplotlib'
+    let g:slime_vimterminal_config = {'term_finish': 'close'}
+    " }}}
+
+    " ipython inside vim
+    Plug 'hanschen/vim-ipython-cell', { 'for': 'python' }
+    " {{{
+    " run cell
+    nnoremap <leader>r :IPythonCellExecuteCell<CR>
+    " run entire script
+    nnoremap <leader>R :IPythonCellRun<CR>
+
+    let g:ipython_cell_delimit_cells_by = 'marks'
+    " }}}
+endif
+
+" {{{ syntax stuff
+" better python syntax
+Plug 'vim-python/python-syntax', { 'for': 'python' }
+"" {{{
+if (&ft == 'python')
+    let g:python_highlight_all = 1
+endif
+"" }}}
+
+" aligning text; required for vim-markdown
+Plug 'godlygeek/tabular', { 'for': 'markdown' }
+" markdown syntax
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+
+" json syntax
+Plug 'elzr/vim-json', { 'for': 'json' }
 " {{{
-abbrev nt NERDTree
-
-" toggle using ,n
-nnoremap <silent> <leader>n :NERDTreeToggle<CR>
-
-" open to current file using ,v
-nnoremap <silent> <leader>v :NERDTreeFind<CR>
-
-" close when opening file
-let NERDTreeQuitOnOpen = 1
-"
-" when you delete a file delete its buffer
-let NERDTreeAutoDeleteBuffer = 1
-
-" disable press ? for help
-let NERDTreeMinimalUI = 1
-
-" open when no command line arguments or stdin is passed
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+if (&ft == 'json')
+    " don't hide quotes
+    let g:vim_json_syntax_conceal = 0
+endif
 " }}}
 
-Plug 'tpope/vim-repeat' " repeat plugin maps too
-
-Plug 'tpope/vim-surround' " change quotes and stuff
-
-Plug 'vim-python/python-syntax' " better python syntax
-"" {{{
-let g:python_highlight_all = 1
-"" }}}
+" typescript syntax
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+"}}}
 
 call plug#end()
