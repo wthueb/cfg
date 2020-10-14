@@ -45,7 +45,14 @@ vmap <leader>= <Plug>(coc-format-selected)
 nmap <leader>r <Plug>(coc-refactor)
 
 " show documentaiton
-nnoremap <silent> <leader>h :call CocActionAsync('doHover')<CR>
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocActionAsync('doHover')
+    endif
+endfunction
+nnoremap <silent> K :call <SID>show_documentation()<CR>
 " }}}
 
 " fuzzy file finder
@@ -145,9 +152,7 @@ endif
 " better python syntax
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 "" {{{
-if (&ft == 'python')
-    let g:python_highlight_all = 1
-endif
+let g:python_highlight_all = 1
 "" }}}
 
 " aligning text; required for vim-markdown
@@ -158,10 +163,8 @@ Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 " json syntax
 Plug 'elzr/vim-json', { 'for': 'json' }
 " {{{
-if (&ft == 'json')
-    " don't hide quotes
-    let g:vim_json_syntax_conceal = 0
-endif
+" don't hide quotes
+let g:vim_json_syntax_conceal = 0
 " }}}
 
 " typescript syntax
