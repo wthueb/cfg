@@ -52,6 +52,11 @@ so ~/.vim/bindings.vim
 call coc#config('coc.preferences', {
         \ 'extensionUpdateCheck': 'daily',
         \})
+call coc#config('python.linting', {
+        \ 'enabled': v:true,
+        \ 'pylintEnabled': v:false,
+        \ 'flake8Enabled': v:true,
+        \})
 " }}}
 
 " {{{ colorscheme stuff (dracula)
