@@ -48,6 +48,12 @@ python3 del powerline_setup
 " custom key bindings
 so ~/.vim/bindings.vim
 
+" {{{ coc stuff
+call coc#config('coc.preferences', {
+        \ 'extensionUpdateCheck': 'daily',
+        \})
+" }}}
+
 " {{{ colorscheme stuff (dracula)
 if has('termguicolors')
     set termguicolors

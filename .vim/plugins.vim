@@ -11,6 +11,22 @@ call plug#begin('~/.vim/bundle')
 " colorscheme
 Plug 'dracula/vim', { 'as': 'dracula' }
 
+" autocompletion
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+" {{{
+let g:coc_global_extensions = [
+    \ 'coc-clangd',
+    \ 'coc-css',
+    \ 'coc-html',
+    \ 'coc-json',
+    \ 'coc-python',
+    \ 'coc-sh',
+    \ 'coc-tsserver',
+    \ 'coc-vimlsp',
+    \ 'coc-yaml',
+    \]
+" }}}
+
 " fuzzy file finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 "" {{{
