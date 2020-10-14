@@ -25,6 +25,27 @@ let g:coc_global_extensions = [
     \ 'coc-vimlsp',
     \ 'coc-yaml',
     \]
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<Tab>" :
+    \ coc#refresh()
+
+" formatting
+nmap <leader>= <Plug>(coc-format)
+vmap <leader>= <Plug>(coc-format-selected)
+
+" rename
+nmap <leader>r <Plug>(coc-refactor)
+
+" show documentaiton
+nnoremap <silent> <leader>h :call CocActionAsync('doHover')<CR>
 " }}}
 
 " fuzzy file finder
@@ -112,9 +133,9 @@ if has('terminal')
     Plug 'hanschen/vim-ipython-cell', { 'for': 'python' }
     " {{{
     " run cell
-    nnoremap <leader>r :IPythonCellExecuteCell<CR>
+    nnoremap <leader>pr :IPythonCellExecuteCell<CR>
     " run entire script
-    nnoremap <leader>R :IPythonCellRun<CR>
+    nnoremap <leader>pR :IPythonCellRun<CR>
 
     let g:ipython_cell_delimit_cells_by = 'marks'
     " }}}
