@@ -42,7 +42,7 @@ nmap <leader>= <Plug>(coc-format)
 vmap <leader>= <Plug>(coc-format-selected)
 
 " rename
-nmap <leader>r <Plug>(coc-refactor)
+nmap <leader><C-r> <Plug>(coc-rename)
 
 " show documentaiton
 function! s:show_documentation()
@@ -54,6 +54,9 @@ function! s:show_documentation()
 endfunction
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 " }}}
+
+" stauts bar
+Plug 'vim-airline/vim-airline'
 
 " fuzzy file finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -90,7 +93,7 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 Plug 'preservim/nerdcommenter'
 " {{{
 " space after delimiter
-let g:NERDSpaceDelims = 0
+let g:NERDSpaceDelims = 1
 
 " compact multi-line comments
 let g:NERDCompactSexyComs = 1
@@ -139,21 +142,33 @@ if has('terminal')
     " ipython inside vim
     Plug 'hanschen/vim-ipython-cell', { 'for': 'python' }
     " {{{
-    " run cell
-    nnoremap <leader>pr :IPythonCellExecuteCell<CR>
-    " run entire script
-    nnoremap <leader>pR :IPythonCellRun<CR>
-
     let g:ipython_cell_delimit_cells_by = 'marks'
+
+    " run cell
+    autocmd FileType python nnoremap <buffer> <leader>r :IPythonCellExecuteCell<CR>
+    " run entire script
+    autocmd FileType python nnoremap <buffer> <leader>R :IPythonCellRun<CR>
     " }}}
 endif
+
+" markdown preview in browser
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+" {{{
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 1
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+
+autocmd FileType markdown nnoremap <buffer> <leader>r :MarkdownPreview<CR>
+" }}}
 
 " {{{ syntax stuff
 " better python syntax
 Plug 'vim-python/python-syntax', { 'for': 'python' }
-"" {{{
+" {{{
 let g:python_highlight_all = 1
-"" }}}
+" }}}
 
 " aligning text; required for vim-markdown
 Plug 'godlygeek/tabular', { 'for': 'markdown' }

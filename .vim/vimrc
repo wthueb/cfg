@@ -40,11 +40,6 @@ if has('persistent_undo')
     set undofile
 endif
 
-" powerline status line (pip package powerline-status)
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
-
 " custom key bindings
 so ~/.vim/bindings.vim
 
@@ -111,7 +106,6 @@ set signcolumn=number
 set laststatus=2
 
 " don't show mode on the last line when in insert/visual mode
-" since we have powerline to tell us
 set noshowmode
 
 " hide buffers when abandoned
