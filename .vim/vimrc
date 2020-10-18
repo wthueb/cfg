@@ -45,13 +45,17 @@ so ~/.vim/bindings.vim
 
 " {{{ coc stuff
 call coc#config('coc.preferences', {
-        \ 'extensionUpdateCheck': 'daily',
-        \})
+            \ 'extensionUpdateCheck': 'daily',
+            \})
 call coc#config('python.linting', {
-        \ 'enabled': v:true,
-        \ 'pylintEnabled': v:false,
-        \ 'flake8Enabled': v:true,
-        \})
+            \ 'enabled': v:true,
+            \ 'pylintEnabled': v:false,
+            \ 'flake8Enabled': v:true,
+            \})
+call coc#config('clangd.fallbackFlags', [
+            \ '-Wall',
+            \ '-std=c++17',
+            \])
 " }}}
 
 " {{{ colorscheme stuff (dracula)
