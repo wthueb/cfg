@@ -56,6 +56,9 @@ call coc#config('clangd.fallbackFlags', [
             \ '-Wall',
             \ '-std=c++17',
             \])
+call coc#config('html.format', {
+            \ 'indentInnerHtml': v:true,
+            \})
 " }}}
 
 " {{{ colorscheme stuff (dracula)
