@@ -18,6 +18,7 @@ status_msg.new = function(msg_text, size)
         local styled_text_attribs = 
         {
             font = { name = 'SF Mono', size = size },
+            paragraphStyle = { alignment = 'center' },
         }
     
         local text = styled_text.new(msg_text, styled_text_attribs)
@@ -26,9 +27,9 @@ status_msg.new = function(msg_text, size)
 
         local text_rect = 
         {
-            x = frame.w - text_size.w - 20,
-            y = frame.h - text_size.h,
-            w = text_size.w,
+            x = frame.w - text_size.w - 15,
+            y = frame.h - text_size.h + 10,
+            w = text_size.w + 10,
             h = text_size.h,
         }
 
@@ -36,10 +37,10 @@ status_msg.new = function(msg_text, size)
     
         local background = drawing.rectangle(
             {
-                x = text_rect.x - 10,
-                y = text_rect.y - 5,
-                w = text_rect.w + 20,
-                h = text_rect.h + 10,
+                x = text_rect.x - 3,
+                y = text_rect.y + 3,
+                w = text_rect.w,
+                h = text_rect.h,
             }
         )
 

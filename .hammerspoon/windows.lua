@@ -200,7 +200,7 @@ function hs.window.up_right(win)
     win:setFrame(f)
 end
 
-win_layout_mode = hs.hotkey.modal.new({}, 'F16')
+win_layout_mode = hs.hotkey.modal.new({}, 'F13')
 
 win_layout_mode.entered = function()
     win_layout_mode.status_message:show()
@@ -266,5 +266,9 @@ hs.hotkey.bind(modifiers, trigger, function()
 end)
 
 win_layout_mode:bind(modifiers, trigger, function()
+    win_layout_mode:exit()
+end)
+
+win_layout_mode:bind({}, 'escape', function()
     win_layout_mode:exit()
 end)
