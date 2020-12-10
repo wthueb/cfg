@@ -84,12 +84,6 @@ function confirm()
     [[ $response =~ ^(yes|y)$ ]]
 }
 
-function growl()
-{
-    # for iterm
-    echo -e $'\e]9;'${*}'\007'
-}
-
 function mkcd()
 {
     mkdir -p -- $@ && cd -P -- $@
