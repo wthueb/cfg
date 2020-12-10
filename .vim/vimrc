@@ -52,13 +52,13 @@ call coc#config('python.linting', {
             \ 'pylintEnabled': v:false,
             \ 'flake8Enabled': v:true,
             \})
+call coc#config('python.formatting', {
+            \ 'autopep8Args': ['--max-line-length', '100'],
+            \})
 call coc#config('clangd.fallbackFlags', [
             \ '-Wall',
             \ '-std=c++17',
             \])
-call coc#config('html.format', {
-            \ 'indentInnerHtml': v:true,
-            \})
 " }}}
 
 " {{{ colorscheme stuff (dracula)
@@ -152,8 +152,8 @@ set listchars=tab:>·,trail:·
 set colorcolumn=100
 hi ColorColumn ctermbg=darkgray
 
-" fold on triple braces
-set foldmethod=marker
+" fold manually
+set foldmethod=manual
 " folds disabled by default, toggle with zi
 set nofoldenable
 
