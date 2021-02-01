@@ -9,7 +9,7 @@ local status_msg = {}
 
 status_msg.new = function(msg_text, size)
     if size == nil then
-        size = 24
+        size = 16
     end
 
     local build_parts = function(msg_text)
@@ -19,6 +19,7 @@ status_msg.new = function(msg_text, size)
         {
             font = { name = 'SF Mono', size = size },
             paragraphStyle = { alignment = 'center' },
+            color = { red = 1.0, green = 1.0, blue = 1.0, alpha = 1.0 }
         }
     
         local text = styled_text.new(msg_text, styled_text_attribs)
@@ -45,7 +46,7 @@ status_msg.new = function(msg_text, size)
         )
 
         background:setRoundedRectRadii(5, 5)
-        background:setFillColor({ red = 200, green = 200, blue = 200, alpha=0.9 })
+        background:setFillColor({ red = .1, green = .1, blue = .1, alpha=1.0 })
     
         return background, text
     end

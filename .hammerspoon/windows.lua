@@ -20,12 +20,14 @@ local window_map = {
 
 hs.window.animationDuration = 0
 
+win_func = {}
+
 -- +-----------------+
 -- |                 |
 -- |      HERE       |
 -- |                 |
 -- +-----------------+
-function hs.window.fullscreen(win)
+win_func.fullscreen = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
@@ -43,7 +45,7 @@ end
 -- |   |  HERE  |    |
 -- |   |        |    |
 -- +-----------------+
-function hs.window.center(win)
+win_func.center = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
@@ -61,7 +63,7 @@ end
 -- |  HERE  |        |
 -- |        |        |
 -- +-----------------+
-function hs.window.left(win)
+win_func.left = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
@@ -79,7 +81,7 @@ end
 -- |        |  HERE  |
 -- |        |        |
 -- +-----------------+
-function hs.window.right(win)
+win_func.right = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
@@ -97,7 +99,7 @@ end
 -- +-----------------+
 -- |                 |
 -- +-----------------+
-function hs.window.up(win)
+win_func.up = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
@@ -115,7 +117,7 @@ end
 -- +-----------------+
 -- |      HERE       |
 -- +-----------------+
-function hs.window.down(win)
+win_func.down = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
@@ -133,7 +135,7 @@ end
 -- +--------+        |
 -- |                 |
 -- +-----------------+
-function hs.window.up_left(win)
+win_func.up_left = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:fullFrame()
@@ -151,7 +153,7 @@ end
 -- +--------+        |
 -- |  HERE  |        |
 -- +-----------------+
-function hs.window.down_left(win)
+win_func.down_left = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:fullFrame()
@@ -169,7 +171,7 @@ end
 -- |        +--------|
 -- |        |  HERE  |
 -- +-----------------+
-function hs.window.down_right(win)
+win_func.down_right = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:fullFrame()
@@ -187,7 +189,7 @@ end
 -- |        +--------|
 -- |                 |
 -- +-----------------+
-function hs.window.up_right(win)
+win_func.up_right = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:fullFrame()
@@ -252,7 +254,7 @@ for i, mapping in ipairs(mappings) do
     win_layout_mode:bind_and_exit(modifiers, trigger, function()
         local fw = hs.window.focusedWindow()
 
-        fw[win_fn](fw)
+        win_func[win_fn](fw)
     end)
 end
 
