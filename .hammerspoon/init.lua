@@ -39,6 +39,10 @@ enable_hk_for_wf = function(wf, hk)
     wf:subscribe(hs.window.filter.windowUnfocused, function()
         hk:disable()
     end)
+    
+    wf:subscribe(hs.window.filter.windowDestroyed, function()
+        hk:disable()
+    end)
 end
 
 disable_hk_for_wf = function(wf, hk)
