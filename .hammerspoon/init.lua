@@ -53,6 +53,10 @@ disable_hk_for_wf = function(wf, hk)
     wf:subscribe(hs.window.filter.windowUnfocused, function()
         hk:enable()
     end)
+
+    wf:subscribe(hs.window.filter.windowDestroyed, function()
+        hk:enable()
+    end)
 end
 
 local help_msg = hs.execute('cat $HOME/.hammerspoon/keybinds.txt', true)
