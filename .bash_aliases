@@ -45,21 +45,43 @@ fi
 # $OS is set in .bashrc
 case $OS in
     wsl)
-        alias copy='clip.exe'
         alias paste='powershell.exe Get-Clipboard'
         ;;
     mac)
-        alias copy='pbcopy'
         alias paste='pbpaste'
         ;;
     linux)
-        alias copy='xclip -selection clipboard'
         alias paste='xclip -selection clipboard -o'
         ;;
     *)
         ;;
 esac
 
+function copy()
+{
+    local in;
+    read in;
+
+    # if we are using iterm
+    if [[ -f ~/.iterm2/it2check ]] && ~/.iterm2/it2check; then
+        echo $in | ~/.iterm2/it2copy
+    else
+        case $OS in
+            wsl)
+                echo $in | clip.exe
+                ;;
+            mac)
+                echo $in | pbcopy
+                ;;
+            linux)
+                echo $in | xclip -selection clipboard
+                ;;
+            *)
+                echo error: cannot detect operating system
+                ;;
+        esac
+    fi
+}
 
 function activate()
 {
