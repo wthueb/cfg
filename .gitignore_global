@@ -13,6 +13,10 @@ __pycache__
 *.pyo
 .python-version
 
+# node
+.nvmrc
+.node-version
+
 # data files
 *.7z
 *.dmg
@@ -43,6 +47,3 @@ ehthumbs.db
 Icon?
 Thumbs.db
 *.dSYM
-
-# misc
-*.lock
