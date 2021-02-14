@@ -104,3 +104,5 @@
     subpull = !git submodule foreach git pull --tags origin master
 [pull]
 	rebase = false
+[init]
+	defaultBranch = master
