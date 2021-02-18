@@ -23,6 +23,7 @@ let g:coc_global_extensions = [
     \ 'coc-sh',
     \ 'coc-tsserver',
     \ 'coc-vimlsp',
+    \ 'coc-vimtex',
     \ 'coc-yaml',
     \]
 
@@ -163,7 +164,7 @@ let g:mkdp_open_to_the_world = 0
 autocmd FileType markdown nnoremap <buffer> <leader>r :MarkdownPreview<CR>
 " }}}
 
-" {{{ syntax stuff
+" {{{ filetype stuff
 " better python syntax
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 " {{{
@@ -184,6 +185,9 @@ let g:vim_json_syntax_conceal = 0
 
 " typescript syntax
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+
+" TeX
+Plug 'lervag/vimtex', { 'for': 'tex' }
 "}}}
 
 call plug#end()
