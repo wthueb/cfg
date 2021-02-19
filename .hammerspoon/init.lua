@@ -77,6 +77,7 @@ end):enable()
 require('applications')
 require('arrows')
 require('hyper')
+require('spotify')
 require('wifi')
 require('windows')
 
