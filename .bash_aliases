@@ -59,22 +59,21 @@ esac
 
 function copy()
 {
-    local in;
-    read in;
+    local in=$(cat);
 
     # if we are using iterm
     if [[ -f ~/.iterm2/it2check ]] && ~/.iterm2/it2check; then
-        echo $in | ~/.iterm2/it2copy
+        echo "$in" | ~/.iterm2/it2copy
     else
         case $OS in
             wsl)
-                echo $in | clip.exe
+                echo "$in" | clip.exe
                 ;;
             mac)
-                echo $in | pbcopy
+                echo "$in" | pbcopy
                 ;;
             linux)
-                echo $in | xclip -selection clipboard
+                echo "$in" | xclip -selection clipboard
                 ;;
             *)
                 echo error: cannot detect operating system
