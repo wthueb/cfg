@@ -19,7 +19,7 @@ let g:coc_global_extensions = [
     \ 'coc-css',
     \ 'coc-html',
     \ 'coc-json',
-    \ 'coc-python',
+    \ 'coc-pyright',
     \ 'coc-sh',
     \ 'coc-tsserver',
     \ 'coc-vimlsp',
