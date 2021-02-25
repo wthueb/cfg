@@ -1,11 +1,7 @@
 # C-g to expand globs
 "\C-g": glob-expand-word
 
-# C-hjkl as arrow keys
-"\C-h": "\C-[[D"
-"\C-j": "\C-[[B"
-"\C-k": "\C-[[A"
-"\C-l": "\C-[[C"
+set editing-mode vi
 
 set colored-stats On
 set completion-ignore-case On
