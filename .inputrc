@@ -2,6 +2,9 @@
 "\C-g": glob-expand-word
 
 set editing-mode vi
+set show-mode-in-prompt on
+set vi-ins-mode-string \1\e[2 q\2
+set vi-cmd-mode-string \1\e[4 q\2
 
 set colored-stats On
 set completion-ignore-case On
