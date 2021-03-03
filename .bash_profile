@@ -9,9 +9,6 @@ export FZF_DEFAULT_OPTS='--color=dark,fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#
 
 export BAT_THEME='Dracula'
 
-# less syntax highlighting with source-highlight
-export LESS=' -R '
-
 # colored gcc warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
@@ -45,3 +42,6 @@ fi
 
 [[ -f ~/.local/google-cloud-sdk/path.bash.inc ]] && source ~/.local/google-cloud-sdk/path.bash.inc
 [[ -f ~/.local/google-cloud-sdk/completion.bash.inc ]] && source ~/.local/google-cloud-sdk/completion.bash.inc
+
+# this is stupid but it's to set the last status to 0
+true
