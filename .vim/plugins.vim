@@ -188,6 +188,16 @@ Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 
 " TeX
 Plug 'lervag/vimtex', { 'for': 'tex' }
+"{{{
+let g:tex_flavor = 'latex'
+
+"}}}
+
+" snippets
+Plug 'sirver/ultisnips'
+let g:UltiSnipsExpandTrigger = '<tab>'
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 "}}}
 
 call plug#end()

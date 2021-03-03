@@ -6,6 +6,8 @@ function remap(from_mods, from_key, mods, key)
     hs.hotkey.bind(from_mods, from_key, fn, nil, fn)
 end
 
+-- TODO: fix this monstrosity
+
 remap({'ctrl'}, 'h', {}, 'left')
 remap({'ctrl'}, 'j', {}, 'down')
 remap({'ctrl'}, 'k', {}, 'up')
