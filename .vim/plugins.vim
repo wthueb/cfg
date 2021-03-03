@@ -130,28 +130,6 @@ Plug 'airblade/vim-gitgutter'
 " repeat plugin maps with . too
 Plug 'tpope/vim-repeat'
 
-if has('terminal')
-    " slime from emacs, required for vim-ipython-cell
-    Plug 'jpalardy/vim-slime', { 'for': 'python' }
-    " {{{
-    let g:slime_target = 'vimterminal'
-    let g:slime_python_ipython = 1
-    let g:slime_vimterminal_cmd = 'ipython --matplotlib'
-    let g:slime_vimterminal_config = {'term_finish': 'close'}
-    " }}}
-
-    " ipython inside vim
-    Plug 'hanschen/vim-ipython-cell', { 'for': 'python' }
-    " {{{
-    let g:ipython_cell_delimit_cells_by = 'marks'
-
-    " run cell
-    autocmd FileType python nnoremap <buffer> <leader>r :IPythonCellExecuteCell<CR>
-    " run entire script
-    autocmd FileType python nnoremap <buffer> <leader>R :IPythonCellRun<CR>
-    " }}}
-endif
-
 " markdown preview in browser
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 " {{{
