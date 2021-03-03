@@ -96,6 +96,8 @@ set nowrap
 set nowrap
 set display=lastline
 
+set spelllang=en_us
+
 " backspace will delete newlines and indents ~normally~
 set backspace=indent,eol,start
 
@@ -152,7 +154,7 @@ set colorcolumn=100
 hi ColorColumn ctermbg=darkgray
 
 " fold manually
-set foldmethod=manual
+set foldmethod=marker
 " folds disabled by default, toggle with zi
 set nofoldenable
 
@@ -170,10 +172,10 @@ autocmd FileType make setlocal tabstop=4 shiftwidth=0 softtabstop=0 noexpandtab
 autocmd FileType asm setlocal tabstop=4 shiftwidth=0 softtabstop=0 noexpandtab syntax=nasm
 
 " disable colorcolumn and enable wrapping for tex files
-autocmd FileType tex setlocal colorcolumn= wrap
+autocmd FileType tex setlocal colorcolumn= wrap spell
 
 " enable spellcheck in markdown files
-autocmd FileType markdown setlocal spell spelllang=en_us
+autocmd FileType markdown setlocal spell
 
 " enable spellcheck in git commit messages
 autocmd FileType gitcommit setlocal spell

@@ -30,3 +30,6 @@ nnoremap <C-h> <C-w><C-h>
 
 " buffers
 nnoremap <leader>b :bp<CR>
+
+" spelling correction
+inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
