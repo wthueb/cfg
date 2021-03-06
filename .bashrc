@@ -39,6 +39,8 @@ BRIGHTRED='\[\e[1;31m\]'
 BRIGHTGREEN='\[\e[1;32m\]'
 YELLOW='\[\e[0;33m\]'
 BRIGHTYELLOW='\[\e[1;33m\]'
+BLUE='\[\e[0;34m\]'
+BRIGHTBLUE='\[\e[1;34m\]'
 BRIGHTCYAN='\[\e[1;36m\]'
 
 function _prompt_command()
@@ -55,7 +57,7 @@ function _prompt_command()
         PS1+="$CONDA_PROMPT_MODIFIER"
     fi
 
-    PS1+="$BRIGHTGREEN\u@\h$REMOVE:"
+    PS1+="$BRIGHTGREEN\u$REMOVE@$BRIGHTBLUE\h$REMOVE:"
     
     if [[ $full_dir ]]; then
         PS1+="$BRIGHTCYAN\w$REMOVE"
