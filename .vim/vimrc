@@ -53,8 +53,8 @@ call coc#config('python.linting', {
             \ 'flake8Enabled': v:true,
             \})
 call coc#config('python.formatting', {
-            \ 'provider': 'black',
-            \ 'autopep8Args': ['--max-line-length', '88'],
+            \ 'provider': 'autopep8',
+            \ 'autopep8Args': ['--max-line-length', '100', '--experimental'],
             \})
 call coc#config('clangd.fallbackFlags', [
             \ '-Wall',
