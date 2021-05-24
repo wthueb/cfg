@@ -133,7 +133,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-repeat'
 
 " markdown preview in browser
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 " {{{
 let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 1
