@@ -22,10 +22,19 @@ export VISUAL=vim
 
 export PAGER='less -RF'
 
+if [[ -f /opt/homebrew/bin/brew ]]; then
+    eval $(/opt/homebrew/bin/brew shellenv)
+
+    PATH="$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH"
+fi
+
 PATH="$HOME/.local/bin:$PATH"
 
-if [[ -d ~/.pyenv ]]; then
-    PATH="$HOME/.pyenv/bin:$PATH"
+PYENV_ROOT="$HOME/.pyenv"
+
+if [[ -d $PYENV_ROOT ]]; then
+    PATH="$PYENV_ROOT/bin:$PATH"
+    eval $(pyenv init --path)
 fi
 
 export PATH
