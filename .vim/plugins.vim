@@ -58,14 +58,17 @@ endfunction
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 " }}}
 
-" stauts bar
+" status bar
 Plug 'vim-airline/vim-airline'
+" {{{
+let g:airline_theme = 'dracula'
+" }}}
 
 " fuzzy file finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-"" {{{
+" {{{
 nnoremap <C-p> :FZF<CR>
-"" }}}
+" }}}
 
 " file browser
 Plug 'scrooloose/nerdtree'
@@ -145,6 +148,7 @@ autocmd FileType markdown nnoremap <buffer> <leader>r :MarkdownPreview<CR>
 " }}}
 
 " {{{ filetype stuff
+
 " better python syntax
 Plug 'vim-python/python-syntax', { 'for': 'python' }
 " {{{
@@ -168,16 +172,10 @@ Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 
 " TeX
 Plug 'lervag/vimtex', { 'for': 'tex' }
-"{{{
+" {{{
 let g:tex_flavor = 'latex'
+" }}}
 
-"}}}
-
-" snippets
-" Plug 'sirver/ultisnips'
-" let g:UltiSnipsExpandTrigger = '<tab>'
-" let g:UltiSnipsJumpForwardTrigger = '<tab>'
-" let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-"}}}
+" }}}
 
 call plug#end()
