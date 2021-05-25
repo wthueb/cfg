@@ -40,6 +40,9 @@ if has('persistent_undo')
     set undofile
 endif
 
+" make swap files less annoying, use :recover to actually recover
+set shortmess+=A
+
 " custom key bindings
 so ~/.vim/bindings.vim
 
@@ -94,7 +97,6 @@ set nowrap
 
 " show @@@ in the last columns if the last line continues off screen
 " only really applicable if 'wrap' is set
-set nowrap
 set display=lastline
 
 set spelllang=en_us
@@ -128,14 +130,20 @@ endif
 " highlight all occurances of a search
 set hlsearch
 
-" keep 200 lines of command history
-set history=200
+" only care about case when containing capital letters or \c or \C
+set ignorecase
+set smartcase
+
+" keep 1000 lines of command history
+set history=1000
 
 " display ongoing sequences on the last line
 set showcmd
 
 " better command completion
 set wildmenu
+set wildmode=list:longest,full
+set wildignore=*.o,*.obj,*~
 
 " 4 spaces for tabs by default. sw=0 sts=0 means it uses tabstop value
 set tabstop=4 shiftwidth=0 softtabstop=-1 expandtab
@@ -148,7 +156,7 @@ endif
 
 " show tabs as characters
 set list
-set listchars=tab:>·,trail:·
+set listchars=tab:>·,trail:·,nbsp:·
 
 " highlight column to suggest making a new line
 set colorcolumn=100
