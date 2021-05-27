@@ -42,10 +42,13 @@ inoremap <silent><expr> <Tab>
 
 " formatting
 nmap <leader>= <Plug>(coc-format)
-vmap <leader>= <Plug>(coc-format-selected)
+vmap = <Plug>(coc-format-selected)
 
 " rename
 nmap <leader><C-r> <Plug>(coc-rename)
+
+" go to errors
+nmap <leader>e <Plug>(coc-diagnostic-next)
 
 " show documentaiton
 function! s:show_documentation()
@@ -67,7 +70,7 @@ let g:airline_theme = 'dracula'
 " fuzzy file finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " {{{
-nnoremap <C-p> :FZF<CR>
+nmap <C-p> :FZF<CR>
 " }}}
 
 " file browser
@@ -76,10 +79,10 @@ Plug 'scrooloose/nerdtree'
 abbrev nt NERDTree
 
 " toggle using ,n
-nnoremap <silent> <leader>n :NERDTreeToggle<CR>
+nmap <silent> <leader>n :NERDTreeToggle<CR>
 
 " open to current file using ,v
-nnoremap <silent> <leader>v :NERDTreeFind<CR>
+nmap <silent> <leader>v :NERDTreeFind<CR>
 
 " close when opening file
 let NERDTreeQuitOnOpen = 1
@@ -144,7 +147,7 @@ let g:mkdp_refresh_slow = 1
 let g:mkdp_command_for_global = 0
 let g:mkdp_open_to_the_world = 0
 
-autocmd FileType markdown nnoremap <buffer> <leader>r :MarkdownPreview<CR>
+autocmd FileType markdown nmap <buffer> <leader>r :MarkdownPreview<CR>
 " }}}
 
 " {{{ filetype stuff
