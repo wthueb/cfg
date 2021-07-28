@@ -64,7 +64,7 @@ local help_msg = hs.execute('cat $HOME/.hammerspoon/keybinds.txt', true)
 local message = require('status-message').new(help_msg, 11)
 local showing_help = false
 
-hs.hotkey.bind(hyper_key, 'h', function()
+hs.hotkey.bind(hyper_key, 'p', function()
     if showing_help then
         message:hide()
         showing_help = false

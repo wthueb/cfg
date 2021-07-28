@@ -16,14 +16,15 @@ application specific:
         delete := File->Move To Trash
 
 hyper:
+    hyper-` := reload config
+    hyper-h := show help
+
     application launching:
         hyper-c := chrome
         hyper-e := finder
         hyper-t := iterm
         hyper-m := messages
         hyper-s := spotify
-
-    hyper-r := reconnect airpods
 
 window layout (C-s to enter mode):
     f := fullscreen
