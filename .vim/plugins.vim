@@ -101,6 +101,9 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " better commenting
 Plug 'preservim/nerdcommenter'
 " {{{
+" don't indent
+let g:NERDDefaultAlign = 'start'
+
 " space after delimiter
 let g:NERDSpaceDelims = 1
 
