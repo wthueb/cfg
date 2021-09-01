@@ -33,3 +33,6 @@ nnoremap <leader>b :bp<CR>
 
 " spelling correction
 inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+
+" reindent file
+map <leader>= gg=G<C-o><C-o>

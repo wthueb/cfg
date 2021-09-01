@@ -41,8 +41,8 @@ inoremap <silent><expr> <Tab>
     \ coc#refresh()
 
 " formatting
-nmap <leader>= <Plug>(coc-format)
-vmap = <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format)
+vmap <leader>f <Plug>(coc-format-selected)
 
 " rename
 nmap <leader><C-r> <Plug>(coc-rename)
