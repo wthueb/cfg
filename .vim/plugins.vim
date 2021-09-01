@@ -180,6 +180,7 @@ Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'lervag/vimtex', { 'for': 'tex' }
 " {{{
 let g:tex_flavor = 'latex'
+let g:vimtex_view_method = 'skim'
 " }}}
 
 " }}}

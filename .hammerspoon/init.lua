@@ -59,6 +59,17 @@ disable_hk_for_wf = function(wf, hk)
     end)
 end
 
+function get_mods_str(modifiers)
+    local modMap = { shift = '⇧', ctrl = '⌃', alt = '⌥', cmd = '⌘' }
+    local retVal = ''
+
+    for i, v in ipairs(modifiers) do
+        retVal = retVal .. modMap[v]
+    end
+
+    return retVal
+end
+
 local help_msg = hs.execute('cat $HOME/.hammerspoon/keybinds.txt', true)
 
 local message = require('status-message').new(help_msg, 11)

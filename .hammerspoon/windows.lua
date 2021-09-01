@@ -3,7 +3,6 @@ logger.i('loading windows')
 local window_map = {
       modifiers  = {'ctrl'},
       trigger    = 's',
-      show_help  = false,
       mappings   = {
           { {}, 'f', 'fullscreen' },
           { {}, 'c', 'center' },
@@ -221,7 +220,7 @@ win_func.code = function(win)
     win:setFrame(f)
 end
 
-win_layout_mode = hs.hotkey.modal.new({}, 'F13')
+win_layout_mode = hs.hotkey.modal.new(window_map.modifiers, window_map.trigger)
 
 win_layout_mode.entered = function()
     win_layout_mode.status_message:show()
@@ -231,65 +230,26 @@ win_layout_mode.exited = function()
     win_layout_mode.status_message:hide()
 end
 
-function win_layout_mode.bind_and_exit(mode, modifiers, key, fn)
-    mode:bind(modifiers, key, function()
-        mode:exit()
-        fn()
-    end)
-end
+win_layout_mode:bind({}, 'escape', function()
+    win_layout_mode:exit()
+end)
 
-local modifiers = window_map.modifiers
-local trigger = window_map.trigger
-local show_help = window_map.show_help
-local mappings = window_map.mappings
+local msg = get_mods_str(window_map.modifiers)
 
-function get_mods_str(modifiers)
-    local modMap = { shift = '⇧', ctrl = '⌃', alt = '⌥', cmd = '⌘' }
-    local retVal = ''
-
-    for i, v in ipairs(modifiers) do
-        retVal = retVal .. modMap[v]
-    end
-
-    return retVal
-end
-
-local msg = get_mods_str(modifiers)
-
-msg = 'window layout mode (' .. msg .. (string.len(msg) > 0 and '+' or '') .. trigger .. ')'
-
-for i, mapping in ipairs(mappings) do
-    local modifiers, trigger, win_fn = table.unpack(mapping)
-    local hk_str = get_mods_str(modifiers)
-  
-    if show_help == true then
-        if string.len(hk_str) > 0 then
-          msg = msg .. (string.format('\n%10s+%s => %s', hk_str, trigger, win_fn))
-        else
-          msg = msg .. (string.format('\n%11s => %s', trigger, win_fn))
-        end
-    end
-  
-    win_layout_mode:bind_and_exit(modifiers, trigger, function()
-        local fw = hs.window.focusedWindow()
-
-        win_func[win_fn](fw)
-    end)
-end
+msg = 'window layout mode (' .. msg .. (string.len(msg) > 0 and '+' or '') .. window_map.trigger .. ')'
 
 local message = require('status-message')
 
 win_layout_mode.status_message = message.new(msg)
 
--- use modifiers+trigger to toggle window layout mode
-hs.hotkey.bind(modifiers, trigger, function()
-    win_layout_mode:enter()
-end)
+for i, mapping in ipairs(window_map.mappings) do
+    local modifiers, key, win_fn = table.unpack(mapping)
 
-win_layout_mode:bind(modifiers, trigger, function()
-    win_layout_mode:exit()
-end)
+    win_layout_mode:bind(modifiers, key, function()
+        win_layout_mode:exit()
 
-win_layout_mode:bind({}, 'escape', function()
-    win_layout_mode:exit()
-end)
+        local fw = hs.window.focusedWindow()
+
+        win_func[win_fn](fw)
+    end)
+end
