@@ -1,5 +1,5 @@
-function notify_playing()
-    local album = hs.spotify.getCurrentAlbum()
+local notify_playing = function()
+    --local album = hs.spotify.getCurrentAlbum()
     local artist = hs.spotify.getCurrentArtist()
     local track = hs.spotify.getCurrentTrack()
 

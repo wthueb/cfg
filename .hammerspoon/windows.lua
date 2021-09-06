@@ -1,26 +1,26 @@
 logger.i('loading windows')
 
 local window_map = {
-      modifiers  = {'ctrl'},
-      trigger    = 's',
-      mappings   = {
-          { {}, 'f', 'fullscreen' },
-          { {}, 'c', 'center' },
-          { {}, 'h', 'left' },
-          { {}, 'j', 'down' },
-          { {}, 'k', 'up' },
-          { {}, 'l', 'right' },
-          { {}, 'i', 'up_left' },
-          { {}, 'o', 'up_right' },
-          { {}, ',', 'down_left' },
-          { {}, '.', 'down_right' },
-          { {}, 'b', 'code' },
-      }
+    modifiers  = {'ctrl'},
+    trigger    = 's',
+    mappings   = {
+        { {}, 'f', 'fullscreen' },
+        { {}, 'c', 'center' },
+        { {}, 'h', 'left' },
+        { {}, 'j', 'down' },
+        { {}, 'k', 'up' },
+        { {}, 'l', 'right' },
+        { {}, 'i', 'up_left' },
+        { {}, 'o', 'up_right' },
+        { {}, ',', 'down_left' },
+        { {}, '.', 'down_right' },
+        { {}, 'b', 'code' },
+    }
 }
 
 hs.window.animationDuration = 0
 
-win_func = {}
+local win_func = {}
 
 -- +-----------------+
 -- |                 |
@@ -31,12 +31,12 @@ win_func.fullscreen = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
-  
+
     f.x = max.x
     f.y = max.y
     f.w = max.w
     f.h = max.h
-  
+
     win:setFrame(f)
 end
 
@@ -49,12 +49,12 @@ win_func.center = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
-  
+
     f.x = max.x + max.w / 2 - f.w / 2
     f.y = max.y + max.h / 2 - f.h / 2
     f.w = f.w
     f.h = f.h
-  
+
     win:setFrame(f)
 end
 
@@ -67,12 +67,12 @@ win_func.left = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
-  
+
     f.x = max.x
     f.y = max.y
     f.w = max.w / 2
     f.h = max.h
-  
+
     win:setFrame(f)
 end
 
@@ -85,7 +85,7 @@ win_func.right = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
-  
+
     f.x = max.x + (max.w / 2)
     f.y = max.y
     f.w = max.w / 2
@@ -211,7 +211,7 @@ win_func.code = function(win)
     local f = win:frame()
     local screen = win:screen()
     local max = screen:frame()
-  
+
     f.x = max.x + (max.w / 5 * 2)
     f.y = max.y
     f.w = max.w / 5 * 3
@@ -220,7 +220,7 @@ win_func.code = function(win)
     win:setFrame(f)
 end
 
-win_layout_mode = hs.hotkey.modal.new(window_map.modifiers, window_map.trigger)
+local win_layout_mode = hs.hotkey.modal.new(window_map.modifiers, window_map.trigger)
 
 win_layout_mode.entered = function()
     win_layout_mode.status_message:show()
@@ -230,6 +230,10 @@ win_layout_mode.exited = function()
     win_layout_mode.status_message:hide()
 end
 
+win_layout_mode:bind(window_map.modifiers, window_map.trigger, function()
+    win_layout_mode:exit()
+end)
+
 win_layout_mode:bind({}, 'escape', function()
     win_layout_mode:exit()
 end)
@@ -238,11 +242,9 @@ local msg = get_mods_str(window_map.modifiers)
 
 msg = 'window layout mode (' .. msg .. (string.len(msg) > 0 and '+' or '') .. window_map.trigger .. ')'
 
-local message = require('status-message')
+win_layout_mode.status_message = require('status-message').new(msg)
 
-win_layout_mode.status_message = message.new(msg)
-
-for i, mapping in ipairs(window_map.mappings) do
+for _, mapping in ipairs(window_map.mappings) do
     local modifiers, key, win_fn = table.unpack(mapping)
 
     win_layout_mode:bind(modifiers, key, function()

@@ -1,7 +1,6 @@
 logger.i('loading status-message')
 
 local drawing = require('hs.drawing')
-local geometry = require('hs.geometry')
 local screen = require('hs.screen')
 local styled_text = require('hs.styledtext')
 

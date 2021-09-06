@@ -1,7 +1,7 @@
 -- use control + h/j/k/l for left/down/up/right
 logger.i('loading arrows')
 
-function remap(from_mods, from_key, mods, key)
+local remap = function(from_mods, from_key, mods, key)
     local fn = function() key_press(mods, key) end
     hs.hotkey.bind(from_mods, from_key, fn, nil, fn)
 end

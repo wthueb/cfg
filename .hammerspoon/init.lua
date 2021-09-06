@@ -39,7 +39,7 @@ enable_hk_for_wf = function(wf, hk)
     wf:subscribe(hs.window.filter.windowUnfocused, function()
         hk:disable()
     end)
-    
+
     wf:subscribe(hs.window.filter.windowDestroyed, function()
         hk:disable()
     end)
@@ -59,15 +59,15 @@ disable_hk_for_wf = function(wf, hk)
     end)
 end
 
-function get_mods_str(modifiers)
-    local modMap = { shift = '⇧', ctrl = '⌃', alt = '⌥', cmd = '⌘' }
-    local retVal = ''
+get_mods_str = function(modifiers)
+    local mod_map = { shift = '⇧', ctrl = '⌃', alt = '⌥', cmd = '⌘' }
+    local ret = ''
 
-    for i, v in ipairs(modifiers) do
-        retVal = retVal .. modMap[v]
+    for _, v in ipairs(modifiers) do
+        ret = ret .. mod_map[v]
     end
 
-    return retVal
+    return ret
 end
 
 local help_msg = hs.execute('cat $HOME/.hammerspoon/keybinds.txt', true)
