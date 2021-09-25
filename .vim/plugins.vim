@@ -141,6 +141,16 @@ Plug 'airblade/vim-gitgutter'
 " repeat plugin maps with . too
 Plug 'tpope/vim-repeat'
 
+" hlsearch/incsearch for substitute
+Plug 'osyo-manga/vim-over'
+
+" pcre regex
+Plug 'othree/eregex.vim'
+" {{{
+let g:eregex_default_enable = 0
+nnoremap <leader>/ :call eregex#toggle()<CR>
+" }}}
+
 " markdown preview in browser
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 " {{{
