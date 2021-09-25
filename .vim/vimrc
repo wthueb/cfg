@@ -59,8 +59,8 @@ call coc#config('python.formatting', {
             \ 'provider': 'autopep8',
             \ 'autopep8Args': ['--max-line-length', '100', '--experimental'],
             \})
-call coc#config('clangd.fallbackFlags', [
-            \ '-Wall',
+call coc#config('clangd.arguments', [
+            \ '-fallback-style=Microsoft'
             \])
 " }}}
 
