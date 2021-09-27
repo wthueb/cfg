@@ -48,3 +48,8 @@ ehthumbs.db
 Icon?
 Thumbs.db
 *.dSYM
+
+# latex stuff
+*.aux
+*.fdb_latexmk
+*.fls
