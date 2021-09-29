@@ -103,6 +103,6 @@
     subup = submodule update --init --recursive
     subpull = !git submodule foreach git pull --tags origin master
 [pull]
-	rebase = false
+    rebase = false
 [init]
-	defaultBranch = master
+    defaultBranch = main
