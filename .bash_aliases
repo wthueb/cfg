@@ -17,6 +17,9 @@ alias lal='ls -lha'
 
 alias cl='clear'
 
+alias log='journalctl --output=cat -u'
+alias logf='journalctl --output=cat -fu'
+
 alias vi='vim'
 
 alias grep='grep -PI --color=auto'
