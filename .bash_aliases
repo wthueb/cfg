@@ -25,6 +25,8 @@ alias vi='vim'
 alias grep='grep -PI --color=auto'
 alias grepr='grep -PIr --exclude-dir=env --exclude-dir=.git --color=auto'
 
+alias pcre='pcre2grep --color'
+
 alias p='python'
 alias pi='p -i'
 
