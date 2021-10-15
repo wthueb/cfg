@@ -11,10 +11,15 @@
     pager = delta
 
 [delta]
-    syntax-theme = Dracula
+    syntax-theme = Nord
+    side-by-side = true
+    diff-so-fancy = true
 
 [web]
     browser = chrome
+
+[diff]
+    colorMoved = default
 
 [difftool]
     prompt = false
@@ -105,7 +110,12 @@
     sb = status -s -b
     subpull = !git submodule foreach git pull --tags origin master
     subup = submodule update --init --recursive
+
 [pull]
     rebase = false
+
 [init]
     defaultBranch = main
+
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
