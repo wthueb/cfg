@@ -10,6 +10,7 @@ call plug#begin('~/.vim/bundle')
 
 " colorscheme
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'arcticicestudio/nord-vim'
 
 " autocompletion
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
@@ -64,7 +65,7 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 " status bar
 Plug 'vim-airline/vim-airline'
 " {{{
-let g:airline_theme = 'dracula'
+let g:airline_theme = 'nord'
 " }}}
 
 " fuzzy file finder
@@ -108,7 +109,7 @@ let g:NERDDefaultAlign = 'none'
 let g:NERDSpaceDelims = 1
 
 " compact multi-line comments
-let g:NERDCompactSexyComs = 1
+let g:NERDCompactSexyComs = 0
 
 let g:NERDCommentEmptyLines = 0
 

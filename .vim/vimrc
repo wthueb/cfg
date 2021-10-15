@@ -76,7 +76,8 @@ let &t_ZR = "\e[23m"
 " use string highlighting in comments: "like this"
 let c_comment_strings = 1
 
-colorscheme dracula
+" colorscheme dracula
+colorscheme nord
 " }}}
 
 " {{{ settings
