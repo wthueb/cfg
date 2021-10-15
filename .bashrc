@@ -101,18 +101,28 @@ function _prompt_command()
 
 PROMPT_COMMAND=_prompt_command
 
-# Use fd (https://github.com/sharkdp/fd) instead of the default find
-# command for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-_fzf_compgen_path() {
-    fd --hidden --follow --exclude ".git" . "$1"
-}
+if command -v pyenv &> /dev/null; then
+    eval "$(pyenv init -)"
+fi
 
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-    fd --type d --hidden --follow --exclude ".git" . "$1"
-}
+[[ -f ~/.bash_aliases ]] && source ~/.bash_aliases
+
+[[ -f ~/.customrc ]] && source ~/.customrc
+
+if command -v fd &> /dev/null; then
+    # Use fd (https://github.com/sharkdp/fd) instead of the default find
+    # command for listing path candidates.
+    # - The first argument to the function ($1) is the base path to start traversal
+    # - See the source code (completion.{bash,zsh}) for the details.
+    _fzf_compgen_path() {
+        fd --hidden --follow --exclude ".git" . "$1"
+    }
+
+    # Use fd to generate the list for directory completion
+    _fzf_compgen_dir() {
+        fd --type d --hidden --follow --exclude ".git" . "$1"
+    }
+fi
 
 # (EXPERIMENTAL) Advanced customization of fzf options via _fzf_comprun function
 # - The first argument to the function is the name of the command.
@@ -128,14 +138,6 @@ _fzf_comprun() {
         *)            fzf "$@" ;;
     esac
 }
-
-if command -v pyenv &> /dev/null; then
-    eval "$(pyenv init -)"
-fi
-
-[[ -f ~/.bash_aliases ]] && source ~/.bash_aliases
-
-[[ -f ~/.customrc ]] && source ~/.customrc
 
 [[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
 
