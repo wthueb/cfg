@@ -15,7 +15,11 @@ alias ll='ls -lh'
 alias lla='ls -lha'
 alias lal='ls -lha'
 
-alias cl='clear'
+if [[ -f ~/.iterm2/it2check ]] && ~/.iterm2/it2check 2> /dev/null; then
+    alias cl='echo -n -e "\e[2J\e[3J\e[1;1H"'
+else
+    alias cl='clear'
+fi
 
 alias log='journalctl --output=cat -u'
 alias logf='journalctl --output=cat -fu'
@@ -67,7 +71,7 @@ function copy()
     local in=$(cat);
 
     # if we are using iterm
-    if [[ -f ~/.iterm2/it2check ]] && ~/.iterm2/it2check; then
+    if [[ -f ~/.iterm2/it2check ]] && ~/.iterm2/it2check 2> /dev/null; then
         echo "$in" | ~/.iterm2/it2copy
     else
         case $OS in
