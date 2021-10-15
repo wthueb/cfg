@@ -31,6 +31,8 @@ alias grepr='grep -PIr --exclude-dir=env --exclude-dir=.git --color=auto'
 
 alias pcre='pcre2grep --color'
 
+alias trim="sed -E 's/^\s*//;s/\s*$//'"
+
 alias p='python'
 alias pi='p -i'
 
