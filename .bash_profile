@@ -55,5 +55,7 @@ fi
 [[ -f ~/.local/google-cloud-sdk/path.bash.inc ]] && source ~/.local/google-cloud-sdk/path.bash.inc
 [[ -f ~/.local/google-cloud-sdk/completion.bash.inc ]] && source ~/.local/google-cloud-sdk/completion.bash.inc
 
+[[ -f /opt/homebrew/etc/bash_completion ]] && source /opt/homebrew/etc/bash_completion
+
 # this is stupid but it's to set the last status to 0
 true
