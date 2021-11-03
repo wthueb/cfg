@@ -46,6 +46,7 @@
     d = diff
     dt = difftool
     f = fetch
+    fa = fetch --all
     fo = fetch origin
     fu = fetch upstream
     g = grep -p
