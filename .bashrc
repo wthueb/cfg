@@ -35,6 +35,17 @@ BLUE='\[\e[0;34m\]'
 BRIGHTBLUE='\[\e[1;34m\]'
 BRIGHTCYAN='\[\e[1;36m\]'
 
+function update_title()
+{
+    case "$BASH_COMMAND" in
+        *\033]0*)
+            ;;
+        *)
+            echo -ne "\033]0;${BASH_COMMAND} - ${PWD##*/}\007"
+            ;;
+    esac
+}
+
 function _prompt_command()
 {
     local status=$?
@@ -50,7 +61,7 @@ function _prompt_command()
     fi
 
     PS1+="$BRIGHTGREEN\u$REMOVE@$BRIGHTBLUE\h$REMOVE:"
-    
+
     if [[ $full_dir ]]; then
         PS1+="$BRIGHTCYAN\w$REMOVE"
     else
@@ -69,8 +80,7 @@ function _prompt_command()
         PS1+="@$YELLOW$branch"
 
         if [[ $branch ]]; then
-            if [[ $(git diff-index HEAD 2>/dev/null) ]] || \
-               [[ $(git ls-files --others --exclude-standard) ]]; then
+            if [[ $(git diff-index HEAD 2>/dev/null) ]] || [[ $(git ls-files --others --exclude-standard) ]]; then
                 PS1+='+'
             fi
         else
@@ -89,6 +99,16 @@ function _prompt_command()
     fi
 
     PS1+='$ '
+
+    case "$TERM" in
+        xterm*)
+            PS1+="\033]0;${PWD##*/}\007"
+
+            trap update_title DEBUG
+            ;;
+        *)
+            ;;
+    esac
 }
 
 PROMPT_COMMAND=_prompt_command
