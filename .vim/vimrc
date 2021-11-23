@@ -52,11 +52,11 @@ call coc#config('python.linting', {
             \ 'enabled': v:true,
             \ 'pylintEnabled': v:false,
             \ 'flake8Enabled': v:true,
-            \ 'flake8Args': ['--max-line-length=100', '--exclude=.git,__pycache__,env,build,dist'],
+            \ 'flake8Args': ['--max-line-length=88', '--exclude=.git,__pycache__,env,build,dist'],
             \})
 call coc#config('python.formatting', {
-            \ 'provider': 'autopep8',
-            \ 'autopep8Args': ['--max-line-length', '100', '--experimental'],
+            \ 'provider': 'black',
+            \ 'blackArgs': ['--experimental-string-processing'],
             \})
 call coc#config('clangd.arguments', [
             \ '-fallback-style=Microsoft'
@@ -169,6 +169,8 @@ set list
 set listchars=tab:>·,trail:·,nbsp:·
 
 " highlight column to suggest making a new line
+autocmd FileType python setlocal colorcolumn=88
+
 set colorcolumn=100
 hi ColorColumn ctermbg=darkgray
 
