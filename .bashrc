@@ -37,7 +37,7 @@ BRIGHTCYAN="\[\e[1;36m\]"
 
 function update_title()
 {
-    echo -ne "\e]0;${BASH_COMMAND} - ${PWD##*/}\a"
+    echo -ne "\e]0;${BASH_COMMAND} - ${PWD##*/} - ${USER}@${HOSTNAME}\a"
 }
 
 trap update_title DEBUG
@@ -96,7 +96,7 @@ function _prompt_command()
 
     PS1+='$ '
 
-    echo -ne "\e]0;${PWD##*/}\a"
+    echo -ne "\e]0;${PWD##*/} - ${USER}@${HOSTNAME}\a"
 }
 
 PROMPT_COMMAND=_prompt_command
