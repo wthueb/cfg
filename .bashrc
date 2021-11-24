@@ -25,26 +25,22 @@ elif [[ $(uname) == Linux ]]; then
     OS='linux'
 fi
 
-REMOVE='\[\e[0m\]'
+REMOVE="\[\e[0m\]"
 
-BRIGHTRED='\[\e[1;31m\]'
-BRIGHTGREEN='\[\e[1;32m\]'
-YELLOW='\[\e[0;33m\]'
-BRIGHTYELLOW='\[\e[1;33m\]'
-BLUE='\[\e[0;34m\]'
-BRIGHTBLUE='\[\e[1;34m\]'
-BRIGHTCYAN='\[\e[1;36m\]'
+BRIGHTRED="\[\e[1;31m\]"
+BRIGHTGREEN="\[\e[1;32m\]"
+YELLOW="\[\e[0;33m\]"
+BRIGHTYELLOW="\[\e[1;33m\]"
+BLUE="\[\e[0;34m\]"
+BRIGHTBLUE="\[\e[1;34m\]"
+BRIGHTCYAN="\[\e[1;36m\]"
 
 function update_title()
 {
-    case "$BASH_COMMAND" in
-        *\033]0*)
-            ;;
-        *)
-            echo -ne "\033]0;${BASH_COMMAND} - ${PWD##*/}\007"
-            ;;
-    esac
+    echo -ne "\e]0;${BASH_COMMAND} - ${PWD##*/}\a"
 }
+
+trap update_title DEBUG
 
 function _prompt_command()
 {
@@ -52,23 +48,23 @@ function _prompt_command()
 
     PS1=""
 
-    if [[ $VIRTUAL_ENV ]]; then
-        PS1+="(`basename $VIRTUAL_ENV`) "
+    if [[ ${VIRTUAL_ENV} ]]; then
+        PS1+="($(basename ${VIRTUAL_ENV})) "
     fi
 
-    if [[ $CONDA_PROMPT_MODIFIER ]]; then
-        PS1+="$CONDA_PROMPT_MODIFIER"
+    if [[ ${CONDA_PROMPT_MODIFIER} ]]; then
+        PS1+="${CONDA_PROMPT_MODIFIER}"
     fi
 
-    PS1+="$BRIGHTGREEN\u$REMOVE@$BRIGHTBLUE\h$REMOVE:"
+    PS1+="${BRIGHTGREEN}\u${REMOVE}@${BRIGHTBLUE}\h${REMOVE}:"
 
-    if [[ $full_dir ]]; then
-        PS1+="$BRIGHTCYAN\w$REMOVE"
+    if [[ ${full_dir} ]]; then
+        PS1+="${BRIGHTCYAN}\w${REMOVE}"
     else
-        if [[ $PWD == $HOME ]]; then
-            PS1+="$BRIGHTCYAN~$REMOVE"
+        if [[ ${PWD} == ${HOME} ]]; then
+            PS1+="${BRIGHTCYAN}~${REMOVE}"
         else
-            PS1+="$BRIGHTCYAN`basename "$PWD"`$REMOVE"
+            PS1+="${BRIGHTCYAN}$(basename "${PWD}")${REMOVE}"
         fi
     fi
 
@@ -77,9 +73,9 @@ function _prompt_command()
     if [[ $? == 0 ]]; then
         local branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
-        PS1+="@$YELLOW$branch"
+        PS1+="@${YELLOW}${branch}"
 
-        if [[ $branch ]]; then
+        if [[ ${branch} ]]; then
             if [[ $(git diff-index HEAD 2>/dev/null) ]] || [[ $(git ls-files --others --exclude-standard) ]]; then
                 PS1+='+'
             fi
@@ -87,28 +83,20 @@ function _prompt_command()
             PS1+='+' # there is no branch, waiting on first commit
         fi
 
-        PS1+="$REMOVE"
+        PS1+="${REMOVE}"
     fi
 
-    if [[ $status != 0 ]]; then
-        PS1+=" $BRIGHTRED$status$REMOVE"
+    if [[ ${status} != 0 ]]; then
+        PS1+=" ${BRIGHTRED}${status}${REMOVE}"
     fi
 
-    if [[ $newline_prompt ]]; then
-        PS1+='\n'
+    if [[ ${newline_prompt} ]]; then
+        PS1+="\n"
     fi
 
     PS1+='$ '
 
-    case "$TERM" in
-        xterm*)
-            PS1+="\033]0;${PWD##*/}\007"
-
-            trap update_title DEBUG
-            ;;
-        *)
-            ;;
-    esac
+    echo -ne "\e]0;${PWD##*/}\a"
 }
 
 PROMPT_COMMAND=_prompt_command
