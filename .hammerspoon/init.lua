@@ -5,6 +5,8 @@ logger = hs.logger.new('wi1binds')
 
 logger.i('initializing')
 
+hs.spoons.use('EmmyLua')
+
 hyper_key = {'ctrl', 'alt', 'cmd', 'shift'}
 
 -- hyper-` to reload config
@@ -26,7 +28,7 @@ key_press = function(modifiers, key)
 end
 
 in_terminal = function()
-    app = hs.application.frontmostApplication():name()
+    local app = hs.application.frontmostApplication():name()
 
     return app == 'iTerm2' or app == 'Terminal'
 end
