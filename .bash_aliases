@@ -15,11 +15,7 @@ alias ll='ls -lh'
 alias lla='ls -lha'
 alias lal='ls -lha'
 
-if [[ $TERM_PROGRAM = 'Hyper' ]]; then
-    alias cl='echo -n -e "\e[2J\e[3J\e[1;1H"'
-else
-    alias cl='clear'
-fi
+alias cl='clear'
 
 alias log='journalctl --output=cat -u'
 alias logf='journalctl --output=cat -fu'
