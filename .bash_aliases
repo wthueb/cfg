@@ -15,7 +15,7 @@ alias ll='ls -lh'
 alias lla='ls -lha'
 alias lal='ls -lha'
 
-if [[ -f ~/.iterm2/it2check ]] && ~/.iterm2/it2check 2> /dev/null; then
+if [[ $TERM_PROGRAM = 'Hyper' ]]; then
     alias cl='echo -n -e "\e[2J\e[3J\e[1;1H"'
 else
     alias cl='clear'
