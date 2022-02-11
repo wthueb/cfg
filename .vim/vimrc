@@ -189,12 +189,15 @@ autocmd Syntax * call matchadd('FoldMarker', '{{{\|}}}')
 " {{{ filetype specific settings
 
 " make and asm are archaic and insist on tab characters instead of spaces
-autocmd FileType make setlocal tabstop=4 shiftwidth=0 softtabstop=0 noexpandtab
-autocmd FileType asm setlocal tabstop=4 shiftwidth=0 softtabstop=0 noexpandtab syntax=nasm
+autocmd FileType make set tabstop=4 shiftwidth=0 softtabstop=0 noexpandtab
+autocmd FileType asm set tabstop=4 shiftwidth=0 softtabstop=0 noexpandtab syntax=nasm
 
-autocmd FileType css setlocal tabstop=2 shiftwidth=0 softtabstop=0 expandtab
-autocmd FileType html setlocal tabstop=2 shiftwidth=0 softtabstop=0 expandtab
-autocmd FileType javascript setlocal tabstop=2 shiftwidth=0 softtabstop=0 expandtab
+autocmd FileType css set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
+autocmd FileType html set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
+autocmd FileType javascript set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
+autocmd FileType typescript set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
+autocmd FileType typescriptreact set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
+autocmd FileType json set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
 
 " disable colorcolumn and enable wrapping for tex files
 autocmd FileType tex setlocal colorcolumn= wrap spell
