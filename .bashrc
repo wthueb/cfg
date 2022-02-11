@@ -144,3 +144,5 @@ _fzf_comprun() {
 export NVM_DIR=~/.nvm
 [[ -f $NVM_DIR/nvm.sh ]] && source $NVM_DIR/nvm.sh
 [[ -f $NVM_DIR/bash_completion ]] && source $NVM_DIR/bash_completion
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
