@@ -56,7 +56,7 @@ call coc#config('python.linting', {
             \})
 call coc#config('python.formatting', {
             \ 'provider': 'black',
-            \ 'blackArgs': ['--experimental-string-processing'],
+            \ 'blackArgs': ['--preview'],
             \})
 call coc#config('clangd.arguments', [
             \ '-fallback-style=Microsoft'
