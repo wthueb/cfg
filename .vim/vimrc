@@ -52,7 +52,7 @@ call coc#config('python.linting', {
             \ 'enabled': v:true,
             \ 'pylintEnabled': v:false,
             \ 'flake8Enabled': v:true,
-            \ 'flake8Args': ['--max-line-length=88', '--exclude=.git,__pycache__,env,build,dist'],
+            \ 'flake8Args': ['--max-line-length=88', '--exclude=.git,__pycache__,env,build,dist', '--extend-ignore=E203'],
             \})
 call coc#config('python.formatting', {
             \ 'provider': 'black',
