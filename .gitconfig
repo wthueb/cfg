@@ -40,7 +40,7 @@
     ch = checkout
     chb = checkout -b
     chd = checkout develop
-    chm = checkout master
+    chm = checkout main
     cl = clone
     cm = commit -m
     d = diff
@@ -60,26 +60,26 @@
     ms = merge --skip
     pb = pull --rebase
     pbo = pull --rebase origin
-    pbom = pull --rebase origin master
-    pbum = pull --rebase upstream master
+    pbom = pull --rebase origin main
+    pbum = pull --rebase upstream main
     pl = pull
     plo = pull origin
-    plom = pull origin master
+    plom = pull origin main
     plu = pull upstream
-    plum = pull upstream master
+    plum = pull upstream main
     ps = push
     psao = push --all origin
-    psaom = push --all origin master
+    psaom = push --all origin main
     psd = push develop develop
     psf = push -f
     psfo = push -f origin
-    psfom = push -f origin master
+    psfom = push -f origin main
     pso = push origin
-    psom = push origin master
-    psp = push production master
+    psom = push origin main
+    psp = push production main
     psu = push -u
     psuo = push -u origin
-    psuon = push -u origin master
+    psuon = push -u origin main
     r = remote
     ra = remote add
     rao = remote add origin
@@ -109,7 +109,7 @@
     rv = remote -v
     s = status
     sb = status -s -b
-    subpull = !git submodule foreach git pull --tags origin master
+    subpull = !git submodule foreach git pull --tags origin main
     subup = submodule update --init --recursive
 
 [pull]
