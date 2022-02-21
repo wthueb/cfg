@@ -46,8 +46,15 @@ inoremap <silent><expr> <Tab>
 nmap <leader>f <Plug>(coc-format)
 vmap <leader>f <Plug>(coc-format-selected)
 
-" rename
-nmap <leader><C-r> <Plug>(coc-rename)
+nmap <leader>s <Plug>(coc-rename)
+
+nmap <leader>ac <Plug>(coc-codeaction)
+nmap <leader>qf <Plug>(coc-fix-current)
+
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 " go to errors
 nmap <leader>e <Plug>(coc-diagnostic-next)
@@ -187,6 +194,9 @@ let g:vim_json_syntax_conceal = 0
 
 " typescript syntax
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+
+" jsx/tsx
+Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['typescriptreact', 'javascriptreact'] }
 
 " TeX
 Plug 'lervag/vimtex', { 'for': 'tex' }
