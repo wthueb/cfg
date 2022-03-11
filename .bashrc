@@ -25,15 +25,15 @@ elif [[ $(uname) == Linux ]]; then
     OS='linux'
 fi
 
-REMOVE='\033[0m'
+REMOVE='\[\033[0m\]'
 
-BRIGHTRED='\033[1;31m'
-BRIGHTGREEN='\033[1;32m'
-YELLOW='\033[0;33m'
-BRIGHTYELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-BRIGHTBLUE='\033[1;34m'
-BRIGHTCYAN='\033[1;36m'
+BRIGHTRED='\[\033[1;31m\]'
+BRIGHTGREEN='\[\033[1;32m\]'
+YELLOW='\[\033[0;33m\]'
+BRIGHTYELLOW='\[\033[1;33m\]'
+BLUE='\[\033[0;34m\]'
+BRIGHTBLUE='\[\033[1;34m\]'
+BRIGHTCYAN='\[\033[1;36m\]'
 
 function update_title()
 {
@@ -61,11 +61,7 @@ function _prompt_command()
     if [[ ${full_dir} ]]; then
         PS1+="${BRIGHTCYAN}\w${REMOVE}"
     else
-        if [[ ${PWD} == ${HOME} ]]; then
-            PS1+="${BRIGHTCYAN}~${REMOVE}"
-        else
-            PS1+="${BRIGHTCYAN}$(basename "${PWD}")${REMOVE}"
-        fi
+        PS1+="${BRIGHTCYAN}\W${REMOVE}"
     fi
 
     git rev-parse --git-dir &>/dev/null
