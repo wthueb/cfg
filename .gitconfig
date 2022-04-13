@@ -24,6 +24,15 @@
 [difftool]
     prompt = false
 
+[init]
+    defaultBranch = main
+
+[fetch]
+    prune = true
+
+[pull]
+    rebase = true
+
 [alias]
     a = add --all
     b = branch -v
@@ -111,12 +120,6 @@
     sb = status -s -b
     subpull = !git submodule foreach git pull --tags origin main
     subup = submodule update --init --recursive
-
-[pull]
-    rebase = false
-
-[init]
-    defaultBranch = main
 
 [url "ssh://git@github.com/"]
     insteadOf = https://github.com/
