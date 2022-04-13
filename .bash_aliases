@@ -37,6 +37,8 @@ alias ffplay='ffplay -hide_banner'
 
 alias gdb='gdb -q'
 
+alias ggf='ggf --fg-empty=5'
+
 if command -v fdfind &> /dev/null; then
     alias fd='fdfind'
 fi
