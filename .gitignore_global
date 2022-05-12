@@ -13,6 +13,8 @@ __pycache__
 *.pyo
 .python-version
 .mypy_cache
+*.egg-info
+.eggs/
 
 # node
 .nvmrc
