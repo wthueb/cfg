@@ -10,7 +10,7 @@ call plug#begin('~/.vim/bundle')
 
 " colorscheme
 Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'arcticicestudio/nord-vim'
+Plug 'arcticicestudio/nord-vim', { 'branch': 'main' }
 
 " autocompletion
 Plug 'neoclide/coc.nvim', { 'branch': 'release' }
