@@ -185,9 +185,9 @@ function pclean()
 function venv()
 {
     if [[ $1 ]]; then
-        python -m venv $1
+        python -m venv --upgrade-deps $1
     else
-        python -m venv env
+        python -m venv --upgrade-deps env
     fi
 
     activate $@
