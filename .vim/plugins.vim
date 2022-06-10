@@ -9,7 +9,6 @@ endif
 call plug#begin('~/.vim/bundle')
 
 " colorscheme
-Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'arcticicestudio/nord-vim', { 'branch': 'main' }
 
 " autocompletion
@@ -158,18 +157,6 @@ Plug 'othree/eregex.vim'
 " {{{
 let g:eregex_default_enable = 0
 nnoremap <leader>/ :call eregex#toggle()<CR>
-" }}}
-
-" markdown preview in browser
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
-" {{{
-let g:mkdp_auto_start = 0
-let g:mkdp_auto_close = 1
-let g:mkdp_refresh_slow = 1
-let g:mkdp_command_for_global = 0
-let g:mkdp_open_to_the_world = 0
-
-autocmd FileType markdown nmap <buffer> <leader>r :MarkdownPreview<CR>
 " }}}
 
 " {{{ filetype stuff
