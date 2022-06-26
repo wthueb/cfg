@@ -36,9 +36,9 @@ function! s:check_back_space() abort
     return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-inoremap <silent><expr> <Tab>
+inoremap <silent><expr> <tab>
     \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<Tab>" :
+    \ <SID>check_back_space() ? "\<tab>" :
     \ coc#refresh()
 
 " formatting
@@ -56,7 +56,11 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " go to errors
-nmap <leader>e <Plug>(coc-diagnostic-next)
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" apply code action
+nmap <leader>a <Plug>(coc-codeaction-selected)
 
 " show documentaiton
 function! s:show_documentation()
@@ -79,31 +83,6 @@ let g:airline_theme = 'nord'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 " {{{
 nmap <C-p> :FZF<CR>
-" }}}
-
-" file browser
-Plug 'scrooloose/nerdtree'
-" {{{
-abbrev nt NERDTree
-
-" toggle using ,n
-nmap <silent> <leader>n :NERDTreeToggle<CR>
-
-" open to current file using ,v
-nmap <silent> <leader>v :NERDTreeFind<CR>
-
-" close when opening file
-let NERDTreeQuitOnOpen = 1
-
-" when you delete a file delete its buffer
-let NERDTreeAutoDeleteBuffer = 1
-
-" disable press ? for help
-let NERDTreeMinimalUI = 1
-
-" open when no command line arguments or stdin is passed
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " }}}
 
 " better commenting
@@ -159,37 +138,9 @@ let g:eregex_default_enable = 0
 nnoremap <leader>/ :call eregex#toggle()<CR>
 " }}}
 
-" {{{ filetype stuff
-
-" better python syntax
-Plug 'vim-python/python-syntax', { 'for': 'python' }
+Plug 'sheerun/vim-polyglot'
 " {{{
 let g:python_highlight_all = 1
-" }}}
-
-" aligning text; required for vim-markdown
-Plug 'godlygeek/tabular', { 'for': 'markdown' }
-" markdown syntax
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
-
-" json syntax
-Plug 'elzr/vim-json', { 'for': 'json' }
-" {{{
-" don't hide quotes
-let g:vim_json_syntax_conceal = 0
-" }}}
-
-" typescript syntax
-Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-
-" jsx/tsx
-Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['typescriptreact', 'javascriptreact'] }
-
-" TeX
-Plug 'lervag/vimtex', { 'for': 'tex' }
-" {{{
-let g:tex_flavor = 'latex'
-let g:vimtex_view_method = 'skim'
 " }}}
 
 " }}}

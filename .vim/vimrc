@@ -1,3 +1,4 @@
+set nocompatible
 set encoding=utf-8
 
 " have to do this now so mappings work
@@ -11,18 +12,7 @@ filetype plugin indent on
 
 syntax on
 
-" set font if in a gui
-if has('gui_running')
-    if has('gui_gtk2')
-        set guifont=Inconsolata\ 11
-    elseif has('gui_macvim')
-        set guifont=SF\ Mono\ Powerline:h11
-    elseif has('gui_win32')
-        set guifont=SF\ Mono\ Powerline:h11:cANSI:qCLEARTYPE
-    endif
-
-    set lines=50 columns=105
-endif
+set mouse=a
 
 " save and load view for each buffer (for persistent cursor position, folds, etc)
 autocmd BufWinEnter *.* silent loadview
@@ -156,7 +146,7 @@ set wildmode=list:longest,full
 set wildignore=*.o,*.obj,*~
 
 " 4 spaces for tabs by default. sw=0 sts=0 means it uses tabstop value
-set tabstop=4 shiftwidth=0 softtabstop=-0 expandtab
+set tabstop=4 shiftwidth=0 softtabstop=0 expandtab
 
 set autoindent
 
