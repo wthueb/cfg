@@ -2,8 +2,6 @@
 
 export CLICOLOR=1
 
-[[ -f ~/.dir_colors ]] && eval $(dircolors ~/.dir_colors)
-
 export FZF_DEFAULT_COMMAND='fd --type f'
 
 # nord theme https://github.com/ianchesal/nord-fzf
@@ -44,6 +42,8 @@ export PATH
 [[ -f ~/.customprofile ]] && source ~/.customprofile
 
 [[ -f ~/.bashrc ]] && source ~/.bashrc
+
+[[ -f ~/.dir_colors ]] && eval $(dircolors ~/.dir_colors)
 
 if [[ -f ~/.iterm2/it2check ]]; then
     PATH="/usr/bin:/bin:/usr/sbin:/sbin" ~/.iterm2/it2check
