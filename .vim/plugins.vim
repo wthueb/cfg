@@ -36,10 +36,11 @@ function! s:check_back_space() abort
     return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-inoremap <silent><expr> <tab>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<tab>" :
-    \ coc#refresh()
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <TAB>
+        \ coc#pum#visible() ? coc#pum#confirm() :
+        \ <SID>check_back_space() ? "\<tab>" :
+        \ coc#refresh()
 
 " formatting
 nmap <leader>f <Plug>(coc-format)
