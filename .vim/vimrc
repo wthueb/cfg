@@ -35,22 +35,22 @@ set shortmess+=A
 so ~/.vim/bindings.vim
 
 " {{{ coc stuff
-call coc#config('coc.preferences', {
-            \ 'extensionUpdateCheck': 'daily',
-            \})
-call coc#config('python.linting', {
-            \ 'enabled': v:true,
-            \ 'pylintEnabled': v:false,
-            \ 'flake8Enabled': v:true,
-            \ 'flake8Args': ['--max-line-length=88', '--exclude=.git,__pycache__,env,build,dist', '--extend-ignore=E203'],
-            \})
+call coc#config('coc.preferences', { 'extensionUpdateCheck': 'daily' })
 call coc#config('python.formatting', {
-            \ 'provider': 'black',
-            \ 'blackArgs': ['--preview'],
-            \})
-call coc#config('clangd.arguments', [
-            \ '-fallback-style=Microsoft'
-            \])
+                \   'provider': 'black',
+                \   'blackArgs': ['--preview'] })
+call coc#config('python.linting', {
+                \   'enabled': v:true,
+                \   'pylintEnabled': v:false,
+                \   'flake8Enabled': v:true,
+                \   'flake8Args': [
+                    \   '--max-line-length=88',
+                    \   '--exclude=.git,__pycache__,env,build,dist',
+                    \   '--extend-ignore=E203' ] })
+call coc#config('pyright.inlayHints', {
+                \   'variableTypes': v:false,
+                \   'functionReturnTypes': v:false })
+call coc#config('clangd.arguments', [ '-fallback-style=Microsoft' ])
 " }}}
 
 " {{{ colorscheme stuff (dracula)
