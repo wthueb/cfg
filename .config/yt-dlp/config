@@ -1,0 +1,5 @@
+-S "res:1080"
+--merge-output-format mkv
+--restrict-filenames
+-o "%(title)S.%(upload_date>%Y)s.%(height)sp.%(ext)s"
+--exec "$HOME/code/wi1-bot/env/bin/transcode-item"
