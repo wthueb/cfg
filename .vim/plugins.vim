@@ -51,6 +51,9 @@ nmap <leader>s <Plug>(coc-rename)
 nmap <leader>ac <Plug>(coc-codeaction)
 nmap <leader>qf <Plug>(coc-fix-current)
 
+nmap <silent> gq <Plug>(coc-diagnostic-prev)
+nmap <silent> ge <Plug>(coc-diagnostic-next)
+
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
