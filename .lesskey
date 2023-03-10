@@ -3,5 +3,13 @@ j forw-line
 k back-line
 l right-scroll
 h left-scroll
-n forw-scroll
-b back-scroll
+
+/ forw-search
+? back-search
+n repeat-search
+N reverse-search
+
+f forw-screen
+b back-screen
+d forw-scroll
+u back-scroll
