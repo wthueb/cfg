@@ -84,7 +84,7 @@ let g:airline_theme = 'nord'
 " }}}
 
 " fuzzy file finder
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf'
 " {{{
 nmap <C-p> :FZF<CR>
 " }}}
