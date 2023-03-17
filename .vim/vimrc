@@ -46,7 +46,8 @@ call coc#config('python.linting', {
                 \   'flake8Args': [
                     \   '--max-line-length=88',
                     \   '--exclude=.git,__pycache__,env,build,dist',
-                    \   '--extend-ignore=E203' ] })
+                    \   '--extend-ignore=E203' ],
+                \   'mypyEnabled': v:true })
 call coc#config('pyright.inlayHints', {
                 \   'variableTypes': v:false,
                 \   'functionReturnTypes': v:false })
