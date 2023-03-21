@@ -42,8 +42,6 @@ export PATH
 
 [[ -f ~/.customprofile ]] && source ~/.customprofile
 
-[[ -f ~/.bashrc ]] && source ~/.bashrc
-
 [[ -f ~/.dir_colors ]] && eval $(dircolors ~/.dir_colors)
 
 if [[ -f ~/.iterm2/it2check ]]; then
@@ -58,5 +56,8 @@ fi
 [[ -f /etc/bash_completion ]] && source /etc/bash_completion
 [[ -f /opt/homebrew/etc/bash_completion ]] && source /opt/homebrew/etc/bash_completion
 
+[[ -f ~/.bashrc ]] && source ~/.bashrc
+
 # this is stupid but it's to set the last status to 0
 true
+
