@@ -1,7 +1,6 @@
 set nocompatible
 set encoding=utf-8
 
-" have to do this now so mappings work
 let mapleader = ','
 let maplocalleader = '='
 
@@ -11,8 +10,6 @@ so ~/.vim/plugins.vim
 filetype plugin indent on
 
 syntax on
-
-set mouse=a
 
 " save and load view for each buffer (for persistent cursor position, folds, etc)
 autocmd BufWinEnter *.* silent loadview
@@ -86,7 +83,7 @@ augroup END
 
 " need cursor line for colored current line number
 set cursorline
-hi! CursorLine cterm=NONE ctermfg=NONE ctermbg=NONE guifg=NONE guibg=NONE
+"hi! CursorLine cterm=NONE ctermfg=NONE ctermbg=NONE guifg=NONE guibg=NONE
 
 " have 5 lines above/below the cursor at all times if possible
 set scrolloff=5

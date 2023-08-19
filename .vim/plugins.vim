@@ -17,7 +17,6 @@ Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 let g:coc_node_path = trim(system('which node'))
 
 let g:coc_global_extensions = [
-    \ 'coc-clangd',
     \ 'coc-css',
     \ 'coc-html',
     \ 'coc-json',
@@ -26,7 +25,6 @@ let g:coc_global_extensions = [
     \ 'coc-sh',
     \ 'coc-tsserver',
     \ 'coc-vimlsp',
-    \ 'coc-vimtex',
     \ 'coc-yaml',
     \]
 
