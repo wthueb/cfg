@@ -22,6 +22,11 @@ alias logf='journalctl --output=cat -fu'
 
 alias vi='vim'
 
+if command -v nvim &> /dev/null; then
+    alias vi='nvim'
+    alias vim='nvim'
+fi
+
 alias grep='grep -PI --color=auto'
 alias grepr='grep -PIr --exclude-dir=env --exclude-dir=.git --color=auto'
 
