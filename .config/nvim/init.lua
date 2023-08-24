@@ -51,3 +51,5 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = "python",
     command = [[setlocal colorcolumn=88]]
 })
+
+keys.map("n", ",.", ":nohl<CR>", "Remove highlighting")
