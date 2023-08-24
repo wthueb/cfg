@@ -19,6 +19,31 @@ return {
 
             local map = require("keys").map
 
+            -- returns true if we're on the beginning of the line
+            -- or the character prior to the cursor is a space/tab
+            local function should_indent()
+                local col = vim.fn.col(".") - 1
+                return col == 0 or vim.fn.getline("."):sub(col, col):match("%s") ~= nil
+            end
+
+            local opts = { silent = true, remap = false, expr = true }
+
+            vim.keymap.set("i", "<Tab>", function()
+                if vim.fn['coc#pum#visible']() == 1 then
+                    return vim.fn['coc#pum#confirm']()
+                end
+                if should_indent() then
+                    return "<Tab>"
+                end
+                return vim.fn['coc#refresh']()
+            end, opts)
+            vim.keymap.set("i", "<CR>", function()
+                if vim.fn['coc#pum#visible']() == 1 then
+                    return vim.fn['coc#pum#confirm']();
+                end
+                return "<CR>"
+            end, opts)
+
             map("n", "<leader>f", "<Plug>(coc-format)", "Format current file")
             map("v", "<leader>f", "<Plug>(coc-format-selected)", "Format selection")
 
