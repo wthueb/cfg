@@ -197,23 +197,3 @@ function venv()
 
     activate $@
 }
-
-function vim-upgrade()
-{
-    # TODO: print vim-plug logs to stdout?
-
-    echo '> vim +PlugUpgrade +qa!'
-    vim +PlugUpgrade +qa!
-
-    echo '> vim +PlugInstall +qa!'
-    vim +PlugInstall +qa!
-
-    echo '> vim +PlugUpdate +qa!'
-    vim +PlugUpdate +qa!
-
-    echo '> vim +PluginClean! +qa!'
-    vim +PlugClean! +qa!
-
-    echo '> vim +CocUpdateSync +qa!'
-    vim +CocUpdateSync +qa!
-}

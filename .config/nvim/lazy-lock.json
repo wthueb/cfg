@@ -1,7 +1,7 @@
 {
   "bufferline.nvim": { "branch": "main", "commit": "243893ba9d5d1049dd451a25cab32ec7f8f67bcf" },
   "coc.nvim": { "branch": "master", "commit": "0a2c8b84474593a55090b1c4b565ff395cbe3bfe" },
-  "lazy.nvim": { "branch": "main", "commit": "dac844ed617dda4f9ec85eb88e9629ad2add5e05" },
+  "lazy.nvim": { "branch": "main", "commit": "3ad55ae678876516156cca2f361c51f7952a924b" },
   "nord.nvim": { "branch": "master", "commit": "fab04b2dd4b64f4b1763b9250a8824d0b5194b8f" },
   "nvim-treesitter": { "branch": "master", "commit": "ceaea55e0ce5c62368af823d37afde1c067324ef" },
   "nvim-treesitter-textobjects": { "branch": "master", "commit": "56272167a6dead91c47c02dbdbfe1ae5643c59f5" },
