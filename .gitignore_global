@@ -37,7 +37,6 @@ node_modules/
 *.db
 
 # vim stuff
-coc-settings.json
 compile_commands.json
 *.swp
 *.swo

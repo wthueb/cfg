@@ -52,6 +52,29 @@ return {
             map("n", "gd", "<Plug>(coc-definition)", "Go to definition")
             map("n", "gi", "<Plug>(coc-implemention)", "Go to implementation")
             map("n", "gr", "<Plug>(coc-references)", "See references")
+
+            map("n", "[e", "<Plug>(coc-diagnostic-prev)", "Go to previous diagnostic")
+            map("n", "]e", "<Plug>(coc-diagnostic-next)", "Go to next diagnostic")
+
+            map("n", "K", function()
+                local cw = vim.fn.expand('<cword>')
+                if vim.fn.index({ 'vim', 'help' }, vim.bo.filetype) >= 0 then
+                    vim.api.nvim_command('h ' .. cw)
+                elseif vim.api.nvim_eval('coc#rpc#ready()') then
+                    vim.fn.CocActionAsync('doHover')
+                else
+                    vim.api.nvim_command('!' .. vim.o.keywordprg .. ' ' .. cw)
+                end
+            end, "Show docs of symbol")
+
+            -- scroll floating windows
+            opts = { silent = true, nowait = true, expr = true }
+            vim.keymap.set("n", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', opts)
+            vim.keymap.set("n", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
+            vim.keymap.set("i", "<C-f>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', opts)
+            vim.keymap.set("i", "<C-b>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', opts)
+            vim.keymap.set("v", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', opts)
+            vim.keymap.set("v", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
         end
     }
 }
