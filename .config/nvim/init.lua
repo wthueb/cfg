@@ -52,4 +52,7 @@ vim.api.nvim_create_autocmd("FileType", {
     command = [[setlocal colorcolumn=88]]
 })
 
-keys.map("n", ",.", ":nohl<CR>", "Remove highlighting")
+keys.map("i", "kj", "<Esc>", "Exit insert mode")
+keys.map("c", "kj", "<C-c>", "Exit command mode")
+keys.map("n", "<leader>.", ":nohl<CR>", "Remove highlighting")
+keys.map("n", "<leader><leader>", ":w<CR>:sus<CR>", "Write file and suspend")

@@ -28,30 +28,6 @@ endif
 " make swap files less annoying, use :recover to actually recover
 set shortmess+=A
 
-" custom key bindings
-so ~/.vim/bindings.vim
-
-" {{{ coc stuff
-call coc#config('coc.preferences', { 'extensionUpdateCheck': 'daily' })
-call coc#config('python.formatting', {
-                \   'provider': 'black',
-                \   'blackArgs': ['--preview'] })
-call coc#config('python.linting', {
-                \   'enabled': v:true,
-                \   'pylintEnabled': v:false,
-                \   'flake8Enabled': v:true,
-                \   'flake8Args': [
-                    \   '--max-line-length=88',
-                    \   '--exclude=.git,__pycache__,env,build,dist',
-                    \   '--extend-ignore=E203' ],
-                \   'mypyEnabled': v:true })
-call coc#config('pyright.inlayHints', {
-                \   'variableTypes': v:false,
-                \   'functionReturnTypes': v:false })
-call coc#config('clangd.arguments', [ '-fallback-style=Microsoft' ])
-" }}}
-
-" {{{ colorscheme stuff (dracula)
 if has('termguicolors')
     set termguicolors
 endif
@@ -65,21 +41,12 @@ let c_comment_strings = 1
 
 " colorscheme dracula
 colorscheme nord
-" }}}
-
-" {{{ settings
 
 " flash screen instead of making noise
 set visualbell
 
 " show hybrid line numbers
 set number
-
-augroup numbertoggle
-    autocmd!
-    autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != 'i' | set rnu | endif
-    autocmd BufLeave,FocusLost,InsertEnter,WinLeave * if &nu | set nornu | endif
-augroup END
 
 " need cursor line for colored current line number
 set cursorline
@@ -156,44 +123,24 @@ endif
 set list
 set listchars=tab:>·,trail:·,nbsp:·
 
-" highlight column to suggest making a new line
-autocmd FileType python setlocal colorcolumn=88
+inoremap <silent> kj <Esc>
+cnoremap <silent> kj <C-c>
 
-set colorcolumn=100
-hi ColorColumn ctermbg=darkgray
+" C-hjkl for left/down/up/right in insert and command mode
+inoremap <silent> <C-h> <Left>
+inoremap <silent> <C-j> <Down>
+inoremap <silent> <C-k> <Up>
+inoremap <silent> <C-l> <Right>
+cnoremap <silent> <C-h> <Left>
+cnoremap <silent> <C-j> <Down>
+cnoremap <silent> <C-k> <Up>
+cnoremap <silent> <C-l> <Right>
 
-" fold manually
-set foldmethod=marker
-" folds disabled by default, toggle with zi
-set nofoldenable
+nnoremap <leader><leader> :w<CR>:sus<CR>
 
-hi! link Folded DraculaOrange
+" get rid of highlighting
+nnoremap <silent> <leader>. :nohl<CR>
 
-autocmd Syntax * hi! link FoldMarker DraculaOrange
-autocmd Syntax * call matchadd('FoldMarker', '{{{\|}}}')
-
-" }}}
-
-" {{{ filetype specific settings
-
-" make and asm are archaic and insist on tab characters instead of spaces
-autocmd FileType make set tabstop=4 shiftwidth=0 softtabstop=0 noexpandtab
-autocmd FileType asm set tabstop=4 shiftwidth=0 softtabstop=0 noexpandtab syntax=nasm
-
-autocmd FileType css set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
-autocmd FileType html set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
-autocmd FileType javascript set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
-autocmd FileType typescript set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
-autocmd FileType typescriptreact set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
-autocmd FileType json set tabstop=2 shiftwidth=0 softtabstop=0 expandtab
-
-" disable colorcolumn and enable wrapping for tex files
-autocmd FileType tex setlocal colorcolumn= wrap spell
-
-" enable spellcheck in markdown files
-autocmd FileType markdown setlocal spell
-
-" enable spellcheck in git commit messages
-autocmd FileType gitcommit setlocal spell
-
-" }}}
+" buffers
+nnoremap ;; :bp<CR>
+nnoremap ;d :bd<CR>
