@@ -197,3 +197,8 @@ function venv()
 
     activate $@
 }
+
+function vim-upgrade()
+{
+    nvim --headless "+Lazy! sync" +qa
+}
