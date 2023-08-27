@@ -1,5 +1,3 @@
-local keys = require("keys")
-
 vim.g.mapleader = ","
 vim.g.maplocalleader = ","
 
@@ -52,7 +50,12 @@ vim.api.nvim_create_autocmd("FileType", {
     command = [[setlocal colorcolumn=88]]
 })
 
-keys.map("i", "kj", "<Esc>", "Exit insert mode")
-keys.map("c", "kj", "<C-c>", "Exit command mode")
-keys.map("n", "<leader>.", ":nohl<CR>", "Remove highlighting")
-keys.map("n", "<leader><leader>", ":w<CR>:sus<CR>", "Write file and suspend")
+vim.keymap.set("i", "kj", "<Esc>", { silent = true, desc = "Exit insert mode" })
+vim.keymap.set("c", "kj", "<C-c>", { silent = true, desc = "Exit command mode" })
+
+require("which-key").register({
+    ["<leader>"] = {
+        ["."] = { ":nohl<CR>", "Remove highlighting" },
+        ["<leader>"] = { ":w<CR>:sus<CR>", "Write file and suspend" }
+    }
+})

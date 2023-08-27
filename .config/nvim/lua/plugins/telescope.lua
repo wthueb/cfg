@@ -1,43 +1,40 @@
 return {
-    {
-        "nvim-telescope/telescope.nvim",
-        branch = "0.1.x",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            { "nvim-telescope/telescope-fzf-native.nvim", build = "make", cond = vim.fn.executable("make") == 1 },
-        },
-        config = function()
-            require("telescope").setup({
-                defaults = {
-                    mappings = {
-                        i = {
-                            ["<C-u>"] = false,
-                            ["<C-d>"] = false,
-                        },
+    "nvim-telescope/telescope.nvim",
+    branch = "0.1.x",
+    dependencies = {
+        "nvim-lua/plenary.nvim",
+        { "nvim-telescope/telescope-fzf-native.nvim", build = "make", cond = vim.fn.executable("make") == 1 },
+    },
+    config = function()
+        require("telescope").setup({
+            defaults = {
+                mappings = {
+                    i = {
+                        ["<C-u>"] = false,
+                        ["<C-d>"] = false,
                     },
                 },
-            })
+            },
+        })
 
-            -- Enable telescope fzf native, if installed
-            pcall(require("telescope").load_extension, "fzf")
+        -- Enable telescope fzf native, if installed
+        pcall(require("telescope").load_extension, "fzf")
 
-            local map = require("keys").map
-            map("n", "<leader><space>", require("telescope.builtin").buffers, "Open buffers")
-            map("n", "<leader>/", function()
-                require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-                    winblend = 10,
-                    previewer = false,
-                }))
-            end, "Search in current buffer")
-
-            map("n", "<leader>sr", require("telescope.builtin").oldfiles, "Recently opened")
-            map("n", "<leader>sf", require("telescope.builtin").find_files, "Files")
-            map("n", "<leader>sh", require("telescope.builtin").help_tags, "Help")
-            map("n", "<leader>sw", require("telescope.builtin").grep_string, "Current word")
-            map("n", "<leader>sg", require("telescope.builtin").live_grep, "Grep")
-            map("n", "<leader>sd", require("telescope.builtin").diagnostics, "Diagnostics")
-
-            map("n", "<C-p>", require("telescope.builtin").keymaps, "Search keymaps")
-        end,
-    },
+        require("which-key").register({
+            ["<leader>"] = {
+                ["<space>"] = { "<cmd>Telescope buffers<CR>", "Telescope open buffers" },
+                ["/"] = { "<cmd>Telescope current_buffer_fuzzy_find<CR>", "Telescope in current buffer" },
+                s = {
+                    name = "Telescope",
+                    r = { "<cmd>Telescope oldfiles<CR>", "Recently opened" },
+                    f = { "<cmd>Telescope find_files<CR>", "Files" },
+                    h = { "<cmd>Telescope help_tags<CR>", "Help" },
+                    w = { "<cmd>Telescope grep_string<CR>", "Current word" },
+                    g = { "<cmd>Telescope live_grep<CR>", "Grep" },
+                    d = { "<cmd>Telescope diagnostics<CR>", "Diagnostics" },
+                }
+            },
+            ["<C-p>"] = { "<cmd>Telescope keymaps<CR>", "Telescope keymaps" },
+        })
+    end
 }

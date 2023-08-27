@@ -13,12 +13,10 @@
 -- m{        Move to the previous bookmark having the same type as the bookmark under the cursor. Works across buffers.
 -- dm=       Delete the bookmark under the cursor.
 return {
-    {
-        "chentoast/marks.nvim",
-        config = function()
-            require("marks").setup({
-                default_mappings = true
-            })
-        end
-    }
+    "chentoast/marks.nvim",
+    config = function()
+        require("marks").setup({
+            default_mappings = true
+        })
+    end
 }
