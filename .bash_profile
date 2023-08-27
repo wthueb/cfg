@@ -18,9 +18,6 @@ export LANG='en_US.UTF-8'
 # sort uppercase before lowercase with ls command
 export LC_COLLATE='C'
 
-export EDITOR=vim
-export VISUAL=vim
-
 export PAGER='less -RF'
 
 if [[ -f /opt/homebrew/bin/brew ]]; then
@@ -41,6 +38,14 @@ fi
 export PATH
 
 [[ -f ~/.customprofile ]] && source ~/.customprofile
+
+if command -v nvim > /dev/null; then
+    export EDITOR=nvim
+    export VISUAL=nvim
+else
+    export EDITOR=vim
+    export VISUAL=vim
+fi
 
 [[ -f ~/.dir_colors ]] && eval $(dircolors ~/.dir_colors)
 
