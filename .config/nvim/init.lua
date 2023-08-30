@@ -57,5 +57,6 @@ require("which-key").register({
     ["<leader>"] = {
         ["."] = { ":nohl<CR>", "Remove highlighting" },
         ["<leader>"] = { ":w<CR>:sus<CR>", "Write file and suspend" }
-    }
+    },
+    [" y"] = { '"+y', "Yank to system clipboard" }
 })

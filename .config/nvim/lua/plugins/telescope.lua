@@ -7,14 +7,15 @@ return {
     },
     config = function()
         require("telescope").setup({
-            defaults = {
-                mappings = {
-                    i = {
-                        ["<C-u>"] = false,
-                        ["<C-d>"] = false,
-                    },
-                },
-            },
+            pickers = {
+                find_files = {
+                    find_command = {
+                        "fd",
+                        "--type", "f",
+                        "--hidden",
+                    }
+                }
+            }
         })
 
         -- Enable telescope fzf native, if installed
@@ -27,7 +28,7 @@ return {
                 s = {
                     name = "Telescope",
                     r = { "<cmd>Telescope oldfiles<CR>", "Recently opened" },
-                    f = { "<cmd>Telescope find_files<CR>", "Files" },
+                    f = { "<cmd>Telescope find_files hidden=true<CR>", "Files" },
                     h = { "<cmd>Telescope help_tags<CR>", "Help" },
                     w = { "<cmd>Telescope grep_string<CR>", "Current word" },
                     g = { "<cmd>Telescope live_grep<CR>", "Grep" },
