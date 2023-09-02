@@ -8,7 +8,8 @@ require("plugin-manager")
 vim.opt.visualbell = true
 
 vim.opt.number = true
-vim.opt.signcolumn = "number"
+vim.opt.relativenumber = true
+vim.opt.signcolumn = "yes:1"
 vim.opt.cursorline = true
 
 -- have 5 lines above/below the cursor at all times if possible

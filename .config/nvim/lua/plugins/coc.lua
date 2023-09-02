@@ -10,6 +10,7 @@ return {
             "coc-json",
             "coc-lua",
             "coc-pyright",
+            "coc-rust-analyzer",
             "coc-sh",
             "coc-tsserver",
             "coc-vimlsp",

@@ -36,6 +36,12 @@ if [[ -d $PYENV_ROOT ]]; then
     eval $(pyenv init --path)
 fi
 
+[[ -f ~/.cargo/env ]] && source ~/.cargo/env
+if command -v rustup > /dev/null; then
+    source <(rustup completions bash)
+    source <(rustup completions bash cargo)
+fi
+
 export PATH
 
 [[ -f ~/.customprofile ]] && source ~/.customprofile
@@ -66,4 +72,3 @@ fi
 
 # this is stupid but it's to set the last status to 0
 true
-
