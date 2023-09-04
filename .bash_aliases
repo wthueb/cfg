@@ -53,7 +53,7 @@ if command -v batcat &> /dev/null; then
 fi
 
 if command -v bat &> /dev/null; then
-    alias cat='bat'
+    alias cat='bat --paging=never'
 fi
 
 # $OS is set in .bashrc

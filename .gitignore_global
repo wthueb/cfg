@@ -32,9 +32,10 @@ node_modules/
 *.zip
 
 # databases
-*.sql
 *.sqlite
 *.db
+*.db-shm
+*.db-wal
 
 # vim stuff
 compile_commands.json

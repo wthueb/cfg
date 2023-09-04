@@ -5,7 +5,7 @@
 shopt -s histappend
 
 # don't put duplicate lines or lines starting with space in the history
-HISTCONTROL=ignoreboth
+#HISTCONTROL=ignoreboth
 
 HISTSIZE=
 HISTFILESIZE=100000000

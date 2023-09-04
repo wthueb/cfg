@@ -87,11 +87,9 @@ hs.hotkey.bind(hyper_key, 'p', function()
     end
 end):enable()
 
-require('applications')
 require('arrows')
 require('hyper')
 require('spotify')
 require('wifi')
-require('windows')
 
 hs.notify.new({title='hammerspoon', informativeText='initialized'}):send()
