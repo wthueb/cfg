@@ -122,8 +122,6 @@ lctrl + alt - e : yabai -m space --balance
 alt - r         : yabai -m space --rotate 270
 shift + alt - r : yabai -m space --rotate 90
 
-shift + alt - space : yabai -m window --toggle float
-
 alt - f : yabai -m window --toggle zoom-fullscreen
 
 alt - e : yabai -m window --toggle split
@@ -132,6 +130,6 @@ modify_window < s : yabai -m window --toggle sticky ; skhd -k 'escape'
 modify_window < t : yabai -m window --toggle topmost ; skhd -k 'escape'
 modify_window < f : yabai -m window --toggle float ; skhd -k 'escape'
 
-open_app < m : ~/.config/skhd/scripts/activate_or_open_app.sh 'Messages' ; skhd -k 'escape'
 open_app < t : ~/.config/skhd/scripts/activate_or_open_app.sh 'Kitty' ; skhd -k 'escape'
+open_app < m : ~/.config/skhd/scripts/activate_or_open_app.sh 'Messages' ; skhd -k 'escape'
 open_app < c : ~/.config/skhd/scripts/activate_or_open_app.sh 'Google Chrome' ; skhd -k 'escape'

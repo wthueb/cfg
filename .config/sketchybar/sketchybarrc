@@ -59,6 +59,8 @@ source "$ITEM_DIR/apple.sh"
 source "$ITEM_DIR/spaces.sh"
 source "$ITEM_DIR/title.sh"
 
+source "$ITEM_DIR/skhd_status.sh"
+
 # right
 source "$ITEM_DIR/calendar.sh"
 source "$ITEM_DIR/battery.sh"
