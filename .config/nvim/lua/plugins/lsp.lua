@@ -33,7 +33,9 @@ return {
 
         vim.api.nvim_create_autocmd("LspAttach", {
             desc = "LSP actions",
-            callback = function()
+            callback = function(event, opts)
+                opts = opts or {}
+
                 whichkey.register({
                     ["<leader>"] = {
                         ["d"] = {
@@ -51,11 +53,11 @@ return {
                         ["i"] = { vim.lsp.buf.implementation, "Go to implementation" },
                         ["r"] = { vim.lsp.buf.references, "Go to references" },
                     },
-                })
+                }, { buffer = opts.buffer })
 
                 whichkey.register({
                     ["<C-h>"] = { vim.lsp.buf.signature_help, "Show signature help" },
-                }, { "i" })
+                }, { mode = "i", buffer = opts.buffer })
             end
         })
 
