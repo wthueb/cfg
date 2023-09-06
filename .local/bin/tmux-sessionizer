@@ -3,14 +3,20 @@
 # based on
 # https://github.com/ThePrimeagen/.dotfiles/blob/602019e902634188ab06ea31251c01c1a43d1621/bin/.local/scripts/tmux-sessionizer
 
+dirs=(
+    ~/code
+    ~/.config
+    ~/
+)
+
 selected=$1
 
 if [[ -z $selected ]]; then
-    selected=$(find ~/code -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$(find ${dirs[@]} -mindepth 1 -maxdepth 1 -type d | fzf)
     [[ -z $selected ]] && exit 0
 fi
 
-name=$(basename $selected | tr . -)
+name=$(basename $selected | tr . _)
 
 # tmux isn't running, start it up and hop in
 if [[ -z $(pgrep tmux) ]]; then
