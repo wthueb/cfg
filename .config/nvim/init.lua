@@ -46,6 +46,12 @@ vim.opt.listchars = "tab:>·,trail:·,nbsp:·"
 
 vim.opt.colorcolumn = "100"
 
+vim.opt.updatetime = 50
+
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.undofile = true
+
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "python",
     command = [[setlocal colorcolumn=88]]
