@@ -87,7 +87,7 @@ hs.hotkey.bind(hyper_key, 'p', function()
     end
 end):enable()
 
-require('arrows')
+--require('arrows')
 require('hyper')
 require('spotify')
 require('wifi')
