@@ -147,3 +147,5 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 if command -v ng &> /dev/null; then
     source <(ng completion script)
 fi
+
+bind -f ~/.inputrc

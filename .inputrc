@@ -1,5 +1,7 @@
-# C-g to expand globs
 "\C-g": glob-expand-word
+
+"\C-p": history-search-backward
+"\C-n": history-search-forward
 
 set editing-mode vi
 set keymap vi
