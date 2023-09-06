@@ -132,6 +132,10 @@ _fzf_comprun() {
 
 [[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
 
+if command -v tmux-sessionizer &>/dev/null; then
+    bind -x '"\C-f": tmux-sessionizer'
+fi
+
 export NVM_DIR=~/.nvm
 [[ -f $NVM_DIR/nvm.sh ]] && source $NVM_DIR/nvm.sh
 [[ -f $NVM_DIR/bash_completion ]] && source $NVM_DIR/bash_completion
