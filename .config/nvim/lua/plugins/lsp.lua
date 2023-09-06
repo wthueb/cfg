@@ -29,16 +29,22 @@ return {
         },
     },
     config = function()
+        local whichkey = require("which-key")
+
         vim.api.nvim_create_autocmd("LspAttach", {
             desc = "LSP actions",
-            callback = function(event)
-                require("which-key").register({
+            callback = function()
+                whichkey.register({
                     ["<leader>"] = {
-                        ["f"] = { function() vim.lsp.buf.format() end, "Format current buffer" },
+                        ["d"] = {
+                            ["ca"] = { vim.lsp.buf.code_action, "Apply code action" },
+                            ["d"] = { vim.diagnostic.open_float, "Open diagnostic" },
+                        },
+                        ["f"] = { vim.lsp.buf.format, "Format current buffer" },
                     },
-                    ["K"] = { function() vim.lsp.buf.hover() end, "Show hover information" },
-                    ["[e"] = { vim.diagnostic.goto_prev, "Go to previous diagnostic" },
-                    ["]e"] = { vim.diagnostic.goto_next, "Go to next diagnostic" },
+                    ["K"] = { vim.lsp.buf.hover, "Show hover information" },
+                    ["[d"] = { vim.diagnostic.goto_prev, "Go to previous diagnostic" },
+                    ["]d"] = { vim.diagnostic.goto_next, "Go to next diagnostic" },
                     ["g"] = {
                         ["d"] = { vim.lsp.buf.definition, "Go to definition" },
                         ["D"] = { vim.lsp.buf.declaration, "Go to declaration" },
@@ -46,6 +52,10 @@ return {
                         ["r"] = { vim.lsp.buf.references, "Go to references" },
                     },
                 })
+
+                whichkey.register({
+                    ["<C-h>"] = { vim.lsp.buf.signature_help, "Show signature help" },
+                }, { "i" })
             end
         })
 
