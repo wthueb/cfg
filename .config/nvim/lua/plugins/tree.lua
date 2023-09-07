@@ -11,12 +11,7 @@ return {
 
         require("which-key").register({
             ["<leader>"] = {
-                t = {
-                    name = "Tree",
-                    t = { "<cmd>NvimTreeToggle<CR>", "Toggle" },
-                    r = { "<cmd>NvimTreeRefresh<CR>", "Refresh" },
-                    f = { "<cmd>NvimTreeFindFile<CR>", "Find File" },
-                }
+                t = { vim.cmd.NvimTreeToggle, "Toggle tree" }
             }
         })
     end

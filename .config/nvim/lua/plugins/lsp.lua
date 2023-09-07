@@ -20,7 +20,7 @@ return {
                         "jsonls",
                         "rust_analyzer",
                         "lua_ls",
-                        "pyright",
+                        "pylsp",
                         "tsserver",
                         "yamlls",
                     }
@@ -33,7 +33,7 @@ return {
 
         vim.api.nvim_create_autocmd("LspAttach", {
             desc = "LSP actions",
-            callback = function(event, opts)
+            callback = function(_, opts)
                 opts = opts or {}
 
                 whichkey.register({
@@ -83,6 +83,25 @@ return {
                             [vim.fn.expand("$VIMRUNTIME/lua")] = true,
                             [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
                         },
+                    },
+                },
+            },
+        })
+
+        -- :PylspInstall python-lsp-isort python-lsp-black pylsp-mypy
+        lspconfig.pylsp.setup({
+            settings = {
+                pylsp = {
+                    configurationSources = { "flake8" },
+                    plugins = {
+                        autopep8 = { enabled = false },
+                        black = { enabled = true },
+                        flake8 = { enabled = true },
+                        isort = { enabled = true },
+                        mccabe = { enabled = false },
+                        pycodestyle = { enabled = false },
+                        pyflakes = { enabled = false },
+                        yapf = { enabled = false },
                     },
                 },
             },
