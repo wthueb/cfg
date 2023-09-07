@@ -60,10 +60,27 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.keymap.set("i", "kj", "<Esc>", { silent = true, desc = "Exit insert mode" })
 vim.keymap.set("c", "kj", "<C-c>", { silent = true, desc = "Exit command mode" })
 
-require("which-key").register({
+local whichkey = require("which-key")
+
+whichkey.register({
     ["<leader>"] = {
+        ["<leader>"] = { ":w<CR>:sus<CR>", "Write file and suspend" },
         ["."] = { ":nohl<CR>", "Remove highlighting" },
-        ["<leader>"] = { ":w<CR>:sus<CR>", "Write file and suspend" }
+        ["y"] = { '"+y', "Yank to system clipboard" },
+        ["h"] = { "<cmd>lprev<cr>zz", "Previous loc" },
+        ["l"] = { "<cmd>lnext<cr>zz", "Next loc" },
     },
-    [" y"] = { '"+y', "Yank to system clipboard" }
+    ["J"] = { "mzJ`z:delm z<cr>", "Keep cursor in same place while picking up lines" },
+    ["<C-d>"] = { "<C-d>zz", "Keep cursor in middle while scrolling down" },
+    ["<C-u>"] = { "<C-u>zz", "Keep cursor in middle while scrolling up" },
+    ["n"] = { "nzz", "Keep cursor in middle while searching down" },
+    ["N"] = { "Nzz", "Keep cursor in middle while searching up" },
+    ["<C-f>"] = { "<cmd>silent !tmux neww tmux-sessionizer<cr>", "Open tmux-sessionizer" },
+    ["<C-j>"] = { "<cmd>cprev<cr>zz", "Previous fix" },
+    ["<C-k>"] = { "<cmd>cnext<cr>zz", "Next fix" },
 })
+
+whichkey.register({
+    ["J"] = { ":m '>+1<CR>gv=gv", "Move selection down" },
+    ["K"] = { ":m '<-2<CR>gv=gv", "Move selection up" },
+}, { mode = "v" })
