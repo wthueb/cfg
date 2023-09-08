@@ -68,6 +68,7 @@
     mc = merge --continue
     ms = merge --skip
     pl = pull
+    plno = pull --no-rebase
     plo = pull origin
     plu = pull upstream
     ps = push
@@ -90,8 +91,6 @@
     re = reset
     reh = reset --hard
     rehh = reset --hard HEAD
-    rem = reset --mixed
-    remh = reset --mixed HEAD
     res = reset --soft
     resh = reset --soft HEAD
     rh = reset HEAD
