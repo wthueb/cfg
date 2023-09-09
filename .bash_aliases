@@ -71,7 +71,7 @@ case $OS in
         ;;
 esac
 
-function copy()
+copy()
 {
     read $in
 
@@ -96,21 +96,12 @@ function copy()
     fi
 }
 
-function activate()
-{
-    if [[ $1 ]]; then
-        source $1/bin/activate
-    else
-        source env/bin/activate
-    fi
-}
-
-function calc()
+calc()
 {
     awk "BEGIN { print $* }"
 }
 
-function confirm()
+confirm()
 {
     read -r -p "${1:-are you sure?} [y/n]: " response
 
@@ -119,12 +110,12 @@ function confirm()
     [[ $response =~ ^(yes|y)$ ]]
 }
 
-function mkcd()
+mkcd()
 {
     mkdir -p -- $@ && cd -P -- $@
 }
 
-function newline-prompt()
+newline-prompt()
 {
     if [[ ! -f ~/.bash_options ]]; then
         echo 'full_dir=' > ~/.bash_options
@@ -142,7 +133,7 @@ function newline-prompt()
     fi
 }
 
-function path()
+path()
 {
     if [[ ! -f ~/.bash_options ]]; then
         echo 'full_dir=' > ~/.bash_options
@@ -160,34 +151,16 @@ function path()
     fi
 }
 
-function pclean()
+activate()
 {
-    if ! confirm; then
-        return 1
-    fi
-
-    local count=$(find . -name '__pycache__' 2>/dev/null | wc -l | sed 's/ *//')
-
-    echo "found $count __pycache__ folders"
-
-    if [[ $count > 0 ]]; then
-        find . -name '__pycache__' -print0 2>/dev/null | xargs -0 rm -r
-
-        echo "deleted $count __pycache__ folders"
-    fi
-
-    count=$(find . -name '*.pyc' 2>/dev/null | wc -l | sed 's/ *//')
-
-    echo "found $count *.pyc files"
-
-    if [[ $count > 0 ]]; then
-        find . -name '*.pyc' -delete 2>/dev/null
-
-        echo "deleted $count *.pyc files"
+    if [[ $1 ]]; then
+        source $1/bin/activate
+    else
+        source env/bin/activate
     fi
 }
 
-function venv()
+venv()
 {
     if [[ $1 ]]; then
         python -m venv --upgrade-deps $1
@@ -198,7 +171,19 @@ function venv()
     activate $@
 }
 
-function vim-upgrade()
+vim-upgrade()
 {
     nvim --headless "+Lazy! sync" +qa
+}
+
+addToPath() {
+    if [[ "$PATH" != *"$1"* ]]; then
+        export PATH=$PATH:$1
+    fi
+}
+
+addToPathFront() {
+    if [[ "$PATH" != *"$1"* ]]; then
+        export PATH=$1:$PATH
+    fi
 }
