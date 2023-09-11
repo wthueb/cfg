@@ -6,27 +6,25 @@ return {
             dependencies = {
                 {
                     "williamboman/mason.nvim",
-                    config = function()
-                        require("mason").setup()
-                    end
+                    opts = {}
                 }
             },
-            config = function()
-                require("mason-lspconfig").setup({
-                    ensure_installed = {
-                        "bashls",
-                        "cssls",
-                        "html",
-                        "jsonls",
-                        "rust_analyzer",
-                        "lua_ls",
-                        "pylsp",
-                        "tsserver",
-                        "yamlls",
-                    }
-                })
-            end
+            opts = {
+                ensure_installed = {
+                    "bashls",
+                    "cssls",
+                    "html",
+                    "jsonls",
+                    "rust_analyzer",
+                    "lua_ls",
+                    "pylsp",
+                    "tsserver",
+                    "yamlls",
+                }
+            },
         },
+        { "j-hui/fidget.nvim", tag = "legacy", opts = {} },
+        "folke/neodev.nvim",
     },
     config = function()
         local whichkey = require("which-key")
