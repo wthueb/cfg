@@ -39,6 +39,8 @@ local config = {
         right = 1,
     },
 
+    launch_menu = {},
+
     colors = {
         tab_bar = {
             background = "#2e3440",
@@ -73,6 +75,8 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
         label = "PowerShell",
         args = { "powershell.exe", "-NoLogo" },
     })
+
+    config.default_prog = { "powershell.exe" }
 
     platform_keys = {
         {
@@ -145,8 +149,19 @@ for _, key_config in pairs(platform_keys) do
     table.insert(config.keys, key_config)
 end
 
+local function basename(s)
+    local base = string.gsub(s, '(.*[/\\])(.*)', '%2')
+    local idx = base:find(".exe")
+
+    if idx == nil then
+        return base
+    end
+
+    return base:sub(0, idx - 1)
+end
+
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-    local process_name = tab.active_pane.title:sub(0, tab.active_pane.title:find(" ") - 1)
+    local process_name = basename(tab.active_pane.foreground_process_name)
     local title = " " .. tab.tab_index .. " > " .. process_name
 
     if (tab.is_active) then

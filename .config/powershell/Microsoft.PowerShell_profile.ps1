@@ -6,7 +6,7 @@ Set-Alias l ls
 function l { ls $args }
 function ll { ls -l $args }
 
-Set-Alias cat bat
+Set-Alias -Name cat -Value bat -Option AllScope
 Set-Alias p python
 Set-Alias vim nvim
 
