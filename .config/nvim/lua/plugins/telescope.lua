@@ -13,6 +13,7 @@ return {
                         "fd",
                         "--type", "f",
                         "--hidden",
+                        "--exclude", ".git",
                     }
                 }
             }
