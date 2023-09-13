@@ -73,10 +73,10 @@ local platform_keys = {}
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
     table.insert(config.launch_menu, {
         label = "PowerShell",
-        args = { "powershell.exe", "-NoLogo" },
+        args = { "pwsh.exe" },
     })
 
-    config.default_prog = { "powershell.exe" }
+    config.default_prog = { "pwsh.exe" }
 
     platform_keys = {
         {
