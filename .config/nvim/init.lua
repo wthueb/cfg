@@ -76,8 +76,6 @@ whichkey.register({
     ["n"] = { "nzz", "Keep cursor in middle while searching down" },
     ["N"] = { "Nzz", "Keep cursor in middle while searching up" },
     ["<C-f>"] = { "<cmd>silent !tmux neww tmux-sessionizer<cr>", "Open tmux-sessionizer" },
-    ["<C-j>"] = { "<cmd>cprev<cr>zz", "Previous fix" },
-    ["<C-k>"] = { "<cmd>cnext<cr>zz", "Next fix" },
 })
 
 whichkey.register({
