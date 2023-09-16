@@ -6,7 +6,7 @@
 dirs=(
     ~/code
     ~/.config
-    ~/
+    ~
 )
 
 selected=$1

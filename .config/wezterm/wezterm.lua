@@ -1,55 +1,60 @@
 local wezterm = require("wezterm")
 
-local config = {
-    color_scheme = "nord",
+local config = {}
 
-    font = wezterm.font "SauceCodePro Nerd Font",
-    font_size = 15.0,
+if wezterm.config_builder then
+    config = wezterm.config_builder()
+end
 
-    disable_default_key_bindings = true,
+config.color_scheme = "nord"
 
-    audible_bell = "Disabled",
+config.font = wezterm.font "SauceCodePro Nerd Font"
+config.font_size = 15.0
 
-    window_padding = {
-        top = 1,
-        bottom = 1,
-        left = 1,
-        right = 1,
-    },
+config.disable_default_key_bindings = true
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
-    launch_menu = {},
+config.audible_bell = "Disabled"
 
-    skip_close_confirmation_for_processes_named = {},
+config.window_padding = {
+    top = 1,
+    bottom = 1,
+    left = 1,
+    right = 1,
+}
 
-    use_fancy_tab_bar = false,
-    tab_bar_at_bottom = true,
-    tab_max_width = 18,
-    hide_tab_bar_if_only_one_tab = true,
+config.launch_menu = {}
 
-    colors = {
-        tab_bar = {
-            background = "#2e3440",
+config.skip_close_confirmation_for_processes_named = {}
 
-            active_tab = {
-                bg_color = "#81a1c1",
-                fg_color = "#2e3440",
+config.use_fancy_tab_bar = false
+config.tab_bar_at_bottom = true
+config.tab_max_width = 18
+config.hide_tab_bar_if_only_one_tab = true
 
-                intensity = "Bold",
-                underline = "None",
-                italic = false,
-                strikethrough = false,
-            },
+config.colors = {
+    tab_bar = {
+        background = "#2e3440",
 
-            inactive_tab = {
-                bg_color = "#4e5668",
-                fg_color = "#d8dee9",
+        active_tab = {
+            bg_color = "#81a1c1",
+            fg_color = "#2e3440",
 
-                intensity = "Bold",
-                underline = "None",
-                italic = false,
-                strikethrough = false,
-            },
-        }
+            intensity = "Bold",
+            underline = "None",
+            italic = false,
+            strikethrough = false,
+        },
+
+        inactive_tab = {
+            bg_color = "#4e5668",
+            fg_color = "#d8dee9",
+
+            intensity = "Bold",
+            underline = "None",
+            italic = false,
+            strikethrough = false,
+        },
     }
 }
 
