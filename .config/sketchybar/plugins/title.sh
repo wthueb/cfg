@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-WINDOW_TITLE=$(yabai -m query --windows --window | jq -r '.title')
-APP_TITLE=$(yabai -m query --windows --window | jq -r '.app')
+WINDOW_INFO=$(yabai -m query --windows --window)
+
+APP_TITLE=$(echo $WINDOW_INFO | jq -r '.app')
+WINDOW_TITLE=$(echo $WINDOW_INFO | jq -r '.title')
 
 if [[ $WINDOW_TITLE = "" ]]; then
   TITLE=$APP_TITLE
