@@ -41,6 +41,7 @@ return {
                             ["d"] = { vim.diagnostic.open_float, "Open diagnostic" },
                         },
                         ["f"] = { vim.lsp.buf.format, "Format current buffer" },
+                        ["r"] = { vim.lsp.buf.rename, "Rename symbol" },
                     },
                     ["K"] = { vim.lsp.buf.hover, "Show hover information" },
                     ["[d"] = { vim.diagnostic.goto_prev, "Go to previous diagnostic" },
