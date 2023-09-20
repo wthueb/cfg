@@ -28,11 +28,12 @@ export PAGER='less -RF'
 
 PYENV_ROOT="$HOME/.pyenv"
 if [[ -d $PYENV_ROOT ]]; then
-    PATH="$PYENV_ROOT/bin:$PATH"
-    eval $(pyenv init --path)
+    # if pyenv folder exists but command isn't available, it's installed locally
+    command -v pyenv &> /dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
 fi
 
-if command -v rustup > /dev/null; then
+if command -v rustup &> /dev/null; then
     rustup completions zsh > ~/.oh-my-zsh/completions/_rustup
     rustup completions zsh cargo > ~/.oh-my-zsh/completions/_cargo
 fi
