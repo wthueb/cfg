@@ -10,25 +10,26 @@ export NVM_DIR="$HOME/.nvm"
 export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_CTRL_T_COMMAND='fd -H'
 
-# nord theme https://github.com/ianchesal/nord-fzf
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-    --color=fg:#e5e9f0,bg:#3b4252,hl:#81a1c1
-    --color=fg+:#e5e9f0,bg+:#3b4252,hl+:#81a1c1
-    --color=info:#eacb8a,prompt:#bf6069,pointer:#b48dac
-    --color=marker:#a3be8b,spinner:#b48dac,header:#a3be8b'
-export FZF_CTRL_R_OPTS='--scheme=history'
+# nord theme https://www.nordtheme.com/docs/colors-and-palettes
+# fg+ and bg+ are for current line
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS"
+    --color=fg:#d8dee9,bg:#2e3440,hl:#b48ead
+    --color=fg+:#d8dee9,bg+:#434c5e,hl+:#b48ead
+    --color=info:#8fbcbb,prompt:#81a1c1,pointer:#88c0d0
+    --color=marker:#bf616a,spinner:#ebcb8b,header:#a3be8c"
+export FZF_CTRL_R_OPTS="--scheme=history"
 
 export BAT_THEME='Nord'
 
 # colored gcc warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
 
-export LANG='en_US.UTF-8'
+export LANG="en_US.UTF-8"
 
 # sort uppercase before lowercase with ls command
 #export LC_COLLATE='C'
 
-export PAGER='less -RF'
+export PAGER="less -RF"
 
 PYENV_ROOT="$HOME/.pyenv"
 if [[ -d $PYENV_ROOT ]]; then
