@@ -50,7 +50,7 @@ return {
                         ["d"] = { vim.lsp.buf.definition, "Go to definition" },
                         ["D"] = { vim.lsp.buf.declaration, "Go to declaration" },
                         ["i"] = { vim.lsp.buf.implementation, "Go to implementation" },
-                        ["r"] = { vim.lsp.buf.references, "Go to references" },
+                        ["r"] = { function() require("trouble").open("lsp_references") end, "Go to references" },
                     },
                 }, { buffer = opts.buffer })
 
@@ -61,7 +61,7 @@ return {
         })
 
         local lspconfig = require("lspconfig")
-        local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
+        local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
         require("mason-lspconfig").setup_handlers({
             function(server_name)

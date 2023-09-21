@@ -5,6 +5,7 @@ return {
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
+        "petertriho/cmp-git",
         {
             "saadparwaiz1/cmp_luasnip",
             dependencies = {
@@ -19,6 +20,8 @@ return {
         local cmp = require("cmp");
         local luasnip = require("luasnip");
 
+        require("luasnip.loaders.from_vscode").lazy_load()
+
         cmp.setup({
             snippet = {
                 expand = function(args)
@@ -28,12 +31,13 @@ return {
             sources = {
                 { name = "nvim_lsp" },
                 { name = "buffer" },
+                { name = "luasnip" },
             },
             completion = {
                 --completeopt = "menu,menuone",
                 keyword_length = 2
             },
-            mapping = {
+            mapping = cmp.mapping.preset.insert({
                 ["<C-p>"] = cmp.mapping.select_prev_item(),
                 ["<C-n>"] = cmp.mapping.select_next_item(),
                 ["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -55,10 +59,10 @@ return {
                         fallback()
                     end
                 end, { "i", "s" })
-            },
+            }),
         })
 
-        cmp.setup.cmdline("/", {
+        cmp.setup.cmdline({ "/", "?" }, {
             mapping = cmp.mapping.preset.cmdline(),
             sources = {
                 { name = "buffer" }
@@ -71,6 +75,14 @@ return {
                 { name = "path" }
             }, {
                 { name = "cmdline" }
+            })
+        })
+
+        cmp.setup.filetype('gitcommit', {
+            sources = cmp.config.sources({
+                { name = 'git' },
+            }, {
+                { name = 'buffer' },
             })
         })
     end
