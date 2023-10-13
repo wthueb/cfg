@@ -56,7 +56,15 @@ function worktree {
 
     git worktree add $dir $selectedBranch
 
-    set-location -path $dir
+    $webAppDir = join-path -path $dir -childpath "Source\Client\CleverDevices.CleverInsights.Client.WebApp"
+    $checkerAppDir = join-path -path $dir -childpath "Source\Client\CleverDevices.CleverInsights.Client.CheckerApp"
+
+    set-location -path $webAppDir && npm install && npm run build-release
+    set-location -path $checkerAppDir && npm install && npm run build-release
+
+    $srcDir = join-path -path $dir -childpath "Source"
+
+    set-location -path $srcDir
 }
 
 Import-Module PSReadLine
