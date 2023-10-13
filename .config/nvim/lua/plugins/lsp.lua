@@ -27,36 +27,24 @@ return {
         "folke/neodev.nvim",
     },
     config = function()
-        local whichkey = require("which-key")
-
         vim.api.nvim_create_autocmd("LspAttach", {
             desc = "LSP actions",
             callback = function(_, opts)
                 opts = opts or {}
 
-                whichkey.register({
-                    ["<leader>"] = {
-                        ["d"] = {
-                            ["ca"] = { vim.lsp.buf.code_action, "Apply code action" },
-                            ["d"] = { vim.diagnostic.open_float, "Open diagnostic" },
-                        },
-                        ["f"] = { vim.lsp.buf.format, "Format current buffer" },
-                        ["r"] = { vim.lsp.buf.rename, "Rename symbol" },
-                    },
-                    ["K"] = { vim.lsp.buf.hover, "Show hover information" },
-                    ["[d"] = { vim.diagnostic.goto_prev, "Go to previous diagnostic" },
-                    ["]d"] = { vim.diagnostic.goto_next, "Go to next diagnostic" },
-                    ["g"] = {
-                        ["d"] = { vim.lsp.buf.definition, "Go to definition" },
-                        ["D"] = { vim.lsp.buf.declaration, "Go to declaration" },
-                        ["i"] = { vim.lsp.buf.implementation, "Go to implementation" },
-                        ["r"] = { function() require("trouble").open("lsp_references") end, "Go to references" },
-                    },
-                }, { buffer = opts.buffer })
+                vim.keymap.set("n", "<leader>dca", vim.lsp.buf.code_action, { silent = true, desc = "Apply code action", buffer = true })
+                vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, { silent = true, desc = "Open diagnostic", buffer = true })
+                vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { silent = true, desc = "Format current buffer", buffer = true })
+                vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, { silent = true, desc = "Rename symbol", buffer = true })
+                vim.keymap.set("n", "K", vim.lsp.buf.hover, { silent = true, desc = "Show hover", buffer = true })
+                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { silent = true, desc = "Go to previous diagnostic", buffer = true })
+                vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { silent = true, desc = "Go to next diagnostic", buffer = true })
+                vim.keymap.set("n", "gd", vim.lsp.buf.definition, { silent = true, desc = "Go to definition", buffer = true })
+                vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { silent = true, desc = "Go to declartion", buffer = true })
+                vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { silent = true, desc = "Go to implementation", buffer = true })
+                vim.keymap.set("n", "gr", function() require("trouble").open("lsp_references") end, { silent = true, desc = "Go to references", buffer = true })
 
-                whichkey.register({
-                    ["<C-h>"] = { vim.lsp.buf.signature_help, "Show signature help" },
-                }, { mode = "i", buffer = opts.buffer })
+                vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { silent = true, desc = "Show signature help", buffer = true })
             end
         })
 
@@ -74,11 +62,11 @@ return {
         lspconfig.lua_ls.setup({
             on_init = function(client)
                 local path = client.workspace_folders[1].name
-                if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-                    client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
+                if not vim.loop.fs_stat(path .. "/.luarc.json") and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+                    client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
                         Lua = {
                             runtime = {
-                                version = 'LuaJIT'
+                                version = "LuaJIT"
                             },
                             workspace = {
                                 checkThirdParty = false,

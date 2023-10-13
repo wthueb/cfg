@@ -1,14 +1,10 @@
 return {
     "folke/which-key.nvim",
     config = function()
-        local wk = require("which-key")
+        require("which-key").setup()
 
-        wk.setup()
-
-        wk.register({
-            ["<leader>?n"] = { vim.cmd.WhichKey, "Show all normal mode keybindings" },
-            ["<leader>?v"] = { "<cmd>WhichKey '' v<CR>", "Show all visual mode keybindings" },
-            ["<leader>?i"] = { "<cmd>WhichKey '' i<CR>", "Show all insert mode keybindings" },
-        })
+        vim.keymap.set("n", "<leader>?n", "<cmd>WhichKey<CR>", { silent = true, desc = "Show all normal mode keybindings" })
+        vim.keymap.set("n", "<leader>?v", "<cmd>WhichKey '' v<CR>", { silent = true, desc = "Show all visual mode keybindings" })
+        vim.keymap.set("n", "<leader>?i", "<cmd>WhichKey '' i<CR>", { silent = true, desc = "Show all insert mode keybindings" })
     end
 }

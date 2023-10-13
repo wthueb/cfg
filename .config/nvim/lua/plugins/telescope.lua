@@ -7,6 +7,12 @@ return {
     },
     config = function()
         require("telescope").setup({
+            defaults = {
+                mappings = {
+                    n = { ["<C-q>"] = require("trouble.providers.telescope").open_with_trouble },
+                    i = { ["<C-q>"] = require("trouble.providers.telescope").open_with_trouble },
+                },
+            },
             pickers = {
                 find_files = {
                     find_command = {
@@ -22,21 +28,16 @@ return {
         -- Enable telescope fzf native, if installed
         pcall(require("telescope").load_extension, "fzf")
 
-        require("which-key").register({
-            ["<leader>"] = {
-                ["<space>"] = { "<cmd>Telescope buffers<CR>", "Telescope open buffers" },
-                ["/"] = { "<cmd>Telescope current_buffer_fuzzy_find<CR>", "Telescope in current buffer" },
-                s = {
-                    name = "Telescope",
-                    r = { "<cmd>Telescope oldfiles<CR>", "Recently opened" },
-                    f = { "<cmd>Telescope find_files hidden=true<CR>", "Files" },
-                    h = { "<cmd>Telescope help_tags<CR>", "Help" },
-                    w = { "<cmd>Telescope grep_string<CR>", "Current word" },
-                    g = { "<cmd>Telescope live_grep<CR>", "Grep" },
-                    d = { "<cmd>Telescope diagnostics<CR>", "Diagnostics" },
-                }
-            },
-            ["<C-p>"] = { "<cmd>Telescope keymaps<CR>", "Telescope keymaps" },
-        })
+        vim.keymap.set("n", "<leader><space>", "<cmd>Telescope buffers<CR>",
+            { silent = true, desc = "Telescope open buffers" })
+        vim.keymap.set("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<CR>",
+            { silent = true, desc = "Telescope in current buffer" })
+        vim.keymap.set("n", "<leader>sr", "<cmd>Telescope oldfiles<CR>", { silent = true, desc = "Recently opened" })
+        vim.keymap.set("n", "<leader>sf", "<cmd>Telescope find_files hidden=true<CR>", { silent = true, desc = "Files" })
+        vim.keymap.set("n", "<leader>sh", "<cmd>Telescope help_tags<CR>", { silent = true, desc = "Help" })
+        vim.keymap.set("n", "<leader>sw", "<cmd>Telescope grep_string<CR>", { silent = true, desc = "Current word" })
+        vim.keymap.set("n", "<leader>sg", "<cmd>Telescope live_grep<CR>", { silent = true, desc = "Grep" })
+        vim.keymap.set("n", "<leader>sd", "<cmd>Telescope diagnostics<CR>", { silent = true, desc = "Diagnostics" })
+        vim.keymap.set("n", "<C-p>", "<cmd>Telescope keymaps<CR>", { silent = true, desc = "Telescope keymaps" })
     end
 }

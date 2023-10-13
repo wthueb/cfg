@@ -9,10 +9,6 @@ return {
 
         require("nvim-tree").setup({})
 
-        require("which-key").register({
-            ["<leader>"] = {
-                t = { vim.cmd.NvimTreeToggle, "Toggle tree" }
-            }
-        })
+        vim.keymap.set("n", "<leader>t", "<cmd>NvimTreeToggle<CR>", { silent = true, desc = "Toggle tree" })
     end
 }
