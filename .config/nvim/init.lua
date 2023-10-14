@@ -65,8 +65,6 @@ vim.keymap.set("n", "<leader><leader>", ":w<CR>:sus<CR>", { silent = true, desc 
 vim.keymap.set("n", "<leader><leader>", ":w<CR>:sus<CR>", { silent = true, desc = "Write file and suspend" })
 vim.keymap.set("n", "<leader>.", ":nohl<CR>", { silent = true, desc = "Remove highlighting" })
 vim.keymap.set("n", "<leader>y", '"+y', { silent = true, desc = "Yank to system clipboard" })
-vim.keymap.set("n", "<leader>h", "<cmd>lprev<CR>zz", { silent = true, desc = "Previous loc" })
-vim.keymap.set("n", "<leader>l", "<cmd>lnext<CR>zz", { silent = true, desc = "Next loc" })
 
 vim.keymap.set("n", "J", "mzJ`z:delm z<CR>", { silent = true, desc = "Keep cursor in same place while picking up lines" })
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { silent = true, desc = "Keep cursor in middle while scrolling down" })
