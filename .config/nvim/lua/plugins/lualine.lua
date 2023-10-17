@@ -2,14 +2,10 @@ return {
     "nvim-lualine/lualine.nvim",
     opts = {
         options = {
-            icons_enabled = true,
+            icons_enabled = false,
             theme = "nord",
-            component_separators = { left = "", right = "" },
-            section_separators = { left = "", right = "" },
-            disabled_filetypes = {
-                statusline = {},
-                winbar = {},
-            },
+            component_separators = "|",
+            section_separators = '',
             ignore_focus = {},
             always_divide_middle = true,
             globalstatus = false,
