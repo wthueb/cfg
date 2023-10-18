@@ -12,6 +12,22 @@ Set-Alias vim nvim
 
 function config { git --git-dir=$HOME\.cfg --work-tree=$HOME $args }
 
+function start-cins {
+    $dir = git rev-parse --show-toplevel
+
+    if ($?) {
+        $webAppDir = join-path -path $dir -childpath "Source\Client\CleverDevices.CleverInsights.Client.WebApp"
+        $checkerAppDir = join-path -path $dir -childpath "Source\Client\CleverDevices.CleverInsights.Client.CheckerApp"
+
+        push-location $webAppDir && npm install && npm run build-release && pop-location
+        push-location $checkerAppDIr && npm install && npm run build-release && pop-location
+
+        $slnFile = join-path -path $dir -childpath "Source\CleverDevices.CleverInsights.sln"
+
+        start-process $slnFile
+    }
+}
+
 function worktree {
     # hahahahahaha powershell sucks all of this sucks i hate this
     $branches = git branch --all --format='%(refname:short)' | foreach-object { $_ -replace "^origin/" } | select-object -unique
@@ -38,13 +54,8 @@ function worktree {
         return
     }
 
-    $baseDir = git rev-parse --git-dir | resolve-path
-
-    while ((split-path -leaf $baseDir) -ne ".git") {
-        $baseDir = split-path $baseDir -parent
-    }
-
-    $baseDir = split-path $baseDir -parent | split-path -parent
+    $baseDir = git rev-parse --show-toplevel | resolve-path
+    $baseDir = split-path $baseDir -parent
 
     $dir = join-path -path $baseDir -childpath $dir
 
@@ -56,15 +67,9 @@ function worktree {
 
     git worktree add $dir $selectedBranch
 
-    $webAppDir = join-path -path $dir -childpath "Source\Client\CleverDevices.CleverInsights.Client.WebApp"
-    $checkerAppDir = join-path -path $dir -childpath "Source\Client\CleverDevices.CleverInsights.Client.CheckerApp"
+    set-location -path $dir
 
-    set-location -path $webAppDir && npm install && npm run build-release
-    set-location -path $checkerAppDir && npm install && npm run build-release
-
-    $srcDir = join-path -path $dir -childpath "Source"
-
-    set-location -path $srcDir
+    start-cins
 }
 
 Import-Module PSReadLine
