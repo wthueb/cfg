@@ -77,3 +77,5 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move selec
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
 
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>", { silent = true, desc = "Open tmux-sessionizer" })
+
+pcall(require, "custom")
