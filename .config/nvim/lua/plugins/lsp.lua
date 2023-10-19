@@ -72,17 +72,21 @@ return {
             end,
 
             efm = function()
-                local eslint = require("efmls-configs.linters.eslint")
+                local eslintd = require("efmls-configs.linters.eslint_d")
                 local prettierd = require("efmls-configs.formatters.prettier_d")
                 local languages = {
-                    typescript = { eslint, prettierd },
-                    javascript = { eslint, prettierd },
+                    typescript = { eslintd, prettierd },
+                    javascript = { eslintd, prettierd },
                     css = { prettierd },
                     json = { prettierd },
                 }
                 lspconfig.efm.setup {
                     filetypes = vim.tbl_keys(languages),
-                    init_options = { documentFormatting = true, documentRangeFormatting = true },
+
+                    init_options = {
+                        documentFormatting = true,
+                        documentRangeFormatting = true,
+                    },
 
                     settings = {
                         languages = languages
