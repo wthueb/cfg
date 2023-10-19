@@ -113,6 +113,11 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
             key = "k",
             action = wezterm.action.ClearScrollback("ScrollbackAndViewport"),
         },
+        {
+            mods = "CTRL|SHIFT",
+            key = "n",
+            action = wezterm.action.ShowLauncher,
+        },
     }
 elseif wezterm.target_triple == "aarch64-apple-darwin" then
     platform_keys = {
