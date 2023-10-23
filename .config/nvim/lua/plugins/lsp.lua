@@ -31,9 +31,7 @@ return {
     config = function()
         vim.api.nvim_create_autocmd("LspAttach", {
             desc = "LSP actions",
-            callback = function(_, opts)
-                opts = opts or {}
-
+            callback = function()
                 vim.keymap.set("n", "<leader>dca", vim.lsp.buf.code_action,
                     { silent = true, desc = "Apply code action", buffer = true })
                 vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float,
@@ -74,13 +72,17 @@ return {
             efm = function()
                 local eslintd = require("efmls-configs.linters.eslint_d")
                 local prettierd = require("efmls-configs.formatters.prettier_d")
+
                 local languages = {
                     typescript = { eslintd, prettierd },
                     javascript = { eslintd, prettierd },
                     css = { prettierd },
                     json = { prettierd },
                 }
+
                 lspconfig.efm.setup {
+                    capabilities = lsp_capabilities,
+
                     filetypes = vim.tbl_keys(languages),
 
                     init_options = {
@@ -90,12 +92,14 @@ return {
 
                     settings = {
                         languages = languages
-                    }
+                    },
                 }
             end,
 
             lua_ls = function()
                 lspconfig.lua_ls.setup {
+                    capabilities = lsp_capabilities,
+
                     on_init = function(client)
                         local path = client.workspace_folders[1].name
                         if not vim.loop.fs_stat(path .. "/.luarc.json") and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
@@ -121,6 +125,8 @@ return {
             pylsp = function()
                 -- :PylspInstall python-lsp-isort python-lsp-black pylsp-mypy
                 lspconfig.pylsp.setup {
+                    capabilities = lsp_capabilities,
+
                     settings = {
                         pylsp = {
                             configurationSources = { "flake8" },
@@ -141,6 +147,8 @@ return {
 
             rust_analyzer = function()
                 lspconfig.rust_analyzer.setup {
+                    capabilities = lsp_capabilities,
+
                     settings = {
                         ["rust-analyzer"] = {
                             checkOnSave = {
