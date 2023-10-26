@@ -31,15 +31,60 @@ return {
     config = function()
         vim.api.nvim_create_autocmd("LspAttach", {
             desc = "LSP actions",
-            callback = function()
+            callback = function(args)
+                local bufnr = args.buf
+
                 vim.keymap.set("n", "<leader>dca", vim.lsp.buf.code_action,
                     { silent = true, desc = "Apply code action", buffer = true })
                 vim.keymap.set("n", "<leader>dd", vim.diagnostic.open_float,
                     { silent = true, desc = "Open diagnostic", buffer = true })
-                vim.keymap.set("n", "<leader>f", vim.lsp.buf.format,
-                    { silent = true, desc = "Format current buffer", buffer = true })
-                vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename,
-                    { silent = true, desc = "Rename symbol", buffer = true })
+
+                vim.keymap.set("n", "<leader>f",
+                    function()
+                        local formatters = vim.tbl_map(
+                            function(c) return c.name end,
+                            vim.tbl_filter(
+                                function(c) return c.server_capabilities.documentFormattingProvider end,
+                                vim.lsp.get_active_clients({ bufnr = bufnr })))
+
+                        if #formatters == 0 then
+                            return
+                        end
+
+                        if #formatters == 1 then
+                            return vim.lsp.buf.format { name = formatters[1] }
+                        end
+
+                        table.sort(formatters)
+
+                        return vim.ui.select(formatters, {
+                            prompt = "Select formatter",
+                        }, function(choice) vim.lsp.buf.format { name = choice } end)
+                    end, { silent = true, desc = "Format current buffer", buffer = true })
+
+                vim.keymap.set("n", "<leader>r",
+                    function()
+                        local renamers = vim.tbl_map(
+                            function(c) return c.name end,
+                            vim.tbl_filter(
+                                function(c) return c.server_capabilities.renameProvider end,
+                                vim.lsp.get_active_clients({ bufnr = bufnr })))
+
+                        if #renamers == 0 then
+                            return
+                        end
+
+                        if #renamers == 1 then
+                            return vim.lsp.buf.rename(nil, { name = renamers[1] })
+                        end
+
+                        table.sort(renamers)
+
+                        return vim.ui.select(renamers, {
+                            prompt = "Select renamer",
+                        }, function(choice) vim.lsp.buf.rename(nil, { name = choice }) end)
+                    end, { silent = true, desc = "Rename symbol", buffer = true })
+
                 vim.keymap.set("n", "K", vim.lsp.buf.hover, { silent = true, desc = "Show hover", buffer = true })
                 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev,
                     { silent = true, desc = "Go to previous diagnostic", buffer = true })
@@ -76,6 +121,7 @@ return {
                 local languages = {
                     typescript = { eslintd, prettierd },
                     javascript = { eslintd, prettierd },
+                    html = { prettierd },
                     css = { prettierd },
                     json = { prettierd },
                 }
