@@ -1,10 +1,11 @@
 return {
     "hrsh7th/nvim-cmp",
     dependencies = {
-        "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
+        "hrsh7th/cmp-nvim-lua",
+        "hrsh7th/cmp-nvim-lsp",
         "petertriho/cmp-git",
         {
             "saadparwaiz1/cmp_luasnip",
@@ -22,16 +23,19 @@ return {
 
         require("luasnip.loaders.from_vscode").lazy_load()
 
-        cmp.setup({
+        cmp.setup {
             snippet = {
                 expand = function(args)
                     luasnip.lsp_expand(args.body)
                 end,
             },
             sources = {
-                { name = "nvim_lsp" },
-                { name = "buffer" },
-                { name = "luasnip" },
+                { name = "buffer",   priority = 20, keyword_length = 5 },
+                { name = "path",     priority = 30 },
+                { name = "nvim_lua", priority = 80 },
+                { name = "nvim_lsp", priority = 90 },
+                { name = "cmp_git",  priority = 100 },
+                { name = "luasnip",  priority = 10 },
             },
             completion = {
                 --completeopt = "menu,menuone",
@@ -60,30 +64,29 @@ return {
                     end
                 end, { "i", "s" })
             }),
-        })
+        }
 
         cmp.setup.cmdline({ "/", "?" }, {
             mapping = cmp.mapping.preset.cmdline(),
-            sources = {
+            sources = cmp.config.sources {
                 { name = "buffer" }
             }
         })
 
         cmp.setup.cmdline(":", {
             mapping = cmp.mapping.preset.cmdline(),
-            sources = cmp.config.sources({
-                { name = "path" }
-            }, {
-                { name = "cmdline" }
-            })
+            sources = cmp.config.sources {
+                { name = "nvim_lua" },
+                { name = "cmdline" },
+                { name = "path" },
+            }
         })
 
         cmp.setup.filetype('gitcommit', {
-            sources = cmp.config.sources({
+            sources = cmp.config.sources {
                 { name = 'git' },
-            }, {
                 { name = 'buffer' },
-            })
+            }
         })
     end
 }
