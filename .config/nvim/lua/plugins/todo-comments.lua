@@ -24,5 +24,5 @@ return {
                 pattern = [[\b((KEYWORDS)\s*:|\b(todo|unimplemented)!)]],
             },
         })
-    end
+    end,
 }

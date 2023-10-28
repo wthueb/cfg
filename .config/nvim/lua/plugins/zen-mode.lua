@@ -3,8 +3,8 @@ return {
     config = function()
         require("zen-mode").setup({
             window = {
-                width = .6
-            }
+                width = 0.6,
+            },
         })
-    end
+    end,
 }

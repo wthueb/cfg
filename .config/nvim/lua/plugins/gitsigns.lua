@@ -5,5 +5,5 @@ return {
             signcolumn = true,
             current_line_blame = true,
         })
-    end
+    end,
 }

@@ -54,7 +54,7 @@ vim.opt.undofile = true
 
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "python",
-    command = [[setlocal colorcolumn=88]]
+    command = [[setlocal colorcolumn=88]],
 })
 
 vim.keymap.set("i", "kj", "<Esc>", { silent = true, desc = "Exit insert mode" })
@@ -67,7 +67,12 @@ vim.keymap.set("n", "<leader><leader>", ":w<CR>:sus<CR>", { silent = true, desc 
 vim.keymap.set("n", "<leader>.", ":nohl<CR>", { silent = true, desc = "Remove highlighting" })
 vim.keymap.set("n", "<leader>y", '"+y', { silent = true, desc = "Yank to system clipboard" })
 
-vim.keymap.set("n", "J", "mzJ`z:delm z<CR>", { silent = true, desc = "Keep cursor in same place while picking up lines" })
+vim.keymap.set(
+    "n",
+    "J",
+    "mzJ`z:delm z<CR>",
+    { silent = true, desc = "Keep cursor in same place while picking up lines" }
+)
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { silent = true, desc = "Keep cursor in middle while scrolling down" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { silent = true, desc = "Keep cursor in middle while scrolling up" })
 vim.keymap.set("n", "n", "nzz", { silent = true, desc = "Keep cursor in middle while searching down" })
@@ -76,6 +81,11 @@ vim.keymap.set("n", "N", "Nzz", { silent = true, desc = "Keep cursor in middle w
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
 
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>", { silent = true, desc = "Open tmux-sessionizer" })
+vim.keymap.set(
+    "n",
+    "<C-f>",
+    "<cmd>silent !tmux neww tmux-sessionizer<CR>",
+    { silent = true, desc = "Open tmux-sessionizer" }
+)
 
 pcall(require, "custom")

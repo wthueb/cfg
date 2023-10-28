@@ -13,33 +13,33 @@ return {
                 "L3MON4D3/LuaSnip",
                 dependencies = {
                     "rafamadriz/friendly-snippets",
-                }
-            }
-        }
+                },
+            },
+        },
     },
     config = function()
-        local cmp = require("cmp");
-        local luasnip = require("luasnip");
+        local cmp = require("cmp")
+        local luasnip = require("luasnip")
 
         require("luasnip.loaders.from_vscode").lazy_load()
 
-        cmp.setup {
+        cmp.setup({
             snippet = {
                 expand = function(args)
                     luasnip.lsp_expand(args.body)
                 end,
             },
             sources = {
-                { name = "buffer",   priority = 20, keyword_length = 5 },
-                { name = "path",     priority = 30 },
+                { name = "buffer", priority = 20, keyword_length = 5 },
+                { name = "path", priority = 30 },
                 { name = "nvim_lua", priority = 80 },
                 { name = "nvim_lsp", priority = 90 },
-                { name = "cmp_git",  priority = 100 },
-                { name = "luasnip",  priority = 10 },
+                { name = "cmp_git", priority = 100 },
+                { name = "luasnip", priority = 10 },
             },
             completion = {
                 --completeopt = "menu,menuone",
-                keyword_length = 2
+                keyword_length = 2,
             },
             mapping = cmp.mapping.preset.insert({
                 ["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -62,31 +62,31 @@ return {
                     else
                         fallback()
                     end
-                end, { "i", "s" })
+                end, { "i", "s" }),
             }),
-        }
+        })
 
         cmp.setup.cmdline({ "/", "?" }, {
             mapping = cmp.mapping.preset.cmdline(),
-            sources = cmp.config.sources {
-                { name = "buffer" }
-            }
+            sources = cmp.config.sources({
+                { name = "buffer" },
+            }),
         })
 
         cmp.setup.cmdline(":", {
             mapping = cmp.mapping.preset.cmdline(),
-            sources = cmp.config.sources {
+            sources = cmp.config.sources({
                 { name = "nvim_lua" },
                 { name = "cmdline" },
                 { name = "path" },
-            }
+            }),
         })
 
-        cmp.setup.filetype('gitcommit', {
-            sources = cmp.config.sources {
-                { name = 'git' },
-                { name = 'buffer' },
-            }
+        cmp.setup.filetype("gitcommit", {
+            sources = cmp.config.sources({
+                { name = "git" },
+                { name = "buffer" },
+            }),
         })
-    end
+    end,
 }

@@ -23,7 +23,7 @@ return {
                 "typescript",
                 "vim",
                 "vimdoc",
-                "query"
+                "query",
             },
 
             sync_install = false,
@@ -71,5 +71,5 @@ return {
 
             additional_vim_regex_highlighting = false,
         })
-    end
+    end,
 }
