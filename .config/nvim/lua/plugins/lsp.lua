@@ -66,6 +66,10 @@ return {
                         return vim.lsp.buf.format({ name = formatters[1] })
                     end
 
+                    if vim.tbl_contains(formatters, "efm") then
+                        return vim.lsp.buf.format({ name = "efm" })
+                    end
+
                     table.sort(formatters)
 
                     return vim.ui.select(formatters, {
@@ -176,15 +180,15 @@ return {
             end,
 
             efm = function()
-                local prettierd = require("efmls-configs.formatters.prettier_d")
+                local prettier = require("efmls-configs.formatters.prettier")
 
                 local languages = {
-                    typescript = { prettierd },
-                    typescriptreact = { prettierd },
-                    javascript = { prettierd },
-                    html = { prettierd },
-                    css = { prettierd },
-                    json = { prettierd },
+                    typescript = { prettier },
+                    typescriptreact = { prettier },
+                    javascript = { prettier },
+                    html = { prettier },
+                    css = { prettier },
+                    json = { prettier },
                     lua = { require("efmls-configs.formatters.stylua") },
                 }
 
