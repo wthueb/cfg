@@ -33,6 +33,7 @@ return {
             desc = "LSP actions",
             callback = function(args)
                 local bufnr = args.buf
+                local client = vim.lsp.get_client_by_id(args.data.client_id)
 
                 vim.keymap.set("n", "<leader>dca", vim.lsp.buf.code_action,
                     { silent = true, desc = "Apply code action", buffer = true })
@@ -45,7 +46,9 @@ return {
                             function(c) return c.name end,
                             vim.tbl_filter(
                                 function(c) return c.server_capabilities.documentFormattingProvider end,
-                                vim.lsp.get_active_clients({ bufnr = bufnr })))
+                                vim.lsp.get_clients({ bufnr = bufnr })
+                            )
+                        )
 
                         if #formatters == 0 then
                             return
@@ -68,7 +71,9 @@ return {
                             function(c) return c.name end,
                             vim.tbl_filter(
                                 function(c) return c.server_capabilities.renameProvider end,
-                                vim.lsp.get_active_clients({ bufnr = bufnr })))
+                                vim.lsp.get_clients({ bufnr = bufnr })
+                            )
+                        )
 
                         if #renamers == 0 then
                             return
@@ -86,10 +91,9 @@ return {
                     end, { silent = true, desc = "Rename symbol", buffer = true })
 
                 vim.keymap.set("n", "K", vim.lsp.buf.hover, { silent = true, desc = "Show hover", buffer = true })
-                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev,
-                    { silent = true, desc = "Go to previous diagnostic", buffer = true })
-                vim.keymap.set("n", "]d", vim.diagnostic.goto_next,
-                    { silent = true, desc = "Go to next diagnostic", buffer = true })
+                vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help,
+                    { silent = true, desc = "Show signature help", buffer = true })
+
                 vim.keymap.set("n", "gd", vim.lsp.buf.definition,
                     { silent = true, desc = "Go to definition", buffer = true })
                 vim.keymap.set("n", "gt", vim.lsp.buf.type_definition,
@@ -101,8 +105,23 @@ return {
                 vim.keymap.set("n", "gr", function() require("trouble").open("lsp_references") end,
                     { silent = true, desc = "Go to references", buffer = true })
 
-                vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help,
-                    { silent = true, desc = "Show signature help", buffer = true })
+                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev,
+                    { silent = true, desc = "Go to previous diagnostic", buffer = true })
+                vim.keymap.set("n", "]d", vim.diagnostic.goto_next,
+                    { silent = true, desc = "Go to next diagnostic", buffer = true })
+
+                if client and client.server_capabilities.documentHighlightProvider then
+                    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                        desc = "Highlight symbol under cursor",
+                        buffer = 0,
+                        callback = vim.lsp.buf.document_highlight
+                    })
+
+                    vim.api.nvim_create_autocmd("CursorMoved", {
+                        buffer = 0,
+                        callback = vim.lsp.buf.clear_references
+                    })
+                end
             end
         })
 
