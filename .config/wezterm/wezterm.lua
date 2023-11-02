@@ -118,6 +118,16 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
             key = "n",
             action = wezterm.action.ShowLauncher,
         },
+        {
+            mods = "CTRL",
+            key = "-",
+            action = wezterm.action.DecreaseFontSize,
+        },
+        {
+            mods = "CTRL",
+            key = "=",
+            action = wezterm.action.IncreaseFontSize,
+        },
     }
 elseif wezterm.target_triple == "aarch64-apple-darwin" then
     platform_keys = {
@@ -150,6 +160,16 @@ elseif wezterm.target_triple == "aarch64-apple-darwin" then
             mods = "CMD",
             key = "k",
             action = wezterm.action.ClearScrollback("ScrollbackAndViewport"),
+        },
+        {
+            mods = "CMD",
+            key = "-",
+            action = wezterm.action.DecreaseFontSize,
+        },
+        {
+            mods = "CMD",
+            key = "=",
+            action = wezterm.action.IncreaseFontSize,
         },
     }
 end
