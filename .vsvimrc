@@ -1,0 +1,26 @@
+let mapleader = ' '
+let maplocalleader = ' '
+
+imap kj <Esc>
+
+nmap <leader>. :nohl<CR>
+nmap <C-o> :vsc View.NavigateBackward<CR>
+nmap <C-i> :vsc View.NavigateForward<CR>
+nmap [d :vsc View.PreviousError<CR>
+nmap ]d :vsc View.NextError<CR>
+
+nmap K :vsc Edit.QuickInfo<CR>
+imap <C-h> <Esc>:vsc Edit.ParameterInfo<CR>a
+nmap gd :vsc Edit.GoToDefinition<CR>
+nmap gi :vsc Edit.GoToImplementation<CR>
+nmap <leader>rn :vsc Editor.Rename<CR>
+nmap <leader>rf :vsc Editor.Refactor<CR>
+nmap <leader>f :vsc Edit.FormatDocument<CR>
+nmap <leader>ra :vsc Editor.Action<CR>
+nmap <leader>dca :vsc Editor.CodeAction<CR>
+
+set smartcase
+set relativenumber
+set scrolloff=5
+set incsearch
+set hlsearch
