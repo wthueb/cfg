@@ -9,6 +9,8 @@ dirs=(
     ~
 )
 
+for index in "${!dirs[@]}" ; do [[ …condition… ]] && unset -v 'dirs[$index]' ; done
+
 selected=$1
 
 if [[ -z $selected ]]; then
