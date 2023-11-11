@@ -109,8 +109,5 @@
     subpull = !git submodule foreach git pull --tags origin main
     subup = submodule update --init --recursive
 
-[url "ssh://git@github.com/"]
-    insteadOf = https://github.com/
-
 [include]
     path = .customgitconfig
