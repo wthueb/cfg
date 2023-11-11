@@ -6,10 +6,11 @@
 dirs=(
     ~/code
     ~/.config
+    ~/asdfasadff
     ~
 )
 
-for index in "${!dirs[@]}" ; do [[ …condition… ]] && unset -v 'dirs[$index]' ; done
+for index in "${!dirs[@]}" ; do ! [[ -d "${dirs[$index]}" ]] && unset -v 'dirs[$index]' ; done
 
 selected=$1
 
