@@ -159,7 +159,16 @@ return {
                     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
                         desc = "Highlight symbol under cursor",
                         buffer = 0,
-                        callback = vim.lsp.buf.document_highlight,
+                        callback = function(ev)
+                            local clients =
+                                vim.lsp.get_clients({ bufnr = ev.buf, method = "textDocument/documentHighlight" })
+
+                            if #clients == 0 then
+                                return
+                            end
+
+                            vim.lsp.buf.document_highlight()
+                        end,
                     })
 
                     vim.api.nvim_create_autocmd("CursorMoved", {
@@ -183,6 +192,7 @@ return {
                 local prettier = require("efmls-configs.formatters.prettier")
 
                 local languages = {
+                    astro = { prettier },
                     typescript = { prettier },
                     typescriptreact = { prettier },
                     javascript = { prettier },
