@@ -12,7 +12,7 @@ fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 source $ZSH/oh-my-zsh.sh
 
 # default robbyrussel with user@hostname
-PROMPT="%(!.%{%F{yellow}%}.)$USER@%{$fg[magenta]%}%M %(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ ) %{$fg[cyan]%}%c%{$reset_color%}"
+PROMPT="%(!.%{%F{yellow}%}.)$USER@%{$fg[magenta]%}%M %(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%c%{$reset_color%}"
 PROMPT+=' $(git_prompt_info)'
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
