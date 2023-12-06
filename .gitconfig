@@ -43,8 +43,10 @@
     c = commit
     ca = commit -a
     cad = commit -a --amend
+    cadn = commit -a --amend --no-edit
     cam = commit -am
     cd = commit --amend
+    cdn = commit --amend --no-edit
     ch = checkout
     chb = checkout -b
     chd = checkout develop
