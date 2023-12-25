@@ -16,9 +16,10 @@ return {
                     "efm",
                     "html",
                     "jsonls",
+                    "ruff_lsp",
                     "rust_analyzer",
                     "lua_ls",
-                    "pylsp",
+                    "pyright",
                     "tsserver",
                     "yamlls",
                 },
@@ -244,29 +245,6 @@ return {
                         end
                         return true
                     end,
-                })
-            end,
-
-            pylsp = function()
-                -- :PylspInstall python-lsp-isort python-lsp-black pylsp-mypy
-                lspconfig.pylsp.setup({
-                    capabilities = lsp_capabilities,
-
-                    settings = {
-                        pylsp = {
-                            configurationSources = { "flake8" },
-                            plugins = {
-                                autopep8 = { enabled = false },
-                                black = { enabled = true },
-                                flake8 = { enabled = true },
-                                isort = { enabled = true },
-                                mccabe = { enabled = false },
-                                pycodestyle = { enabled = false },
-                                pyflakes = { enabled = false },
-                                yapf = { enabled = false },
-                            },
-                        },
-                    },
                 })
             end,
 
