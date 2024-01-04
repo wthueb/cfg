@@ -3,7 +3,7 @@ vim.g.maplocalleader = " "
 
 vim.opt.termguicolors = true
 
-require("plugin-manager")
+require("wthueb.lazy")
 
 vim.opt.visualbell = true
 
@@ -88,4 +88,4 @@ vim.keymap.set(
     { silent = true, desc = "Open tmux-sessionizer" }
 )
 
-pcall(require, "custom")
+pcall(require, "wthueb.custom")
