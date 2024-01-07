@@ -1,35 +1,33 @@
 return {
     "neovim/nvim-lspconfig",
+
     dependencies = {
-        {
-            "williamboman/mason-lspconfig.nvim",
-            dependencies = {
-                {
-                    "williamboman/mason.nvim",
-                    opts = {},
-                },
-            },
-            opts = {
-                ensure_installed = {
-                    "bashls",
-                    "cssls",
-                    "efm",
-                    "html",
-                    "jsonls",
-                    "ruff_lsp",
-                    "rust_analyzer",
-                    "lua_ls",
-                    "pyright",
-                    "tsserver",
-                    "yamlls",
-                },
-            },
-        },
-        { "j-hui/fidget.nvim", tag = "legacy", opts = {} },
-        "folke/neodev.nvim",
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
+
+        { "folke/neodev.nvim", opts = {} },
+        { "j-hui/fidget.nvim", opts = {} },
         { "creativenull/efmls-configs-nvim", version = "1.x.x" },
     },
+
     config = function()
+        require("mason").setup()
+        require("mason-lspconfig").setup({
+            ensure_installed = {
+                "bashls",
+                "cssls",
+                "efm",
+                "html",
+                "jsonls",
+                "ruff_lsp",
+                "rust_analyzer",
+                "lua_ls",
+                "pyright",
+                "tsserver",
+                "yamlls",
+            },
+        })
+
         vim.api.nvim_create_autocmd("LspAttach", {
             desc = "LSP actions",
             callback = function(args)
