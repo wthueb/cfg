@@ -16,4 +16,8 @@ if not ok then
     return
 end
 
-lazy.setup("wthueb.plugins")
+lazy.setup("wthueb.plugins", {
+    change_detection = {
+        notify = false,
+    },
+})

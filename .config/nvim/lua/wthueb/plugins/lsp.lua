@@ -17,6 +17,7 @@ return {
                 "bashls",
                 "cssls",
                 "efm",
+                "emmet_language_server",
                 "html",
                 "jsonls",
                 "ruff_lsp",
@@ -213,6 +214,23 @@ return {
 
                     settings = {
                         languages = languages,
+                    },
+                })
+            end,
+
+            emmet_language_server = function()
+                lspconfig.emmet_language_server.setup({
+                    capabilities = lsp_capabilities,
+                    filetypes = {
+                        "html",
+                        "css",
+                        "scss",
+                        "javascript",
+                        "javascriptreact",
+                        "typescript",
+                        "typescriptreact",
+                        "astro",
+                        "svelte",
                     },
                 })
             end,
