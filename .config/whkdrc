@@ -2,7 +2,7 @@
 
 alt + r                 : taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle hidden # if shell is pwsh / powershell
 alt + shift + r         : komorebic reload-configuration
-alt + return            : start wezterm
+alt + return            : wezterm
 
 alt + h                 : komorebic focus left
 alt + j                 : komorebic focus down

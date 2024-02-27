@@ -1,0 +1,189 @@
+general:
+  focus_follows_cursor: false
+  cursor_follows_focus: true
+
+  toggle_workspace_on_refocus: true
+
+  show_floating_on_top: false
+  floating_window_move_amount: "5%"
+  center_new_floating_windows: true
+
+  window_animations: false
+
+gaps:
+  inner_gap: "0px"
+  outer_gap: "0px"
+
+focus_borders:
+  active:
+    enabled: true
+    color: "#0000ff"
+  inactive:
+    enabled: false
+    color: "#ff0000"
+
+bar:
+  height: "32px"
+  position: "top"
+  opacity: 1.0
+  background: "#20242cc4"
+  foreground: "#fefefe"
+  font_family: "SauceCodePro Nerd Font"
+  font_size: "13px"
+  padding: "4px 6px"
+  offset_x: 0
+  offset_y: 0
+  border_radius: 0
+  components_left:
+    - type: "workspaces"
+      focused_workspace_background: "#ffffff33"
+      displayed_workspace_background: "#00000033"
+      default_workspace_background: "transparent"
+  components_center:
+    - type: "window title"
+  components_right:
+    #- type: "system tray"
+    - type: "tiling direction"
+      label_horizontal: "⮂"
+      label_vertical: "⮁"
+      background: "#ffffff33"
+      margin: "0 4px"
+      padding: "0 8px"
+    - type: "binding mode"
+      background: "#ffffff33"
+      margin: "0 4px 0 0"
+      padding: "0 8px"
+    - type: "clock"
+      # https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings
+      time_formatting: "ddd MMM d   hh:mm tt"
+
+workspaces:
+  - name: "1"
+    bind_to_monitor: 2
+    keep_alive: true
+  - name: "2"
+    bind_to_monitor: 2
+    keep_alive: true
+  - name: "3"
+    bind_to_monitor: 2
+    keep_alive: true
+  - name: "4"
+    bind_to_monitor: 2
+    keep_alive: true
+  - name: "5"
+    bind_to_monitor: 2
+    keep_alive: true
+  - name: "0"
+    bind_to_monitor: 3
+    # Optionally prevent workspace from being deactivated when empty.
+    keep_alive: true
+  - name: "6"
+    bind_to_monitor: 1
+    keep_alive: true
+
+window_rules:
+  - command: "ignore"
+    match_process_name: "/Taskmgr|ScreenClippingHost/"
+
+  - command: "set floating"
+    match_class_name: "#32770"
+
+  - command: "ignore"
+    match_title: "[Pp]icture.in.[Pp]icture"
+    match_class_name: "Chrome_WidgetWin_1|MozillaDialogClass"
+
+  - command: "resize borders 0px -7px -7px -7px"
+    match_process_name: "steam"
+
+binding_modes:
+  - name: "resize"
+    keybindings:
+      - command: "resize width -2%"
+        binding: "H"
+      - command: "resize height -2%"
+        binding: "J"
+      - command: "resize height +2%"
+        binding: K"
+      - command: "resize width +2%"
+        binding: "L"
+      - command: "binding mode none"
+        binding: "Escape"
+
+keybindings:
+  - command: "focus left"
+    binding: "Alt+H"
+  - command: "focus down"
+    binding: "Alt+J"
+  - command: "focus up"
+    binding: "Alt+K"
+  - command: "focus right"
+    binding: "Alt+L"
+
+  - command: "move left"
+    binding: "Alt+Shift+H"
+  - command: "move right"
+    binding: "Alt+Shift+L"
+  - command: "move up"
+    binding: "Alt+Shift+K"
+  - command: "move down"
+    binding: "Alt+Shift+J"
+
+  - command: "binding mode resize"
+    binding: "Alt+R"
+
+  - command: "tiling direction toggle"
+    binding: "Alt+V"
+
+  - command: "focus mode toggle"
+    binding: "Alt+Space"
+
+  - command: "toggle floating"
+    binding: "Alt+Shift+Space"
+
+  - command: "toggle maximized"
+    binding: "Alt+F"
+
+  - command: "set minimized"
+    binding: "Alt+M"
+
+  - command: "close"
+    binding: "Alt+Shift+Q"
+
+  - command: "exit wm"
+    binding: "Alt+Shift+E"
+
+  - command: "reload config"
+    binding: "Alt+Shift+R"
+
+  - command: "exec %ProgramFiles%/WezTerm/wezterm.exe"
+    binding: "Alt+Enter"
+
+  - command: "focus workspace 0"
+    binding: "Alt+0"
+  - command: "focus workspace 1"
+    binding: "Alt+1"
+  - command: "focus workspace 2"
+    binding: "Alt+2"
+  - command: "focus workspace 3"
+    binding: "Alt+3"
+  - command: "focus workspace 4"
+    binding: "Alt+4"
+  - command: "focus workspace 5"
+    binding: "Alt+5"
+  - command: "focus workspace 6"
+    binding: "Alt+6"
+
+  - commands: ["move to workspace 0", "focus workspace 0"]
+    binding: "Alt+Shift+0"
+  - commands: ["move to workspace 1", "focus workspace 1"]
+    binding: "Alt+Shift+1"
+  - commands: ["move to workspace 2", "focus workspace 2"]
+    binding: "Alt+Shift+2"
+  - commands: ["move to workspace 3", "focus workspace 3"]
+    binding: "Alt+Shift+3"
+  - commands: ["move to workspace 4", "focus workspace 4"]
+    binding: "Alt+Shift+4"
+  - commands: ["move to workspace 5", "focus workspace 5"]
+    binding: "Alt+Shift+5"
+  - commands: ["move to workspace 6", "focus workspace 6"]
+    binding: "Alt+Shift+6"
