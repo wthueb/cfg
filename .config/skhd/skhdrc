@@ -67,16 +67,13 @@
 
 :: default : sketchybar --set skhd_status label=''
 
-:: open_app : sketchybar --set skhd_status label='open app'
-open_app < escape ; default
-
 :: modify_window : sketchybar --set skhd_status label='modify window'
 modify_window < escape ; default
 
 :: resize_window : sketchybar --set skhd_status label='resize window'
 resize_window < escape ; default
 
-alt - return : kitty --single-instance -d ~
+alt - return : wezterm
 
 alt - h : yabai -m window --focus west
 alt - j : yabai -m window --focus south
@@ -92,37 +89,23 @@ alt - n         : yabai -m space --create && index=$(yabai -m query --spaces --d
 alt + shift - n : yabai -m space --create && index=$(yabai -m query --spaces --display | jq 'map(select(."is-native-fullscreen" == false))[-1].index') && yabai -m window --space "${index}" && yabai -m space --focus "${index}"
 alt + shift - d : yabai -m space --destroy
 
-alt - x : yabai -m space --focus recent
 alt - 1 : yabai -m space --focus 1
 alt - 2 : yabai -m space --focus 2
 alt - 3 : yabai -m space --focus 3
 alt - 4 : yabai -m space --focus 4
 alt - 5 : yabai -m space --focus 5
-alt - 6 : yabai -m space --focus 6
-alt - 7 : yabai -m space --focus 7
-alt - 8 : yabai -m space --focus 8
-alt - 9 : yabai -m space --focus 9
 
 alt + shift - 1 : yabai -m window --space 1; yabai -m space --focus 1
 alt + shift - 2 : yabai -m window --space 2; yabai -m space --focus 2
 alt + shift - 3 : yabai -m window --space 3; yabai -m space --focus 3
 alt + shift - 4 : yabai -m window --space 4; yabai -m space --focus 4
 alt + shift - 5 : yabai -m window --space 5; yabai -m space --focus 5
-alt + shift - 6 : yabai -m window --space 6; yabai -m space --focus 6
-alt + shift - 7 : yabai -m window --space 7; yabai -m space --focus 7
-alt + shift - 8 : yabai -m window --space 8; yabai -m space --focus 8
-alt + shift - 9 : yabai -m window --space 9; yabai -m space --focus 9
 
 alt - f : yabai -m window --toggle zoom-fullscreen
 alt - m : yabai -m window --minimize
 
 alt - e : yabai -m window --toggle split
 alt - q : yabai -m space --rotate 90
-
-alt - a ; open_app
-open_app < t : ~/.config/skhd/scripts/activate_or_open_app.sh 'Kitty' ; skhd -k 'escape'
-open_app < m : ~/.config/skhd/scripts/activate_or_open_app.sh 'Messages' ; skhd -k 'escape'
-open_app < c : ~/.config/skhd/scripts/activate_or_open_app.sh 'Google Chrome' ; skhd -k 'escape'
 
 alt - s ; modify_window
 modify_window < s : yabai -m window --toggle sticky ; skhd -k 'escape'
