@@ -18,7 +18,6 @@
 }
 
 .container-right .widget * {
-  color: #242424;
 }
 .komorebi-workspaces {
   margin-left: 0;
@@ -141,5 +140,4 @@
 .komorebi-active-layout .label {
   color: #fbf1c7;
   margin: -4px 2px 2px 8px;
-  font-family: Hack;
 }

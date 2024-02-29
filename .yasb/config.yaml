@@ -95,23 +95,6 @@ bars:
       right:  ["clock"]
 
 # widgets:
-  # my-clock-widget:
-    # type: "yasb.clock.ClockWidget"
-    # options:
-      # label: "{%H:%M:%S}"
-        # ^ The label format of the widget. Accepts: string with datetime format enclosed between curly brackets
-        # ^ Label format options: https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
-      # label_alt: "{%d-%m-%y %H:%M:%S}"
-        # ^ The alternate label format of the widget. Accepts: string with datetime format enclosed between curly brackets
-      # update_interval: 1000
-        # ^ The interval at which the widget will update itself. Accepts: positive integer (number of milliseconds)
-      # timezones: []
-        # ^ A list of timezones to switch between. Accepts: list of strings (e.g. Europe/London, America/New_York)
-        # ^ Options: https://timezonedb.com/time-zones ('Time Zone' strings)
-      # callbacks:
-        # on_left: "toggle_label" - toggles between the clock and alternate clock labels
-        # on_middle: "do_nothing"
-        # on_right: "next_timezone" - cycles the next timezone to be shown by the clock
 
   # memory-widget:
     # type: "yasb.memory.MemoryWidget"
@@ -353,12 +336,13 @@ widgets:
   clock:
     type: "yasb.clock.ClockWidget"
     options:
-        label: "{%I:%M:%S %Z}"
+        label: "{%I:%M:%S %p}"
         label_alt: "{%d-%m-%y %H:%M:%S %Z}"
         timezones: ["America/New_York"]
         callbacks:
+          on_left: "toggle_label"
           on_middle: "exec explorer.exe shell:Appsfolder\\Microsoft.WindowsAlarms_8wekyb3d8bbwe!App"
-          on_right: "next_timezone"
+          on_right: "do_nothing"
 
   komorebi_workspaces:
     type: "komorebi.workspaces.WorkspaceWidget"
