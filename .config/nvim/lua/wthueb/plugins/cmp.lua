@@ -25,12 +25,12 @@ return {
                 end,
             },
             sources = {
-                { name = "buffer", priority = 20, keyword_length = 5 },
-                { name = "path", priority = 30 },
-                { name = "nvim_lua", priority = 80 },
-                { name = "nvim_lsp", priority = 90 },
-                { name = "cmp_git", priority = 100 },
-                { name = "luasnip", priority = 10 },
+                { name = "path", priority = 10 },
+                { name = "cmp_git", priority = 20 },
+                { name = "nvim_lsp", priority = 30 },
+                { name = "nvim_lua", priority = 30 },
+                { name = "buffer", priority = 40, keyword_length = 5 },
+                { name = "luasnip", priority = 100 },
             },
             completion = {
                 --completeopt = "menu,menuone",
