@@ -85,8 +85,10 @@ alias ffplay='ffplay -hide_banner'
 
 alias gdb='gdb -q'
 
-if command -v fdfind &> /dev/null; then
-    alias fd='fdfind'
+if ! command -v fd &> /dev/null; then
+    if command -v fdfind &> /dev/null; then
+        alias fd='fdfind'
+    fi
 fi
 
 if command -v batcat &> /dev/null; then
