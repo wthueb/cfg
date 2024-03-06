@@ -126,7 +126,7 @@ venv()
 
 vim-upgrade()
 {
-    nvim --headless "+Lazy! sync" +qa
+    nvim --headless "+Lazy! sync" "+TSUpdateSync" +qa
 }
 
 addToPath() {
