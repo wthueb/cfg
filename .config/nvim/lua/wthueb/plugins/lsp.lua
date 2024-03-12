@@ -199,6 +199,7 @@ return {
                     html = { prettier },
                     css = { prettier },
                     json = { prettier },
+                    jsonc = { prettier },
                     lua = { require("efmls-configs.formatters.stylua") },
                 }
 
@@ -225,9 +226,7 @@ return {
                         "html",
                         "css",
                         "scss",
-                        "javascript",
                         "javascriptreact",
-                        "typescript",
                         "typescriptreact",
                         "astro",
                         "svelte",
@@ -274,6 +273,15 @@ return {
                                 command = "clippy",
                             },
                         },
+                    },
+                })
+            end,
+
+            tsserver = function()
+                lspconfig.tsserver.setup({
+                    capabilities = lsp_capabilities,
+                    settings = {
+                        implicitProjectConfiguration = { checkJs = true },
                     },
                 })
             end,
