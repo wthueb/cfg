@@ -1,28 +1,14 @@
 {
-  description = "macbook";
+  description = "wthueb's macbook";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
-    homebrew-core = {
-      url = "github:homebrew/homebrew-core";
-      flake = false;
-    };
-    homebrew-cask = {
-      url = "github:homebrew/homebrew-cask";
-      flake = false;
-    };
-    mongodb-homebrew-brew = {
-      url = "github:mongodb/homebrew-brew";
-      flake = false;
-    };
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
   };
@@ -74,11 +60,43 @@
         wezterm
       ];
 
+      homebrew = {
+        enable = true;
+        onActivation = {
+          autoUpdate = true;
+          upgrade = true;
+          cleanup = "zap"; # remove all formulae not listed below
+        };
+
+        taps = [
+          "homebrew/services"
+          "mongodb/homebrew-brew"
+        ];
+
+        brews = [
+          {
+            name = "mongodb-community";
+            start_service = true;
+            restart_service = "changed";
+          }
+        ];
+
+        casks = [
+          "bartender"
+          "hammerspoon"
+        ];
+      };
+
       environment.shells = [ pkgs.zsh ];
       environment.loginShell = pkgs.zsh;
 
-      programs.nix-index.enable = true;
-      programs.zsh.enable = true;
+      programs = {
+        nix-index.enable = true;
+        zsh = {
+          enable = true;
+          promptInit = '''';
+        };
+      };
 
       services.karabiner-elements.enable = true;
       services.nix-daemon.enable = true;
@@ -97,10 +115,16 @@
       ];
 
       system.defaults = {
-        dock.autohide = true;
-        dock.mru-spaces = false;
+        dock = {
+          autohide = true;
+          mru-spaces = false;
+        };
 
-        finder.AppleShowAllExtensions = true;
+        finder = {
+          AppleShowAllExtensions = true;
+          ShowPathbar = true;
+          FXEnableExtensionChangeWarning = false;
+        };
       };
 
       security.pam.enableSudoTouchIdAuth = true;
@@ -112,27 +136,13 @@
 
       nix.extraOptions = ''
         extra-platforms = x86_64-darwin aarch64-darwin
-        '';
+      '';
     };
   in
   {
     darwinConfigurations."wil-mac" = inputs.nix-darwin.lib.darwinSystem {
       modules = [
         configuration
-        inputs.nix-homebrew.darwinModules.nix-homebrew
-        {
-          nix-homebrew = {
-            enable = true;
-            user = "wil";
-            enableRosetta = true;
-            taps = {
-              "homebrew/core" = inputs.homebrew-core;
-              "homebrew/cask" = inputs.homebrew-cask;
-              "mongodb/homebrew-brew" = inputs.mongodb-homebrew-brew;
-            };
-            mutableTaps = false;
-          };
-        }
 # inputs.home-manager.darwinModules.home-manager
 # {
 #   home-manager = {

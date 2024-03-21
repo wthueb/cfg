@@ -21,6 +21,7 @@ return {
                 "emmet_language_server",
                 "html",
                 "jsonls",
+                "pyright",
                 "ruff_lsp",
                 "rust_analyzer",
                 "lua_ls",
@@ -156,20 +157,20 @@ return {
                 )
 
                 if client and client.server_capabilities.documentHighlightProvider then
-                    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-                        desc = "Highlight symbol under cursor",
-                        buffer = 0,
-                        callback = function(ev)
-                            local clients =
-                                vim.lsp.get_clients({ bufnr = ev.buf, method = "textDocument/documentHighlight" })
+                    -- vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                    --     desc = "Highlight symbol under cursor",
+                    --     buffer = 0,
+                    --     callback = function(ev)
+                    --         local clients =
+                    --             vim.lsp.get_clients({ bufnr = ev.buf, method = "textDocument/documentHighlight" })
 
-                            if #clients == 0 then
-                                return
-                            end
+                    --         if #clients == 0 then
+                    --             return
+                    --         end
 
-                            vim.lsp.buf.document_highlight()
-                        end,
-                    })
+                    --         vim.lsp.buf.document_highlight()
+                    --     end,
+                    -- })
 
                     vim.api.nvim_create_autocmd("CursorMoved", {
                         buffer = 0,
