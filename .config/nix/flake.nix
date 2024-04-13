@@ -40,6 +40,7 @@
         gnused
         gnutar
         go
+        google-cloud-sdk
         htop
         inetutils
         jq
@@ -79,10 +80,18 @@
             start_service = true;
             restart_service = "changed";
           }
+          # python build deps
+          "openssl"
+          "readline"
+          "sqlite3"
+          "xz"
+          "zlib"
+          "tcl-tk"
         ];
 
         casks = [
           "bartender"
+          "docker"
           "hammerspoon"
         ];
       };
