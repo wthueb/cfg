@@ -31,12 +31,12 @@ export LANG="en_US.UTF-8"
 
 export PAGER="less -RF"
 
-# PYENV_ROOT="$HOME/.pyenv"
-# if [[ -d $PYENV_ROOT ]]; then
-#     # if pyenv folder exists but command isn't available, it's installed locally
-#     command -v pyenv &> /dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-#     eval "$(pyenv init -)"
-# fi
+PYENV_ROOT="$HOME/.pyenv"
+if [[ -d $PYENV_ROOT ]]; then
+    # if pyenv folder exists but command isn't available, it's installed locally
+    command -v pyenv &> /dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+fi
 
 if command -v rustup &> /dev/null; then
     rustup completions zsh > ~/.oh-my-zsh/completions/_rustup
