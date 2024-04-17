@@ -30,7 +30,7 @@
         delta
         dig
         fd
-        ffmpeg
+        ffmpeg-full
         fzf
         gcc
         gh
@@ -59,6 +59,7 @@
         tmux
         tree
         wezterm
+        yt-dlp
       ];
 
       homebrew = {
