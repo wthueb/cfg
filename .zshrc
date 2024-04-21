@@ -16,6 +16,10 @@ PROMPT="%(!.%{%F{yellow}%}.)$USER@%{$fg[magenta]%}%M %(?:%{$fg_bold[green]%}%1{â
 PROMPT+=' $(git_prompt_info)'
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+if command -v fzf-share &> /dev/null; then
+    source "$(fzf-share)/key-bindings.zsh"
+    source "$(fzf-share)/completion.zsh"
+fi
 
 if command -v ng &> /dev/null; then
     source <(ng completion script)
