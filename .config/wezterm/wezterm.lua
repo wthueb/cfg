@@ -100,6 +100,11 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
         },
         {
             mods = "CTRL|SHIFT",
+            key = "n",
+            action = wezterm.action.SpawnWindow,
+        },
+        {
+            mods = "CTRL|SHIFT",
             key = "c",
             action = wezterm.action.CopyTo("Clipboard"),
         },
@@ -140,6 +145,11 @@ elseif wezterm.target_triple == "aarch64-apple-darwin" then
             mods = "CMD",
             key = "w",
             action = wezterm.action.CloseCurrentTab({ confirm = false }),
+        },
+        {
+            mods = "CMD",
+            key = "n",
+            action = wezterm.action.SpawnWindow,
         },
         {
             mods = "CMD",
