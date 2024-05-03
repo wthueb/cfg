@@ -137,6 +137,10 @@
         };
       };
 
+      security.accessibilityPrograms = [
+        "${pkgs.yabai}/bin/yabai"
+        "${pkgs.skhd}/bin/skhd"
+      ];
       security.pam.enableSudoTouchIdAuth = true;
       security.sudo.extraConfig = ''
         wil ALL=(ALL) NOPASSWD: ALL
