@@ -869,4 +869,6 @@ def vim-upgrade [] {
     nvim --headless "+Lazy! sync" +qa
 }
 
+source ~/.cache/carapace/init.nu
+
 source ($nu.default-config-dir | path join 'config.custom.nu')
