@@ -135,27 +135,27 @@ $env.config = {
     }
 
     history: {
-        max_size: 100_000 # Session has to be reloaded for this to take effect
-        sync_on_enter: true # Enable to share history between multiple sessions, else you have to close the session to write history to file
-        file_format: "plaintext" # "sqlite" or "plaintext"
-        isolation: false # only available with sqlite file_format. true enables history isolation, false disables it. true will allow the history to be isolated to the current session using up/down arrows. false will allow the history to be shared across all sessions.
+        max_size: 100_000
+        sync_on_enter: true
+        file_format: "plaintext"
+        isolation: false
     }
 
     completions: {
-        case_sensitive: false # set to true to enable case-sensitive completions
-        quick: true    # set this to false to prevent auto-selecting completions when only one remains
-        partial: true    # set this to false to prevent partial filling of the prompt
-        algorithm: "prefix"    # prefix or fuzzy
+        case_sensitive: false
+        quick: true # auto accept if it's the only option
+        partial: true
+        algorithm: "prefix" # "prefix" or "fuzzy"
         external: {
-            enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up may be very slow
-            max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
-            completer: null # check 'carapace_completer' above as an example
+            enable: true
+            max_results: 100
+            completer: null
         }
-        use_ls_colors: true # set this to true to enable file/path/directory completions using LS_COLORS
+        use_ls_colors: true
     }
 
     filesize: {
-        metric: false # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
+        metric: true # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
         format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, auto
     }
 
@@ -165,9 +165,9 @@ $env.config = {
         vi_normal: underscore # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (underscore is the default)
     }
 
-    color_config: $nord_theme # if you want a more interesting theme, you can replace the empty record with `$dark_theme`, `$light_theme` or another custom record
+    color_config: $nord_theme
     use_grid_icons: true
-    footer_mode: "25" # always, never, number_of_rows, auto
+    footer_mode: "auto" # always, never, number_of_rows, auto
     float_precision: 2 # the precision for displaying floats in tables
     buffer_editor: "nvim" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
     use_ansi_coloring: true
@@ -797,7 +797,76 @@ $env.config = {
     ]
 }
 
+def cmd-exists [cmd: string] {
+    not (which $cmd | is-empty)
+}
+
+alias config = git --git-dir ~/.cfg --work-tree ~
+
+alias .. = cd ..
+alias cd.. = cd ..
+
 alias l = ls
 alias ll = ls -l
+alias la = ls -a
+alias lla = ls -la
+
 alias vim = nvim
-alias config = git --git-dir ~\.cfg --work-tree ~
+alias vi = vim
+
+alias p = python
+
+alias ffmpeg = ffmpeg -hide_banner
+alias ffplay = ffplay -hide_banner
+
+if (cmd-exists fdfind) {
+    alias fd = fdfind
+}
+
+if (cmd-exists batcat) {
+    alias bat = batcat
+}
+
+#if (cmd-exists bat) {
+#    alias cat = bat --paging=auto
+#}
+
+match $nu.os-info.name {
+    macos => {
+        alias copy = pbcopy
+        alias paste = pbpaste
+    },
+    windows => {
+        alias copy = clip.exe
+        alias paste = powershell.exe Get-Clipboard
+    },
+}
+
+def mkcd [dir: string] {
+    mkdir $dir ; cd $dir
+}
+
+def activate [dir?: string] {
+    # TODO: do something with $env.VIRTUAL_ENV_PROMPT
+    if not ($dir | is-empty) {
+        sh -i -c $'source ($dir)/bin/activate ; nu -e "alias deactivate = exit"'                                                                        05/10/2024 03:41:54 AM
+    } else {
+        sh -i -c 'source env/bin/activate ; nu -e "alias deactivate = exit"'                                                                        05/10/2024 03:41:54 AM
+    }
+}
+
+def venv [dir?: string] {
+    if not ($dir | is-empty) {
+        python -m venv --upgrade-deps $dir
+    } else {
+        python -m venv --upgrade-deps env
+    }
+
+    activate $dir
+}
+
+def vim-upgrade [] {
+    nvim --headless "+Lazy! sync" +qa
+}
+
+source ($nu.default-config-dir | path join 'config.custom.nu')

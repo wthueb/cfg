@@ -29,6 +29,7 @@
         curl
         delta
         dig
+        fish
         fd
         ffmpeg-full
         fzf
@@ -48,7 +49,8 @@
         neofetch
         neovim-nightly
         nodejs_20
-        pyenv # TODO: remove this and use nix-shell
+        nushell
+        pyenv
         qbittorrent
         raycast
         rclone
@@ -97,8 +99,11 @@
         ];
       };
 
-      environment.shells = [ pkgs.zsh ];
-      environment.loginShell = pkgs.zsh;
+      environment.shells = [ pkgs.fish pkgs.nushell pkgs.zsh ];
+      environment.loginShell = pkgs.nushell;
+      environment.variables = {
+        XDG_CONFIG_HOME = "/Users/wil/.config";
+      };
 
       programs = {
         nix-index.enable = true;

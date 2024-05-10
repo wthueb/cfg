@@ -1,19 +1,5 @@
-export ZSH="$HOME/.oh-my-zsh"
-
-ZSH_THEME="robbyrussell"
-
-plugins=(git)
-
-plugins+=(zsh-vi-mode)
-ZVM_INIT_MODE=sourcing
-ZVM_VI_INSERT_ESCAPE_BINDKEY=kj
-fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-
-source $ZSH/oh-my-zsh.sh
-
 # default robbyrussel with user@hostname
-PROMPT="%(!.%{%F{yellow}%}.)$USER@%{$fg[magenta]%}%M %(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%c%{$reset_color%}"
-PROMPT+=' $(git_prompt_info)'
+PROMPT="%(!.%{%F{yellow}%}.)$USER@%{$fg[magenta]%}%M %(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%c%{$reset_color%} "
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 if command -v fzf-share &> /dev/null; then

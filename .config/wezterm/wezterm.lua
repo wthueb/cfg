@@ -140,6 +140,8 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
         },
     }
 elseif wezterm.target_triple == "aarch64-apple-darwin" then
+    config.default_prog = { "bash", "-l", "-c", "nu" }
+
     platform_keys = {
         {
             mods = "CMD",
