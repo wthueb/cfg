@@ -61,11 +61,16 @@ config.colors = {
 local platform_keys = {}
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
-    config.default_prog = { "pwsh.exe" }
+    config.default_prog = { "nu.exe" }
 
     table.insert(config.launch_menu, {
         label = "PowerShell",
         args = { "pwsh.exe" },
+    })
+
+    table.insert(config.launch_menu, {
+        label = "nu",
+        args = { "nu.exe" },
     })
 
     config.hide_tab_bar_if_only_one_tab = false
@@ -200,6 +205,14 @@ for _, key_config in pairs(platform_keys) do
     table.insert(config.keys, key_config)
 end
 
+wezterm.on('gui-startup', function(cmd)
+    ---@diagnostic disable-next-line: unused-local
+    local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+
+    window:gui_window():maximize()
+
+end)
+
 local function basename(s)
     local base = string.gsub(s, "(.*[/\\])(.*)", "%2")
     local idx = base:find(".exe")
@@ -211,7 +224,8 @@ local function basename(s)
     return base:sub(0, idx - 1)
 end
 
-wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+---@diagnostic disable-next-line: unused-local
+wezterm.on("format-tab-title", function(tab, tabs, panes, c, hover, max_width)
     local process_name = basename(tab.active_pane.foreground_process_name)
     local title = " " .. tab.tab_index + 1 .. " > " .. process_name
 
@@ -224,6 +238,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     return title
 end)
 
+---@diagnostic disable-next-line: unused-local
 wezterm.on("update-right-status", function(window, pane)
     window:set_right_status(wezterm.format({
         { Foreground = { Color = "#2e3440" } },
