@@ -81,6 +81,22 @@ let nord_theme = {
     cursor: "#e5e9f0"
 }
 
+let carapace_completer = {|spans|
+  # if the current command is an alias, get it's expansion
+  let expanded_alias = (scope aliases | where name == $spans.0 | get -i 0 | get -i expansion)
+
+  # overwrite
+  let spans = (if $expanded_alias != null  {
+    # put the first word of the expanded alias first in the span
+    $spans | skip 1 | prepend ($expanded_alias | split row " " | take 1)
+  } else {
+    $spans
+  })
+
+  carapace $spans.0 nushell ...$spans
+  | from json
+}
+
 $env.config = {
     show_banner: false
 
@@ -137,7 +153,7 @@ $env.config = {
     history: {
         max_size: 100_000
         sync_on_enter: true
-        file_format: "plaintext"
+        file_format: "sqlite"
         isolation: false
     }
 
@@ -149,7 +165,7 @@ $env.config = {
         external: {
             enable: true
             max_results: 100
-            completer: null
+            completer: $carapace_completer
         }
         use_ls_colors: true
     }
@@ -200,8 +216,6 @@ $env.config = {
     }
 
     menus: [
-        # Configuration for default nushell menus
-        # Note the lack of source parameter
         {
             name: completion_menu
             only_buffer_difference: false
@@ -218,53 +232,6 @@ $env.config = {
                 description_text: yellow
                 match_text: { attr: u }
                 selected_match_text: { attr: ur }
-            }
-        }
-        {
-            name: ide_completion_menu
-            only_buffer_difference: false
-            marker: "| "
-            type: {
-                layout: ide
-                min_completion_width: 0,
-                max_completion_width: 50,
-                max_completion_height: 10, # will be limited by the available lines in the terminal
-                padding: 0,
-                border: true,
-                cursor_offset: 0,
-                description_mode: "prefer_right"
-                min_description_width: 0
-                max_description_width: 50
-                max_description_height: 10
-                description_offset: 1
-                # If true, the cursor pos will be corrected, so the suggestions match up with the typed text
-                #
-                # C:\> str
-                #      str join
-                #      str trim
-                #      str split
-                correct_cursor_pos: false
-            }
-            style: {
-                text: green
-                selected_text: { attr: r }
-                description_text: yellow
-                match_text: { attr: u }
-                selected_match_text: { attr: ur }
-            }
-        }
-        {
-            name: history_menu
-            only_buffer_difference: true
-            marker: "? "
-            type: {
-                layout: list
-                page_size: 10
-            }
-            style: {
-                text: green
-                selected_text: green_reverse
-                description_text: yellow
             }
         }
         {
@@ -289,6 +256,26 @@ $env.config = {
 
     keybindings: [
         {
+            name: fzf_history
+            modifier: control
+            keycode: char_r
+            mode: [emacs, vi_normal, vi_insert]
+            event: {
+                send: ExecuteHostCommand,
+                cmd: "commandline (
+                         history |
+                         where exit_status == 0 |
+                         get command |
+                         uniq |
+                         reverse |
+                         str join (char -i 0) |
+                         fzf --scheme=history --read0 --layout=reverse --height=40% -q (commandline) |
+                         decode utf-8 |
+                         str trim
+                     )"
+            }
+        }
+        {
             name: completion_menu
             modifier: none
             keycode: tab
@@ -302,33 +289,6 @@ $env.config = {
             }
         }
         {
-            name: ide_completion_menu
-            modifier: control
-            keycode: char_n
-            mode: [emacs vi_normal vi_insert]
-            event: {
-                until: [
-                    { send: menu name: ide_completion_menu }
-                    { send: menunext }
-                    { edit: complete }
-                ]
-            }
-        }
-        {
-            name: history_menu
-            modifier: control
-            keycode: char_r
-            mode: [emacs, vi_insert, vi_normal]
-            event: { send: menu name: history_menu }
-        }
-        {
-            name: help_menu
-            modifier: none
-            keycode: f1
-            mode: [emacs, vi_insert, vi_normal]
-            event: { send: menu name: help_menu }
-        }
-        {
             name: completion_previous_menu
             modifier: shift
             keycode: backtab
@@ -336,30 +296,14 @@ $env.config = {
             event: { send: menuprevious }
         }
         {
-            name: next_page_menu
+            name: tmux-sessionizer
             modifier: control
-            keycode: char_x
-            mode: emacs
-            event: { send: menupagenext }
-        }
-        {
-            name: undo_or_previous_page_menu
-            modifier: control
-            keycode: char_z
-            mode: emacs
+            keycode: char_f
+            mode: [emacs vi_normal vi_insert]
             event: {
-                until: [
-                    { send: menupageprevious }
-                    { edit: undo }
-                ]
+                send: ExecuteHostCommand,
+                cmd: "tmux-sessionizer"
             }
-        }
-        {
-            name: escape
-            modifier: none
-            keycode: escape
-            mode: [emacs, vi_normal, vi_insert]
-            event: { send: esc }    # NOTE: does not appear to work
         }
         {
             name: cancel_command
@@ -374,20 +318,6 @@ $env.config = {
             keycode: char_d
             mode: [emacs, vi_normal, vi_insert]
             event: { send: ctrld }
-        }
-        {
-            name: clear_screen
-            modifier: control
-            keycode: char_l
-            mode: [emacs, vi_normal, vi_insert]
-            event: { send: clearscreen }
-        }
-        {
-            name: search_history
-            modifier: control
-            keycode: char_q
-            mode: [emacs, vi_normal, vi_insert]
-            event: { send: searchhistory }
         }
         {
             name: open_command_editor
@@ -503,20 +433,6 @@ $env.config = {
             }
         }
         {
-            name: move_to_line_start
-            modifier: control
-            keycode: home
-            mode: [emacs, vi_normal, vi_insert]
-            event: { edit: movetolinestart }
-        }
-        {
-            name: move_to_line_end
-            modifier: control
-            keycode: end
-            mode: [emacs, vi_normal, vi_insert]
-            event: { edit: movetolineend }
-        }
-        {
             name: move_up
             modifier: control
             keycode: char_p
@@ -562,13 +478,6 @@ $env.config = {
             event: { edit: delete }
         }
         {
-            name: delete_one_character_forward
-            modifier: control
-            keycode: delete
-            mode: [emacs, vi_insert]
-            event: { edit: delete }
-        }
-        {
             name: delete_one_character_backward
             modifier: control
             keycode: char_h
@@ -581,218 +490,6 @@ $env.config = {
             keycode: char_w
             mode: [emacs, vi_insert]
             event: { edit: backspaceword }
-        }
-        {
-            name: move_left
-            modifier: none
-            keycode: backspace
-            mode: vi_normal
-            event: { edit: moveleft }
-        }
-        {
-            name: newline_or_run_command
-            modifier: none
-            keycode: enter
-            mode: emacs
-            event: { send: enter }
-        }
-        {
-            name: move_left
-            modifier: control
-            keycode: char_b
-            mode: emacs
-            event: {
-                until: [
-                    { send: menuleft }
-                    { send: left }
-                ]
-            }
-        }
-        {
-            name: move_right_or_take_history_hint
-            modifier: control
-            keycode: char_f
-            mode: emacs
-            event: {
-                until: [
-                    { send: historyhintcomplete }
-                    { send: menuright }
-                    { send: right }
-                ]
-            }
-        }
-        {
-            name: redo_change
-            modifier: control
-            keycode: char_g
-            mode: emacs
-            event: { edit: redo }
-        }
-        {
-            name: undo_change
-            modifier: control
-            keycode: char_z
-            mode: emacs
-            event: { edit: undo }
-        }
-        {
-            name: paste_before
-            modifier: control
-            keycode: char_y
-            mode: emacs
-            event: { edit: pastecutbufferbefore }
-        }
-        {
-            name: cut_word_left
-            modifier: control
-            keycode: char_w
-            mode: emacs
-            event: { edit: cutwordleft }
-        }
-        {
-            name: cut_line_to_end
-            modifier: control
-            keycode: char_k
-            mode: emacs
-            event: { edit: cuttoend }
-        }
-        {
-            name: cut_line_from_start
-            modifier: control
-            keycode: char_u
-            mode: emacs
-            event: { edit: cutfromstart }
-        }
-        {
-            name: swap_graphemes
-            modifier: control
-            keycode: char_t
-            mode: emacs
-            event: { edit: swapgraphemes }
-        }
-        {
-            name: move_one_word_left
-            modifier: alt
-            keycode: left
-            mode: emacs
-            event: { edit: movewordleft }
-        }
-        {
-            name: move_one_word_right_or_take_history_hint
-            modifier: alt
-            keycode: right
-            mode: emacs
-            event: {
-                until: [
-                    { send: historyhintwordcomplete }
-                    { edit: movewordright }
-                ]
-            }
-        }
-        {
-            name: move_one_word_left
-            modifier: alt
-            keycode: char_b
-            mode: emacs
-            event: { edit: movewordleft }
-        }
-        {
-            name: move_one_word_right_or_take_history_hint
-            modifier: alt
-            keycode: char_f
-            mode: emacs
-            event: {
-                until: [
-                    { send: historyhintwordcomplete }
-                    { edit: movewordright }
-                ]
-            }
-        }
-        {
-            name: delete_one_word_forward
-            modifier: alt
-            keycode: delete
-            mode: emacs
-            event: { edit: deleteword }
-        }
-        {
-            name: delete_one_word_backward
-            modifier: alt
-            keycode: backspace
-            mode: emacs
-            event: { edit: backspaceword }
-        }
-        {
-            name: delete_one_word_backward
-            modifier: alt
-            keycode: char_m
-            mode: emacs
-            event: { edit: backspaceword }
-        }
-        {
-            name: cut_word_to_right
-            modifier: alt
-            keycode: char_d
-            mode: emacs
-            event: { edit: cutwordright }
-        }
-        {
-            name: upper_case_word
-            modifier: alt
-            keycode: char_u
-            mode: emacs
-            event: { edit: uppercaseword }
-        }
-        {
-            name: lower_case_word
-            modifier: alt
-            keycode: char_l
-            mode: emacs
-            event: { edit: lowercaseword }
-        }
-        {
-            name: capitalize_char
-            modifier: alt
-            keycode: char_c
-            mode: emacs
-            event: { edit: capitalizechar }
-        }
-        # The following bindings with `*system` events require that Nushell has
-        # been compiled with the `system-clipboard` feature.
-        # This should be the case for Windows, macOS, and most Linux distributions
-        # Not available for example on Android (termux)
-        # If you want to use the system clipboard for visual selection or to
-        # paste directly, uncomment the respective lines and replace the version
-        # using the internal clipboard.
-        {
-            name: copy_selection
-            modifier: control_shift
-            keycode: char_c
-            mode: emacs
-            event: { edit: copyselection }
-            # event: { edit: copyselectionsystem }
-        }
-        {
-            name: cut_selection
-            modifier: control_shift
-            keycode: char_x
-            mode: emacs
-            event: { edit: cutselection }
-            # event: { edit: cutselectionsystem }
-        }
-        # {
-        #     name: paste_system
-        #     modifier: control_shift
-        #     keycode: char_v
-        #     mode: emacs
-        #     event: { edit: pastesystem }
-        # }
-        {
-            name: select_all
-            modifier: control_shift
-            keycode: char_a
-            mode: emacs
-            event: { edit: selectall }
         }
     ]
 }
@@ -868,7 +565,5 @@ def venv [dir?: string] {
 def vim-upgrade [] {
     nvim --headless "+Lazy! sync" +qa
 }
-
-source ~/.cache/carapace/init.nu
 
 source ($nu.default-config-dir | path join 'config.custom.nu')

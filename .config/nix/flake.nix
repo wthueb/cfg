@@ -25,6 +25,7 @@
 
       environment.systemPackages = with pkgs; [
         bat
+        carapace
         coreutils
         curl
         delta
