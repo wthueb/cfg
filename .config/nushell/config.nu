@@ -566,4 +566,5 @@ def vim-upgrade [] {
     nvim --headless "+Lazy! sync" +qa
 }
 
+source ($nu.default-config-dir | path join 'prompt.nu')
 source ($nu.default-config-dir | path join 'config.custom.nu')
