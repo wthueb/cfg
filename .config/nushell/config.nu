@@ -562,7 +562,7 @@ def venv [dir?: string] {
     activate $dir
 }
 
-def vim-upgrade [] {
+def "vim upgrade" [] {
     nvim --headless "+Lazy! sync" +qa
 }
 

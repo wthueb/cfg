@@ -100,7 +100,7 @@
         ];
       };
 
-      environment.shells = [ pkgs.fish pkgs.nushell pkgs.zsh ];
+      environment.shells = [ pkgs.fish pkgs.nushell ];
       environment.loginShell = pkgs.nushell;
       environment.variables = {
         XDG_CONFIG_HOME = "/Users/wil/.config";
@@ -108,10 +108,6 @@
 
       programs = {
         nix-index.enable = true;
-        zsh = {
-          enable = true;
-          promptInit = '''';
-        };
       };
 
       services.karabiner-elements.enable = true;
