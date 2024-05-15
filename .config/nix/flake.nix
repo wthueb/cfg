@@ -24,6 +24,7 @@
       nixpkgs.overlays = [ inputs.neovim-nightly-overlay.overlay ];
 
       environment.systemPackages = with pkgs; [
+        bashInteractive
         bat
         carapace
         coreutils
@@ -100,7 +101,7 @@
         ];
       };
 
-      environment.shells = [ pkgs.fish pkgs.nushell ];
+      environment.shells = [ pkgs.bash pkgs.fish pkgs.nushell ];
       environment.loginShell = pkgs.nushell;
       environment.variables = {
         XDG_CONFIG_HOME = "/Users/wil/.config";
