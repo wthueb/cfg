@@ -115,7 +115,10 @@
       services.nix-daemon.enable = true;
       services.sketchybar.enable = true;
       services.skhd.enable = true;
-      services.yabai.enable = true;
+      services.yabai = {
+        enable = true;
+        enableScriptingAddition = true;
+      };
 
       launchd.user.agents.raycast = {
         serviceConfig.ProgramArguments = [ "/Applications/Nix Apps/Raycast.app/Contents/MacOS/Raycast" ];
