@@ -46,6 +46,7 @@
         google-cloud-sdk
         htop
         inetutils
+        jc
         jq
         less
         litecli
@@ -65,6 +66,7 @@
         tree
         wezterm
         yt-dlp
+        zoxide
       ];
 
       homebrew = {

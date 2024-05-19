@@ -22,5 +22,7 @@ use std "path add"
 $env.EDITOR = "nvim"
 $env.VISUAL = "nvim"
 
+zoxide init nushell | save -f ~/.zoxide.nu
+
 source ($nu.default-config-dir | path join 'prompt.nu')
 source ($nu.default-config-dir | path join 'env.custom.nu')

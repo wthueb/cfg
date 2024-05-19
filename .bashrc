@@ -148,4 +148,8 @@ if command -v ng &> /dev/null; then
     source <(ng completion script)
 fi
 
+if command -v zoxide &> /dev/null; then
+    eval "$(zoxide init bash)"
+fi
+
 bind -f ~/.inputrc
