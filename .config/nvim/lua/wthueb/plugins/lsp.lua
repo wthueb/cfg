@@ -4,7 +4,7 @@ return {
     dependencies = {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
-
+        { "pmizio/typescript-tools.nvim", opts = {} },
         { "folke/neodev.nvim", opts = {} },
         { "j-hui/fidget.nvim", opts = {} },
         { "creativenull/efmls-configs-nvim", version = "1.x.x" },
@@ -25,16 +25,15 @@ return {
                 "ruff_lsp",
                 "rust_analyzer",
                 "lua_ls",
-                "tsserver",
+                --"tsserver",
                 "yamlls",
             },
         })
 
         vim.api.nvim_create_autocmd("LspAttach", {
             desc = "LSP actions",
-            callback = function(args)
-                local bufnr = args.buf
-                local client = vim.lsp.get_client_by_id(args.data.client_id)
+            callback = function(event)
+                local client = vim.lsp.get_client_by_id(event.data.client_id)
 
                 vim.keymap.set(
                     "n",
@@ -56,7 +55,7 @@ return {
                         end,
                         vim.tbl_filter(function(c)
                             return c.server_capabilities.documentFormattingProvider
-                        end, vim.lsp.get_clients({ bufnr = bufnr }))
+                        end, vim.lsp.get_clients({ bufnr = event.buf }))
                     )
 
                     if #formatters == 0 then
@@ -87,7 +86,7 @@ return {
                         end,
                         vim.tbl_filter(function(c)
                             return c.server_capabilities.renameProvider
-                        end, vim.lsp.get_clients({ bufnr = bufnr }))
+                        end, vim.lsp.get_clients({ bufnr = event.buf }))
                     )
 
                     if #renamers == 0 then
@@ -123,15 +122,15 @@ return {
                 )
                 vim.keymap.set(
                     "n",
-                    "gt",
-                    vim.lsp.buf.type_definition,
-                    { silent = true, desc = "Go to type definition", buffer = true }
+                    "gD",
+                    vim.lsp.buf.declaration,
+                    { silent = true, desc = "Go to declaration", buffer = true }
                 )
                 vim.keymap.set(
                     "n",
-                    "gD",
-                    vim.lsp.buf.declaration,
-                    { silent = true, desc = "Go to declartion", buffer = true }
+                    "gt",
+                    vim.lsp.buf.type_definition,
+                    { silent = true, desc = "Go to type definition", buffer = true }
                 )
                 vim.keymap.set(
                     "n",
@@ -157,26 +156,24 @@ return {
                 )
 
                 if client and client.server_capabilities.documentHighlightProvider then
-                    -- vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-                    --     desc = "Highlight symbol under cursor",
-                    --     buffer = 0,
-                    --     callback = function(ev)
-                    --         local clients =
-                    --             vim.lsp.get_clients({ bufnr = ev.buf, method = "textDocument/documentHighlight" })
-
-                    --         if #clients == 0 then
-                    --             return
-                    --         end
-
-                    --         vim.lsp.buf.document_highlight()
-                    --     end,
-                    -- })
+                    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                        desc = "Highlight symbol under cursor",
+                        buffer = event.buf,
+                        callback = vim.lsp.buf.document_highlight,
+                    })
 
                     vim.api.nvim_create_autocmd("CursorMoved", {
-                        buffer = 0,
+                        buffer = event.buf,
                         callback = vim.lsp.buf.clear_references,
                     })
                 end
+            end,
+        })
+
+        vim.api.nvim_create_autocmd("LspDetach", {
+            desc = "LSP actions",
+            callback = function()
+                vim.lsp.buf.clear_references()
             end,
         })
 
@@ -278,14 +275,14 @@ return {
                 })
             end,
 
-            tsserver = function()
-                lspconfig.tsserver.setup({
-                    capabilities = lsp_capabilities,
-                    settings = {
-                        implicitProjectConfiguration = { checkJs = true },
-                    },
-                })
-            end,
+            -- tsserver = function()
+            --     lspconfig.tsserver.setup({
+            --         capabilities = lsp_capabilities,
+            --         settings = {
+            --             implicitProjectConfiguration = { checkJs = true },
+            --         },
+            --     })
+            -- end,
         })
     end,
 }
