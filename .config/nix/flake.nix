@@ -60,6 +60,7 @@
         rclone
         ripgrep
         rsync
+        rustup
         sqlite
         tldr
         tmux

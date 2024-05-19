@@ -140,10 +140,6 @@ export NVM_DIR=~/.nvm
 [[ -f $NVM_DIR/nvm.sh ]] && source $NVM_DIR/nvm.sh
 [[ -f $NVM_DIR/bash_completion ]] && source $NVM_DIR/bash_completion
 
-[[ -f ~/.cargo/env ]] && source ~/.cargo/env
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
 if command -v ng &> /dev/null; then
     source <(ng completion script)
 fi

@@ -37,10 +37,6 @@ if [[ -d $PYENV_ROOT ]]; then
 fi
 
 [[ -f ~/.cargo/env ]] && source ~/.cargo/env
-if command -v rustup > /dev/null; then
-    source <(rustup completions bash)
-    source <(rustup completions bash cargo)
-fi
 
 export PATH
 
