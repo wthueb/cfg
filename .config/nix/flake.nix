@@ -48,6 +48,7 @@
         inetutils
         jq
         less
+        litecli
         neofetch
         neovim-nightly
         nodejs_20
