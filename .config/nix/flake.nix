@@ -62,6 +62,7 @@
         rsync
         rustup
         sqlite
+        starship
         tldr
         tmux
         tree
