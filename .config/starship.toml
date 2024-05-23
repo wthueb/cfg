@@ -3,6 +3,8 @@
 add_newline = false
 
 format = '($username(@$hostname):)$directory(@$git_branch$git_state$git_status)$python $character'
+right_format = '$time'
+continuation_prompt = '[∙∙∙](bright-black) '
 
 [username]
 format = '[$user]($style)'
@@ -24,3 +26,9 @@ format = '([\[$all_status$ahead_behind\]]($style))'
 
 [python]
 format = '( [\($virtualenv\)]($style))'
+
+[time]
+format = '[$time]($style)'
+time_format = '%H:%M:%S'
+style = 'bright-black'
+disabled = false
