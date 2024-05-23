@@ -1,0 +1,26 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+
+format = '($username(@$hostname):)$directory(@$git_branch$git_state$git_status)$python $character'
+
+[username]
+format = '[$user]($style)'
+show_always = false
+
+[hostname]
+format = '[$hostname]($style)'
+ssh_only = true
+
+[directory]
+format = '[$path]($style)'
+use_os_path_sep = false
+
+[git_branch]
+format = '[$branch(:$remote_branch)]($style)'
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style))'
+
+[python]
+format = '( [\($virtualenv\)]($style))'

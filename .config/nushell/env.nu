@@ -27,7 +27,6 @@ zoxide init nushell | save -f ~/.cache/zoxide.nu
 starship init nu | save -f ~/.cache/starship.nu
 $env.PROMPT_INDICATOR_VI_NORMAL = ""
 $env.PROMPT_INDICATOR_VI_INSERT = ""
-$env.PROMPT_MULTILINE_INDICATOR = $"(ansi reset)::: "
 
 #source ($nu.default-config-dir | path join 'prompt.nu')
 source ($nu.default-config-dir | path join 'env.custom.nu')
