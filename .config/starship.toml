@@ -1,10 +1,9 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-add_newline = false
-
 format = '($username(@$hostname):)$directory(@$git_branch$git_state$git_status)$python $character'
 right_format = '$time'
 continuation_prompt = '[∙∙∙](bright-black) '
+add_newline = false
 
 [username]
 format = '[$user]($style)'
