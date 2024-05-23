@@ -12,6 +12,7 @@ show_always = false
 
 [hostname]
 format = '[$hostname]($style)'
+style = 'blue bold'
 ssh_only = true
 
 [directory]
