@@ -1,14 +1,14 @@
 return {
-    "nvim-tree/nvim-tree.lua",
-    version = "*",
-    lazy = false,
-    dependencies = "nvim-tree/nvim-web-devicons",
-    config = function()
-        vim.g.loaded_netrw = 1
-        vim.g.loaded_netrwPlugin = 1
+    -- "nvim-tree/nvim-tree.lua",
+    -- version = "*",
+    -- lazy = false,
+    -- dependencies = "nvim-tree/nvim-web-devicons",
+    -- config = function()
+    --     vim.g.loaded_netrw = 1
+    --     vim.g.loaded_netrwPlugin = 1
 
-        require("nvim-tree").setup({})
+    --     require("nvim-tree").setup({})
 
-        vim.keymap.set("n", "<leader>t", "<cmd>NvimTreeToggle<CR>", { silent = true, desc = "Toggle tree" })
-    end,
+    --     vim.keymap.set("n", "<leader>t", "<cmd>NvimTreeToggle<CR>", { silent = true, desc = "Toggle tree" })
+    -- end,
 }
