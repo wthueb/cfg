@@ -81,6 +81,8 @@ let nord_theme = {
     cursor: "#e5e9f0"
 }
 
+$env.CARAPACE_MATCH = 1
+
 let carapace_completer = {|spans|
   # if the current command is an alias, get it's expansion
   let expanded_alias = (scope aliases | where name == $spans.0 | get -i 0 | get -i expansion)
