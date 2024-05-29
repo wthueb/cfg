@@ -21,7 +21,7 @@
 
       nixpkgs.hostPlatform = "aarch64-darwin";
       nixpkgs.config.allowUnfree = true;
-      nixpkgs.overlays = [ inputs.neovim-nightly-overlay.overlay ];
+      nixpkgs.overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
 
       environment.systemPackages = with pkgs; [
         bashInteractive
@@ -51,7 +51,7 @@
         less
         litecli
         neofetch
-        neovim-nightly
+        neovim
         nodejs_20
         nushell
         pyenv
