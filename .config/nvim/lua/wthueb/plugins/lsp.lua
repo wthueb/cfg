@@ -4,7 +4,7 @@ return {
     dependencies = {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
-        { "pmizio/typescript-tools.nvim", opts = {} },
+        "WhoIsSethDaniel/mason-tool-installer",
         { "folke/neodev.nvim", opts = {} },
         { "j-hui/fidget.nvim", opts = {} },
         { "creativenull/efmls-configs-nvim", version = "1.x.x" },
@@ -12,7 +12,8 @@ return {
 
     config = function()
         require("mason").setup()
-        require("mason-lspconfig").setup({
+        require("mason-lspconfig").setup()
+        require("mason-tool-installer").setup({
             ensure_installed = {
                 "angularls",
                 "bashls",
@@ -25,7 +26,8 @@ return {
                 "ruff_lsp",
                 "rust_analyzer",
                 "lua_ls",
-                --"tsserver",
+                "stylua",
+                "vtsls",
                 "yamlls",
             },
         })
@@ -275,14 +277,14 @@ return {
                 })
             end,
 
-            -- tsserver = function()
-            --     lspconfig.tsserver.setup({
-            --         capabilities = lsp_capabilities,
-            --         settings = {
-            --             implicitProjectConfiguration = { checkJs = true },
-            --         },
-            --     })
-            -- end,
+            vtsls = function()
+                lspconfig.vtsls.setup({
+                    capabilities = lsp_capabilities,
+                    settings = {
+                        implicitProjectConfiguration = { checkJs = true },
+                    },
+                })
+            end,
         })
     end,
 }
