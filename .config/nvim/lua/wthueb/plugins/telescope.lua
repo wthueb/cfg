@@ -9,8 +9,8 @@ return {
         require("telescope").setup({
             defaults = {
                 mappings = {
-                    n = { ["<C-q>"] = require("trouble.providers.telescope").open_with_trouble },
-                    i = { ["<C-q>"] = require("trouble.providers.telescope").open_with_trouble },
+                    n = { ["<C-q>"] = require("trouble.sources.telescope").open },
+                    i = { ["<C-q>"] = require("trouble.sources.telescope").open },
                 },
             },
             pickers = {
