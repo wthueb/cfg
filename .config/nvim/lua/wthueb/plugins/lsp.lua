@@ -68,9 +68,9 @@ return {
                         return vim.lsp.buf.format({ name = formatters[1] })
                     end
 
-                    if vim.tbl_contains(formatters, "efm") then
-                        return vim.lsp.buf.format({ name = "efm" })
-                    end
+                    -- if vim.tbl_contains(formatters, "efm") then
+                    --     return vim.lsp.buf.format({ name = "efm" })
+                    -- end
 
                     table.sort(formatters)
 
