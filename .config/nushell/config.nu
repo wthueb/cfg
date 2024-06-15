@@ -264,17 +264,31 @@ $env.config = {
             mode: [emacs, vi_normal, vi_insert]
             event: {
                 send: ExecuteHostCommand,
-                cmd: "commandline (
-                         history |
-                         where exit_status == 0 |
-                         get command |
-                         uniq |
-                         reverse |
-                         str join (char -i 0) |
-                         fzf --scheme=history --read0 --layout=reverse --height=40% -q (commandline) |
-                         decode utf-8 |
-                         str trim
-                     )"
+                cmd: "commandline edit --replace (
+                          history |
+                          where exit_status == 0 |
+                          sort-by -r start_timestamp |
+                          get command |
+                          uniq |
+                          str join (char -i 0) |
+                          fzf --scheme=history --read0 --layout=reverse --height=40% -q (commandline) |
+                          decode utf-8 |
+                          str trim
+                      )"
+            }
+        }
+        {
+            name: fzf_file
+            modifier: control
+            keycode: char_t
+            mode: [emacs, vi_normal, vi_insert]
+            event: {
+                send: ExecuteHostCommand,
+                cmd: "commandline edit --insert (
+                          fzf --layout=reverse --height=40% |
+                          decode utf-8 |
+                          str trim
+                      )"
             }
         }
         {
@@ -449,7 +463,7 @@ $env.config = {
         {
             name: move_down
             modifier: control
-            keycode: char_t
+            keycode: char_n
             mode: [emacs, vi_normal, vi_insert]
             event: {
                 until: [
