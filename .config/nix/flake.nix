@@ -26,6 +26,7 @@
       environment.systemPackages = with pkgs; [
         bashInteractive
         bat
+        btop
         carapace
         coreutils
         curl
@@ -44,7 +45,6 @@
         gnutar
         go
         google-cloud-sdk
-        htop
         inetutils
         jc
         jq
