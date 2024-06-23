@@ -144,18 +144,13 @@ return {
                     require("trouble").open("lsp_references")
                 end, { silent = true, desc = "Go to references", buffer = true })
 
-                vim.keymap.set(
-                    "n",
-                    "[d",
-                    vim.diagnostic.goto_prev,
-                    { silent = true, desc = "Go to previous diagnostic", buffer = true }
-                )
-                vim.keymap.set(
-                    "n",
-                    "]d",
-                    vim.diagnostic.goto_next,
-                    { silent = true, desc = "Go to next diagnostic", buffer = true }
-                )
+                vim.keymap.set("n", "[d", function()
+                    vim.diagnostic.jump({ count = -1 })
+                end, { silent = true, desc = "Go to previous diagnostic", buffer = true })
+
+                vim.keymap.set("n", "]d", function()
+                    vim.diagnostic.jump({ count = 1 })
+                end, { silent = true, desc = "Go to next diagnostic", buffer = true })
 
                 if client and client.server_capabilities.documentHighlightProvider then
                     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
@@ -180,12 +175,11 @@ return {
         })
 
         local lspconfig = require("lspconfig")
-        local lsp_capabilities =
-            require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+        local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
         require("mason-lspconfig").setup_handlers({
             function(server_name)
-                lspconfig[server_name].setup({ capabilities = lsp_capabilities })
+                lspconfig[server_name].setup({ capabilities = capabilities })
             end,
 
             efm = function()
@@ -201,11 +195,10 @@ return {
                     json = { prettier },
                     jsonc = { prettier },
                     lua = { require("efmls-configs.formatters.stylua") },
-                    nix = { require("efmls-configs.formatters.nixfmt") },
                 }
 
                 lspconfig.efm.setup({
-                    capabilities = lsp_capabilities,
+                    capabilities = capabilities,
 
                     filetypes = vim.tbl_keys(languages),
 
@@ -222,7 +215,7 @@ return {
 
             emmet_language_server = function()
                 lspconfig.emmet_language_server.setup({
-                    capabilities = lsp_capabilities,
+                    capabilities = capabilities,
                     filetypes = {
                         "html",
                         "css",
@@ -237,7 +230,7 @@ return {
 
             lua_ls = function()
                 lspconfig.lua_ls.setup({
-                    capabilities = lsp_capabilities,
+                    capabilities = capabilities,
 
                     on_init = function(client)
                         local path = client.workspace_folders[1].name
@@ -266,7 +259,7 @@ return {
 
             rust_analyzer = function()
                 lspconfig.rust_analyzer.setup({
-                    capabilities = lsp_capabilities,
+                    capabilities = capabilities,
 
                     settings = {
                         ["rust-analyzer"] = {
@@ -280,15 +273,23 @@ return {
 
             vtsls = function()
                 lspconfig.vtsls.setup({
-                    capabilities = lsp_capabilities,
+                    capabilities = capabilities,
                     settings = {
                         implicitProjectConfiguration = { checkJs = true },
                     },
                 })
             end,
-
         })
 
-        lspconfig.nil_ls.setup({})
+        lspconfig.nil_ls.setup({
+            capabilities = capabilities,
+            settings = {
+                ["nil"] = {
+                    formatting = {
+                        command = { "nixfmt" },
+                    },
+                },
+            },
+        })
     end,
 }
