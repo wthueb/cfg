@@ -201,6 +201,7 @@ return {
                     json = { prettier },
                     jsonc = { prettier },
                     lua = { require("efmls-configs.formatters.stylua") },
+                    nix = { require("efmls-configs.formatters.nixfmt") },
                 }
 
                 lspconfig.efm.setup({
@@ -285,6 +286,9 @@ return {
                     },
                 })
             end,
+
         })
+
+        lspconfig.nil_ls.setup({})
     end,
 }

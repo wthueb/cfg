@@ -11,173 +11,203 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+
+    nil.url = "github:oxalica/nil";
   };
 
-  outputs = inputs@{ self, ...}:
+  outputs =
+    { self, ... }@inputs:
     let
-    configuration = { pkgs, ... }: {
-      nix.package = pkgs.nix;
-      nix.settings.experimental-features = "nix-command flakes";
+      configuration =
+        { pkgs, ... }:
+        {
+          nix = {
+            package = pkgs.nix;
+            settings.experimental-features = "nix-command flakes";
+            extraOptions = ''
+              extra-platforms = x86_64-darwin aarch64-darwin
+            '';
+          };
 
-      nixpkgs.hostPlatform = "aarch64-darwin";
-      nixpkgs.config.allowUnfree = true;
-      nixpkgs.overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
+          nixpkgs = {
+            hostPlatform = "aarch64-darwin";
+            config.allowUnfree = true;
+            overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
+          };
 
-      environment.systemPackages = with pkgs; [
-        bashInteractive
-        bat
-        btop
-        carapace
-        coreutils
-        curl
-        delta
-        dig
-        fish
-        fd
-        ffmpeg-full
-        fzf
-        gcc
-        gh
-        git
-        gnugrep
-        gnumake
-        gnused
-        gnutar
-        go
-        google-cloud-sdk
-        inetutils
-        jc
-        jq
-        less
-        litecli
-        neofetch
-        neovim
-        nodejs_20
-        nushell
-        pyenv
-        qbittorrent
-        raycast
-        rclone
-        ripgrep
-        rsync
-        rustup
-        sqlite
-        starship
-        tldr
-        tmux
-        tree
-        wezterm
-        yt-dlp
-        zoxide
-      ];
+          environment.systemPackages = with pkgs; [
+            inputs.nil.packages.aarch64-darwin.nil
+            bashInteractive
+            bat
+            btop
+            carapace
+            coreutils
+            curl
+            delta
+            dig
+            fish
+            fd
+            ffmpeg-full
+            fzf
+            gcc
+            gh
+            git
+            gnugrep
+            gnumake
+            gnused
+            gnutar
+            go
+            google-cloud-sdk
+            inetutils
+            jc
+            jq
+            less
+            litecli
+            neofetch
+            neovim
+            nixfmt-rfc-style
+            nodejs_20
+            nushell
+            pyenv
+            qbittorrent
+            raycast
+            rclone
+            ripgrep
+            rsync
+            rustup
+            sqlite
+            starship
+            tldr
+            tmux
+            tree
+            wezterm
+            yt-dlp
+            zoxide
+          ];
 
-      homebrew = {
-        enable = true;
-        onActivation = {
-          autoUpdate = true;
-          upgrade = true;
-          cleanup = "zap"; # remove all formulae not listed below
+          homebrew = {
+            enable = true;
+            onActivation = {
+              autoUpdate = true;
+              upgrade = true;
+              cleanup = "zap"; # remove all formulae not listed below
+            };
+
+            taps = [
+              "homebrew/services"
+              "mongodb/homebrew-brew"
+            ];
+
+            brews = [
+              {
+                name = "mongodb-community";
+                start_service = true;
+                restart_service = "changed";
+              }
+              # python build deps
+              "openssl"
+              "readline"
+              "sqlite3"
+              "xz"
+              "zlib"
+              "tcl-tk"
+            ];
+
+            casks = [
+              "bartender"
+              "docker"
+              "hammerspoon"
+            ];
+          };
+
+          environment = {
+            shells = [
+              pkgs.bash
+              pkgs.fish
+              pkgs.nushell
+            ];
+            loginShell = pkgs.nushell;
+            variables = {
+              XDG_CONFIG_HOME = "/Users/wil/.config";
+            };
+          };
+
+          programs = {
+            nix-index.enable = true;
+          };
+
+          services = {
+            nix-daemon.enable = true;
+            karabiner-elements.enable = true;
+            sketchybar.enable = true;
+            skhd.enable = true;
+            yabai = {
+              enable = true;
+              enableScriptingAddition = true;
+            };
+          };
+
+          launchd.user.agents.raycast = {
+            serviceConfig.ProgramArguments = [ "/Applications/Nix Apps/Raycast.app/Contents/MacOS/Raycast" ];
+            serviceConfig.RunAtLoad = true;
+          };
+
+          fonts.packages = with pkgs; [
+            (nerdfonts.override {
+              fonts = [
+                "SourceCodePro"
+                "FiraCode"
+              ];
+            })
+          ];
+
+          system = {
+            defaults = {
+              dock = {
+                autohide = true;
+                mru-spaces = false;
+              };
+
+              finder = {
+                AppleShowAllExtensions = true;
+                ShowPathbar = true;
+                FXEnableExtensionChangeWarning = false;
+              };
+            };
+
+            stateVersion = 4;
+          };
+
+          security = {
+            accessibilityPrograms = [
+              "${pkgs.yabai}/bin/yabai"
+              "${pkgs.skhd}/bin/skhd"
+            ];
+
+            pam.enableSudoTouchIdAuth = true;
+
+            sudo.extraConfig = ''
+              wil ALL=(ALL) NOPASSWD: ALL
+            '';
+          };
         };
+    in
+    {
+      darwinConfigurations."wil-mac" = inputs.nix-darwin.lib.darwinSystem {
+        modules = [
+          configuration
 
-        taps = [
-          "homebrew/services"
-          "mongodb/homebrew-brew"
-        ];
-
-        brews = [
-          {
-            name = "mongodb-community";
-            start_service = true;
-            restart_service = "changed";
-          }
-          # python build deps
-          "openssl"
-          "readline"
-          "sqlite3"
-          "xz"
-          "zlib"
-          "tcl-tk"
-        ];
-
-        casks = [
-          "bartender"
-          "docker"
-          "hammerspoon"
+          # inputs.home-manager.darwinModules.home-manager
+          # {
+          #   home-manager = {
+          #     useGlobalPkgs = true;
+          #     useUserPackages = true;
+          #     users.wil.imports = [ ./modules/home-manager ];
+          #   };
+          # }
         ];
       };
 
-      environment.shells = [ pkgs.bash pkgs.fish pkgs.nushell ];
-      environment.loginShell = pkgs.nushell;
-      environment.variables = {
-        XDG_CONFIG_HOME = "/Users/wil/.config";
-      };
-
-      programs = {
-        nix-index.enable = true;
-      };
-
-      services.karabiner-elements.enable = true;
-      services.nix-daemon.enable = true;
-      services.sketchybar.enable = true;
-      services.skhd.enable = true;
-      services.yabai = {
-        enable = true;
-        enableScriptingAddition = true;
-      };
-
-      launchd.user.agents.raycast = {
-        serviceConfig.ProgramArguments = [ "/Applications/Nix Apps/Raycast.app/Contents/MacOS/Raycast" ];
-        serviceConfig.RunAtLoad = true;
-      };
-
-      fonts.packages = with pkgs; [
-        (nerdfonts.override { fonts = [ "SourceCodePro" "FiraCode" ]; })
-      ];
-
-      system.defaults = {
-        dock = {
-          autohide = true;
-          mru-spaces = false;
-        };
-
-        finder = {
-          AppleShowAllExtensions = true;
-          ShowPathbar = true;
-          FXEnableExtensionChangeWarning = false;
-        };
-      };
-
-      security.accessibilityPrograms = [
-        "${pkgs.yabai}/bin/yabai"
-        "${pkgs.skhd}/bin/skhd"
-      ];
-      security.pam.enableSudoTouchIdAuth = true;
-      security.sudo.extraConfig = ''
-        wil ALL=(ALL) NOPASSWD: ALL
-      '';
-
-      system.stateVersion = 4;
-
-      nix.extraOptions = ''
-        extra-platforms = x86_64-darwin aarch64-darwin
-      '';
+      darwinPackages = self.darwinConfigurations."wil-mac".pkgs;
     };
-  in
-  {
-    darwinConfigurations."wil-mac" = inputs.nix-darwin.lib.darwinSystem {
-      modules = [
-        configuration
-# inputs.home-manager.darwinModules.home-manager
-# {
-#   home-manager = {
-#     useGlobalPkgs = true;
-#     useUserPackages = true;
-#     users.wil.imports = [ ./modules/home-manager ];
-#   };
-# }
-      ];
-    };
-
-    darwinPackages = self.darwinConfigurations."wil-mac".pkgs;
-  };
 }
