@@ -26,6 +26,7 @@ return {
                 "ruff_lsp",
                 "rust_analyzer",
                 "lua_ls",
+                "shellcheck",
                 "stylua",
                 "vtsls",
                 "yamlls",
@@ -187,6 +188,7 @@ return {
 
                 local languages = {
                     astro = { prettier },
+                    bash = { require("efmls-configs.linters.shellcheck") },
                     typescript = { prettier },
                     typescriptreact = { prettier },
                     javascript = { prettier },

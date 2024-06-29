@@ -2,21 +2,40 @@
 
 update() {
   source "$CONFIG_DIR/icons.sh"
-  LABEL="$INFO ($(ipconfig getifaddr en0))"
-  ICON="$([ -n "$INFO" ] && echo "$WIFI_CONNECTED" || echo "$WIFI_DISCONNECTED")"
+  local adapter
+  local ssid
+  local ip
+  local has_ip
 
-  sketchybar --set $NAME icon="$ICON" label="$LABEL"
+  adapter=$(networksetup -listallhardwareports | awk '/Wi-Fi/ { getline; print $2 }')
+  ssid=$(networksetup -getairportnetwork en0 | awk -F ': ' '{ print $2 }')
+  ip=$(ipconfig getifaddr "$adapter")
+  has_ip=$?
+
+  local label
+  local icon
+
+  if [ $has_ip -ne 0 ]; then
+    label="No Wi-Fi"
+    icon=$WIFI_DISCONNECTED
+  else
+    label="$ssid ($ip)"
+    icon=$WIFI_CONNECTED
+  fi
+
+  sketchybar --set "$NAME" icon="$icon" label="$label"
 }
 
 click() {
-  CURRENT_WIDTH="$(sketchybar --query $NAME | jq -r .label.width)"
+  local cur_width
+  cur_width="$(sketchybar --query "$NAME" | jq -r .label.width)"
 
-  WIDTH=0
-  if [ "$CURRENT_WIDTH" -eq "0" ]; then
-    WIDTH=dynamic
+  local width=0
+  if [ "$cur_width" -eq "0" ]; then
+    width=dynamic
   fi
 
-  sketchybar --animate sin 20 --set $NAME label.width="$WIDTH"
+  sketchybar --animate sin 20 --set "$NAME" label.width="$width"
 }
 
 case "$SENDER" in
