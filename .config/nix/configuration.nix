@@ -37,6 +37,7 @@
     gnutar
     go
     google-cloud-sdk
+    hyperfine
     inetutils
     jc
     jq
