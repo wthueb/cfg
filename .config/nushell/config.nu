@@ -609,6 +609,19 @@ def "vim upgrade" [] {
     nvim --headless "+Lazy! sync" +qa
 }
 
+def confirm [prompt?: string] {
+    if ($prompt == null) {
+        print -n 'confirm? [y/n]: '
+    } else {
+        print -n $'($prompt) [y/n]: '
+    }
+
+    let input = (input -s --numchar 1)
+    print $input
+
+    return ($input == 'y')
+}
+
 source ~/.cache/zoxide.nu
 source ~/.cache/starship.nu
 source ($nu.default-config-dir | path join 'config.custom.nu')
