@@ -2,7 +2,10 @@
 {
   nix = {
     package = pkgs.nix;
-    settings.experimental-features = "nix-command flakes";
+    settings = {
+      experimental-features = "nix-command flakes";
+      substituters = ["https://cache.nixos.org"];
+    };
     extraOptions = ''
       extra-platforms = x86_64-darwin aarch64-darwin
     '';
@@ -22,6 +25,7 @@
     carapace
     coreutils
     curl
+    dbeaver-bin
     delta
     dig
     fish
