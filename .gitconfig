@@ -69,7 +69,7 @@
     ma = merge --abort
     mc = merge --continue
     ms = merge --skip
-    pl = pull
+    pl = pull --autostash
     plno = pull --no-rebase
     plo = pull origin
     plu = pull upstream
