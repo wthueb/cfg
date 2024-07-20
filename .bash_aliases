@@ -73,7 +73,7 @@ esac
 
 copy()
 {
-    read $in
+    read "$in"
 
     # if we are using iterm
     if [[ -f ~/.iterm2/it2check ]] && ~/.iterm2/it2check 2> /dev/null; then
@@ -112,7 +112,7 @@ confirm()
 
 mkcd()
 {
-    mkdir -p -- $@ && cd -P -- $@
+    mkdir -p -- "$@" && cd -P -- "$@" || return
 }
 
 newline-prompt()
@@ -154,7 +154,7 @@ path()
 activate()
 {
     if [[ $1 ]]; then
-        source $1/bin/activate
+        source "$1/bin/activate"
     else
         source env/bin/activate
     fi
@@ -163,17 +163,19 @@ activate()
 venv()
 {
     if [[ $1 ]]; then
-        python -m venv --upgrade-deps $1
+        python -m venv --upgrade-deps "$1"
     else
         python -m venv --upgrade-deps env
     fi
 
-    activate $@
+    activate "$@"
 }
 
 vim-upgrade()
 {
     nvim --headless "+Lazy! sync" +qa
+    nvim --headless "+TSUpdateSync" +qa
+    nvim --headless "+MasonToolsUpdateSync" +qa
 }
 
 addToPath() {
