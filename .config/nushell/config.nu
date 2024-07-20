@@ -607,6 +607,8 @@ def venv [dir?: string] {
 
 def "vim upgrade" [] {
     nvim --headless "+Lazy! sync" +qa
+    nvim --headless "+TSUpdateSync" +qa
+    nvim --headless "+MasonToolsUpdateSync" +qa
 }
 
 def confirm [prompt?: string] {
