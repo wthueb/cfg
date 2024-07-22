@@ -35,13 +35,6 @@ BLUE='\[\033[0;34m\]'
 BRIGHTBLUE='\[\033[1;34m\]'
 BRIGHTCYAN='\[\033[1;36m\]'
 
-function update_title()
-{
-    echo -ne "\033]0;${BASH_COMMAND} - ${PWD##*/} - ${USER}@${HOSTNAME}\a"
-}
-
-trap update_title DEBUG
-
 function _prompt_command()
 {
     local status=$?
@@ -49,7 +42,7 @@ function _prompt_command()
     PS1=""
 
     if [[ ${VIRTUAL_ENV} ]]; then
-        PS1+="($(basename ${VIRTUAL_ENV})) "
+        PS1+="($(basename "$VIRTUAL_ENV")) "
     fi
 
     if [[ ${CONDA_PROMPT_MODIFIER} ]]; then
@@ -64,10 +57,9 @@ function _prompt_command()
         PS1+="${BRIGHTCYAN}\W${REMOVE}"
     fi
 
-    git rev-parse --git-dir &>/dev/null
-
-    if [[ $? == 0 ]]; then
-        local branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+    if git rev-parse --git-dir &>/dev/null; then
+        local branch
+        branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
         PS1+="@${YELLOW}${branch}"
 
@@ -101,8 +93,10 @@ if command -v pyenv &> /dev/null; then
     eval "$(pyenv init -)"
 fi
 
+# shellcheck source=.bash_aliases
 [[ -f ~/.bash_aliases ]] && source ~/.bash_aliases
 
+# shellcheck source=.customrc
 [[ -f ~/.customrc ]] && source ~/.customrc
 
 if command -v fd &> /dev/null; then
@@ -130,6 +124,7 @@ _fzf_comprun() {
     esac
 }
 
+# shellcheck source=.fzf.bash
 [[ -f ~/.fzf.bash ]] && source ~/.fzf.bash
 
 if command -v tmux-sessionizer &>/dev/null; then
