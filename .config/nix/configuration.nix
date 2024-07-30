@@ -14,7 +14,8 @@
   nixpkgs = {
     hostPlatform = "aarch64-darwin";
     config.allowUnfree = true;
-    overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
+    #overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
+    overlays = [];
   };
 
   environment.systemPackages = with pkgs; [
@@ -28,6 +29,7 @@
     dbeaver-bin
     delta
     dig
+    discord
     fish
     fd
     ffmpeg-full
@@ -60,6 +62,7 @@
     rsync
     rustup
     sqlite
+    spotify
     starship
     tldr
     tmux
@@ -89,6 +92,7 @@
         restart_service = "changed";
       }
       # python build deps
+      "mas"
       "openssl"
       "readline"
       "sqlite3"
@@ -97,10 +101,20 @@
       "tcl-tk"
     ];
 
+    masApps = {
+      "Xcode" = 497799835;
+    };
+
     casks = [
+      # TODO: go through apps and add them here
       "bartender"
+      "bitwarden"
       "docker"
+      #"firefox"
+      #"google-chrome"
       "hammerspoon"
+      "karabiner-elements"
+      "plex"
     ];
   };
 
