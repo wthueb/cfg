@@ -14,6 +14,11 @@ config.font_size = 15.0
 config.disable_default_key_bindings = true
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
+table.insert(config.hyperlink_rules, {
+    regex = [[\b([\w\d][-\w\d]+)/([-\w\d\.]+)\b]],
+    format = "https://www.github.com/$1/$2",
+})
+
 config.audible_bell = "Disabled"
 
 config.window_padding = {
@@ -207,12 +212,11 @@ for _, key_config in pairs(platform_keys) do
     table.insert(config.keys, key_config)
 end
 
-wezterm.on('gui-startup', function(cmd)
+wezterm.on("gui-startup", function(cmd)
     ---@diagnostic disable-next-line: unused-local
     local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
 
     window:gui_window():maximize()
-
 end)
 
 local function basename(s)
@@ -249,5 +253,10 @@ wezterm.on("update-right-status", function(window, pane)
         { Text = " " .. wezterm.hostname() .. " " },
     }))
 end)
+
+local has_custom, custom = pcall(require, "custom")
+if has_custom then
+    custom.override_config(config)
+end
 
 return config
