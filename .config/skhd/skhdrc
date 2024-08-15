@@ -107,7 +107,7 @@ alt - m : yabai -m window --minimize
 alt - e : yabai -m window --toggle split
 alt - q : yabai -m space --rotate 90
 
-alt - s ; modify_window
+alt + shift - s ; modify_window
 modify_window < s : yabai -m window --toggle sticky ; skhd -k 'escape'
 modify_window < t : yabai -m window --toggle topmost ; skhd -k 'escape'
 modify_window < f : yabai -m window --toggle float ; skhd -k 'escape'
