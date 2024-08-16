@@ -24,7 +24,7 @@
     prompt = false
 
 [init]
-    defaultBranch = main
+    defaultBranch = master
 
 [fetch]
     prune = true
