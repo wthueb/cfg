@@ -146,11 +146,13 @@ return {
                 end, { silent = true, desc = "Go to references", buffer = true })
 
                 vim.keymap.set("n", "[d", function()
-                    vim.diagnostic.jump({ count = -1 })
+                    -- vim.diagnostic.jump({ count = -1 })
+                    vim.diagnostic.goto_prev()
                 end, { silent = true, desc = "Go to previous diagnostic", buffer = true })
 
                 vim.keymap.set("n", "]d", function()
-                    vim.diagnostic.jump({ count = 1 })
+                    -- vim.diagnostic.jump({ count = 1 })
+                    vim.diagnostic.goto_next()
                 end, { silent = true, desc = "Go to next diagnostic", buffer = true })
 
                 if client and client.server_capabilities.documentHighlightProvider then
