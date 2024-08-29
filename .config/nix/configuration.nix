@@ -26,7 +26,6 @@
     carapace
     coreutils
     curl
-    dbeaver-bin
     delta
     dig
     discord
@@ -109,6 +108,7 @@
       # TODO: go through apps and add them here
       "bartender"
       "bitwarden"
+      "dbeaver-community"
       "docker"
       #"firefox"
       #"google-chrome"
@@ -136,7 +136,7 @@
 
   services = {
     nix-daemon.enable = true;
-    karabiner-elements.enable = true;
+    # karabiner-elements.enable = true;
     sketchybar.enable = true;
     skhd.enable = true;
     yabai = {
