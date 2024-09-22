@@ -19,7 +19,9 @@
   };
 
   environment.systemPackages = with pkgs; [
-    inputs.nil.packages.aarch64-darwin.nil
+    inputs.nil.packages.${pkgs.system}.nil
+    inputs.wezterm.packages.${pkgs.system}.default
+
     bashInteractive
     bat
     btop
@@ -53,7 +55,6 @@
     nixfmt-rfc-style
     nodejs_20
     nushell
-    pyenv
     qbittorrent
     raycast
     rclone
@@ -66,7 +67,6 @@
     tldr
     tmux
     tree
-    wezterm
     yt-dlp
     zoxide
   ];
@@ -93,6 +93,7 @@
       # python build deps
       "mas"
       "openssl"
+      "pyenv"
       "readline"
       "sqlite3"
       "xz"

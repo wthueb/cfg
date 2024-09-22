@@ -58,7 +58,7 @@ return {
                         end,
                         vim.tbl_filter(function(c)
                             return c.server_capabilities.documentFormattingProvider
-                        end, vim.lsp.get_clients({ bufnr = event.buf }))
+                        end, vim.lsp.get_active_clients({ buffer = event.buf }))
                     )
 
                     if #formatters == 0 then
