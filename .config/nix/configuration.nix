@@ -20,7 +20,8 @@
 
   environment.systemPackages = with pkgs; [
     inputs.nil.packages.${pkgs.system}.nil
-    inputs.wezterm.packages.${pkgs.system}.default
+    #inputs.wezterm.packages.${pkgs.system}.default
+    inputs.nixpkgs-stable.legacyPackages.${pkgs.system}.wezterm
 
     bashInteractive
     bat
