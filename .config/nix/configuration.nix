@@ -175,6 +175,11 @@
       };
     };
 
+    # disable electron apps from automatically checking for updates
+    activationScripts.extraUserActivation.text = ''
+      launchctl setenv ELECTRON_NO_UPDATER 1
+    '';
+
     stateVersion = 4;
   };
 
