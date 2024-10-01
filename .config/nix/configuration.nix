@@ -32,6 +32,7 @@
     delta
     dig
     discord
+    dua
     fish
     fd
     ffmpeg-full
