@@ -19,10 +19,11 @@ export LANG='en_US.UTF-8'
 # sort uppercase before lowercase with ls command
 export LC_COLLATE='C'
 
-export PAGER='less -RF'
+#export PAGER='nvim -R'
+export MANPAGER='nvim +Man!'
 
 if [[ -f /opt/homebrew/bin/brew ]]; then
-    eval $(/opt/homebrew/bin/brew shellenv)
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 
     PATH="$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH"
 fi
@@ -33,7 +34,7 @@ PYENV_ROOT="$HOME/.pyenv"
 
 if [[ -d $PYENV_ROOT ]]; then
     PATH="$PYENV_ROOT/bin:$PATH"
-    eval $(pyenv init --path)
+    eval "$(pyenv init --path)"
 fi
 
 [[ -f ~/.cargo/env ]] && source ~/.cargo/env
@@ -50,7 +51,7 @@ else
     export VISUAL=vim
 fi
 
-[[ -f ~/.dir_colors ]] && eval $(dircolors ~/.dir_colors)
+[[ -f ~/.dir_colors ]] && eval "$(dircolors ~/.dir_colors)"
 
 if [[ -f ~/.iterm2/it2check ]]; then
     PATH="/usr/bin:/bin:/usr/sbin:/sbin" ~/.iterm2/it2check

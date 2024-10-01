@@ -22,6 +22,9 @@ use std "path add"
 $env.EDITOR = "nvim"
 $env.VISUAL = "nvim"
 
+#$env.PAGER = "nvim -R"
+$env.MANPAGER = "nvim +Man!"
+
 mkdir ~/.cache
 zoxide init nushell | save -f ~/.cache/zoxide.nu
 starship init nu | save -f ~/.cache/starship.nu
