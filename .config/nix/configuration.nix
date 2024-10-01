@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ self, pkgs, inputs, ... }:
 {
   nix = {
     package = pkgs.nix;
@@ -180,7 +180,12 @@
       launchctl setenv ELECTRON_NO_UPDATER 1
     '';
 
-    stateVersion = 4;
+    # Set Git commit hash for darwin-version.
+    configurationRevision = self.rev or self.dirtyRev or null;
+
+    # Used for backwards compatibility, please read the changelog before changing.
+    # $ darwin-rebuild changelog
+    stateVersion = 5;
   };
 
   security = {
