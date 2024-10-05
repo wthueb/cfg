@@ -628,6 +628,5 @@ def confirm [prompt?: string] {
     return ($input == 'y')
 }
 
-source ~/.cache/zoxide.nu
 source ~/.cache/starship.nu
 source ($nu.default-config-dir | path join 'config.custom.nu')

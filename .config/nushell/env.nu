@@ -1,3 +1,7 @@
+use std "path add"
+
+source ($nu.default-config-dir | path join 'env.custom.nu')
+
 $env.ENV_CONVERSIONS = {
     "PATH": {
         from_string: { |s| $s | split row (char esep) | path expand --no-symlink }
@@ -17,8 +21,6 @@ $env.NU_PLUGIN_DIRS = [
     ($nu.default-config-dir | path join 'plugins')
 ]
 
-use std "path add"
-
 $env.EDITOR = "nvim"
 $env.VISUAL = "nvim"
 
@@ -26,10 +28,8 @@ $env.VISUAL = "nvim"
 $env.MANPAGER = "nvim +Man!"
 
 mkdir ~/.cache
-zoxide init nushell | save -f ~/.cache/zoxide.nu
 starship init nu | save -f ~/.cache/starship.nu
 $env.PROMPT_INDICATOR_VI_NORMAL = ""
 $env.PROMPT_INDICATOR_VI_INSERT = ""
 
 #source ($nu.default-config-dir | path join 'prompt.nu')
-source ($nu.default-config-dir | path join 'env.custom.nu')
