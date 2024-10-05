@@ -6,7 +6,6 @@
 dirs=(
     ~/code
     ~/.config
-    ~/asdfasadff
     ~
 )
 
@@ -15,27 +14,27 @@ for index in "${!dirs[@]}" ; do ! [[ -d "${dirs[$index]}" ]] && unset -v 'dirs[$
 selected=$1
 
 if [[ -z $selected ]]; then
-    selected=$(find ${dirs[@]} -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d | fzf)
     [[ -z $selected ]] && exit 0
 fi
 
-name=$(basename $selected | tr . _)
+name=$(basename "$selected" | tr . _)
 
 # tmux isn't running, start it up and hop in
 if [[ -z $(pgrep tmux) ]]; then
-    tmux new-session -s $name -c $selected
+    tmux new-session -s "$name" -c "$selected"
     exit 0
 fi
 
 # session doesn't exist, start it up
-if ! tmux has-session -t $name &>/dev/null; then
+if ! tmux has-session -t "$name" &>/dev/null; then
     # detach here to avoid nesting sessions
-    tmux new-session -d -s $name -c $selected
+    tmux new-session -d -s "$name" -c "$selected"
 fi
 
 # session exists and we're not in tmux so we attach
 if [[ -z $TMUX ]]; then
-    tmux attach-session -t $name
+    tmux attach-session -t "$name"
 else # session exists and we're in tmux so we switch
-    tmux switch-client -t $name
+    tmux switch-client -t "$name"
 fi
