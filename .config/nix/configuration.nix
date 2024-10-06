@@ -1,10 +1,15 @@
-{ self, pkgs, inputs, ... }:
+{
+  self,
+  pkgs,
+  inputs,
+  ...
+}:
 {
   nix = {
     package = pkgs.nix;
     settings = {
       experimental-features = "nix-command flakes";
-      substituters = ["https://cache.nixos.org"];
+      substituters = [ "https://cache.nixos.org" ];
     };
     extraOptions = ''
       extra-platforms = x86_64-darwin aarch64-darwin
@@ -15,7 +20,7 @@
     hostPlatform = "aarch64-darwin";
     config.allowUnfree = true;
     #overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
-    overlays = [];
+    overlays = [ ];
   };
 
   environment.systemPackages = with pkgs; [
