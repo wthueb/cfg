@@ -185,12 +185,28 @@
       dock = {
         autohide = true;
         mru-spaces = false;
+        persistent-apps = [
+          "${pkgs.google-chrome}/Applications/Google Chrome.app"
+          "/Applications/Thunderbird.app"
+          "/System/Applications/Calendar.app"
+          "/System/Applications/Messages.app"
+          "${pkgs.spotify}/Applications/Spotify.app"
+          "${pkgs.discord}/Applications/Discord.app"
+          "${pkgs.stable.wezterm}/Applications/WezTerm.app"
+          "/Applications/Plex.app"
+        ];
       };
 
       finder = {
         AppleShowAllExtensions = true;
         ShowPathbar = true;
         FXEnableExtensionChangeWarning = false;
+      };
+
+      loginwindow.GuestEnabled = false;
+
+      NSGlobalDomain = {
+        AppleInterfaceStyle = "Dark";
       };
     };
 
