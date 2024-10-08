@@ -15,6 +15,11 @@ config.disable_default_key_bindings = true
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
 table.insert(config.hyperlink_rules, {
+    regex = [[\b([\w\d][-\w\d]+)/([-\w\d\.]+)#(\d+)\b]],
+    format = "https://www.github.com/$1/$2/issues/$3",
+})
+
+table.insert(config.hyperlink_rules, {
     regex = [[\b([\w\d][-\w\d]+)/([-\w\d\.]+)\b]],
     format = "https://www.github.com/$1/$2",
 })
