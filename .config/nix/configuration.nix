@@ -20,62 +20,70 @@
     hostPlatform = "aarch64-darwin";
     config.allowUnfree = true;
     #overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
-    overlays = [ ];
+    overlays = [
+      (final: prev: {
+        stable = import inputs.nixpkgs-stable {
+          system = "aarch64-darwin";
+          config.allowUnfree = true;
+        };
+      })
+    ];
   };
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = [
     inputs.nil.packages.${pkgs.system}.nil
-    #inputs.wezterm.packages.${pkgs.system}.default
-    inputs.nixpkgs-stable.legacyPackages.${pkgs.system}.wezterm
 
-    bashInteractive
-    bat
-    btop
-    carapace
-    coreutils
-    curl
-    delta
-    dig
-    discord
-    dua
-    fish
-    fd
-    ffmpeg-full
-    fzf
-    gcc
-    gh
-    git
-    gnugrep
-    gnumake
-    gnused
-    gnutar
-    go
-    google-cloud-sdk
-    hyperfine
-    inetutils
-    jc
-    jq
-    less
-    litecli
-    neofetch
-    neovim
-    nixfmt-rfc-style
-    nodejs_20
-    nushell
-    qbittorrent
-    raycast
-    rclone
-    ripgrep
-    rsync
-    rustup
-    sqlite
-    spotify
-    starship
-    tldr
-    tmux
-    tree
-    yt-dlp
-    zoxide
+    #pkgs.plex-desktop # aarch64-darwin not supported
+
+    pkgs.stable.wezterm # wez/wezterm#5990
+
+    pkgs.bashInteractive
+    pkgs.bat
+    pkgs.btop
+    pkgs.carapace
+    pkgs.coreutils
+    pkgs.curl
+    pkgs.delta
+    pkgs.dig
+    pkgs.discord
+    pkgs.dua
+    pkgs.fd
+    pkgs.ffmpeg-full
+    pkgs.fish
+    pkgs.fzf
+    pkgs.gcc
+    pkgs.gh
+    pkgs.git
+    pkgs.gnugrep
+    pkgs.gnumake
+    pkgs.gnused
+    pkgs.gnutar
+    pkgs.go
+    pkgs.google-cloud-sdk
+    pkgs.hyperfine
+    pkgs.inetutils
+    pkgs.jc
+    pkgs.jq
+    pkgs.less
+    pkgs.litecli
+    pkgs.neofetch
+    pkgs.neovim
+    pkgs.nixfmt-rfc-style
+    pkgs.nodejs_20
+    pkgs.nushell
+    pkgs.qbittorrent
+    pkgs.raycast
+    pkgs.rclone
+    pkgs.ripgrep
+    pkgs.rsync
+    pkgs.rustup
+    pkgs.spotify
+    pkgs.sqlite
+    pkgs.starship
+    pkgs.tldr
+    pkgs.tmux
+    pkgs.tree
+    pkgs.yt-dlp
   ];
 
   homebrew = {
@@ -97,10 +105,11 @@
         start_service = true;
         restart_service = "changed";
       }
-      # python build deps
       "mas"
-      "openssl"
       "pyenv"
+
+      # python build deps
+      "openssl"
       "readline"
       "sqlite3"
       "xz"
@@ -146,9 +155,13 @@
     nix-daemon.enable = true;
     # karabiner-elements.enable = true;
     sketchybar.enable = true;
-    skhd.enable = true;
+    skhd = {
+      enable = true;
+      package = pkgs.skhd;
+    };
     yabai = {
       enable = true;
+      package = pkgs.yabai;
       enableScriptingAddition = true;
     };
   };
@@ -158,8 +171,8 @@
     serviceConfig.RunAtLoad = true;
   };
 
-  fonts.packages = with pkgs; [
-    (nerdfonts.override {
+  fonts.packages = [
+    (pkgs.nerdfonts.override {
       fonts = [
         "SourceCodePro"
         "FiraCode"
@@ -196,8 +209,8 @@
 
   security = {
     accessibilityPrograms = [
-      "${pkgs.yabai}/bin/yabai"
       "${pkgs.skhd}/bin/skhd"
+      "${pkgs.yabai}/bin/yabai"
     ];
 
     pam.enableSudoTouchIdAuth = true;
