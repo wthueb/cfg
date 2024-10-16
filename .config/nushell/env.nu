@@ -1,4 +1,5 @@
 use std "path add"
+use std/dirs shells-aliases *
 
 source ($nu.default-config-dir | path join 'env.custom.nu')
 
