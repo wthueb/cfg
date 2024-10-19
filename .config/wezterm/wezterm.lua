@@ -6,6 +6,8 @@ if wezterm.config_builder then
     config = wezterm.config_builder()
 end
 
+config.front_end = "WebGpu" -- wez/wezterm#5990
+
 config.color_scheme = "nord"
 
 config.font = wezterm.font("SauceCodePro Nerd Font")

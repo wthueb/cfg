@@ -35,8 +35,6 @@
 
     #pkgs.plex-desktop # aarch64-darwin not supported
 
-    pkgs.stable.wezterm # wez/wezterm#5990
-
     pkgs.bashInteractive
     pkgs.bat
     pkgs.btop
@@ -83,6 +81,7 @@
     pkgs.tldr
     pkgs.tmux
     pkgs.tree
+    pkgs.wezterm
     pkgs.yt-dlp
   ];
 
@@ -131,7 +130,6 @@
       #"google-chrome"
       "hammerspoon"
       "karabiner-elements"
-      "plex"
     ];
   };
 
@@ -184,7 +182,9 @@
     defaults = {
       dock = {
         autohide = true;
+        minimize-to-application = true;
         mru-spaces = false;
+        orientation = "bottom";
         persistent-apps = [
           "${pkgs.google-chrome}/Applications/Google Chrome.app"
           "/Applications/Thunderbird.app"
@@ -192,9 +192,16 @@
           "/System/Applications/Messages.app"
           "${pkgs.spotify}/Applications/Spotify.app"
           "${pkgs.discord}/Applications/Discord.app"
-          "${pkgs.stable.wezterm}/Applications/WezTerm.app"
-          "/Applications/Plex.app"
+          "${pkgs.wezterm}/Applications/WezTerm.app"
         ];
+        persistent-others = [];
+        show-process-indicators = true;
+        show-recents = false;
+        tilesize = 48;
+        wvous-tl-corner = 1; # disabled
+        wvous-tr-corner = 1; # disabled
+        wvous-bl-corner = 1; # disabled
+        wvous-br-corner = 1; # disabled
       };
 
       finder = {
