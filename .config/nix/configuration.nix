@@ -31,7 +31,7 @@
   };
 
   environment.systemPackages = [
-    inputs.nil.packages.${pkgs.system}.nil
+    inputs.wezterm.packages.${pkgs.system}.default
 
     #pkgs.plex-desktop # aarch64-darwin not supported
 
@@ -66,6 +66,7 @@
     pkgs.litecli
     pkgs.neofetch
     pkgs.neovim
+    pkgs.nil
     pkgs.nixfmt-rfc-style
     pkgs.nodejs_20
     pkgs.nushell
@@ -81,7 +82,6 @@
     pkgs.tldr
     pkgs.tmux
     pkgs.tree
-    pkgs.wezterm
     pkgs.yt-dlp
   ];
 
@@ -192,7 +192,7 @@
           "/System/Applications/Messages.app"
           "${pkgs.spotify}/Applications/Spotify.app"
           "${pkgs.discord}/Applications/Discord.app"
-          "${pkgs.wezterm}/Applications/WezTerm.app"
+          "${inputs.wezterm.packages.${pkgs.system}.default}/Applications/WezTerm.app"
         ];
         persistent-others = [];
         show-process-indicators = true;
