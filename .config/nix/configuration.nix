@@ -33,20 +33,20 @@
   environment.systemPackages = [
     inputs.wezterm.packages.${pkgs.system}.default
 
-    #pkgs.plex-desktop # aarch64-darwin not supported
-
     pkgs.bashInteractive
     pkgs.bat
     pkgs.btop
     pkgs.carapace
     pkgs.coreutils
     pkgs.curl
+    pkgs.dbeaver-bin
     pkgs.delta
     pkgs.dig
     pkgs.discord
     pkgs.dua
     pkgs.fd
     pkgs.ffmpeg-full
+    #pkgs.firefox aarch64-darwin not supported
     pkgs.fish
     pkgs.fzf
     pkgs.gcc
@@ -57,6 +57,7 @@
     pkgs.gnused
     pkgs.gnutar
     pkgs.go
+    pkgs.google-chrome
     pkgs.google-cloud-sdk
     pkgs.hyperfine
     pkgs.inetutils
@@ -70,15 +71,18 @@
     pkgs.nixfmt-rfc-style
     pkgs.nodejs_20
     pkgs.nushell
+    #pkgs.plex-desktop aarch64-darwin not supported
     pkgs.qbittorrent
     pkgs.raycast
     pkgs.rclone
     pkgs.ripgrep
     pkgs.rsync
     pkgs.rustup
+    #pkgs.sabnzbd aarch64-darwin not supported
     pkgs.spotify
     pkgs.sqlite
     pkgs.starship
+    #pkgs.thunderbird aarch64-darwin not supported
     pkgs.tldr
     pkgs.tmux
     pkgs.tree
@@ -121,15 +125,15 @@
     };
 
     casks = [
-      # TODO: go through apps and add them here
+      # TODO: try moving these to nixpkgs
       "bartender"
       "bitwarden"
-      "dbeaver-community"
       "docker"
-      #"firefox"
-      #"google-chrome"
+      "firefox"
       "hammerspoon"
       "karabiner-elements"
+      "sabnzbd"
+      "thunderbird"
     ];
   };
 
@@ -193,6 +197,7 @@
           "${pkgs.spotify}/Applications/Spotify.app"
           "${pkgs.discord}/Applications/Discord.app"
           "${inputs.wezterm.packages.${pkgs.system}.default}/Applications/WezTerm.app"
+          "/Users/wil/Applications/Chrome Apps.localized/plex.app"
         ];
         persistent-others = [];
         show-process-indicators = true;
@@ -218,8 +223,9 @@
     };
 
     # disable electron apps from automatically checking for updates
-    activationScripts.extraUserActivation.text = ''
-      launchctl setenv ELECTRON_NO_UPDATER 1
+    activationScripts.postUserActivation.text = ''
+      /bin/launchctl setenv ELECTRON_NO_UPDATER 1
+      ${pkgs.tldr}/bin/tldr --update
     '';
 
     # Set Git commit hash for darwin-version.
