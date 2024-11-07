@@ -31,7 +31,7 @@
   };
 
   environment.systemPackages = [
-    inputs.wezterm.packages.${pkgs.system}.default
+    #inputs.wezterm.packages.${pkgs.system}.default
 
     pkgs.bashInteractive
     pkgs.bat
@@ -39,7 +39,7 @@
     pkgs.carapace
     pkgs.coreutils
     pkgs.curl
-    pkgs.dbeaver-bin
+    #pkgs.dbeaver-bin broken currently
     pkgs.delta
     pkgs.dig
     pkgs.discord
@@ -86,6 +86,7 @@
     pkgs.tldr
     pkgs.tmux
     pkgs.tree
+    pkgs.wezterm
     pkgs.yt-dlp
   ];
 
@@ -129,6 +130,7 @@
       "bartender"
       "bitwarden"
       "docker"
+      "dbeaver-community"
       "firefox"
       "hammerspoon"
       "karabiner-elements"
@@ -143,7 +145,6 @@
       pkgs.fish
       pkgs.nushell
     ];
-    loginShell = pkgs.nushell;
     variables = {
       XDG_CONFIG_HOME = "/Users/wil/.config";
     };
@@ -196,7 +197,7 @@
           "/System/Applications/Messages.app"
           "${pkgs.spotify}/Applications/Spotify.app"
           "${pkgs.discord}/Applications/Discord.app"
-          "${inputs.wezterm.packages.${pkgs.system}.default}/Applications/WezTerm.app"
+          "${pkgs.wezterm}/Applications/WezTerm.app"
           "/Users/wil/Applications/Chrome Apps.localized/plex.app"
         ];
         persistent-others = [];
