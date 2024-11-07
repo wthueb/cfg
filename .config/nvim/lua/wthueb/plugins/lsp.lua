@@ -23,7 +23,7 @@ return {
                 "html",
                 "jsonls",
                 "pyright",
-                "ruff_lsp",
+                "ruff",
                 "rust_analyzer",
                 "lua_ls",
                 "shellcheck",
