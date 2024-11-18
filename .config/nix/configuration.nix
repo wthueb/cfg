@@ -135,7 +135,7 @@
       "hammerspoon"
       "karabiner-elements"
       "sabnzbd"
-      "thunderbird"
+      "thunderbird@esr"
     ];
   };
 
