@@ -175,12 +175,8 @@
   };
 
   fonts.packages = [
-    (pkgs.nerdfonts.override {
-      fonts = [
-        "SourceCodePro"
-        "FiraCode"
-      ];
-    })
+    pkgs.nerd-fonts.sauce-code-pro
+    pkgs.nerd-fonts.fira-code
   ];
 
   system = {
