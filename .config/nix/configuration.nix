@@ -27,6 +27,15 @@
           config.allowUnfree = true;
         };
       })
+      (final: prev: {
+        karabiner-elements = prev.karabiner-elements.overrideAttrs (old: {
+          version = "14.13.0";
+          src = prev.fetchurl {
+            inherit (old.src) url;
+            hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
+          };
+        });
+      })
     ];
   };
 
@@ -133,7 +142,6 @@
       "dbeaver-community"
       "firefox"
       "hammerspoon"
-      "karabiner-elements"
       "sabnzbd"
       "thunderbird@esr"
     ];
@@ -156,7 +164,7 @@
 
   services = {
     nix-daemon.enable = true;
-    # karabiner-elements.enable = true;
+    karabiner-elements.enable = true;
     sketchybar.enable = true;
     skhd = {
       enable = true;
@@ -196,7 +204,7 @@
           "${pkgs.wezterm}/Applications/WezTerm.app"
           "/Users/wil/Applications/Chrome Apps.localized/plex.app"
         ];
-        persistent-others = [];
+        persistent-others = [ ];
         show-process-indicators = true;
         show-recents = false;
         tilesize = 48;
