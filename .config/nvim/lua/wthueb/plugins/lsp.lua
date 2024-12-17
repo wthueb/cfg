@@ -16,17 +16,17 @@ return {
         require("mason-tool-installer").setup({
             ensure_installed = {
                 "angularls",
-                "bashls",
                 "cssls",
                 "efm",
                 "emmet_language_server",
+                "eslint",
                 "html",
                 "jsonls",
+                "prettier",
                 "pyright",
                 "ruff",
                 "rust_analyzer",
                 "lua_ls",
-                "shellcheck",
                 "stylua",
                 "vtsls",
                 "yamlls",
@@ -58,7 +58,7 @@ return {
                         end,
                         vim.tbl_filter(function(c)
                             return c.server_capabilities.documentFormattingProvider
-                        end, vim.lsp.get_active_clients({ buffer = event.buf }))
+                        end, vim.lsp.get_clients({ buffer = event.buf }))
                     )
 
                     if #formatters == 0 then
@@ -190,11 +190,11 @@ return {
 
                 local languages = {
                     astro = { prettier },
-                    bash = { require("efmls-configs.linters.shellcheck") },
                     typescript = { prettier },
                     typescriptreact = { prettier },
                     javascript = { prettier },
                     html = { prettier },
+                    htmlangular = { prettier },
                     css = { prettier },
                     json = { prettier },
                     jsonc = { prettier },
@@ -222,6 +222,7 @@ return {
                     capabilities = capabilities,
                     filetypes = {
                         "html",
+                        "htmlangular",
                         "css",
                         "scss",
                         "javascriptreact",
@@ -294,6 +295,14 @@ return {
                     },
                 },
             },
+        })
+
+        lspconfig.nushell.setup({
+            capabilities = capabilities,
+        })
+
+        lspconfig.eslint.setup({
+            capabilities = capabilities,
         })
     end,
 }

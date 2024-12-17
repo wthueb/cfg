@@ -93,4 +93,10 @@ vim.keymap.set(
     { silent = true, desc = "Open tmux-sessionizer" }
 )
 
+vim.filetype.add({
+    pattern = {
+        [".*%.component%.html"] = "htmlangular",
+    },
+})
+
 pcall(require, "wthueb.custom")
