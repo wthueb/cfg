@@ -199,8 +199,8 @@
           "/Applications/Thunderbird.app"
           "/System/Applications/Calendar.app"
           "/System/Applications/Messages.app"
-          "${pkgs.spotify}/Applications/Spotify.app"
           "${pkgs.discord}/Applications/Discord.app"
+          "${pkgs.spotify}/Applications/Spotify.app"
           "${pkgs.wezterm}/Applications/WezTerm.app"
           "/Users/wil/Applications/Chrome Apps.localized/plex.app"
         ];
