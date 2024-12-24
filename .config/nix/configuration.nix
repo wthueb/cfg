@@ -138,10 +138,11 @@
       # TODO: try moving these to nixpkgs
       "bartender"
       "bitwarden"
-      "docker"
       "dbeaver-community"
+      "docker"
       "firefox"
       "hammerspoon"
+      "plex"
       "sabnzbd"
       "thunderbird@esr"
     ];
