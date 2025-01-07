@@ -289,7 +289,23 @@ $env.config.keybindings = [
         event: {
             send: ExecuteHostCommand,
             cmd: "commandline edit --insert (
-                      fzf --layout=reverse --height=40% |
+                      fd --hidden --follow . |
+                      fzf --layout=reverse --scheme=path --height=40% |
+                      decode utf-8 |
+                      str trim
+                  )"
+        }
+    }
+    {
+        name: fzf_cd
+        modifier: alt
+        keycode: char_c
+        mode: [emacs, vi_normal, vi_insert]
+        event: {
+            send: ExecuteHostCommand,
+            cmd: "cd (
+                      fd --type d --hidden --follow . |
+                      fzf --reverse --scheme=path --height=40% |
                       decode utf-8 |
                       str trim
                   )"
