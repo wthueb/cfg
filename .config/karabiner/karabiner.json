@@ -53,6 +53,13 @@
                         "description": "caps_lock -> modtap(left_control, esc)",
                         "manipulators": [
                             {
+                                "conditions": [
+                                    {
+                                        "name": "fn-mode",
+                                        "type": "variable_if",
+                                        "value": 0
+                                    }
+                                ],
                                 "from": {
                                     "key_code": "caps_lock",
                                     "modifiers": {
