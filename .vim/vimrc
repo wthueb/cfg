@@ -1,12 +1,9 @@
 set nocompatible
 set encoding=utf-8
 
-let mapleader = ','
+let mapleader = ' '
 let maplocalleader = '='
 
-" install plugins with vim-plug
-filetype off
-so ~/.vim/plugins.vim
 filetype plugin indent on
 
 syntax on
@@ -39,25 +36,21 @@ let &t_ZR = "\e[23m"
 " use string highlighting in comments: "like this"
 let c_comment_strings = 1
 
-" colorscheme dracula
-colorscheme nord
+colorscheme slate
 
 " flash screen instead of making noise
 set visualbell
 
-" show hybrid line numbers
 set number
+set relativenumber
 
-" need cursor line for colored current line number
 set cursorline
-"hi! CursorLine cterm=NONE ctermfg=NONE ctermbg=NONE guifg=NONE guibg=NONE
 
 " have 5 lines above/below the cursor at all times if possible
 set scrolloff=5
 set sidescrolloff=5
 set sidescroll=1
 
-" disable text wrapping
 set nowrap
 
 " show @@@ in the last columns if the last line continues off screen
@@ -126,21 +119,5 @@ set listchars=tab:>·,trail:·,nbsp:·
 inoremap <silent> kj <Esc>
 cnoremap <silent> kj <C-c>
 
-" C-hjkl for left/down/up/right in insert and command mode
-inoremap <silent> <C-h> <Left>
-inoremap <silent> <C-j> <Down>
-inoremap <silent> <C-k> <Up>
-inoremap <silent> <C-l> <Right>
-cnoremap <silent> <C-h> <Left>
-cnoremap <silent> <C-j> <Down>
-cnoremap <silent> <C-k> <Up>
-cnoremap <silent> <C-l> <Right>
-
-nnoremap <leader><leader> :w<CR>:sus<CR>
-
 " get rid of highlighting
 nnoremap <silent> <leader>. :nohl<CR>
-
-" buffers
-nnoremap ;; :bp<CR>
-nnoremap ;d :bd<CR>
