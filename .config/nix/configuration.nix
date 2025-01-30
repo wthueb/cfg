@@ -132,6 +132,7 @@
 
     masApps = {
       "Xcode" = 497799835;
+      "Tailscale" = 1475387142;
     };
 
     casks = [
