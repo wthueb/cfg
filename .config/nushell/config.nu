@@ -168,10 +168,7 @@ $env.config.completions = {
     use_ls_colors: true
 }
 
-$env.config.filesize = {
-    metric: true # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
-    format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, auto
-}
+$env.config.filesize.unit = "metric"
 
 $env.config.cursor_shape = {
     emacs: line # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (line is the default)
