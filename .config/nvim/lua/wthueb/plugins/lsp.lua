@@ -196,6 +196,7 @@ return {
                     html = { prettier },
                     htmlangular = { prettier },
                     css = { prettier },
+                    scss = { prettier },
                     json = { prettier },
                     jsonc = { prettier },
                     lua = { require("efmls-configs.formatters.stylua") },
