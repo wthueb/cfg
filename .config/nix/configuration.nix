@@ -6,6 +6,7 @@
 }:
 {
   nix = {
+    enable = true;
     package = pkgs.nix;
     settings = {
       experimental-features = "nix-command flakes";
@@ -78,7 +79,7 @@
     pkgs.neovim
     pkgs.nil
     pkgs.nixfmt-rfc-style
-    pkgs.nodejs_20
+    pkgs.nodejs
     pkgs.nushell
     #pkgs.plex-desktop aarch64-darwin not supported
     pkgs.qbittorrent
@@ -131,8 +132,8 @@
     ];
 
     masApps = {
-      "Xcode" = 497799835;
       "Tailscale" = 1475387142;
+      "Xcode" = 497799835;
     };
 
     casks = [
@@ -165,7 +166,6 @@
   };
 
   services = {
-    nix-daemon.enable = true;
     karabiner-elements.enable = true;
     sketchybar.enable = true;
     skhd = {
@@ -240,8 +240,10 @@
 
     # Used for backwards compatibility, please read the changelog before changing.
     # $ darwin-rebuild changelog
-    stateVersion = 5;
+    stateVersion = 6;
   };
+
+  ids.gids.nixbld = 30000;
 
   security = {
     accessibilityPrograms = [
