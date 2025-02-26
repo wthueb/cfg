@@ -145,7 +145,9 @@
       "firefox"
       "hammerspoon"
       "plex"
+      "private-internet-access"
       "sabnzbd"
+      "stremio"
       "thunderbird@esr"
     ];
   };
@@ -251,7 +253,7 @@
       "${pkgs.yabai}/bin/yabai"
     ];
 
-    pam.enableSudoTouchIdAuth = true;
+    pam.services.sudo_local.touchIdAuth = true;
 
     sudo.extraConfig = ''
       wil ALL=(ALL) NOPASSWD: ALL
