@@ -28,9 +28,13 @@ $env.VISUAL = "nvim"
 #$env.PAGER = "nvim -R"
 $env.MANPAGER = "nvim +Man!"
 
-mkdir ~/.cache
-starship init nu | save -f ~/.cache/starship.nu
 $env.PROMPT_INDICATOR_VI_NORMAL = ""
 $env.PROMPT_INDICATOR_VI_INSERT = ""
+
+mkdir ($nu.data-dir | path join 'vendor/autoload')
+starship init nu | save -f ($nu.data-dir | path join 'vendor/autoload/starship.nu')
+
+$env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
+carapace _carapace nushell | save -f ($nu.data-dir | path join 'vendor/autoload/carapace.nu')
 
 #source ($nu.default-config-dir | path join 'prompt.nu')
