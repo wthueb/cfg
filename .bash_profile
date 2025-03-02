@@ -24,8 +24,6 @@ export MANPAGER='nvim +Man!'
 
 if [[ -f /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
-
-    PATH="$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH"
 fi
 
 PATH="$HOME/.local/bin:$PATH"
