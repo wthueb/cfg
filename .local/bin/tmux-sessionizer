@@ -9,12 +9,18 @@ dirs=(
     ~
 )
 
+# remove non-existent directories
 for index in "${!dirs[@]}" ; do ! [[ -d "${dirs[$index]}" ]] && unset -v 'dirs[$index]' ; done
+
+options=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d)
+git_dirs=$(fd -t d -Ha --min-depth 1 --max-depth 5 '\.git$' ~/code -x dirname)
+
+options=$(echo -e "$options\n$git_dirs" | sort | uniq)
 
 selected=$1
 
 if [[ -z $selected ]]; then
-    selected=$(find "${dirs[@]}" -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$(echo "$options" | fzf)
     [[ -z $selected ]] && exit 0
 fi
 
