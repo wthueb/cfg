@@ -26,8 +26,5 @@ return {
         vim.keymap.set("n", "<C-l>", function()
             harpoon:list():select(3)
         end, { silent = true, desc = "Go to harpoon #3" })
-        vim.keymap.set("n", "<C-;>", function()
-            harpoon:list():select(4)
-        end, { silent = true, desc = "Go to harpoon #4" })
     end,
 }

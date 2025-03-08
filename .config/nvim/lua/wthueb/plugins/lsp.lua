@@ -8,10 +8,16 @@ return {
         { "folke/neodev.nvim", opts = {} },
         { "j-hui/fidget.nvim", opts = {} },
         { "creativenull/efmls-configs-nvim", version = "1.x.x" },
+        { "seblyng/roslyn.nvim", ft = "cs", opts = {} },
     },
 
     config = function()
-        require("mason").setup()
+        require("mason").setup({
+            registries = {
+                "github:mason-org/mason-registry",
+                "github:Crashdummyy/mason-registry",
+            },
+        })
         require("mason-lspconfig").setup()
         require("mason-tool-installer").setup({
             ensure_installed = {
