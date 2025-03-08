@@ -1,3 +1,9 @@
+let
+  greedy = name: {
+    name = name;
+    greedy = true;
+  };
+in
 {
   self,
   pkgs,
@@ -138,17 +144,17 @@
 
     casks = [
       # TODO: try moving these to nixpkgs
-      "bartender"
-      "bitwarden"
-      "dbeaver-community"
-      "docker"
-      "firefox"
-      "hammerspoon"
-      "plex"
-      "private-internet-access"
-      "sabnzbd"
-      "stremio"
-      "thunderbird@esr"
+      (greedy "bartender")
+      (greedy "bitwarden")
+      (greedy "dbeaver-community")
+      (greedy "docker")
+      (greedy "firefox")
+      (greedy "hammerspoon")
+      (greedy "plex")
+      (greedy "private-internet-access")
+      (greedy "sabnzbd")
+      (greedy "stremio")
+      (greedy "thunderbird@esr")
     ];
   };
 
