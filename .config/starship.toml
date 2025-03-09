@@ -1,6 +1,6 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-format = '($username(@$hostname):)$directory(@$git_branch$git_state$git_status)$python $character'
+format = '($username(@$hostname):)$directory(@$git_branch$git_state$git_status)$nix_shell$python $character'
 right_format = '$time'
 continuation_prompt = '[∙∙∙](bright-black) '
 add_newline = false
@@ -32,3 +32,6 @@ format = '[$time]($style)'
 time_format = '%H:%M:%S'
 style = 'bright-black'
 disabled = false
+
+[nix_shell]
+format = ' [\(nix\)]($style)'

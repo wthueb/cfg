@@ -398,6 +398,14 @@ def venv [dir?: string] {
     activate $dir
 }
 
+def dev [path?: string] {
+    if ($path == null) {
+        nix develop -c nu
+    } else {
+        nix develop ($path | path expand) -c nu
+    }
+}
+
 def "vim upgrade" [] {
     nvim --headless "+Lazy! sync" +qa
     nvim --headless "+TSUpdateSync" +qa
