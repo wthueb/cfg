@@ -208,8 +208,15 @@ $env.config.shell_integration = { # see osc_entries!: https://github.com/wez/wez
     reset_application_mode: true
 }
 $env.config.render_right_prompt_on_last_line = false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
+
 $env.config.hooks = {
-    pre_prompt: [{ null }] # run before the prompt is shown
+    pre_prompt: [
+        {
+            if (which direnv | is-empty) { return }
+
+            direnv export json | from json | default {} | load-env
+        }
+    ]
     pre_execution: [{ null }] # run before the repl input is run
     env_change: {
         PWD: [{|before, after| null }] # run if the PWD environment is different since the last repl input

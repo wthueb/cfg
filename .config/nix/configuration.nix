@@ -171,6 +171,7 @@ in
 
   programs = {
     nix-index.enable = true;
+    direnv.enable = true;
   };
 
   services = {
