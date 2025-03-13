@@ -167,7 +167,7 @@ workspace_switcher.get_choices = function()
 
         for line in stdout:gmatch("[^\n]*\n?") do
             ---@type string
-            line = line:match("^%s*(.-)%s*$") -- trim whitepsace
+            line = line:match("^%s*(.-)[\\/]?%s*$") -- trim whitepsace
 
             local label = line:gsub(wezterm.home_dir, "~")
 
@@ -242,7 +242,7 @@ wezterm.on("smart_workspace_switcher.workspace_switcher.chosen", function(window
     gui_win:set_right_status(wezterm.format({
         { Foreground = { Color = "#2e3440" } },
         { Background = { Color = "#81a1c1" } },
-        { Text = base_path .. "  " },
+        { Text = " " .. base_path .. " " },
     }))
 end)
 
@@ -252,7 +252,7 @@ wezterm.on("smart_workspace_switcher.workspace_switcher.created", function(windo
     gui_win:set_right_status(wezterm.format({
         { Foreground = { Color = "#2e3440" } },
         { Background = { Color = "#81a1c1" } },
-        { Text = base_path .. "  " },
+        { Text = " " .. base_path .. " " },
     }))
 end)
 
