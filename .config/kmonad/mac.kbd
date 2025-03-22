@@ -1,0 +1,30 @@
+(defcfg
+  input (device-file "/dev/input/by-path/platform-24eb30000.input-event-kbd")
+  output (uinput-sink "KMonad: mac")
+  fallthrough true
+  allow-cmd true
+  implicit-around around
+)
+
+(defalias
+  gfn (tap-hold-next 200 grv (layer-toggle fn))
+  ect (tap-hold-next 200 esc lctl)
+)
+
+(defsrc
+  grv
+  caps h    j    k    l
+  v    b    n    m    ,    .
+)
+
+(deflayer normal
+  @gfn
+  @ect _    _    _    _
+  _    _    _    _    _    _
+)
+
+(deflayer fn
+  XX
+  caps lft  down up   rght
+  prev pp   next mute vold volu
+)
