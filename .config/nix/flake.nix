@@ -29,8 +29,13 @@
 
   outputs =
     { self, ... }@inputs:
+    let
+      hostname = "wil-mac";
+      system = "aarch64-darwin";
+    in
     {
-      darwinConfigurations."wil-mac" = inputs.nix-darwin.lib.darwinSystem {
+      darwinConfigurations.${hostname} = inputs.nix-darwin.lib.darwinSystem {
+        inherit system;
         modules = [
           ./configuration.nix
 
@@ -46,9 +51,10 @@
         specialArgs = {
           inherit self;
           inherit inputs;
+          inherit hostname;
         };
       };
 
-      darwinPackages = self.darwinConfigurations."wil-mac".pkgs;
+      darwinPackages = self.darwinConfigurations.${hostname}.pkgs;
     };
 }

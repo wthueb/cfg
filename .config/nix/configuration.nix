@@ -8,6 +8,7 @@ in
   self,
   pkgs,
   inputs,
+  hostname,
   ...
 }:
 {
@@ -46,64 +47,57 @@ in
     ];
   };
 
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
     #inputs.wezterm.packages.${pkgs.system}.default
 
-    pkgs.bashInteractive
-    pkgs.bat
-    pkgs.btop
-    pkgs.carapace
-    pkgs.coreutils
-    pkgs.curl
-    #pkgs.dbeaver-bin broken currently
-    pkgs.delta
-    pkgs.dig
-    pkgs.discord
-    pkgs.dua
-    pkgs.fd
-    pkgs.ffmpeg-full
-    #pkgs.firefox aarch64-darwin not supported
-    pkgs.fish
-    pkgs.fzf
-    pkgs.gcc
-    pkgs.gh
-    pkgs.git
-    pkgs.gnugrep
-    pkgs.gnumake
-    pkgs.gnused
-    pkgs.gnutar
-    pkgs.go
-    pkgs.google-chrome
-    pkgs.google-cloud-sdk
-    pkgs.hyperfine
-    pkgs.inetutils
-    pkgs.jc
-    pkgs.jq
-    pkgs.less
-    pkgs.litecli
-    pkgs.neofetch
-    pkgs.neovim
-    pkgs.nil
-    pkgs.nixfmt-rfc-style
-    pkgs.nodejs
-    pkgs.nushell
-    #pkgs.plex-desktop aarch64-darwin not supported
-    pkgs.qbittorrent
-    pkgs.raycast
-    pkgs.rclone
-    pkgs.ripgrep
-    pkgs.rsync
-    pkgs.rustup
-    #pkgs.sabnzbd aarch64-darwin not supported
-    pkgs.spotify
-    pkgs.sqlite
-    pkgs.starship
-    #pkgs.thunderbird aarch64-darwin not supported
-    pkgs.tldr
-    pkgs.tmux
-    pkgs.tree
-    pkgs.wezterm
-    pkgs.yt-dlp
+    bashInteractive
+    bat
+    carapace
+    coreutils
+    curl
+    #dbeaver-bin broken currently
+    delta
+    dig
+    discord
+    dua
+    fd
+    ffmpeg-full
+    #firefox aarch64-darwin not supported
+    fzf
+    gcc
+    gh
+    git
+    gnugrep
+    gnumake
+    gnused
+    gnutar
+    google-chrome
+    htop
+    inetutils
+    jc
+    jq
+    less
+    litecli
+    neovim
+    nil
+    nixfmt-rfc-style
+    nodejs
+    nushell
+    #plex-desktop aarch64-darwin not supported
+    qbittorrent
+    raycast
+    ripgrep
+    rsync
+    rustup
+    #sabnzbd aarch64-darwin not supported
+    spotify
+    sqlite
+    starship
+    #thunderbird aarch64-darwin not supported
+    tldr
+    tmux
+    tree
+    wezterm
   ];
 
   homebrew = {
@@ -150,6 +144,7 @@ in
       (greedy "docker")
       (greedy "firefox")
       (greedy "hammerspoon")
+      (greedy "mailmate@beta")
       (greedy "plex")
       (greedy "private-internet-access")
       (greedy "sabnzbd")
@@ -166,6 +161,8 @@ in
     ];
     variables = {
       XDG_CONFIG_HOME = "/Users/wil/.config";
+      EDITOR = "nvim";
+      VISUAL = "nvim";
     };
   };
 
@@ -193,9 +190,9 @@ in
     serviceConfig.RunAtLoad = true;
   };
 
-  fonts.packages = [
-    pkgs.nerd-fonts.sauce-code-pro
-    pkgs.nerd-fonts.fira-code
+  fonts.packages = with pkgs; [
+    nerd-fonts.sauce-code-pro
+    nerd-fonts.fira-code
   ];
 
   system = {
@@ -235,11 +232,21 @@ in
 
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";
+        "com.apple.swipescrolldirection" = false; # disable "natural" scrolling
+      };
+
+      CustomUserPreferences = {
+        "com.apple.desktopservices" = {
+          DSDontWriteNetworkStores = true;
+          DSDontWriteUSBStores = true;
+        };
       };
     };
 
     # disable electron apps from automatically checking for updates
     activationScripts.postUserActivation.text = ''
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+      /run/current-system/sw/bin/nix run nixpkgs#defaultbrowser -- chrome
       /bin/launchctl setenv ELECTRON_NO_UPDATER 1
       ${pkgs.tldr}/bin/tldr --update
     '';
@@ -253,6 +260,10 @@ in
   };
 
   ids.gids.nixbld = 30000;
+
+  networking = {
+    hostName = hostname;
+  };
 
   security = {
     accessibilityPrograms = [
