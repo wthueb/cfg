@@ -387,20 +387,11 @@ def mkcd [dir: string] {
 }
 
 def activate [dir?: string] {
-    # TODO: do something with $env.VIRTUAL_ENV_PROMPT
-    if not ($dir | is-empty) {
-        sh -i -c $'source ($dir)/bin/activate ; nu -e "alias deactivate = exit"'                                                                        05/10/2024 03:41:54 AM
-    } else {
-        sh -i -c 'source env/bin/activate ; nu -e "alias deactivate = exit"'                                                                        05/10/2024 03:41:54 AM
-    }
+    sh -i -c $'source ($dir | default 'env')/bin/activate ; nu -e "alias deactivate = exit"'
 }
 
 def venv [dir?: string] {
-    if not ($dir | is-empty) {
-        python -m venv --upgrade-deps $dir
-    } else {
-        python -m venv --upgrade-deps env
-    }
+    python -m venv --upgrade-deps ($dir | default 'env')
 
     activate $dir
 }
@@ -419,12 +410,15 @@ def "vim upgrade" [] {
     nvim --headless "+MasonToolsUpdateSync" +qa
 }
 
+def "git restash" [entry?: string] {
+    let base_dir = git rev-parse --show-toplevel
+    enter $base_dir
+    git stash show -p ($entry | default 'stash@{0}') | git apply --reverse
+    dexit
+}
+
 def confirm [prompt?: string] {
-    if ($prompt == null) {
-        print -n 'confirm? [y/n]: '
-    } else {
-        print -n $'($prompt) [y/n]: '
-    }
+    print -n $'($prompt | default 'confirm?') [y/n]: '
 
     let input = (input -s --numchar 1)
     print $input
