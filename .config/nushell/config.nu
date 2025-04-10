@@ -382,8 +382,8 @@ match $nu.os-info.name {
     },
 }
 
-def mkcd [dir: string] {
-    mkdir $dir ; cd $dir
+def --wrapped mkcd [dir: string, ...rest] {
+    mkdir ...$rest $dir ; cd $dir
 }
 
 def activate [dir?: string] {
@@ -427,10 +427,16 @@ def confirm [prompt?: string] {
 }
 
 def "git show-skipped" [] {
-    git ls-files -vv (git rev-parse --show-toplevel)
+    git ls-files -v (git rev-parse --show-toplevel)
     | lines
-    | parse -r '^S (.*)'
-    | get capture0
+    | where $it =~ '^S'
+    | str substring 2..
+}
+
+def "git unskip" [branch?: string] {
+    let files = git show-skipped
+
+    git update-index --no-skip-worktree ...$files
 }
 
 source ($nu.default-config-dir | path join 'config.custom.nu')
