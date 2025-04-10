@@ -426,4 +426,11 @@ def confirm [prompt?: string] {
     return ($input == 'y')
 }
 
+def "git show-skipped" [] {
+    git ls-files -vv (git rev-parse --show-toplevel)
+    | lines
+    | parse -r '^S (.*)'
+    | get capture0
+}
+
 source ($nu.default-config-dir | path join 'config.custom.nu')
