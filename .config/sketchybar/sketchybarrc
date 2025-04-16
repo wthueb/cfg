@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 
-source "$CONFIG_DIR/colors.sh" # Loads all defined colors
-source "$CONFIG_DIR/icons.sh" # Loads all defined icons
+source "$CONFIG_DIR/colors.sh"
+source "$CONFIG_DIR/icons.sh"
 
-ITEM_DIR="$CONFIG_DIR/items" # Directory where the items are configured
-PLUGIN_DIR="$CONFIG_DIR/plugins" # Directory where all the plugin scripts are stored
+ITEM_DIR="$CONFIG_DIR/items"
+PLUGIN_DIR="$CONFIG_DIR/plugins"
 
-FONT="SauceCodePro Nerd Font" # Needs to have Regular, Bold, Semibold, Heavy and Black variants
-PADDINGS=3 # All paddings use this value (icon, label, background)
+FONT="SauceCodePro Nerd Font"
+PADDINGS=3
 
 # disable the native volume popup
 launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist > /dev/null 2>&1 &
 
 bar=(
   height=32
-  color=$BAR_COLOR
+  color="$BAR_COLOR"
   border_width=0
   shadow=off
   position=top
@@ -32,22 +32,22 @@ sketchybar --bar "${bar[@]}"
 defaults=(
   updates=when_shown
   icon.font="$FONT:Bold:14.0"
-  icon.color=$ICON_COLOR
-  icon.padding_left=$PADDINGS
-  icon.padding_right=$PADDINGS
+  icon.color="$ICON_COLOR"
+  icon.padding_left="$PADDINGS"
+  icon.padding_right="$PADDINGS"
   label.font="$FONT:Semibold:13.0"
-  label.color=$LABEL_COLOR
-  label.padding_left=$PADDINGS
-  label.padding_right=$PADDINGS
-  padding_right=$PADDINGS
-  padding_left=$PADDINGS
+  label.color="$LABEL_COLOR"
+  label.padding_left="$PADDINGS"
+  label.padding_right="$PADDINGS"
+  padding_right="$PADDINGS"
+  padding_left="$PADDINGS"
   background.height=26
   background.corner_radius=9
   background.border_width=2
   popup.background.border_width=1
   popup.background.corner_radius=3
-  popup.background.border_color=$POPUP_BORDER_COLOR
-  popup.background.color=$POPUP_BACKGROUND_COLOR
+  popup.background.border_color="$POPUP_BORDER_COLOR"
+  popup.background.color="$POPUP_BACKGROUND_COLOR"
   popup.blur_radius=20
   popup.background.shadow.drawing=on
 )
@@ -55,17 +55,17 @@ defaults=(
 sketchybar --default "${defaults[@]}"
 
 # left
-source "$ITEM_DIR/apple.sh"
-source "$ITEM_DIR/spaces.sh"
-source "$ITEM_DIR/title.sh"
+source "apple.sh"
+source "spaces/item.sh"
+source "title/item.sh"
 
-source "$ITEM_DIR/skhd_status.sh"
+source "skhd_status.sh"
 
 # right
-source "$ITEM_DIR/calendar.sh"
-source "$ITEM_DIR/battery.sh"
-source "$ITEM_DIR/wifi.sh"
-source "$ITEM_DIR/volume.sh"
+source "calendar/item.sh"
+source "battery/item.sh"
+source "wifi/item.sh"
+source "volume/item.sh"
 
 # forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update
