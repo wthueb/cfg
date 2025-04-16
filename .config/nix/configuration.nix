@@ -143,7 +143,6 @@ in
       (greedy "dbeaver-community")
       (greedy "docker")
       (greedy "firefox")
-      (greedy "hammerspoon")
       (greedy "mailmate@beta")
       (greedy "mouseless")
       (greedy "plex")
