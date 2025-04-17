@@ -11,9 +11,6 @@ else
   title="$app_title - $window_title"
 fi
 
-if [[ ${#title} -gt 50 ]]; then
-  title=$(echo "$title" | cut -c 1-50)
-  exit 0
-fi
+title=$(echo "$title" | cut -c 1-80)
 
 sketchybar -m --set title label="$title"
