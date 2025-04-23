@@ -20,6 +20,7 @@ nmap <leader>ra :vsc Editor.Action<CR>
 nmap <leader>dca :vsc Editor.CodeAction<CR>
 
 set smartcase
+set number
 set relativenumber
 set scrolloff=5
 set incsearch
