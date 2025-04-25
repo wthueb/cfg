@@ -53,17 +53,12 @@ workspace_switcher.get_choices = function()
 
     -- put ~ workspace at the top
 
-    ---@type Choice
-    local default = nil
     for i, choice in ipairs(choices) do
         if choice.id == "~" then
-            default = choice
             table.remove(choices, i)
+            table.insert(choices, 1, choice)
             break
         end
-    end
-    if default then
-        table.insert(choices, 1, default)
     end
 
     local workspaces = table.shallow_copy(choices)
