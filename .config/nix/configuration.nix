@@ -55,14 +55,14 @@ in
     carapace
     coreutils
     curl
-    #dbeaver-bin broken currently
+    dbeaver-bin
     delta
     dig
     discord
     dua
     fd
     ffmpeg-full
-    #firefox aarch64-darwin not supported
+    firefox
     fzf
     gcc
     gh
@@ -83,17 +83,17 @@ in
     nixfmt-rfc-style
     nodejs
     nushell
-    #plex-desktop aarch64-darwin not supported
+    #plex-desktop # not supported on aarch64-darwin
     qbittorrent
     raycast
     ripgrep
     rsync
     rustup
-    #sabnzbd aarch64-darwin not supported
+    #sabnzbd # not supported on aarch64-darwin
     spotify
     sqlite
     starship
-    #thunderbird aarch64-darwin not supported
+    thunderbird-esr
     tldr
     tmux
     tree
@@ -140,16 +140,14 @@ in
       # TODO: try moving these to nixpkgs
       (greedy "bartender")
       (greedy "bitwarden")
-      (greedy "dbeaver-community")
       (greedy "docker")
-      (greedy "firefox")
       (greedy "mailmate@beta")
       (greedy "mouseless")
       (greedy "plex")
       (greedy "private-internet-access")
       (greedy "sabnzbd")
       (greedy "stremio")
-      (greedy "thunderbird@esr")
+      (greedy "ubersicht")
     ];
   };
 
@@ -204,7 +202,7 @@ in
         orientation = "bottom";
         persistent-apps = [
           "${pkgs.google-chrome}/Applications/Google Chrome.app"
-          "/Applications/Thunderbird.app"
+          "${pkgs.thunderbird-esr}/Applications/Thunderbird.app"
           "/System/Applications/Calendar.app"
           "/System/Applications/Messages.app"
           "${pkgs.discord}/Applications/Discord.app"
