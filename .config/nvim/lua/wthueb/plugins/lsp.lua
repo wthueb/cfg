@@ -199,6 +199,7 @@ return {
                     typescript = { prettier },
                     typescriptreact = { prettier },
                     javascript = { prettier },
+                    javascriptreact = { prettier },
                     html = { prettier },
                     htmlangular = { prettier },
                     css = { prettier },
