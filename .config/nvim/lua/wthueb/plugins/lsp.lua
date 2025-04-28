@@ -152,14 +152,20 @@ return {
                 end, { silent = true, desc = "Go to references", buffer = true })
 
                 vim.keymap.set("n", "[d", function()
-                    -- vim.diagnostic.jump({ count = -1 })
-                    vim.diagnostic.goto_prev()
+                    vim.diagnostic.jump({ count = -1, float = true })
                 end, { silent = true, desc = "Go to previous diagnostic", buffer = true })
 
                 vim.keymap.set("n", "]d", function()
-                    -- vim.diagnostic.jump({ count = 1 })
-                    vim.diagnostic.goto_next()
+                    vim.diagnostic.jump({ count = 1, float = true })
                 end, { silent = true, desc = "Go to next diagnostic", buffer = true })
+
+                vim.keymap.set("n", "[D", function()
+                    vim.diagnostic.jump({ count = -1, float = true, severity = vim.diagnostic.severity.ERROR })
+                end, { silent = true, desc = "Go to previous error", buffer = true })
+
+                vim.keymap.set("n", "]D", function()
+                    vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.ERROR })
+                end, { silent = true, desc = "Go to next error", buffer = true })
 
                 if client and client.server_capabilities.documentHighlightProvider then
                     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
