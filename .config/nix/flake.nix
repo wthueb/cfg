@@ -30,8 +30,9 @@
   outputs =
     { self, ... }@inputs:
     let
-      hostname = "wil-mac";
       system = "aarch64-darwin";
+      hostname = "wil-mac";
+      user = "wil";
     in
     {
       darwinConfigurations.${hostname} = inputs.nix-darwin.lib.darwinSystem {
@@ -49,9 +50,7 @@
           # }
         ];
         specialArgs = {
-          inherit self;
-          inherit inputs;
-          inherit hostname;
+          inherit self inputs system hostname user;
         };
       };
 

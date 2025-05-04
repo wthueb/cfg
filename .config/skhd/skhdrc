@@ -65,12 +65,12 @@
 #
 #               an EOL character signifies the end of the bind.
 
-:: default : sketchybar --set skhd_status label=''
+:: default : echo '' > ~/.skhd_status
 
-:: modify_window : sketchybar --set skhd_status label='modify window'
+:: modify_window : echo 'modify window' > ~/.skhd_status
 modify_window < escape ; default
 
-:: resize_window : sketchybar --set skhd_status label='resize window'
+:: resize_window : echo 'resize window' > ~/.skhd_status
 resize_window < escape ; default
 
 alt - return : wezterm

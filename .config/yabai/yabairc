@@ -46,7 +46,8 @@ yabai -m rule --add app="^Bitwarden$" manage=off
 yabai -m rule --add app="^Digital Color Meter$" manage=off sticky=on layer=above
 yabai -m rule --add app="^IINA$" manage=off
 
-SPACEBAR_HEIGHT=$(sketchybar --query bar | jq .height)
-yabai -m config external_bar all:$SPACEBAR_HEIGHT:0
+#SPACEBAR_HEIGHT=$(sketchybar --query bar | jq .height)
+#yabai -m config external_bar all:$SPACEBAR_HEIGHT:0
+yabai -m config external_bar all:32:0
 
 echo "yabai configuration loaded.."

@@ -6,8 +6,10 @@ let
 in
 {
   self,
-  pkgs,
   inputs,
+  pkgs,
+  system,
+  user,
   hostname,
   ...
 }:
@@ -17,7 +19,13 @@ in
     package = pkgs.nix;
     settings = {
       experimental-features = "nix-command flakes";
-      substituters = [ "https://cache.nixos.org" ];
+      substituters = [
+        "https://cache.nixos.org"
+        "https://nix-community.cachix.org"
+      ];
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
     };
     extraOptions = ''
       extra-platforms = x86_64-darwin aarch64-darwin
@@ -25,13 +33,13 @@ in
   };
 
   nixpkgs = {
-    hostPlatform = "aarch64-darwin";
+    hostPlatform = system;
     config.allowUnfree = true;
     #overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
     overlays = [
       (final: prev: {
         stable = import inputs.nixpkgs-stable {
-          system = "aarch64-darwin";
+          inherit system;
           config.allowUnfree = true;
         };
       })
@@ -158,7 +166,7 @@ in
       pkgs.nushell
     ];
     variables = {
-      XDG_CONFIG_HOME = "/Users/wil/.config";
+      XDG_CONFIG_HOME = "/Users/${user}/.config";
       EDITOR = "nvim";
       VISUAL = "nvim";
     };
@@ -171,7 +179,7 @@ in
 
   services = {
     karabiner-elements.enable = true;
-    sketchybar.enable = true;
+    #sketchybar.enable = true;
     skhd = {
       enable = true;
       package = pkgs.skhd;
@@ -202,13 +210,12 @@ in
         orientation = "bottom";
         persistent-apps = [
           "${pkgs.google-chrome}/Applications/Google Chrome.app"
-          "${pkgs.thunderbird-esr}/Applications/Thunderbird.app"
-          "/System/Applications/Calendar.app"
+          "${pkgs.thunderbird-esr}/Applications/Thunderbird ESR.app"
           "/System/Applications/Messages.app"
           "${pkgs.discord}/Applications/Discord.app"
           "${pkgs.spotify}/Applications/Spotify.app"
           "${pkgs.wezterm}/Applications/WezTerm.app"
-          "/Users/wil/Applications/Chrome Apps.localized/plex.app"
+          "/Users/${user}/Applications/Chrome Apps.localized/plex.app"
         ];
         persistent-others = [ ];
         show-process-indicators = true;

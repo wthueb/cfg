@@ -35,3 +35,4 @@ disabled = false
 
 [nix_shell]
 format = ' [\(nix\)]($style)'
+heuristic = true
