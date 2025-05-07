@@ -3,6 +3,7 @@
   config,
   pkgs,
   pkgs-unstable,
+  lib,
   inputs,
   system,
   hostname,
@@ -49,11 +50,14 @@
   };
 
   programs = {
-    nix-index = {
-      enable = true;
-      enableBashIntegration = false;
-      enableZshIntegration = false;
-    };
+    nix-index =
+      {
+        enable = true;
+      }
+      // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
+        enableBashIntegration = false;
+        enableZshIntegration = false;
+      };
     direnv.enable = true;
   };
 
