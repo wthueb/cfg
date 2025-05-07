@@ -1,62 +1,28 @@
-let
-  greedy = name: {
-    name = name;
-    greedy = true;
-  };
-in
 {
   self,
-  inputs,
+  config,
   pkgs,
+  pkgs-unstable,
+  inputs,
   system,
-  user,
   hostname,
   ...
 }:
 {
-  nix = {
-    enable = true;
-    package = pkgs.nix;
-    settings = {
-      experimental-features = "nix-command flakes";
-      substituters = [
-        "https://cache.nixos.org"
-        "https://nix-community.cachix.org"
-      ];
-      trusted-public-keys = [
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      ];
-    };
-    extraOptions = ''
-      extra-platforms = x86_64-darwin aarch64-darwin
-    '';
-  };
-
-  nixpkgs = {
-    hostPlatform = system;
-    config.allowUnfree = true;
-    #overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
-    overlays = [
-      (final: prev: {
-        stable = import inputs.nixpkgs-stable {
-          inherit system;
-          config.allowUnfree = true;
+  nixpkgs.overlays = [
+    (final: prev: {
+      karabiner-elements = prev.karabiner-elements.overrideAttrs (old: {
+        version = "14.13.0";
+        src = prev.fetchurl {
+          inherit (old.src) url;
+          hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
         };
-      })
-      (final: prev: {
-        karabiner-elements = prev.karabiner-elements.overrideAttrs (old: {
-          version = "14.13.0";
-          src = prev.fetchurl {
-            inherit (old.src) url;
-            hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
-          };
-        });
-      })
-    ];
-  };
+      });
+    })
+  ];
 
   environment.systemPackages = with pkgs; [
-    #inputs.wezterm.packages.${pkgs.system}.default
+    #inputs.wezterm.packages.${system}.default
 
     bashInteractive
     bat
@@ -144,37 +110,26 @@ in
       "Xcode" = 497799835;
     };
 
-    casks = [
-      # TODO: try moving these to nixpkgs
-      (greedy "bartender")
-      (greedy "bitwarden")
-      (greedy "docker")
-      (greedy "mailmate@beta")
-      (greedy "mouseless")
-      (greedy "plex")
-      (greedy "private-internet-access")
-      (greedy "sabnzbd")
-      (greedy "stremio")
-      (greedy "ubersicht")
-    ];
-  };
-
-  environment = {
-    shells = [
-      pkgs.bash
-      pkgs.fish
-      pkgs.nushell
-    ];
-    variables = {
-      XDG_CONFIG_HOME = "/Users/${user}/.config";
-      EDITOR = "nvim";
-      VISUAL = "nvim";
-    };
-  };
-
-  programs = {
-    nix-index.enable = true;
-    direnv.enable = true;
+    casks =
+      let
+        greedy = name: {
+          name = name;
+          greedy = true;
+        };
+      in
+      [
+        # TODO: try moving these to nixpkgs
+        (greedy "bartender")
+        (greedy "bitwarden")
+        (greedy "docker")
+        (greedy "mailmate@beta")
+        (greedy "mouseless")
+        (greedy "plex")
+        (greedy "private-internet-access")
+        (greedy "sabnzbd")
+        (greedy "stremio")
+        (greedy "ubersicht")
+      ];
   };
 
   services = {
@@ -196,11 +151,6 @@ in
     serviceConfig.RunAtLoad = true;
   };
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.sauce-code-pro
-    nerd-fonts.fira-code
-  ];
-
   system = {
     defaults = {
       dock = {
@@ -215,7 +165,7 @@ in
           "${pkgs.discord}/Applications/Discord.app"
           "${pkgs.spotify}/Applications/Spotify.app"
           "${pkgs.wezterm}/Applications/WezTerm.app"
-          "/Users/${user}/Applications/Chrome Apps.localized/plex.app"
+          "/Users/wil/Applications/Chrome Apps.localized/plex.app"
         ];
         persistent-others = [ ];
         show-process-indicators = true;
@@ -265,10 +215,6 @@ in
   };
 
   ids.gids.nixbld = 30000;
-
-  networking = {
-    hostName = hostname;
-  };
 
   security = {
     accessibilityPrograms = [

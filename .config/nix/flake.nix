@@ -1,13 +1,12 @@
 {
-  description = "wthueb's macbook";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
+    nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # home-manager = {
@@ -29,16 +28,12 @@
 
   outputs =
     { self, ... }@inputs:
-    let
-      system = "aarch64-darwin";
-      hostname = "wil-mac";
-      user = "wil";
-    in
     {
-      darwinConfigurations.${hostname} = inputs.nix-darwin.lib.darwinSystem {
-        inherit system;
+      darwinConfigurations."wil-mac" = inputs.nix-darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
         modules = [
-          ./configuration.nix
+          ./common.nix
+          ./wil-mac/configuration.nix
 
           # inputs.home-manager.darwinModules.home-manager
           # {
@@ -50,10 +45,27 @@
           # }
         ];
         specialArgs = {
-          inherit self inputs system hostname user;
+          inherit self inputs;
+          system = "aarch64-darwin";
+          hostname = "wil-mac";
         };
       };
 
-      darwinPackages = self.darwinConfigurations.${hostname}.pkgs;
+      darwinPackages = self.darwinConfigurations."wil-mac".pkgs;
+
+      nixosConfigurations."mbk" = inputs.nixpkgs-nixos.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./common.nix
+          ./mbk/hardware-configuration.nix
+          ./mbk/configuration.nix
+          ./modules/plex.nix
+        ];
+        specialArgs = {
+          inherit self inputs;
+          system = "x86_64-linux";
+          hostname = "mbk";
+        };
+      };
     };
 }
