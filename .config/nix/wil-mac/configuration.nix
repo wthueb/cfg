@@ -21,6 +21,10 @@
     })
   ];
 
+  environment.variables = {
+    "XDG_CONFIG_HOME" = "/Users/wil/.config";
+  };
+
   environment.systemPackages = with pkgs; [
     #inputs.wezterm.packages.${system}.default
 
