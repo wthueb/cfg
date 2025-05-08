@@ -9,9 +9,9 @@
   ...
 }:
 {
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+  boot.loader.grub = {
+      enable = true;
+      devices = [ "/dev/sda" ];
   };
 
   boot.initrd.kernelModules = [ "i915" ];
@@ -43,7 +43,7 @@
   };
 
   console = {
-    font = "ter-i32b";
+    font = "ter-i20b";
     packages = [ pkgs.terminus_font ];
     keyMap = "us";
   };
