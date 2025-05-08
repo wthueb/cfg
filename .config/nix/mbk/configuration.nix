@@ -86,6 +86,8 @@
     useRoutingFeatures = "server";
   };
 
+  services.cron.enable = true;
+
   services.xserver.xkb = {
     layout = "us";
     variant = "";
