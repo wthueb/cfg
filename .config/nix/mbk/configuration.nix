@@ -109,28 +109,17 @@
     ];
     shell = pkgs-unstable.nushell;
     packages = with pkgs-unstable; [
-      bat
       carapace
-      coreutils
-      delta
       dig
-      fd
       ffmpeg-full
-      fzf
-      gh
       gnugrep
       gnumake
       gnused
       gnutar
       jc
       jq
-      less
-      nil
-      nixfmt-rfc-style
       nodejs
-      nushell
       python3
-      ripgrep
       rsync
       starship
       tldr

@@ -49,9 +49,21 @@
     };
     systemPackages = with pkgs; [
       bashInteractive
+      bat
+      coreutils
+      curl
+      delta
+      fd
+      fzf
+      gh
       git
+      less
       neovim
+      nil
+      nixfmt-rfc-style
       nushell
+      ripgrep
+      wget
     ];
   };
 

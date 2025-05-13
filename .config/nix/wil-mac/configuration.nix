@@ -28,21 +28,14 @@
   environment.systemPackages = with pkgs; [
     #inputs.wezterm.packages.${system}.default
 
-    bat
     carapace
-    coreutils
-    curl
     dbeaver-bin
-    delta
     dig
     discord
     dua
-    fd
     ffmpeg-full
     firefox
-    fzf
     gcc
-    gh
     gnugrep
     gnumake
     gnused
@@ -52,15 +45,11 @@
     inetutils
     jc
     jq
-    less
     litecli
-    nil
-    nixfmt-rfc-style
     nodejs
     #plex-desktop # not supported on aarch64-darwin
     qbittorrent
     raycast
-    ripgrep
     rsync
     rustup
     #sabnzbd # not supported on aarch64-darwin

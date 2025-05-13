@@ -50,6 +50,18 @@
         };
       };
 
+      darwinConfigurations."osx" = inputs.nix-darwin.lib.darwinSystem {
+        modules = [
+          ./common.nix
+          ./osx/configuration.nix
+        ];
+        specialArgs = {
+          inherit self inputs;
+          system = "x86_64-darwin";
+          hostname = "osx";
+        };
+      };
+
       nixosConfigurations."mbk" = inputs.nixpkgs-nixos.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
