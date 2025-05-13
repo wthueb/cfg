@@ -40,13 +40,19 @@
 
   environment = {
     shells = [
-      pkgs.bash
+      pkgs.bashInteractive
       pkgs.nushell
     ];
     variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
     };
+    systemPackages = with pkgs; [
+      bashInteractive
+      git
+      neovim
+      nushell
+    ];
   };
 
   programs = {

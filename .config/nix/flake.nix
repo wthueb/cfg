@@ -30,7 +30,6 @@
     { self, ... }@inputs:
     {
       darwinConfigurations."wil-mac" = inputs.nix-darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
         modules = [
           ./common.nix
           ./wil-mac/configuration.nix
@@ -50,8 +49,6 @@
           hostname = "wil-mac";
         };
       };
-
-      darwinPackages = self.darwinConfigurations."wil-mac".pkgs;
 
       nixosConfigurations."mbk" = inputs.nixpkgs-nixos.lib.nixosSystem {
         system = "x86_64-linux";

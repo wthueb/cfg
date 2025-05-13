@@ -28,7 +28,6 @@
   environment.systemPackages = with pkgs; [
     #inputs.wezterm.packages.${system}.default
 
-    bashInteractive
     bat
     carapace
     coreutils
@@ -44,7 +43,6 @@
     fzf
     gcc
     gh
-    git
     gnugrep
     gnumake
     gnused
@@ -56,11 +54,9 @@
     jq
     less
     litecli
-    neovim
     nil
     nixfmt-rfc-style
     nodejs
-    nushell
     #plex-desktop # not supported on aarch64-darwin
     qbittorrent
     raycast
@@ -126,7 +122,6 @@
         (greedy "bartender")
         (greedy "bitwarden")
         (greedy "docker")
-        (greedy "mailmate@beta")
         (greedy "mouseless")
         (greedy "plex")
         (greedy "private-internet-access")
@@ -205,7 +200,7 @@
     # disable electron apps from automatically checking for updates
     activationScripts.postUserActivation.text = ''
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-      /run/current-system/sw/bin/nix run nixpkgs#defaultbrowser -- chrome
+      open -a "${pkgs.google-chrome}/Applications/Google Chrome.app/" --args --make-default-browser
       /bin/launchctl setenv ELECTRON_NO_UPDATER 1
       ${pkgs.tldr}/bin/tldr --update
     '';
