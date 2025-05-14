@@ -142,6 +142,14 @@
     };
   };
 
+  launchd.user.agents.mouseless = {
+    command = "/Applications/Mouseless.app/Contents/MacOS/mouseless";
+    serviceConfig = {
+      RunAtLoad = true;
+      KeepAlive = true;
+    };
+  };
+
   system = {
     defaults = {
       dock = {
