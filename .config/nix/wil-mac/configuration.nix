@@ -95,7 +95,6 @@
     ];
 
     masApps = {
-      "Tailscale" = 1475387142;
       "Xcode" = 497799835;
     };
 
@@ -122,6 +121,7 @@
 
   services = {
     karabiner-elements.enable = true;
+    tailscale.enable = true;
     #sketchybar.enable = true;
     skhd = {
       enable = true;
@@ -135,8 +135,11 @@
   };
 
   launchd.user.agents.raycast = {
-    serviceConfig.ProgramArguments = [ "/Applications/Nix Apps/Raycast.app/Contents/MacOS/Raycast" ];
-    serviceConfig.RunAtLoad = true;
+    command = "${pkgs.raycast}/Applications/Raycast.app/Contents/MacOS/Raycast";
+    serviceConfig = {
+      RunAtLoad = true;
+      KeepAlive = true;
+    };
   };
 
   system = {
