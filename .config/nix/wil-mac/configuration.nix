@@ -200,6 +200,7 @@
     # disable electron apps from automatically checking for updates
     activationScripts.postUserActivation.text = ''
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+      ${pkgs.defaultbrowser}/bin/defaultbrowser chrome
       open -a "${pkgs.google-chrome}/Applications/Google Chrome.app/" --args --make-default-browser
       /bin/launchctl setenv ELECTRON_NO_UPDATER 1
       ${pkgs.tldr}/bin/tldr --update
