@@ -48,6 +48,7 @@
 
   environment.systemPackages = with pkgs; [
     docker-compose
+    ffmpeg-full
     gcc
     git
     vim
@@ -110,7 +111,6 @@
     packages = with pkgs-unstable; [
       carapace
       dig
-      ffmpeg-full
       gnugrep
       gnumake
       gnused

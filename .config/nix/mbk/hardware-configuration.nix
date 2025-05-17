@@ -11,24 +11,40 @@
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
+  hardware = {
+    cpu.intel.updateMicrocode = true;
+    graphics = {
+      enable = true;
+      extraPackages = with pkgs; [
+        intel-media-driver
+        intel-compute-runtime
+        vpl-gpu-rt
+      ];
+    };
+  };
+
   boot = {
     loader.grub = {
       enable = true;
       devices = [ "/dev/sda" ];
     };
 
-    initrd.availableKernelModules = [
-      "ata_piix"
-      "uhci_hcd"
-      "virtio_pci"
-      "virtio_scsi"
-      "sd_mod"
-      "sr_mod"
-    ];
-    initrd.kernelModules = [ "i915" ];
+    initrd = {
+      availableKernelModules = [
+        "ahci"
+        "ehci_pci"
+        "sd_mod"
+        "uhci_hcd"
+        "virtio_pci"
+        "virtio_scsi"
+      ];
+      kernelModules = [ "i915" ];
+    };
 
-    kernelModules = [ ];
-    extraModulePackages = [ ];
+    kernelParams = [ "i915.enable_guc=0" ];
+
+    #kernelPackages = pkgs.linuxPackages_latest;
+    extraModulePackages = with config.boot.kernelPackages; [ ];
   };
 
   fileSystems."/" = {
