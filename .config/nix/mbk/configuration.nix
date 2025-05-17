@@ -93,6 +93,8 @@
     variant = "";
   };
 
+  systemd.watchdog.runtimeTime = "30s";
+
   users.groups.plex.gid = 5000;
 
   users.users."wil" = {
