@@ -1,6 +1,7 @@
 {
   inputs = {
-    nixpkgs-nixos.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixos-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
@@ -62,7 +63,7 @@
         };
       };
 
-      nixosConfigurations."mbk" = inputs.nixpkgs-nixos.lib.nixosSystem {
+      nixosConfigurations."mbk" = inputs.nixos-unstable.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./common.nix

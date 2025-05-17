@@ -9,12 +9,10 @@
   ...
 }:
 {
-  boot.loader.grub = {
-      enable = true;
-      devices = [ "/dev/sda" ];
+  fileSystems."/mnt/data" = {
+    device = "192.168.1.207:/volume2/data";
+    fsType = "nfs";
   };
-
-  boot.initrd.kernelModules = [ "i915" ];
 
   networking = {
     networkmanager.enable = true;
@@ -72,10 +70,11 @@
     enable = true;
     settings = {
       PermitRootLogin = "no";
-      PasswordAuthentication = false;
     };
     # only allow PasswordAuthentication on local network/tailscale
     extraConfig = ''
+      PasswordAuthentication no
+
       Match Address 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,100.64.0.0/10
         PasswordAuthentication yes
     '';
