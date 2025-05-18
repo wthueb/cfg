@@ -27,18 +27,22 @@
         locations = {
           "/radarr4k" = {
             proxyPass = "http://127.0.0.1:7879";
+            proxyWebsockets = true;
           };
 
           "/sonarr4k" = {
             proxyPass = "http://127.0.0.1:8990";
+            proxyWebsockets = true;
           };
 
           "/bazarr4k" = {
             proxyPass = "http://127.0.0.1:6768";
+            proxyWebsockets = true;
           };
 
           "/prowlarr" = {
             proxyPass = "http://127.0.0.1:9696";
+            proxyWebsockets = true;
           };
 
           "/qbittorrent/" = {
