@@ -20,6 +20,12 @@
       enable = true;
       allowedTCPPorts = [ ];
       allowedUDPPorts = [ ];
+      extraCommands = ''
+        iptables -A nixos-fw -p all -s 192.168.1.0/24 -j nixos-fw-accept
+      '';
+      extraStopCommands = ''
+        iptables -D nixos-fw -p all -s 192.168.1.0/24 -j nixos-fw-accept || true
+      '';
     };
   };
 
