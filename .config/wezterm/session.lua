@@ -166,6 +166,18 @@ workspace_switcher.get_choices = function()
         file:close()
     end
 
+    local has_default = false
+
+    for _, choice in ipairs(choices) do
+        if choice.id == "~" then
+            has_default = true
+        end
+    end
+
+    if not has_default then
+        table.insert(choices, 1, { id = wezterm.home_dir, label = "~" })
+    end
+
     return choices
 end
 
