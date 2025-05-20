@@ -2,13 +2,20 @@ return {
     "neovim/nvim-lspconfig",
 
     dependencies = {
-        { "williamboman/mason.nvim", version = "^1.0.0" },
-        { "williamboman/mason-lspconfig.nvim", version = "^1.0.0" },
+        { "mason-org/mason.nvim", version = "^2.0.0" },
+        { "mason-org/mason-lspconfig.nvim", version = "^2.0.0" },
         "WhoIsSethDaniel/mason-tool-installer",
         { "folke/neodev.nvim", opts = {} },
         { "j-hui/fidget.nvim", opts = {} },
-        { "creativenull/efmls-configs-nvim", version = "1.x.x" },
-        { "seblyng/roslyn.nvim", ft = "cs", opts = {} },
+        { "creativenull/efmls-configs-nvim", version = "^1.0.0" },
+        {
+            "seblyng/roslyn.nvim",
+            ft = { "cs", "razor" },
+            dependencies = { { "tris203/rzls.nvim", opts = {} } },
+            init = function()
+                vim.filetype.add({ extension = { razor = "razor", cshtml = "razor" } })
+            end,
+        },
     },
 
     config = function()
@@ -36,6 +43,28 @@ return {
                 "stylua",
                 "vtsls",
                 "yamlls",
+            },
+        })
+
+        local cmd = {}
+        local mason_registry = require("mason-registry")
+        local roslyn_package = mason_registry.get_package("roslyn")
+        if roslyn_package:is_installed() then
+            vim.list_extend(cmd, { "roslyn", "--stdio", "--logLevel=Information", "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()) })
+
+            local rzls_package = mason_registry.get_package("rzls")
+            if rzls_package:is_installed() then
+                local rzls_path = vim.fn.expand("$MASON/packages/rzls/libexec")
+                table.insert(cmd, "--razorSourceGenerator=" .. vim.fs.joinpath(rzls_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"))
+                table.insert(cmd, "--razorDesignTimePath=" .. vim.fs.joinpath(rzls_path, "Targets", "Microsoft.NET.Sdk.Razor.DesignTime.targets"))
+                vim.list_extend(cmd, { "--extension", vim.fs.joinpath(rzls_path, "RazorExtension", "Microsoft.VisualStudioCode.RazorExtension.dll") })
+            end
+        end
+
+        require("roslyn").setup({
+            cmd = cmd,
+            config = {
+                handlers = require("rzls.roslyn_handlers"),
             },
         })
 
@@ -192,116 +221,107 @@ return {
         local lspconfig = require("lspconfig")
         local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-        require("mason-lspconfig").setup_handlers({
-            function(server_name)
-                lspconfig[server_name].setup({ capabilities = capabilities })
-            end,
+        vim.lsp.config("*", {
+            capabilities = capabilities,
+        })
 
-            efm = function()
-                local prettier = require("efmls-configs.formatters.prettier")
+        local prettier = require("efmls-configs.formatters.prettier")
 
-                local languages = {
-                    astro = { prettier },
-                    typescript = { prettier },
-                    typescriptreact = { prettier },
-                    javascript = { prettier },
-                    javascriptreact = { prettier },
-                    html = { prettier },
-                    htmlangular = { prettier },
-                    css = { prettier },
-                    scss = { prettier },
-                    json = { prettier },
-                    jsonc = { prettier },
-                    lua = { require("efmls-configs.formatters.stylua") },
-                }
+        local languages = {
+            astro = { prettier },
+            typescript = { prettier },
+            typescriptreact = { prettier },
+            javascript = { prettier },
+            javascriptreact = { prettier },
+            html = { prettier },
+            htmlangular = { prettier },
+            css = { prettier },
+            scss = { prettier },
+            json = { prettier },
+            jsonc = { prettier },
+            lua = { require("efmls-configs.formatters.stylua") },
+        }
 
-                lspconfig.efm.setup({
-                    capabilities = capabilities,
+        vim.lsp.config("efm", {
+            filetypes = vim.tbl_keys(languages),
 
-                    filetypes = vim.tbl_keys(languages),
+            init_options = {
+                documentFormatting = true,
+                documentRangeFormatting = true,
+            },
 
-                    init_options = {
-                        documentFormatting = true,
-                        documentRangeFormatting = true,
-                    },
+            settings = {
+                languages = languages,
+            },
+        })
 
-                    settings = {
-                        languages = languages,
-                    },
-                })
-            end,
+        vim.lsp.config("emmet_language_server", {
+            filetypes = {
+                "html",
+                "htmlangular",
+                "css",
+                "scss",
+                "javascriptreact",
+                "typescriptreact",
+                "astro",
+                "svelte",
+            },
+        })
 
-            emmet_language_server = function()
-                lspconfig.emmet_language_server.setup({
-                    capabilities = capabilities,
-                    filetypes = {
-                        "html",
-                        "htmlangular",
-                        "css",
-                        "scss",
-                        "javascriptreact",
-                        "typescriptreact",
-                        "astro",
-                        "svelte",
-                    },
-                })
-            end,
-
-            lua_ls = function()
-                lspconfig.lua_ls.setup({
-                    capabilities = capabilities,
-
-                    on_init = function(client)
-                        local path = client.workspace_folders[1].name
-                        if
-                            not vim.loop.fs_stat(path .. "/.luarc.json")
-                            and not vim.loop.fs_stat(path .. "/.luarc.jsonc")
-                        then
-                            client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
-                                Lua = {
-                                    runtime = {
-                                        version = "LuaJIT",
-                                    },
-                                    workspace = {
-                                        checkThirdParty = false,
-                                        library = vim.api.nvim_get_runtime_file("", true),
-                                    },
-                                },
-                            })
-
-                            client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-                        end
-                        return true
-                    end,
-                })
-            end,
-
-            rust_analyzer = function()
-                lspconfig.rust_analyzer.setup({
-                    capabilities = capabilities,
-
-                    settings = {
-                        ["rust-analyzer"] = {
-                            checkOnSave = {
-                                command = "clippy",
+        vim.lsp.config("lua_ls", {
+            settings = { },
+            on_init = function(client)
+                local path = client.workspace_folders[1].name
+                if
+                    not vim.loop.fs_stat(path .. "/.luarc.json")
+                    and not vim.loop.fs_stat(path .. "/.luarc.jsonc")
+                then
+                    client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
+                        Lua = {
+                            runtime = {
+                                version = "LuaJIT",
+                            },
+                            workspace = {
+                                checkThirdParty = false,
+                                library = vim.api.nvim_get_runtime_file("", true),
                             },
                         },
-                    },
-                })
-            end,
+                    })
 
-            vtsls = function()
-                lspconfig.vtsls.setup({
-                    capabilities = capabilities,
-                    settings = {
-                        implicitProjectConfiguration = { checkJs = true },
-                    },
-                })
+                    client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+                end
+                return true
             end,
         })
 
-        lspconfig.nil_ls.setup({
-            capabilities = capabilities,
+        vim.lsp.config("rust_analyzer", {
+            settings = {
+                ["rust-analyzer"] = {
+                    checkOnSave = {
+                        command = "clippy",
+                    },
+                },
+            },
+        })
+
+        vim.lsp.config("vtsls", {
+            settings = {
+                implicitProjectConfiguration = { checkJs = true },
+            },
+        })
+
+        vim.lsp.config("sqlls", {
+            root_dir = lspconfig.util.root_pattern(".git", ".gitignore", ".gitmodules"),
+        })
+
+        vim.lsp.config("angularls", {
+            filetypes = {
+                "typescript",
+                "htmlangular",
+            },
+        })
+
+        vim.lsp.config("nil_ls", {
             settings = {
                 ["nil"] = {
                     formatting = {
@@ -311,12 +331,13 @@ return {
             },
         })
 
-        lspconfig.nushell.setup({
-            capabilities = capabilities,
+        vim.lsp.config("eslint", {
+            settings = {
+                workingDirectory = vim.fn.getcwd(),
+            },
         })
 
-        lspconfig.eslint.setup({
-            capabilities = capabilities,
-        })
+        vim.lsp.enable("nushell")
     end,
 }
+
