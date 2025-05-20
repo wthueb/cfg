@@ -9,17 +9,7 @@
   ...
 }:
 {
-  nixpkgs.overlays = [
-    (final: prev: {
-      karabiner-elements = prev.karabiner-elements.overrideAttrs (old: {
-        version = "14.13.0";
-        src = prev.fetchurl {
-          inherit (old.src) url;
-          hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
-        };
-      });
-    })
-  ];
+  nixpkgs.overlays = [ ];
 
   environment.variables = {
     "XDG_CONFIG_HOME" = "/Users/wil/.config";
@@ -120,16 +110,24 @@
   };
 
   services = {
-    karabiner-elements.enable = true;
+    karabiner-elements = {
+      enable = true;
+      package = pkgs.karabiner-elements.overrideAttrs (old: {
+        version = "14.13.0";
+
+        src = pkgs.fetchurl {
+          inherit (old.src) url;
+          hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
+        };
+
+        dontFixup = true;
+      });
+    };
     tailscale.enable = true;
     #sketchybar.enable = true;
-    skhd = {
-      enable = true;
-      package = pkgs.skhd;
-    };
+    skhd.enable = true;
     yabai = {
       enable = true;
-      package = pkgs.yabai;
       enableScriptingAddition = true;
     };
   };
@@ -150,7 +148,19 @@
     };
   };
 
+  launchd.user.agents.startup = {
+    script = ''
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+      ${pkgs.defaultbrowser}/bin/defaultbrowser chrome
+      open -a "${pkgs.google-chrome}/Applications/Google Chrome.app/" --args --make-default-browser
+      /bin/launchctl setenv ELECTRON_NO_UPDATER 1
+      ${pkgs.tldr}/bin/tldr --update
+    '';
+    serviceConfig.RunAtLoad = true;
+  };
+
   system = {
+    primaryUser = "wil";
     defaults = {
       dock = {
         autohide = true;
@@ -196,15 +206,6 @@
         };
       };
     };
-
-    # disable electron apps from automatically checking for updates
-    activationScripts.postUserActivation.text = ''
-      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-      ${pkgs.defaultbrowser}/bin/defaultbrowser chrome
-      open -a "${pkgs.google-chrome}/Applications/Google Chrome.app/" --args --make-default-browser
-      /bin/launchctl setenv ELECTRON_NO_UPDATER 1
-      ${pkgs.tldr}/bin/tldr --update
-    '';
 
     # Set Git commit hash for darwin-version.
     configurationRevision = self.rev or self.dirtyRev or null;
