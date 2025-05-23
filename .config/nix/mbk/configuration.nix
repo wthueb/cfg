@@ -58,6 +58,7 @@
     gcc
     git
     vim
+    wezterm
     wget
   ];
 
@@ -71,7 +72,11 @@
     });
   };
 
+  programs.tmux.enable = true;
+
   virtualisation.docker.enable = true;
+
+  services.qemuGuest.enable = true;
 
   services.openssh = {
     enable = true;
