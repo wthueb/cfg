@@ -18,6 +18,8 @@
   environment.systemPackages = with pkgs; [
     #inputs.wezterm.packages.${system}.default
 
+    bartender
+    bitwarden-desktop
     carapace
     dbeaver-bin
     dig
@@ -97,8 +99,6 @@
       in
       [
         # TODO: try moving these to nixpkgs
-        (greedy "bartender")
-        (greedy "bitwarden")
         (greedy "docker")
         (greedy "mouseless")
         (greedy "plex")
@@ -134,6 +134,22 @@
 
   launchd.user.agents.raycast = {
     command = "${pkgs.raycast}/Applications/Raycast.app/Contents/MacOS/Raycast";
+    serviceConfig = {
+      RunAtLoad = true;
+      KeepAlive = true;
+    };
+  };
+
+  launchd.user.agents.bartender = {
+    command = "\"${pkgs.bartender}/Applications/Bartender 5.app/Contents/MacOS/Bartender 5\"";
+    serviceConfig = {
+      RunAtLoad = true;
+      KeepAlive = true;
+    };
+  };
+
+  launchd.user.agents.bitwarden = {
+    command = "${pkgs.bitwarden}/bin/bitwarden";
     serviceConfig = {
       RunAtLoad = true;
       KeepAlive = true;
