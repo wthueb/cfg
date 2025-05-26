@@ -105,7 +105,7 @@
         (greedy "private-internet-access")
         (greedy "sabnzbd")
         (greedy "stremio")
-        (greedy "ubersicht")
+        #(greedy "ubersicht")
       ];
   };
 
@@ -124,7 +124,7 @@
       });
     };
     tailscale.enable = true;
-    #sketchybar.enable = true;
+    sketchybar.enable = true;
     skhd.enable = true;
     yabai = {
       enable = true;

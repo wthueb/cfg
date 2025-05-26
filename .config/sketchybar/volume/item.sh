@@ -7,10 +7,10 @@ volume_slider=(
   padding_right=5
   label.drawing=off
   icon.drawing=off
-  slider.highlight_color="$BLUE"
+  slider.highlight_color="$NORD7"
   slider.background.height=5
   slider.background.corner_radius=3
-  slider.background.color="$ALT_BACKGROUND"
+  slider.background.color="$NORD1"
   slider.knob.drawing=off
 )
 

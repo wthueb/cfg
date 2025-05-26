@@ -14,7 +14,7 @@ launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist > /
 
 bar=(
   height=32
-  color="$BAR_COLOR"
+  color="$NORD0"
   border_width=0
   shadow=off
   position=top
@@ -32,22 +32,22 @@ sketchybar --bar "${bar[@]}"
 defaults=(
   updates=when_shown
   icon.font="$FONT:Bold:14.0"
-  icon.color="$ICON_COLOR"
+  icon.color="$NORD5"
   icon.padding_left="$PADDINGS"
   icon.padding_right="$PADDINGS"
   label.font="$FONT:Semibold:13.0"
-  label.color="$LABEL_COLOR"
+  label.color="$NORD6"
   label.padding_left="$PADDINGS"
   label.padding_right="$PADDINGS"
   padding_right="$PADDINGS"
   padding_left="$PADDINGS"
   background.height=26
-  background.corner_radius=9
+  background.corner_radius=8
   background.border_width=2
   popup.background.border_width=1
   popup.background.corner_radius=3
-  popup.background.border_color="$POPUP_BORDER_COLOR"
-  popup.background.color="$POPUP_BACKGROUND_COLOR"
+  popup.background.border_color="$NORD4"
+  popup.background.color="$NORD1"
   popup.blur_radius=20
   popup.background.shadow.drawing=on
 )
@@ -55,7 +55,6 @@ defaults=(
 sketchybar --default "${defaults[@]}"
 
 # left
-source "apple.sh"
 source "spaces/item.sh"
 source "title/item.sh"
 

@@ -12,20 +12,11 @@ for i in "${!space_icons[@]}"; do
   space=(
     associated_space="$sid"
     icon="${space_icons[i]}"
-    icon.highlight_color="$GREEN"
-    icon.padding_left=10
-    icon.padding_right=10
-    label.font="$FONT:Regular:12.0"
-    label.color="$WHITE"
-    label.highlight_color="$WHITE"
-    label.padding_right=20
-    label.y_offset=0
-    background.color="$ALT_BACKGROUND"
-    background.border_color="$BACKGROUND_2"
+    icon.highlight_color="$NORD8"
     background.drawing=off
     label.drawing=off
-    padding_left=2
-    padding_right=2
+    padding_left=5
+    padding_right=5
     script=spaces/script.sh
   )
 
@@ -35,8 +26,7 @@ for i in "${!space_icons[@]}"; do
 done
 
 spaces_bracket=(
-  background.color="$ALT_BACKGROUND"
-  background.border_color="$BACKGROUND_2"
+  background.color="$NORD1"
 )
 
 sketchybar --add bracket spaces_bracket '/space\..*/'  \

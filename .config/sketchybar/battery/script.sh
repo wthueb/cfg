@@ -15,7 +15,7 @@ update() {
   fi
 
   local color, icon
-  color=$WHITE
+  color=$NORD5
   case $percentage in
     9[0-9]|100) icon=$BATTERY_100
     ;;
@@ -23,9 +23,9 @@ update() {
     ;;
     [3-5][0-9]) icon=$BATTERY_50
     ;;
-    [1-2][0-9]) icon=$BATTERY_25; color=$ORANGE
+    [1-2][0-9]) icon=$BATTERY_25; color=$NORD12
     ;;
-    *) icon=$BATTERY_0; color=$RED
+    *) icon=$BATTERY_0; color=$NORD11
   esac
 
   if [[ $charging != "" ]]; then
