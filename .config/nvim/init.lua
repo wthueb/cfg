@@ -99,4 +99,9 @@ vim.filetype.add({
     },
 })
 
+P = function(...)
+    vim.print(...)
+    return ...
+end
+
 pcall(require, "wthueb.custom")

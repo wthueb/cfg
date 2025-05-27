@@ -123,8 +123,16 @@ return {
                         return
                     end
 
+                    local format = function(name)
+                        vim.lsp.buf.format({ name = name })
+                        vim.schedule(function()
+                            print("formatted with " .. name)
+                        end)
+                    end
+
                     if #formatters == 1 then
-                        return vim.lsp.buf.format({ name = formatters[1] })
+                        format(formatters[1])
+                        return
                     end
 
                     -- if vim.tbl_contains(formatters, "efm") then
@@ -133,10 +141,19 @@ return {
 
                     table.sort(formatters)
 
+                    if vim.tbl_contains(formatters, "efm") then
+                        formatters = vim.tbl_filter(function(c)
+                            return c ~= "efm"
+                        end, formatters)
+
+                        table.insert(formatters, 1, "efm")
+                    end
+
                     return vim.ui.select(formatters, {
                         prompt = "Select formatter",
                     }, function(choice)
-                        vim.lsp.buf.format({ name = choice })
+                        choice = choice or formatters[1]
+                        format(choice)
                     end)
                 end, { silent = true, desc = "Format current buffer", buffer = true })
 
