@@ -14,6 +14,7 @@ return {
             init = function()
                 vim.filetype.add({ extension = { razor = "razor", cshtml = "razor" } })
             end,
+            opts = {},
         },
         {
             "folke/lazydev.nvim",
@@ -84,11 +85,9 @@ return {
             end
         end
 
-        require("roslyn").setup({
-            config = {
-                cmd = cmd,
-                handlers = require("rzls.roslyn_handlers"),
-            },
+        vim.lsp.config("roslyn", {
+            cmd = cmd,
+            handlers = require("rzls.roslyn_handlers"),
         })
 
         vim.api.nvim_create_autocmd("LspAttach", {
