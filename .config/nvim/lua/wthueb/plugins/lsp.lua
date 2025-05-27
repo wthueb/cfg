@@ -5,7 +5,6 @@ return {
         { "mason-org/mason.nvim", version = "^2.0.0" },
         { "mason-org/mason-lspconfig.nvim", version = "^2.0.0" },
         "WhoIsSethDaniel/mason-tool-installer",
-        { "folke/neodev.nvim", opts = {} },
         { "j-hui/fidget.nvim", opts = {} },
         { "creativenull/efmls-configs-nvim", version = "^1.0.0" },
         {
@@ -15,6 +14,15 @@ return {
             init = function()
                 vim.filetype.add({ extension = { razor = "razor", cshtml = "razor" } })
             end,
+        },
+        {
+            "folke/lazydev.nvim",
+            ft = "lua",
+            opts = {
+                library = {
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                },
+            },
         },
     },
 
@@ -50,20 +58,35 @@ return {
         local mason_registry = require("mason-registry")
         local roslyn_package = mason_registry.get_package("roslyn")
         if roslyn_package:is_installed() then
-            vim.list_extend(cmd, { "roslyn", "--stdio", "--logLevel=Information", "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()) })
+            vim.list_extend(cmd, {
+                "roslyn",
+                "--stdio",
+                "--logLevel=Information",
+                "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+            })
 
             local rzls_package = mason_registry.get_package("rzls")
             if rzls_package:is_installed() then
                 local rzls_path = vim.fn.expand("$MASON/packages/rzls/libexec")
-                table.insert(cmd, "--razorSourceGenerator=" .. vim.fs.joinpath(rzls_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll"))
-                table.insert(cmd, "--razorDesignTimePath=" .. vim.fs.joinpath(rzls_path, "Targets", "Microsoft.NET.Sdk.Razor.DesignTime.targets"))
-                vim.list_extend(cmd, { "--extension", vim.fs.joinpath(rzls_path, "RazorExtension", "Microsoft.VisualStudioCode.RazorExtension.dll") })
+                table.insert(
+                    cmd,
+                    "--razorSourceGenerator=" .. vim.fs.joinpath(rzls_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll")
+                )
+                table.insert(
+                    cmd,
+                    "--razorDesignTimePath="
+                        .. vim.fs.joinpath(rzls_path, "Targets", "Microsoft.NET.Sdk.Razor.DesignTime.targets")
+                )
+                vim.list_extend(cmd, {
+                    "--extension",
+                    vim.fs.joinpath(rzls_path, "RazorExtension", "Microsoft.VisualStudioCode.RazorExtension.dll"),
+                })
             end
         end
 
         require("roslyn").setup({
-            cmd = cmd,
             config = {
+                cmd = cmd,
                 handlers = require("rzls.roslyn_handlers"),
             },
         })
@@ -93,6 +116,7 @@ return {
                         end,
                         vim.tbl_filter(function(c)
                             return c.server_capabilities.documentFormattingProvider
+                                and vim.lsp.buf_is_attached(event.buf, c.id)
                         end, vim.lsp.get_clients({ buffer = event.buf }))
                     )
 
@@ -268,32 +292,6 @@ return {
             },
         })
 
-        vim.lsp.config("lua_ls", {
-            settings = { },
-            on_init = function(client)
-                local path = client.workspace_folders[1].name
-                if
-                    not vim.loop.fs_stat(path .. "/.luarc.json")
-                    and not vim.loop.fs_stat(path .. "/.luarc.jsonc")
-                then
-                    client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
-                        Lua = {
-                            runtime = {
-                                version = "LuaJIT",
-                            },
-                            workspace = {
-                                checkThirdParty = false,
-                                library = vim.api.nvim_get_runtime_file("", true),
-                            },
-                        },
-                    })
-
-                    client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
-                end
-                return true
-            end,
-        })
-
         vim.lsp.config("rust_analyzer", {
             settings = {
                 ["rust-analyzer"] = {
@@ -331,13 +329,13 @@ return {
             },
         })
 
-        vim.lsp.config("eslint", {
-            settings = {
-                workingDirectory = vim.fn.getcwd(),
+        vim.lsp.config("cssls", {
+            filetypes = {
+                "css",
+                "scss",
             },
         })
 
         vim.lsp.enable("nushell")
     end,
 }
-
