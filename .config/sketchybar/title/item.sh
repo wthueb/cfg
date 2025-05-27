@@ -9,6 +9,10 @@ title=(
 sketchybar -m --add event window_focus \
               --add event title_change
 
+yabai -m signal --add event=window_title_changed \
+                      active=yes \
+                      action="sketchybar --trigger title_change"
+
 sketchybar --add item title left \
            --set title "${title[@]}" \
            --subscribe title window_focus front_app_switched space_change title_change
