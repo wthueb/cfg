@@ -16,8 +16,8 @@ volume_slider=(
 
 volume_icon=(
   click_script=volume/click.sh
-  icon.drawing=off
-  label.font="$FONT:Regular:18.0"
+  icon.font="$FONT:Regular:18.0"
+  label.drawing=off
   popup.drawing=off
 )
 

@@ -7,7 +7,6 @@ ITEM_DIR="$CONFIG_DIR/items"
 PLUGIN_DIR="$CONFIG_DIR/plugins"
 
 FONT="SauceCodePro Nerd Font"
-PADDINGS=3
 
 # disable the native volume popup
 launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist > /dev/null 2>&1 &
@@ -19,8 +18,8 @@ bar=(
   shadow=off
   position=top
   sticky=on
-  padding_right=10
   padding_left=10
+  padding_right=10
   y_offset=0
   margin=0
   topmost=window
@@ -33,15 +32,15 @@ defaults=(
   updates=when_shown
   icon.font="$FONT:Bold:14.0"
   icon.color="$NORD5"
-  icon.padding_left="$PADDINGS"
-  icon.padding_right="$PADDINGS"
+  icon.padding_left=0
+  icon.padding_right=0
   label.font="$FONT:Semibold:13.0"
   label.color="$NORD6"
-  label.padding_left="$PADDINGS"
-  label.padding_right="$PADDINGS"
-  padding_right="$PADDINGS"
-  padding_left="$PADDINGS"
+  label.padding_left=0
+  label.padding_right=0
   background.height=26
+  background.padding_left=5
+  background.padding_right=5
   background.corner_radius=8
   background.border_width=2
   popup.background.border_width=1

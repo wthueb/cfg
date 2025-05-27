@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
 
-space_icons=("1" "2" "3" "4" "5" "6" "7" "8" "9")
+left_spacer=(
+  icon.drawing=off
+  label.drawing=off
+  background.padding_left=5
+  background.padding_right=0
+)
 
-# Destroy space on right click, focus space on left click.
-# New space by left clicking separator (>)
+sketchybar --add item space.left_spacer left \
+           --set space.left_spacer "${left_spacer[@]}"
+
+space_icons=("1" "2" "3" "4" "5" "6" "7" "8" "9")
 
 sid=0
 for i in "${!space_icons[@]}"; do
@@ -13,10 +20,10 @@ for i in "${!space_icons[@]}"; do
     associated_space="$sid"
     icon="${space_icons[i]}"
     icon.highlight_color="$NORD8"
-    background.drawing=off
+    icon.padding_left=0
+    icon.padding_right=0
     label.drawing=off
-    padding_left=5
-    padding_right=5
+    background.drawing=off
     script=spaces/script.sh
   )
 
@@ -24,6 +31,16 @@ for i in "${!space_icons[@]}"; do
              --set space.$sid "${space[@]}" \
              --subscribe space.$sid mouse.clicked
 done
+
+right_spacer=(
+  icon.drawing=off
+  label.drawing=off
+  background.padding_left=0
+  background.padding_right=5
+)
+
+sketchybar --add item space.right_spacer left \
+           --set space.right_spacer "${right_spacer[@]}"
 
 spaces_bracket=(
   background.color="$NORD1"

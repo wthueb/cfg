@@ -15,13 +15,13 @@ update() {
   fi
 
   local color, icon
-  color=$NORD5
+  color=$NORD6
   case $percentage in
     9[0-9]|100) icon=$BATTERY_100
     ;;
     [6-8][0-9]) icon=$BATTERY_75
     ;;
-    [3-5][0-9]) icon=$BATTERY_50
+    [3-5][0-9]) icon=$BATTERY_50; color=$NORD12
     ;;
     [1-2][0-9]) icon=$BATTERY_25; color=$NORD12
     ;;
@@ -35,7 +35,14 @@ update() {
   local remaining_time
   remaining_time=$(echo "$battery_info" | perl -ne 'm/(\S*) remaining/ && print $1')
 
-  sketchybar --set battery icon="$icon" icon.color="$color" label="$percentage%"
+  local battery=(
+    icon="$icon"
+    icon.color="$color"
+    label="$percentage%"
+    label.color="$color"
+  )
+
+  sketchybar --set battery "${battery[@]}"
   sketchybar --set battery.info label="$remaining_time:00 remaining"
 }
 
