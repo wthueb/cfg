@@ -1,22 +1,26 @@
 {
   self,
-  config,
   pkgs,
-  pkgs-unstable,
-  inputs,
-  system,
-  hostname,
   ...
 }:
 {
-  nixpkgs.overlays = [ ];
+  nixpkgs.overlays = [
+    (final: prev: {
+      spotify = prev.spotify.overrideAttrs (old: {
+        src = pkgs.fetchurl {
+          inherit (old.src) url;
+          hash = "sha256-a3LPFX3/f58fuaEJmzcpsgI27yTaRltwftwOuJBN+nQ=";
+        };
+      });
+    })
+  ];
 
   environment.variables = {
     "XDG_CONFIG_HOME" = "/Users/wil/.config";
   };
 
   environment.systemPackages = with pkgs; [
-    #inputs.wezterm.packages.${system}.default
+    #inputs.wezterm.packages.${pkgs.stdenv.currentSystem}.default
 
     bartender
     bitwarden-desktop
@@ -27,7 +31,7 @@
     dua
     ffmpeg-full
     firefox
-    gcc
+    #gcc
     gnugrep
     gnumake
     gnused

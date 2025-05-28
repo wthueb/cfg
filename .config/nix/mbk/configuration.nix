@@ -1,11 +1,6 @@
 {
-  self,
-  config,
   pkgs,
   pkgs-unstable,
-  inputs,
-  system,
-  hostname,
   ...
 }:
 {
@@ -64,12 +59,7 @@
 
   programs.neovim = {
     enable = true;
-    # won't need overrideAttrs after next stable
-    package = pkgs-unstable.neovim-unwrapped.overrideAttrs (old: {
-      meta = old.meta or { } // {
-        maintainers = [ ];
-      };
-    });
+    package = pkgs-unstable.neovim-unwrapped;
   };
 
   programs.tmux.enable = true;

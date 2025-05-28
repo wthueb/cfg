@@ -1,18 +1,14 @@
 {
-  self,
   config,
   pkgs,
-  pkgs-unstable,
   lib,
   inputs,
-  system,
   hostname,
   ...
 }:
 {
   _module.args.pkgs-unstable = import inputs.nixpkgs-unstable {
-    inherit system;
-    inherit (config.nixpkgs) config;
+    inherit (config.nixpkgs) config system;
   };
 
   nix = {
@@ -31,7 +27,6 @@
   };
 
   nixpkgs = {
-    hostPlatform = system;
     config.allowUnfree = true;
     #overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
   };
@@ -59,27 +54,26 @@
       git
       less
       neovim
-      nil
       nixfmt-rfc-style
       nushell
       ripgrep
+      rustup
       wget
     ];
   };
 
-  programs = {
-    nix-index =
-      {
-        enable = true;
-      }
-      // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
-        enableBashIntegration = false;
-        enableZshIntegration = false;
-      };
-    direnv.enable = true;
-  };
+  programs.nix-index =
+    {
+      enable = true;
+    }
+    // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
+      enableBashIntegration = false;
+      enableZshIntegration = false;
+    };
 
-  fonts.packages = with pkgs-unstable; [
+  programs.direnv.enable = true;
+
+  fonts.packages = with pkgs; [
     nerd-fonts.sauce-code-pro
     nerd-fonts.fira-code
   ];

@@ -6,7 +6,12 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     nix-darwin = {
-      url = "github:LnL7/nix-darwin";
+      url = "github:LnL7/nix-darwin/nix-darwin-25.05";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+    };
+
+    nix-darwin-unstable = {
+      url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
@@ -31,6 +36,7 @@
     { self, ... }@inputs:
     {
       darwinConfigurations."wil-mac" = inputs.nix-darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
         modules = [
           ./common.nix
           ./wil-mac/configuration.nix
@@ -46,24 +52,23 @@
         ];
         specialArgs = {
           inherit self inputs;
-          system = "aarch64-darwin";
           hostname = "wil-mac";
         };
       };
 
       darwinConfigurations."osx" = inputs.nix-darwin.lib.darwinSystem {
+        system = "x86_64-darwin";
         modules = [
           ./common.nix
           ./osx/configuration.nix
         ];
         specialArgs = {
           inherit self inputs;
-          system = "x86_64-darwin";
           hostname = "osx";
         };
       };
 
-      nixosConfigurations."mbk" = inputs.nixos-unstable.lib.nixosSystem {
+      nixosConfigurations."mbk" = inputs.nixos-stable.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./common.nix
@@ -73,7 +78,6 @@
         ];
         specialArgs = {
           inherit self inputs;
-          system = "x86_64-linux";
           hostname = "mbk";
         };
       };

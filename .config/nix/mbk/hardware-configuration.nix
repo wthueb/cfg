@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   modulesPath,
@@ -42,9 +41,6 @@
     };
 
     kernelParams = [ "i915.enable_guc=0" ];
-
-    #kernelPackages = pkgs.linuxPackages_latest;
-    extraModulePackages = with config.boot.kernelPackages; [ ];
   };
 
   fileSystems."/" = {
