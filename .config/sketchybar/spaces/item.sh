@@ -10,15 +10,10 @@ left_spacer=(
 sketchybar --add item space.left_spacer left \
            --set space.left_spacer "${left_spacer[@]}"
 
-space_icons=("1" "2" "3" "4" "5" "6" "7" "8" "9")
-
-sid=0
-for i in "${!space_icons[@]}"; do
-  sid=$((i+1))
-
+for i in {1..9}; do
   space=(
-    associated_space="$sid"
-    icon="${space_icons[i]}"
+    associated_space="$i"
+    icon="$i"
     icon.highlight_color="$NORD8"
     icon.padding_left=0
     icon.padding_right=0
@@ -27,9 +22,9 @@ for i in "${!space_icons[@]}"; do
     script=spaces/script.sh
   )
 
-  sketchybar --add space space.$sid left    \
-             --set space.$sid "${space[@]}" \
-             --subscribe space.$sid mouse.clicked
+  sketchybar --add space "space.$i" left    \
+             --set "space.$i" "${space[@]}" \
+             --subscribe "space.$i" mouse.clicked
 done
 
 right_spacer=(

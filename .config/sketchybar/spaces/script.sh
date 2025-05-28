@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
 
 update() {
-  source "$CONFIG_DIR/colors.sh"
-  local color=$BACKGROUND_2
-  if [ "$SELECTED" = "true" ]; then
-    color=$WHITE
-  fi
-  sketchybar --set "$NAME" icon.highlight="$SELECTED" \
-                         label.highlight="$SELECTED" \
-                         background.border_color="$color"
+  sketchybar --set "$NAME" icon.highlight="$SELECTED"
 }
 
 mouse_clicked() {
