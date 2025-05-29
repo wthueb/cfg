@@ -25,6 +25,7 @@ return {
                 },
             },
         },
+        { "marilari88/twoslash-queries.nvim", opts = {} },
     },
 
     config = function()
@@ -322,6 +323,9 @@ return {
             settings = {
                 implicitProjectConfiguration = { checkJs = true },
             },
+            on_attach = function(client, bufnr)
+                require("twoslash-queries").attach(client, bufnr)
+            end,
         })
 
         vim.lsp.config("sqlls", {
