@@ -44,6 +44,7 @@
     litecli
     nodejs
     #plex-desktop # not supported on aarch64-darwin
+    python3
     qbittorrent
     raycast
     rsync
@@ -79,15 +80,6 @@
         restart_service = "changed";
       }
       "mas"
-      "pyenv"
-
-      # python build deps
-      "openssl"
-      "readline"
-      "sqlite3"
-      "xz"
-      "zlib"
-      "tcl-tk"
     ];
 
     masApps = {
