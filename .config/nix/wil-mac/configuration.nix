@@ -68,17 +68,9 @@
       cleanup = "zap"; # remove all formulae not listed below
     };
 
-    taps = [
-      "homebrew/services"
-      "mongodb/homebrew-brew"
-    ];
+    taps = [ ];
 
     brews = [
-      {
-        name = "mongodb-community";
-        start_service = true;
-        restart_service = "changed";
-      }
       "mas"
     ];
 
