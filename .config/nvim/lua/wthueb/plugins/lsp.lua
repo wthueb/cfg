@@ -2,9 +2,39 @@ return {
     "neovim/nvim-lspconfig",
 
     dependencies = {
-        { "mason-org/mason.nvim", version = "^2.0.0" },
-        { "mason-org/mason-lspconfig.nvim", version = "^2.0.0" },
-        "WhoIsSethDaniel/mason-tool-installer",
+        {
+            "mason-org/mason.nvim",
+            version = "^2.0.0",
+            opts = {
+                registries = {
+                    "github:mason-org/mason-registry",
+                    "github:Crashdummyy/mason-registry",
+                },
+            },
+        },
+        { "mason-org/mason-lspconfig.nvim", version = "^2.0.0", opts = {} },
+        {
+            "WhoIsSethDaniel/mason-tool-installer",
+            opts = {
+                ensure_installed = {
+                    "angularls",
+                    "cssls",
+                    "efm",
+                    "emmet_language_server",
+                    "eslint",
+                    "html",
+                    "jsonls",
+                    "prettier",
+                    "pyright",
+                    "ruff",
+                    "rust_analyzer",
+                    "lua_ls",
+                    "stylua",
+                    "vtsls",
+                    "yamlls",
+                },
+            },
+        },
         { "j-hui/fidget.nvim", opts = {} },
         { "creativenull/efmls-configs-nvim", version = "^1.0.0" },
         {
@@ -14,7 +44,9 @@ return {
             init = function()
                 vim.filetype.add({ extension = { razor = "razor", cshtml = "razor" } })
             end,
-            opts = {},
+            opts = {
+                broad_search = true,
+            },
         },
         {
             "folke/lazydev.nvim",
@@ -29,33 +61,6 @@ return {
     },
 
     config = function()
-        require("mason").setup({
-            registries = {
-                "github:mason-org/mason-registry",
-                "github:Crashdummyy/mason-registry",
-            },
-        })
-        require("mason-lspconfig").setup()
-        require("mason-tool-installer").setup({
-            ensure_installed = {
-                "angularls",
-                "cssls",
-                "efm",
-                "emmet_language_server",
-                "eslint",
-                "html",
-                "jsonls",
-                "prettier",
-                "pyright",
-                "ruff",
-                "rust_analyzer",
-                "lua_ls",
-                "stylua",
-                "vtsls",
-                "yamlls",
-            },
-        })
-
         local cmd = {}
         local mason_registry = require("mason-registry")
         local roslyn_package = mason_registry.get_package("roslyn")
@@ -90,6 +95,7 @@ return {
             cmd = cmd,
             handlers = require("rzls.roslyn_handlers"),
         })
+        vim.lsp.enable("roslyn")
 
         vim.api.nvim_create_autocmd("LspAttach", {
             desc = "LSP actions",
