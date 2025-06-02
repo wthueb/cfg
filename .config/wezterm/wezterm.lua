@@ -37,6 +37,14 @@ config.window_padding = {
     right = 1,
 }
 
+config.unix_domains = {
+    {
+        name = "unix",
+    },
+}
+
+config.default_gui_startup_args = { "connect", "unix" }
+
 config.launch_menu = {}
 
 config.skip_close_confirmation_for_processes_named = {}
