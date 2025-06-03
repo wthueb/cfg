@@ -140,6 +140,14 @@
     };
   };
 
+  launchd.user.agents.wezterm = {
+    command = "${pkgs.wezterm}/bin/wezterm-mux-server";
+    serviceConfig = {
+      RunAtLoad = true;
+      KeepAlive = true;
+    };
+  };
+
   launchd.user.agents.startup = {
     script = ''
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
