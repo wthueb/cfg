@@ -4,6 +4,11 @@
   ...
 }:
 {
+  imports = [
+    ./hardware-configuration.nix
+    ../modules/plex.nix
+  ];
+
   fileSystems."/mnt/data" = {
     device = "192.168.1.207:/volume2/data";
     fsType = "nfs";
@@ -129,6 +134,7 @@
       tldr
       tree
       unzip
+      yt-dlp
     ];
   };
 

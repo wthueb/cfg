@@ -61,9 +61,7 @@
         system = "x86_64-linux";
         modules = [
           ./common.nix
-          ./mbk/hardware-configuration.nix
           ./mbk/configuration.nix
-          ./modules/plex.nix
         ];
         specialArgs = {
           inherit self inputs;
