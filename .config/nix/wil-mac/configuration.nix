@@ -25,7 +25,7 @@
     bartender
     bitwarden-desktop
     carapace
-    dbeaver-bin
+    #dbeaver-bin
     dig
     discord
     dua
@@ -87,6 +87,7 @@
       in
       [
         # TODO: try moving these to nixpkgs
+        (greedy "dbeaver-enterprise") # not available in nixpkgs
         (greedy "docker")
         (greedy "mouseless")
         (greedy "plex")
