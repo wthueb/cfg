@@ -26,5 +26,10 @@ return {
         vim.keymap.set("n", "<C-l>", function()
             harpoon:list():select(3)
         end, { silent = true, desc = "Go to harpoon #3" })
+        for i = 1, 10 do
+            vim.keymap.set("n", "<C-" .. i % 10 .. ">", function()
+                harpoon:list():select(i)
+            end, { silent = true, desc = "Go to harpoon #" .. i })
+        end
     end,
 }
