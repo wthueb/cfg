@@ -207,6 +207,8 @@
   users.users.wil = {
     name = "wil";
     home = "/Users/wil";
+    # nushell not currently supported, add `exec /run/current-system/sw/bin/nu` to ~/.customprofile
+    shell = pkgs.bashInteractive;
   };
 
   home-manager.users.wil = import ../home.nix { inherit pkgs; };

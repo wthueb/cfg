@@ -85,7 +85,7 @@ config.leader = { mods = "CTRL", key = "a", timeout_milliseconds = 5000 }
 config.keys = require("keys").keys
 
 if wezterm.target_triple == "aarch64-apple-darwin" then
-    config.default_prog = { "bash", "-l", "-c", "nu" }
+    --config.default_prog = { "bash", "-l", "-c", "nu" }
 
     config.window_decorations = "RESIZE"
     config.window_padding = {
