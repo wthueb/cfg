@@ -2,6 +2,8 @@ local wezterm = require("wezterm")
 local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
 local workspace_switcher = wezterm.plugin.require("https://github.com/MLFlexer/smart_workspace_switcher.wezterm")
 
+workspace_switcher.zoxide_path = ":"
+
 resurrect.state_manager.periodic_save({
     interval_seconds = 10,
     save_workspaces = true,
@@ -22,7 +24,11 @@ end
 wezterm.on("smart_workspace_switcher.workspace_switcher.created", function(window, path, label)
     set_right_status(window, path)
 
-    local state = resurrect.state_manager.load_state(label, "workspace")
+    local success, state = pcall(resurrect.state_manager.load_state, label, "workspace")
+
+    if not success then
+        return
+    end
 
     resurrect.workspace_state.restore_workspace(state, {
         window = window,
