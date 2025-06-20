@@ -1,10 +1,11 @@
 {
   pkgs,
-  pkgs-unstable,
+  inputs,
   ...
 }:
 {
   imports = [
+    inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
     ../modules/plex.nix
   ];
@@ -101,7 +102,9 @@
   users.groups.plex.gid = 5000;
 
   users.users."wil" = {
+    name = "wil";
     uid = 1000;
+    home = "/home/wil";
     isNormalUser = true;
     extraGroups = [
       "networkmanager"
@@ -113,23 +116,9 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEAlhysK1b0FyyN0XXKf8BR76UIZGHiVnMUPNjYmuJ6k wil@wil-mac"
     ];
     shell = pkgs.nushell;
-    packages = with pkgs; [
-      dig
-      gnugrep
-      gnumake
-      gnused
-      gnutar
-      jc
-      jq
-      nodejs
-      python3
-      rsync
-      tldr
-      tree
-      unzip
-      yt-dlp
-    ];
   };
+
+  home-manager.users.wil = import ../home.nix { inherit pkgs; };
 
   services.getty.autologinUser = "wil";
 

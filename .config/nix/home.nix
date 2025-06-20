@@ -1,20 +1,29 @@
-{ pkgs, pkgs-unstable, ... }:
+{ pkgs, ... }:
 
 {
-  home.username = "wil";
-  home.homeDirectory = "/home/wil";
-
   programs.home-manager.enable = true;
   programs.direnv.enable = true;
 
-  home.packages = [
-    pkgs.carapace
-    pkgs.dua
-    pkgs.nil
-    pkgs.nixfmt-rfc-style
-    pkgs.nushell
-    pkgs.starship
-    pkgs.uv
+  home.packages = with pkgs; [
+    carapace
+    dig
+    dua
+    gnugrep
+    gnumake
+    gnused
+    gnutar
+    jc
+    jq
+    nixfmt-rfc-style
+    nodejs
+    nushell
+    python3
+    rsync
+    starship
+    tldr
+    tree
+    unzip
+    uv
   ];
 
   programs.neovim.enable = true;

@@ -73,6 +73,10 @@
         "wil@drake" = inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = inputs.nixos-stable.legacyPackages.x86_64-linux;
           modules = [
+            {
+              home.username = "wil";
+              home.homeDirectory = "/home/wil";
+            }
             ./home.nix
           ];
         };

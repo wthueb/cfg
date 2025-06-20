@@ -1,9 +1,14 @@
 {
   self,
   pkgs,
+  inputs,
   ...
 }:
 {
+  imports = [
+    inputs.home-manager.darwinModules.home-manager
+  ];
+
   nixpkgs.overlays = [
     (final: prev: {
       karabiner-elements = prev.karabiner-elements.overrideAttrs (old: {
@@ -25,35 +30,23 @@
     bartender
     bitwarden-desktop
     #dbeaver-bin
-    dig
     discord
     ffmpeg-full
     firefox
     #gcc
-    gnugrep
-    gnumake
-    gnused
-    gnutar
     google-chrome
     htop
     inetutils
-    jc
-    jq
     litecli
-    nodejs
     #plex-desktop # not supported on aarch64-darwin
-    python3
     qbittorrent
     raycast
-    rsync
     rustup
     #sabnzbd # not supported on aarch64-darwin
     spotify
     sqlite
     thunderbird-esr
-    tldr
     tmux
-    tree
     wezterm
   ];
 
@@ -212,6 +205,13 @@
     # $ darwin-rebuild changelog
     stateVersion = 6;
   };
+
+  users.users.wil = {
+    name = "wil";
+    home = "/Users/wil";
+  };
+
+  home-manager.users.wil = import ../home.nix { inherit pkgs; };
 
   ids.gids.nixbld = 30000;
 
