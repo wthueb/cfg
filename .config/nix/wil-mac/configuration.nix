@@ -41,12 +41,10 @@
     #plex-desktop # not supported on aarch64-darwin
     qbittorrent
     raycast
-    rustup
     #sabnzbd # not supported on aarch64-darwin
     spotify
     sqlite
     thunderbird-esr
-    tmux
     wezterm
   ];
 

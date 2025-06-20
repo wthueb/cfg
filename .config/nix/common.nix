@@ -43,18 +43,14 @@
     };
     systemPackages = with pkgs; [
       bashInteractive
-      bat
       coreutils
       curl
-      delta
-      fd
-      fzf
-      gh
       git
-      less
+      gnugrep
+      gnused
+      gnutar
+      neovim
       nushell
-      ripgrep
-      rustup
       wget
     ];
   };

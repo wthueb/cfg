@@ -63,8 +63,6 @@
     wget
   ];
 
-  programs.tmux.enable = true;
-
   programs.nix-ld.enable = true;
 
   virtualisation.docker.enable = true;

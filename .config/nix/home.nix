@@ -2,30 +2,40 @@
 
 {
   programs.home-manager.enable = true;
-  programs.direnv.enable = true;
 
   home.packages = with pkgs; [
+    bat
+    btop
     carapace
+    delta
     dig
     dua
+    fd
+    fzf
+    gh
     gnugrep
     gnumake
     gnused
     gnutar
     jc
     jq
+    less
     nixfmt-rfc-style
     nodejs
     nushell
     python3
+    ripgrep
     rsync
+    rustup
     starship
     tldr
+    tmux
     tree
     unzip
     uv
   ];
 
+  programs.direnv.enable = true;
   programs.neovim.enable = true;
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
