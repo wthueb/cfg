@@ -45,12 +45,14 @@
       bashInteractive
       coreutils
       curl
+      fd
       git
       gnugrep
       gnused
       gnutar
       neovim
       nushell
+      rsync
       wget
     ];
   };
