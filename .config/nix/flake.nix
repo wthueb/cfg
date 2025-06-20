@@ -15,10 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    # home-manager = {
-    #   url = "github:nix-community/home-manager";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixos-stable";
+    };
   };
 
   outputs =
@@ -66,6 +66,15 @@
         specialArgs = {
           inherit self inputs;
           hostname = "mbk";
+        };
+      };
+
+      homeConfigurations = {
+        "wil@drake" = inputs.home-manager.lib.homeManagerConfiguration {
+          pkgs = inputs.nixos-stable.legacyPackages.x86_64-linux;
+          modules = [
+            ./home.nix
+          ];
         };
       };
     };

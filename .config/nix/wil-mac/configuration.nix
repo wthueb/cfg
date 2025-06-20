@@ -24,11 +24,9 @@
   environment.systemPackages = with pkgs; [
     bartender
     bitwarden-desktop
-    carapace
     #dbeaver-bin
     dig
     discord
-    dua
     ffmpeg-full
     firefox
     #gcc
@@ -52,7 +50,6 @@
     #sabnzbd # not supported on aarch64-darwin
     spotify
     sqlite
-    starship
     thunderbird-esr
     tldr
     tmux

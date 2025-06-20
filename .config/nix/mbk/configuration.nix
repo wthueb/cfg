@@ -62,11 +62,6 @@
     wget
   ];
 
-  programs.neovim = {
-    enable = true;
-    package = pkgs-unstable.neovim-unwrapped;
-  };
-
   programs.tmux.enable = true;
 
   programs.nix-ld.enable = true;
@@ -117,9 +112,8 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEAlhysK1b0FyyN0XXKf8BR76UIZGHiVnMUPNjYmuJ6k wil@wil-mac"
     ];
-    shell = pkgs-unstable.nushell;
-    packages = with pkgs-unstable; [
-      carapace
+    shell = pkgs.nushell;
+    packages = with pkgs; [
       dig
       gnugrep
       gnumake
@@ -130,7 +124,6 @@
       nodejs
       python3
       rsync
-      starship
       tldr
       tree
       unzip

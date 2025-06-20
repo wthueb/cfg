@@ -28,7 +28,6 @@
 
   nixpkgs = {
     config.allowUnfree = true;
-    #overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
   };
 
   networking.hostName = hostname;
@@ -53,8 +52,6 @@
       gh
       git
       less
-      neovim
-      nixfmt-rfc-style
       nushell
       ripgrep
       rustup
