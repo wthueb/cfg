@@ -426,6 +426,13 @@ def confirm [prompt?: string] {
     return ($input == 'y')
 }
 
+def "git skip" [] {
+    git status -s
+    | lines
+    | str substring 3..
+    | each {|f| git update-index --skip-worktree $f}
+}
+
 def "git show-skipped" [] {
     git ls-files -v (git rev-parse --show-toplevel)
     | lines

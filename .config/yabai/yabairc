@@ -45,6 +45,7 @@ yabai -m rule --add app="^App Store$" manage=off
 yabai -m rule --add app="^Bitwarden$" manage=off
 yabai -m rule --add app="^Digital Color Meter$" manage=off sticky=on layer=above
 yabai -m rule --add app="^IINA$" manage=off
+yabai -m rule --add app="^Raycast$" manage=off
 
 SPACEBAR_HEIGHT=$(sketchybar --query bar | jq .height)
 yabai -m config external_bar "all:${SPACEBAR_HEIGHT}:0"
