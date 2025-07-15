@@ -179,7 +179,7 @@ $env.config.cursor_shape = {
 $env.config.color_config = $nord_theme
 $env.config.buffer_editor = "nvim" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
 $env.config.edit_mode = 'vi'
-$env.config.shell_integration = { # see osc_entries!: https://github.com/wez/wezterm/blob/main/termwiz/src/escape/osc.rs
+$env.config.shell_integration = { # see osc_entries!: https://github.com/wezterm/wezterm/blob/main/wezterm-escape-parser/src/osc.rs
     # osc2 abbreviates the path if in the home_dir, sets the tab/window title, shows the running command in the tab/window title
     osc2: true
     # osc7 is a way to communicate the path to the terminal, this is helpful for spawning new tabs in the same directory
@@ -203,7 +203,7 @@ $env.config.shell_integration = { # see osc_entries!: https://github.com/wez/wez
     # 633;E - NOT IMPLEMENTED - Explicitly set the command line with an optional nonce
     # 633;P;Cwd=<path> - Mark the current working directory and communicate it to the terminal
     # and also helps with the run recent menu in vscode
-    osc633: false
+    osc633: true
     # reset_application_mode is escape \x1b[?1l and was added to help ssh work better
     reset_application_mode: true
 }
@@ -430,7 +430,7 @@ def "git skip" [] {
     git status -s
     | lines
     | str substring 3..
-    | each {|f| git update-index --skip-worktree $f}
+    | each {|f| git update-index --skip-worktree $f ; $f}
 }
 
 def "git show-skipped" [] {
