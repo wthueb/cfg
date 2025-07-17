@@ -29,6 +29,7 @@
   environment.systemPackages = with pkgs; [
     bartender
     bitwarden-desktop
+    brave
     #dbeaver-bin
     discord
     ffmpeg-full
@@ -140,8 +141,7 @@
   launchd.user.agents.startup = {
     script = ''
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-      ${pkgs.defaultbrowser}/bin/defaultbrowser chrome
-      open -a "${pkgs.google-chrome}/Applications/Google Chrome.app/" --args --make-default-browser
+      ${pkgs.defaultbrowser}/bin/defaultbrowser browser
       /bin/launchctl setenv ELECTRON_NO_UPDATER 1
       ${pkgs.tldr}/bin/tldr --update
     '';
@@ -157,13 +157,13 @@
         mru-spaces = false;
         orientation = "bottom";
         persistent-apps = [
-          "${pkgs.google-chrome}/Applications/Google Chrome.app"
+          "${pkgs.brave}/Applications/Brave Browser.app"
           "${pkgs.thunderbird-esr}/Applications/Thunderbird ESR.app"
           "/System/Applications/Messages.app"
           "${pkgs.discord}/Applications/Discord.app"
           "${pkgs.spotify}/Applications/Spotify.app"
           "${pkgs.wezterm}/Applications/WezTerm.app"
-          "/Users/wil/Applications/Chrome Apps.localized/plex.app"
+          "/Users/wil/Applications/Brave Browser Apps.localized/plex.app"
         ];
         persistent-others = [ ];
         show-process-indicators = true;
