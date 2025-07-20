@@ -446,4 +446,16 @@ def "git unskip" [branch?: string] {
     git update-index --no-skip-worktree ...$files
 }
 
+def pkill [...args] {
+    let processes = ps
+
+    let selected = $processes | each {|p| $"($p.name) \(($p.pid)\)" } | to text | fzf
+
+    if (confirm $"are you sure you want to kill ($selected)?") {
+        let pid = $selected | parse --regex '.*\((\d+)\)' | get capture0 | first | into int
+
+        kill ...$args $pid
+    }
+}
+
 source ($nu.default-config-dir | path join 'config.custom.nu')
