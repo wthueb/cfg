@@ -30,12 +30,10 @@
     bartender
     bitwarden-desktop
     brave
-    #dbeaver-bin
     discord
     ffmpeg-full
     firefox
     #gcc
-    google-chrome
     htop
     inetutils
     litecli
