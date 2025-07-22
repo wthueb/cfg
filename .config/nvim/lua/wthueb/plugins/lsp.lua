@@ -362,6 +362,17 @@ return {
             },
         })
 
+        vim.lsp.config("pyright", {
+            settings = {
+                python = {
+                    analysis = {
+                        typeCheckingMode = "strict",
+                        diagnosticMode = "workspace",
+                    },
+                },
+            },
+        })
+
         vim.lsp.enable("nushell")
     end,
 }

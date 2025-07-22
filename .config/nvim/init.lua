@@ -67,8 +67,6 @@ vim.keymap.set("c", "kj", "<C-c>", { silent = true, desc = "Exit command mode" }
 
 vim.keymap.set("n", ";d", "<cmd>bd<CR>", { silent = true, desc = "Close current buffer" })
 
-vim.keymap.set("n", "<leader><leader>", ":w<CR>:sus<CR>", { silent = true, desc = "Write file and suspend" })
-
 vim.keymap.set("n", "<leader>.", ":nohl<CR>", { silent = true, desc = "Remove highlighting" })
 vim.keymap.set("n", "<leader>y", '"+y', { silent = true, desc = "Yank to system clipboard" })
 

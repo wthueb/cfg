@@ -49,8 +49,13 @@ return {
             "<cmd>Telescope find_files hidden=true<CR>",
             { silent = true, desc = "Files" }
         )
+        vim.keymap.set(
+            "n",
+            "<leader>ss",
+            "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>",
+            { silent = true, desc = "LSP symbols" }
+        )
         vim.keymap.set("n", "<leader>sh", "<cmd>Telescope help_tags<CR>", { silent = true, desc = "Help" })
-        vim.keymap.set("n", "<leader>sw", "<cmd>Telescope grep_string<CR>", { silent = true, desc = "Current word" })
         vim.keymap.set("n", "<leader>sg", "<cmd>Telescope live_grep<CR>", { silent = true, desc = "Grep" })
         vim.keymap.set("n", "<leader>sd", "<cmd>Telescope diagnostics<CR>", { silent = true, desc = "Diagnostics" })
         vim.keymap.set("n", "<C-p>", "<cmd>Telescope keymaps<CR>", { silent = true, desc = "Telescope keymaps" })
