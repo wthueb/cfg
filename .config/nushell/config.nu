@@ -405,7 +405,7 @@ def dev [path?: string] {
 }
 
 def "vim upgrade" [] {
-    nvim --headless "+Lazy! sync" +qa
+    nvim --headless "+Lazy sync" +qa
     nvim --headless "+TSUpdateSync" +qa
     nvim --headless "+MasonToolsUpdateSync" +qa
 }
