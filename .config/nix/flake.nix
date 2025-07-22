@@ -19,6 +19,11 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixos-stable";
     };
+
+    i915-sriov = {
+      url = "github:strongtz/i915-sriov-dkms/master";
+      inputs.nixpkgs.follows = "nixos-stable";
+    };
   };
 
   outputs =

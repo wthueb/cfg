@@ -2,13 +2,14 @@
   lib,
   pkgs,
   modulesPath,
+  inputs,
   ...
 }:
 
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    ./i915-sriov.nix
+    inputs.i915-sriov.nixosModules.default
   ];
 
   boot.loader.grub = {
@@ -25,7 +26,7 @@
   ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = [ pkgs.i915-sriov ];
 
   hardware = {
     cpu.intel.updateMicrocode = true;
