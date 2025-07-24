@@ -405,7 +405,12 @@ def dev [path?: string] {
 }
 
 def "vim upgrade" [] {
-    nvim --headless "+Lazy sync" +qa
+    let status = nvim --headless "+Lazy! sync" +qa | complete
+    if ($status.stderr | str length) > 0 {
+        print "Error syncing plugins:"
+        print $status.stderr
+        return
+    }
     nvim --headless "+TSUpdateSync" +qa
     nvim --headless "+MasonToolsUpdateSync" +qa
 }
