@@ -19,7 +19,10 @@
     networkmanager.enable = true;
     firewall = {
       enable = true;
-      allowedTCPPorts = [ ];
+      allowedTCPPorts = [
+        80
+        443
+      ];
       allowedUDPPorts = [ ];
       extraCommands = ''
         iptables -A nixos-fw -p all -s 192.168.1.0/24 -j nixos-fw-accept
