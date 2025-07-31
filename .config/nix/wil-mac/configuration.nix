@@ -76,6 +76,7 @@
         # TODO: try moving these to nixpkgs
         (greedy "dbeaver-enterprise") # not available in nixpkgs
         (greedy "docker-desktop")
+        (greedy "gimp")
         (greedy "mouseless")
         (greedy "plex")
         (greedy "private-internet-access")
