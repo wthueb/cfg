@@ -61,6 +61,7 @@
     ffmpeg-full
     gcc
     git
+    mailutils
     vim
     wezterm
     wget
@@ -92,6 +93,12 @@
   };
 
   services.cron.enable = true;
+  services.postfix = {
+    enable = true;
+    config = {
+      myhostname = "mbk";
+    };
+  };
 
   services.xserver.xkb = {
     layout = "us";
