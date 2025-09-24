@@ -11,6 +11,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = "yes:1"
 vim.opt.cursorline = true
+vim.opt.winborder = "rounded"
 
 -- have 5 lines above/below the cursor at all times if possible
 vim.opt.scrolloff = 5
