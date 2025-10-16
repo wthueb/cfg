@@ -74,6 +74,18 @@
         };
       };
 
+      nixosConfigurations."monitor" = inputs.nixos-stable.lib.nixosSystem {
+        system = "x86-linux";
+        modules = [
+          ./common.nix
+          ./monitor/configuration.nix
+        ];
+        specialArgs = {
+          inherit self inputs;
+          hostname = "monitor";
+        };
+      };
+
       homeConfigurations = {
         "wil@drake" = inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = inputs.nixos-stable.legacyPackages.x86_64-linux;

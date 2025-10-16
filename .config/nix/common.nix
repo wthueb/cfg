@@ -51,6 +51,7 @@
       gnused
       gnutar
       neovim
+      nil
       nushell
       rsync
       wget
