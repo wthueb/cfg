@@ -105,6 +105,17 @@
     variant = "";
   };
 
+  services.prometheus.exporters.node = {
+    enable = true;
+    port = 9100;
+    enabledCollectors = [ "systemd" ];
+    extraFlags = [
+      "--collector.ethtool"
+      "--collector.softirqs"
+      "--collector.tcpstat"
+    ];
+  };
+
   systemd.watchdog.runtimeTime = "30s";
 
   users.groups.plex.gid = 5000;

@@ -21,6 +21,7 @@
             targets = [
               "localhost:${toString config.services.prometheus.exporters.node.port}"
               "drake:9100"
+              "mbk:9100"
             ];
           }
         ];
