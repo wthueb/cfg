@@ -46,6 +46,7 @@
       coreutils
       curl
       fd
+      file
       git
       gnugrep
       gnused
