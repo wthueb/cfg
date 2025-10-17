@@ -108,11 +108,15 @@
   services.prometheus.exporters.node = {
     enable = true;
     port = 9100;
-    enabledCollectors = [ "systemd" ];
+    enabledCollectors = [
+      "ethtool"
+      "softirqs"
+      "systemd"
+      "tcpstat"
+    ];
     extraFlags = [
-      "--collector.ethtool"
-      "--collector.softirqs"
-      "--collector.tcpstat"
+      "--collector.ethtool.device-exclude=^veth.*$"
+      "--collector.netdev.device-exclude=^veth.*$"
     ];
   };
 

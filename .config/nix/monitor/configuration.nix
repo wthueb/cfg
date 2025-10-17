@@ -67,11 +67,11 @@
   services.prometheus.exporters.node = {
     enable = true;
     port = 9100;
-    enabledCollectors = [ "systemd" ];
-    extraFlags = [
-      "--collector.ethtool"
-      "--collector.softirqs"
-      "--collector.tcpstat"
+    enabledCollectors = [
+      "ethtool"
+      "softirqs"
+      "systemd"
+      "tcpstat"
     ];
   };
 
