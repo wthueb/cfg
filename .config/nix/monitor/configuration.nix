@@ -13,6 +13,7 @@
   services.prometheus = {
     enable = true;
     globalConfig.scrape_interval = "10s";
+    retentionTime = "1y";
     scrapeConfigs = [
       {
         job_name = "node";
@@ -32,6 +33,14 @@
         static_configs = [
           {
             targets = [ "drake:9633" ];
+          }
+        ];
+      }
+      {
+        job_name = "gpu";
+        static_configs = [
+          {
+            targets = [ "drake:9835" ];
           }
         ];
       }
