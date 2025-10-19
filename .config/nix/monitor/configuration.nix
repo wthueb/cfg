@@ -26,6 +26,14 @@
             ];
           }
         ];
+        relabel_configs = [
+          {
+            source_labels = [ "__address__" ];
+            target_label = "instance";
+            regex = "localhost(:.*)?";
+            replacement = "monitor$1";
+          }
+        ];
       }
       {
         job_name = "process";
@@ -35,6 +43,14 @@
               "localhost:${toString config.services.prometheus.exporters.process.port}"
               "mbk:9256"
             ];
+          }
+        ];
+        relabel_configs = [
+          {
+            source_labels = [ "__address__" ];
+            target_label = "instance";
+            regex = "localhost(:.*)?";
+            replacement = "monitor$1";
           }
         ];
       }
@@ -77,7 +93,7 @@
           }
           {
             target_label = "__address__";
-            replacement = "127.0.0.1:9116";
+            replacement = "localhost:9116";
           }
         ];
       }
