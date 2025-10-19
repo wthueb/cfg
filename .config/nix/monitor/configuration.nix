@@ -55,6 +55,14 @@
         ];
       }
       {
+        job_name = "process";
+        static_configs = [
+          {
+            targets = [ "mbk:9256" ];
+          }
+        ];
+      }
+      {
         job_name = "smart";
         scrape_interval = "60s";
         static_configs = [
