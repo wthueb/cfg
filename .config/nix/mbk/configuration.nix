@@ -22,6 +22,7 @@
       allowedTCPPorts = [
         80
         443
+        32400
       ];
       allowedUDPPorts = [ ];
       extraCommands = ''
@@ -118,6 +119,36 @@
       "--collector.ethtool.device-exclude=^veth.*$"
       "--collector.netdev.device-exclude=^veth.*$"
     ];
+  };
+
+  services.prometheus.exporters.process = {
+    enable = true;
+    port = 9256;
+    settings = {
+      process_names = [
+        {
+          name = "sabnzbd";
+          comm = [ "python3" ];
+          cmdline = [ "SABnzbd.py" ];
+        }
+        {
+          name = "bazarr";
+          comm = [ "python3" ];
+          cmdline = [ "bazarr" ];
+        }
+        {
+          name = "{{.Comm}}";
+          cmdline = [ ".+" ];
+        }
+        # {
+        #   comm = [
+        #     "Plex Media Serv"
+        #     "Radarr"
+        #     "Sonarr"
+        #   ];
+        # }
+      ];
+    };
   };
 
   systemd.watchdog.runtimeTime = "30s";

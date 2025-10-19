@@ -28,6 +28,17 @@
         ];
       }
       {
+        job_name = "process";
+        static_configs = [
+          {
+            targets = [
+              "localhost:${toString config.services.prometheus.exporters.process.port}"
+              "mbk:9256"
+            ];
+          }
+        ];
+      }
+      {
         job_name = "smart";
         scrape_interval = "60s";
         static_configs = [
@@ -82,6 +93,19 @@
       "systemd"
       "tcpstat"
     ];
+  };
+
+  services.prometheus.exporters.process = {
+    enable = true;
+    port = 9256;
+    settings = {
+      process_names = [
+        {
+          name = "{{.Comm}}";
+          cmdline = [ ".+" ];
+        }
+      ];
+    };
   };
 
   services.prometheus.exporters.snmp = {

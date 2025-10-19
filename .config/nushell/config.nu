@@ -215,6 +215,7 @@ $env.config.hooks = {
             if (which direnv | is-empty) { return }
 
             direnv export json | from json | default {} | load-env
+            $env.PATH = $env.PATH | split row (char env_sep)
         }
     ]
     pre_execution: [{ null }] # run before the repl input is run
