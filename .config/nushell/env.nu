@@ -37,4 +37,6 @@ starship init nu | save -f ($nu.data-dir | path join 'vendor/autoload/starship.n
 $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
 carapace _carapace nushell | save -f ($nu.data-dir | path join 'vendor/autoload/carapace.nu')
 
+$env.DIRENV_CONFIG = "/etc/direnv"
+
 #source ($nu.default-config-dir | path join 'prompt.nu')
