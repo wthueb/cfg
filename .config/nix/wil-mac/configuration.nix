@@ -163,7 +163,7 @@
           "${pkgs.discord}/Applications/Discord.app"
           "${pkgs.spotify}/Applications/Spotify.app"
           "${pkgs.wezterm}/Applications/WezTerm.app"
-          "/Users/wil/Applications/Brave Browser Apps.localized/plex.app"
+          "/Applications/Plex.app"
         ];
         persistent-others = [ ];
         show-process-indicators = true;
