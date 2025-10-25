@@ -55,10 +55,10 @@
         ];
       }
       {
-        job_name = "process";
+        job_name = "cadvisor";
         static_configs = [
           {
-            targets = [ "mbk:9256" ];
+            targets = [ "mbk:9080" ];
           }
         ];
       }

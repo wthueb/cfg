@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   inputs,
   ...
@@ -23,6 +24,7 @@
         80
         443
         32400
+        config.services.cadvisor.port
       ];
       allowedUDPPorts = [ ];
       extraCommands = ''
@@ -70,7 +72,10 @@
 
   programs.nix-ld.enable = true;
 
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    logDriver = "local";
+  };
 
   services.qemuGuest.enable = true;
 
@@ -149,6 +154,12 @@
         # }
       ];
     };
+  };
+
+  services.cadvisor = {
+    enable = true;
+    listenAddress = "0.0.0.0";
+    port = 9080;
   };
 
   systemd.watchdog.runtimeTime = "30s";
