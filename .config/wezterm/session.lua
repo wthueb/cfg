@@ -13,17 +13,7 @@ resurrect.state_manager.periodic_save({
 
 wezterm.on("gui-startup", resurrect.state_manager.resurrect_on_gui_startup)
 
-local function set_right_status(window, path)
-    window:gui_window():set_right_status(wezterm.format({
-        { Foreground = { Color = "#2e3440" } },
-        { Background = { Color = "#81a1c1" } },
-        { Text = " " .. string.basename(path) .. " " },
-    }))
-end
-
 wezterm.on("smart_workspace_switcher.workspace_switcher.created", function(window, path, label)
-    set_right_status(window, path)
-
     local success, state = pcall(resurrect.state_manager.load_state, label, "workspace")
 
     if not success then
@@ -42,7 +32,10 @@ end)
 
 ---@diagnostic disable-next-line: unused-local
 wezterm.on("smart_workspace_switcher.workspace_switcher.chosen", function(window, path, label)
-    set_right_status(window, path)
+end)
+
+---@diagnostic disable-next-line: unused-local
+wezterm.on("smart_workspace_switcher.workspace_switcher.switched_to_prev", function(window, path, label)
 end)
 
 ---@diagnostic disable-next-line: unused-local
@@ -186,4 +179,3 @@ workspace_switcher.get_choices = function()
 
     return choices
 end
-

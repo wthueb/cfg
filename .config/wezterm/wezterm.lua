@@ -143,15 +143,14 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, c, hover, max_width)
     return title
 end)
 
------@diagnostic disable-next-line: unused-local
---wezterm.on("update-right-status", function(window, pane)
---    window:set_right_status(wezterm.format({
---        { Foreground = { Color = "#2e3440" } },
---        { Background = { Color = "#81a1c1" } },
---        { Attribute = { Intensity = "Bold" } },
---        { Text = " " .. wezterm.hostname() .. " " },
---    }))
---end)
+---@diagnostic disable-next-line: unused-local
+wezterm.on("update-right-status", function(window, pane)
+    window:set_right_status(wezterm.format({
+        { Foreground = { Color = "#2e3440" } },
+        { Background = { Color = "#81a1c1" } },
+        { Text = " " .. string.basename(window:active_workspace()) .. " " },
+    }))
+end)
 
 require("session")
 
