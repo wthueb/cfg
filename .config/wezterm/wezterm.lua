@@ -45,6 +45,12 @@ config.unix_domains = {
 
 config.default_gui_startup_args = { "connect", "unix" }
 
+config.mux_env_remove = {
+    "SSH_AUTH_SOCK",
+    --"SSH_CLIENT",
+    --"SSH_CONNECTION",
+}
+
 config.launch_menu = {}
 
 config.skip_close_confirmation_for_processes_named = {}
