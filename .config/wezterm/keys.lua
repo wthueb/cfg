@@ -1,6 +1,7 @@
 local M = {}
 
-local wezterm = require("wezterm")
+---@diagnostic disable-next-line: assign-type-mismatch
+local wezterm = require("wezterm") ---@type Wezterm
 local workspace_switcher = wezterm.plugin.require("https://github.com/MLFlexer/smart_workspace_switcher.wezterm")
 
 local mod = "CTRL|SHIFT"

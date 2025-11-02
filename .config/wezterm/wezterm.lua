@@ -1,11 +1,7 @@
-local wezterm = require("wezterm")
+local wezterm = require("wezterm") ---@type Wezterm
 require("helpers")
 
-local config = {}
-
-if wezterm.config_builder then
-    config = wezterm.config_builder()
-end
+local config = wezterm.config_builder()
 
 config.default_workspace = "~"
 
@@ -37,11 +33,8 @@ config.window_padding = {
     right = 1,
 }
 
-config.unix_domains = {
-    {
-        name = "unix",
-    },
-}
+---@diagnostic disable-next-line: missing-fields
+config.unix_domains = { { name = "unix" } }
 
 config.default_gui_startup_args = { "connect", "unix" }
 
@@ -131,6 +124,8 @@ end
 
 ---@diagnostic disable-next-line: unused-local
 wezterm.on("format-tab-title", function(tab, tabs, panes, c, hover, max_width)
+    -- https://wezterm.org/config/lua/PaneInformation.html
+    ---@diagnostic disable-next-line: undefined-field
     local process_name = string.basename(tab.active_pane.foreground_process_name)
     local title = " " .. tab.tab_index + 1 .. " > " .. process_name
 

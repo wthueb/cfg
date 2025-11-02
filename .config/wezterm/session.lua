@@ -1,4 +1,5 @@
-local wezterm = require("wezterm")
+---@diagnostic disable-next-line: assign-type-mismatch
+local wezterm = require("wezterm") ---@type Wezterm
 local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
 local workspace_switcher = wezterm.plugin.require("https://github.com/MLFlexer/smart_workspace_switcher.wezterm")
 
@@ -13,6 +14,7 @@ resurrect.state_manager.periodic_save({
 
 wezterm.on("gui-startup", resurrect.state_manager.resurrect_on_gui_startup)
 
+---@diagnostic disable-next-line: unused-local
 wezterm.on("smart_workspace_switcher.workspace_switcher.created", function(window, path, label)
     local success, state = pcall(resurrect.state_manager.load_state, label, "workspace")
 
@@ -31,12 +33,10 @@ wezterm.on("smart_workspace_switcher.workspace_switcher.created", function(windo
 end)
 
 ---@diagnostic disable-next-line: unused-local
-wezterm.on("smart_workspace_switcher.workspace_switcher.chosen", function(window, path, label)
-end)
+wezterm.on("smart_workspace_switcher.workspace_switcher.chosen", function(window, path, label) end)
 
 ---@diagnostic disable-next-line: unused-local
-wezterm.on("smart_workspace_switcher.workspace_switcher.switched_to_prev", function(window, path, label)
-end)
+wezterm.on("smart_workspace_switcher.workspace_switcher.switched_to_prev", function(window, path, label) end)
 
 ---@diagnostic disable-next-line: unused-local
 wezterm.on("smart_workspace_switcher.workspace_switcher.selected", function(window, path, label)
