@@ -22,8 +22,6 @@ M.keys = {
     { key = "7", mods = "LEADER", action = wezterm.action.ActivateTab(6) },
     { key = "8", mods = "LEADER", action = wezterm.action.ActivateTab(7) },
     { key = "9", mods = "LEADER", action = wezterm.action.ActivateTab(8) },
-    { key = "a", mods = "LEADER", action = wezterm.action.ActivateLastTab },
-    { key = "r", mods = "LEADER", action = wezterm.action.ShowLauncherArgs({ flags = "FUZZY|DOMAINS" }) },
     { key = "Tab", mods = "CTRL", action = wezterm.action.ActivateTabRelative(1) },
     { key = "Tab", mods = "CTRL|SHIFT", action = wezterm.action.ActivateTabRelative(-1) },
     {
@@ -64,7 +62,7 @@ M.keys = {
     {
         mods = mod,
         key = "n",
-        action = wezterm.action.ShowLauncher,
+        action = wezterm.action.ShowLauncherArgs({ flags = "FUZZY|DOMAINS" }),
     },
     {
         mods = mod,
