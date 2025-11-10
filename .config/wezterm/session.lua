@@ -122,6 +122,7 @@ workspace_switcher.get_choices = function()
             "1",
             "--max-depth",
             "5",
+            "--no-ignore",
             "\\.git$",
             path,
             "-x",
