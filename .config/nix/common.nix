@@ -28,6 +28,12 @@
 
   nixpkgs = {
     config.allowUnfree = true;
+    overlays = [
+      (final: prev: {
+        nushell = inputs.nixpkgs-unstable.legacyPackages.${final.system}.nushell;
+        carapace = inputs.nixpkgs-unstable.legacyPackages.${final.system}.carapace;
+      })
+    ];
   };
 
   networking.hostName = hostname;
@@ -59,14 +65,13 @@
     ];
   };
 
-  programs.nix-index =
-    {
-      enable = true;
-    }
-    // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
-      enableBashIntegration = false;
-      enableZshIntegration = false;
-    };
+  programs.nix-index = {
+    enable = true;
+  }
+  // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
+    enableBashIntegration = false;
+    enableZshIntegration = false;
+  };
 
   programs.direnv.enable = true;
 

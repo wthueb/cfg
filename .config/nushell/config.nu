@@ -83,22 +83,6 @@ let nord_theme = {
 
 $env.CARAPACE_MATCH = 1
 
-let carapace_completer = {|spans|
-  # if the current command is an alias, get it's expansion
-  let expanded_alias = (scope aliases | where name == $spans.0 | get -i 0 | get -i expansion)
-
-  # overwrite
-  let spans = (if $expanded_alias != null  {
-    # put the first word of the expanded alias first in the span
-    $spans | skip 1 | prepend ($expanded_alias | split row " " | take 1)
-  } else {
-    $spans
-  })
-
-  carapace $spans.0 nushell ...$spans
-  | from json
-}
-
 def "gh gist search" [] {
     let gists = (
         gh gist list
@@ -160,11 +144,7 @@ $env.config.completions = {
     quick: true # auto accept if it's the only option
     partial: true
     algorithm: "prefix" # "prefix" or "fuzzy"
-    external: {
-        enable: true
-        max_results: 100
-        completer: $carapace_completer
-    }
+    external: { max_results: 100 }
     use_ls_colors: true
 }
 
