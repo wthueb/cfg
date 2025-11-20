@@ -30,8 +30,9 @@
     config.allowUnfree = true;
     overlays = [
       (final: prev: {
-        nushell = inputs.nixpkgs-unstable.legacyPackages.${final.system}.nushell;
         carapace = inputs.nixpkgs-unstable.legacyPackages.${final.system}.carapace;
+        neovim = inputs.nixpkgs-unstable.legacyPackages.${final.system}.neovim;
+        nushell = inputs.nixpkgs-unstable.legacyPackages.${final.system}.nushell;
       })
     ];
   };
