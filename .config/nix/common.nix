@@ -28,13 +28,18 @@
 
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [
-      (final: prev: {
-        carapace = inputs.nixpkgs-unstable.legacyPackages.${final.system}.carapace;
-        neovim = inputs.nixpkgs-unstable.legacyPackages.${final.system}.neovim;
-        nushell = inputs.nixpkgs-unstable.legacyPackages.${final.system}.nushell;
-      })
-    ];
+    overlays =
+      let
+        fromUnstable = pkg: final: prev: {
+          ${pkg} = inputs.nixpkgs-unstable.legacyPackages.${final.system}.${pkg};
+        };
+      in
+      [
+        (fromUnstable "carapace")
+        (fromUnstable "neovim")
+        (fromUnstable "nushell")
+        (fromUnstable "starship")
+      ];
   };
 
   networking.hostName = hostname;
