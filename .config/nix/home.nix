@@ -60,7 +60,7 @@
   };
 
   services = {
-    skhd.enable = true;
+    skhd.enable = pkgs.stdenv.isDarwin;
   };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
