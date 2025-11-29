@@ -5,7 +5,7 @@ source "$CONFIG_DIR/icons.sh"
 update() {
   local adapter, ssid, ip, has_ip
   adapter=$(networksetup -listallhardwareports | awk '/Wi-Fi/ { getline; print $2 }')
-  ssid=$(ipconfig getsummary en0 | awk -F ' SSID : '  '/ SSID : / {print $2}')
+  ssid=$(ipconfig getsummary $adapter | awk -F ' SSID : '  '/ SSID : / {print $2}')
   ip=$(ipconfig getifaddr "$adapter")
   has_ip=$?
 
