@@ -4,39 +4,64 @@
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    bat
-    btop
-    carapace
     delta
     dig
     dua
-    fd
-    fzf
     gh
     gnugrep
     gnumake
     gnused
     gnutar
     jc
-    jq
-    less
     nixfmt-rfc-style
     nodejs
     nushell
+    openssh
     python3
-    ripgrep
     rsync
     rustup
-    starship
-    tldr
     tmux
     tree
     unzip
-    uv
   ];
 
-  programs.direnv.enable = true;
-  programs.neovim.enable = true;
+  programs = {
+    bat.enable = true;
+    btop.enable = true;
+    carapace = {
+      enable = true;
+      enableNushellIntegration = true;
+    };
+    direnv = {
+      enable = true;
+      enableNushellIntegration = true;
+    };
+    fd.enable = true;
+    fzf.enable = true;
+    git.enable = true;
+    jq.enable = true;
+    less.enable = true;
+    neovim.enable = true;
+    ripgrep.enable = true;
+    starship = {
+      enable = true;
+      enableNushellIntegration = true;
+    };
+    tealdeer = {
+      enable = true;
+      settings = {
+        updates = {
+          auto_update = true;
+        };
+      };
+    };
+    uv.enable = true;
+    wezterm.enable = true;
+  };
+
+  services = {
+    skhd.enable = true;
+  };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.

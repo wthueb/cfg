@@ -1,14 +1,9 @@
 {
   self,
   pkgs,
-  inputs,
   ...
 }:
 {
-  imports = [
-    inputs.home-manager.darwinModules.home-manager
-  ];
-
   nixpkgs.overlays = [
     (final: prev: {
       karabiner-elements = prev.karabiner-elements.overrideAttrs (old: {
@@ -44,7 +39,6 @@
     spotify
     sqlite
     thunderbird-esr
-    wezterm
   ];
 
   homebrew = {
@@ -92,7 +86,6 @@
     karabiner-elements.enable = true;
     tailscale.enable = true;
     sketchybar.enable = true;
-    skhd.enable = true;
     yabai = {
       enable = true;
       enableScriptingAddition = true;
@@ -211,8 +204,6 @@
     # nushell not currently supported, add `exec /run/current-system/sw/bin/nu` to ~/.customprofile
     shell = pkgs.bashInteractive;
   };
-
-  home-manager.users.wil = import ../home.nix { inherit pkgs; };
 
   ids.gids.nixbld = 30000;
 

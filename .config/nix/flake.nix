@@ -34,15 +34,14 @@
         modules = [
           ./common.nix
           ./wil-mac/configuration.nix
-
-          # inputs.home-manager.darwinModules.home-manager
-          # {
-          #   home-manager = {
-          #     useGlobalPkgs = true;
-          #     useUserPackages = true;
-          #     users.wil.imports = [ ./modules/home-manager ];
-          #   };
-          # }
+          inputs.home-manager.darwinModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.wil.imports = [ ./home.nix ];
+            };
+          }
         ];
         specialArgs = {
           inherit self inputs;
@@ -55,6 +54,14 @@
         modules = [
           ./common.nix
           ./osx/configuration.nix
+          inputs.home-manager.darwinModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.wil.imports = [ ./home.nix ];
+            };
+          }
         ];
         specialArgs = {
           inherit self inputs;
@@ -67,6 +74,14 @@
         modules = [
           ./common.nix
           ./mbk/configuration.nix
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.wil.imports = [ ./home.nix ];
+            };
+          }
         ];
         specialArgs = {
           inherit self inputs;
@@ -79,6 +94,14 @@
         modules = [
           ./common.nix
           ./monitor/configuration.nix
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.wil.imports = [ ./home.nix ];
+            };
+          }
         ];
         specialArgs = {
           inherit self inputs;

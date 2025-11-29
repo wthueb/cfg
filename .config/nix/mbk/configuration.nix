@@ -1,12 +1,10 @@
 {
   config,
   pkgs,
-  inputs,
   ...
 }:
 {
   imports = [
-    inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
     ../modules/plex.nix
   ];
@@ -66,7 +64,6 @@
     git
     mailutils
     vim
-    wezterm
     wget
   ];
 
@@ -182,8 +179,6 @@
     ];
     shell = pkgs.nushell;
   };
-
-  home-manager.users.wil = import ../home.nix { inherit pkgs; };
 
   services.getty.autologinUser = "wil";
 

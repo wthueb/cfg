@@ -1,12 +1,10 @@
 {
   config,
   pkgs,
-  inputs,
   ...
 }:
 {
   imports = [
-    inputs.home-manager.nixosModules.home-manager
     ./hardware-configuration.nix
   ];
 
@@ -251,8 +249,6 @@
     ];
     shell = pkgs.nushell;
   };
-
-  home-manager.users.wil = import ../home.nix { inherit pkgs; };
 
   services.getty.autologinUser = "wil";
 
