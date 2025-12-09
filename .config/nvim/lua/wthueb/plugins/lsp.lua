@@ -324,8 +324,13 @@ return {
         vim.lsp.config("rust_analyzer", {
             settings = {
                 ["rust-analyzer"] = {
-                    checkOnSave = {
+                    check = {
                         command = "clippy",
+                    },
+                    files = {
+                        exclude = {
+                            ".direnv",
+                        },
                     },
                 },
             },
