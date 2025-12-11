@@ -38,6 +38,7 @@
         (fromUnstable "carapace")
         (fromUnstable "neovim")
         (fromUnstable "nushell")
+        (fromUnstable "opencode")
         (fromUnstable "starship")
       ];
   };

@@ -16,6 +16,7 @@
     nixfmt-rfc-style
     nodejs
     nushell
+    opencode
     openssh
     python3
     rsync
