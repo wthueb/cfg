@@ -1,9 +1,9 @@
+---@module "lazy"
+---@type LazySpec
 return {
     "lewis6991/gitsigns.nvim",
-    config = function()
-        require("gitsigns").setup({
-            signcolumn = true,
-            current_line_blame = true,
-        })
-    end,
+    opts = {
+        signcolumn = true,
+        current_line_blame = true,
+    },
 }

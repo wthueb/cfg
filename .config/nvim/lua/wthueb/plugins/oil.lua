@@ -1,5 +1,7 @@
+---@module "lazy"
+---@type LazySpec
 return {
     "stevearc/oil.nvim",
-    opts = {},
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {},
 }

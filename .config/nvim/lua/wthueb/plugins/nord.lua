@@ -1,3 +1,5 @@
+---@module "lazy"
+---@type LazySpec
 return {
     "shaunsingh/nord.nvim",
     lazy = false,

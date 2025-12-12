@@ -1,3 +1,5 @@
+---@module "lazy"
+---@type LazySpec
 return {
     "theprimeagen/harpoon",
     branch = "harpoon2",
