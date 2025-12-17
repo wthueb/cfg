@@ -140,6 +140,28 @@ return {
 
                     local format = function(name)
                         vim.lsp.buf.format({ name = name })
+
+                        -- this only uses the first LSP that supports organizeImports, fine for now
+                        for _, c in
+                            pairs(vim.lsp.get_clients({ buffer = event.buf, method = "textDocument/codeAction" }))
+                        do
+                            if
+                                c.server_capabilities.codeActionProvider
+                                and c.server_capabilities.codeActionProvider.codeActionKinds
+                            then
+                                for _, kind in pairs(c.server_capabilities.codeActionProvider.codeActionKinds) do
+                                    if kind:match("^source%.organizeImports") then
+                                        vim.lsp.buf.code_action({
+                                            ---@diagnostic disable-next-line: missing-fields
+                                            context = { only = { "source.organizeImports" } },
+                                            apply = true,
+                                        })
+                                        break
+                                    end
+                                end
+                            end
+                        end
+
                         vim.schedule(function()
                             print("formatted with " .. name)
                         end)
