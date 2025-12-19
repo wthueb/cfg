@@ -20,6 +20,7 @@ return {
             opts = {
                 ensure_installed = {
                     "angularls",
+                    "basedpyright",
                     "cssls",
                     "efm",
                     "emmet_language_server",
@@ -27,7 +28,6 @@ return {
                     "html",
                     "jsonls",
                     "prettier",
-                    "pyright",
                     "ruff",
                     "rust_analyzer",
                     "lua_ls",
@@ -397,11 +397,10 @@ return {
             },
         })
 
-        vim.lsp.config("pyright", {
+        vim.lsp.config("basedpyright", {
             settings = {
-                python = {
+                basedpyright = {
                     analysis = {
-                        typeCheckingMode = "basic",
                         diagnosticMode = "workspace",
                     },
                 },
