@@ -24,6 +24,20 @@
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
     };
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 30d";
+    }
+    // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
+      frequency = "weekly";
+    }
+    // lib.optionalAttrs (pkgs.stdenv.isDarwin) {
+      interval = {
+        Weekday = 0;
+        Hour = 0;
+        Minute = 0;
+      };
+    };
   };
 
   nixpkgs = {
