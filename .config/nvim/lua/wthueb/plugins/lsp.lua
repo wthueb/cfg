@@ -146,7 +146,9 @@ return {
                             pairs(vim.lsp.get_clients({ buffer = event.buf, method = "textDocument/codeAction" }))
                         do
                             if
-                                c.server_capabilities.codeActionProvider
+                                c.server_capabilities
+                                and c.server_capabilities.codeActionProvider
+                                and type(c.server_capabilities.codeActionProvider) == "table"
                                 and c.server_capabilities.codeActionProvider.codeActionKinds
                             then
                                 for _, kind in pairs(c.server_capabilities.codeActionProvider.codeActionKinds) do
