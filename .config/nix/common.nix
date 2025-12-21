@@ -29,7 +29,7 @@
       options = "--delete-older-than 30d";
     }
     // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
-      frequency = "weekly";
+      dates = "weekly";
     }
     // lib.optionalAttrs (pkgs.stdenv.isDarwin) {
       interval = {
