@@ -10,7 +10,7 @@
   ];
 
   fileSystems."/mnt/data" = {
-    device = "192.168.1.207:/volume2/data";
+    device = "192.168.1.207:/volume1/data";
     fsType = "nfs";
   };
 
