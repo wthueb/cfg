@@ -403,6 +403,7 @@ return {
             settings = {
                 basedpyright = {
                     analysis = {
+                        typeCheckingMode = "strict",
                         diagnosticMode = "workspace",
                     },
                 },

@@ -29,6 +29,7 @@ return {
             sources = {
                 { name = "path", priority = 200 },
                 { name = "cmp_git", priority = 150 },
+                { name = "lazydev", priority = 120, group_index = 0 },
                 { name = "nvim_lsp", priority = 100 },
                 { name = "nvim_lua", priority = 100 },
                 { name = "luasnip", priority = 50 },
