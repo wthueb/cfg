@@ -5,7 +5,7 @@ local config = wezterm.config_builder()
 
 config.default_workspace = "~"
 
-config.front_end = "WebGpu" -- wez/wezterm#5990
+--config.front_end = "WebGpu" -- wezterm/wezterm#5990
 
 config.color_scheme = "nord"
 
