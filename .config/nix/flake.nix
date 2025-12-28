@@ -73,7 +73,6 @@
         system = "x86_64-linux";
         modules = [
           ./common.nix
-          ./mbk/configuration.nix
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager = {
@@ -82,6 +81,8 @@
               users.wil.imports = [ ./home.nix ];
             };
           }
+          ./modules/nixos.nix
+          ./mbk/configuration.nix
         ];
         specialArgs = {
           inherit self inputs;
@@ -93,7 +94,6 @@
         system = "x86-linux";
         modules = [
           ./common.nix
-          ./monitor/configuration.nix
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager = {
@@ -102,6 +102,8 @@
               users.wil.imports = [ ./home.nix ];
             };
           }
+          ./modules/nixos.nix
+          ./monitor/configuration.nix
         ];
         specialArgs = {
           inherit self inputs;
