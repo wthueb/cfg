@@ -5,6 +5,8 @@ local config = wezterm.config_builder()
 
 config.default_workspace = "~"
 
+config.scrollback_lines = 10000
+
 --config.front_end = "WebGpu" -- wezterm/wezterm#5990
 
 config.color_scheme = "nord"
