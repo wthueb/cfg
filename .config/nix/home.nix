@@ -5,8 +5,9 @@
 
   nix.gc = {
     automatic = true;
-    frequency = "weekly";
     options = "--delete-older-than 15d";
+    dates = "weekly";
+    persistent = true;
   };
 
   home.packages = with pkgs; [

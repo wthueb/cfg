@@ -30,6 +30,7 @@
     }
     // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
       dates = "weekly";
+      persistent = true;
     }
     // lib.optionalAttrs (pkgs.stdenv.isDarwin) {
       interval = {
@@ -45,7 +46,7 @@
     overlays =
       let
         fromUnstable = pkg: final: prev: {
-          ${pkg} = inputs.nixpkgs-unstable.legacyPackages.${final.system}.${pkg};
+          ${pkg} = inputs.nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system}.${pkg};
         };
       in
       [

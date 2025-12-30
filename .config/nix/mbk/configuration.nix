@@ -37,7 +37,7 @@
 
   services.postfix = {
     enable = true;
-    config = {
+    settings.main = {
       myhostname = "mbk";
     };
   };

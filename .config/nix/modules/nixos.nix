@@ -75,7 +75,7 @@
     variant = "";
   };
 
-  systemd.watchdog.runtimeTime = "30s";
+  systemd.settings.Manager.RunTimeWatchdogSec = "30s";
 
   users.users."wil" = {
     name = "wil";

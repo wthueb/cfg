@@ -28,14 +28,15 @@
     discord
     ffmpeg-full
     firefox
-    gimp-with-plugins
+    #gimp-with-plugins
     htop
     inetutils
     litecli
-    #plex-desktop # not supported on aarch64-darwin
+    #mouseless
+    #plex-desktop
     qbittorrent
     raycast
-    #sabnzbd # not supported on aarch64-darwin
+    #sabnzbd
     spotify
     sqlite
     thunderbird-esr
@@ -60,24 +61,20 @@
       "Xcode" = 497799835;
     };
 
-    casks =
-      let
-        greedy = name: {
-          name = name;
-          greedy = true;
-        };
-      in
-      [
-        (greedy "cleanshot") # not in nixpkgs
-        (greedy "dbeaver-enterprise") # not in nixpkgs
-        (greedy "docker-desktop") # not in nixpkgs
-        (greedy "macfuse") # not in nixpkgs
-        (greedy "mouseless") # no aarch64-darwin
-        (greedy "plex") # no aarch64-darwin
-        (greedy "private-internet-access") # not in nixpkgs
-        (greedy "sabnzbd") # no aarch64-darwin
-        #(greedy "ubersicht") # not in nixpkgs
-      ];
+    greedyCasks = true;
+
+    casks = [
+      "cleanshot" # not in nixpkgs
+      "dbeaver-enterprise" # not in nixpkgs
+      "docker-desktop" # not in nixpkgs
+      "gimp" # no aarch64-darwin
+      "macfuse" # not in nixpkgs
+      "mouseless" # no aarch64-darwin
+      "plex" # no aarch64-darwin
+      "private-internet-access" # not in nixpkgs
+      "sabnzbd" # no aarch64-darwin
+      #"ubersicht" # not in nixpkgs
+    ];
   };
 
   services = {
@@ -106,13 +103,13 @@
     };
   };
 
-  launchd.user.agents.bitwarden = {
-    command = "${pkgs.bitwarden}/bin/bitwarden";
-    serviceConfig = {
-      RunAtLoad = true;
-      KeepAlive = true;
-    };
-  };
+  #launchd.user.agents.bitwarden-desktop = {
+  #  command = "${pkgs.bitwarden-desktop}/bin/bitwarden";
+  #  serviceConfig = {
+  #    RunAtLoad = true;
+  #    KeepAlive = true;
+  #  };
+  #};
 
   launchd.user.agents.mouseless = {
     command = "/Applications/Mouseless.app/Contents/MacOS/mouseless";
