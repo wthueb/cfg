@@ -44,6 +44,13 @@
       enable = true;
       enableNushellIntegration = true;
     };
+    discord = {
+      enable = true;
+      settings = {
+        SKIP_HOST_UPDATE = true;
+        DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING = true;
+      };
+    };
     fd.enable = true;
     fzf.enable = true;
     git.enable = true;

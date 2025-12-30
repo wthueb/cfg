@@ -25,7 +25,6 @@
     bartender
     bitwarden-desktop
     brave
-    discord
     ffmpeg-full
     firefox
     #gimp-with-plugins
