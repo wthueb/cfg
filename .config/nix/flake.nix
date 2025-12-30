@@ -1,7 +1,6 @@
 {
   inputs = {
-    nixos-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nixos-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.05-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
@@ -10,19 +9,14 @@
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
 
-    nix-darwin-unstable = {
-      url = "github:LnL7/nix-darwin/master";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixos-stable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     i915-sriov = {
       url = "github:strongtz/i915-sriov-dkms?ref=2025.11.10";
-      inputs.nixpkgs.follows = "nixos-stable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -49,7 +43,7 @@
         };
       };
 
-      darwinConfigurations."osx" = inputs.nix-darwin.lib.darwinSystem {
+      darwinConfigurations."osx" = inputs.nixpkgs.lib.darwinSystem {
         system = "x86_64-darwin";
         modules = [
           ./common.nix
@@ -69,7 +63,7 @@
         };
       };
 
-      nixosConfigurations."mbk" = inputs.nixos-stable.lib.nixosSystem {
+      nixosConfigurations."mbk" = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./common.nix
@@ -90,7 +84,7 @@
         };
       };
 
-      nixosConfigurations."monitor" = inputs.nixos-stable.lib.nixosSystem {
+      nixosConfigurations."monitor" = inputs.nixpkgs.lib.nixosSystem {
         system = "x86-linux";
         modules = [
           ./common.nix
