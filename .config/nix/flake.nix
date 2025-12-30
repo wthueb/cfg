@@ -22,10 +22,31 @@
 
   outputs =
     { self, ... }@inputs:
+    let
+      nixpkgsConf = {
+        nixpkgs = {
+          config.allowUnfree = true;
+          overlays =
+            let
+              fromUnstable = pkg: final: prev: {
+                ${pkg} = inputs.nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system}.${pkg};
+              };
+            in
+            [
+              (fromUnstable "carapace")
+              (fromUnstable "neovim")
+              (fromUnstable "nushell")
+              (fromUnstable "opencode")
+              (fromUnstable "starship")
+            ];
+        };
+      };
+    in
     {
       darwinConfigurations."wil-mac" = inputs.nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
+          nixpkgsConf
           ./common.nix
           ./wil-mac/configuration.nix
           inputs.home-manager.darwinModules.home-manager
@@ -46,6 +67,7 @@
       darwinConfigurations."osx" = inputs.nixpkgs.lib.darwinSystem {
         system = "x86_64-darwin";
         modules = [
+          nixpkgsConf
           ./common.nix
           ./osx/configuration.nix
           inputs.home-manager.darwinModules.home-manager
@@ -66,6 +88,7 @@
       nixosConfigurations."mbk" = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
+          nixpkgsConf
           ./common.nix
           inputs.home-manager.nixosModules.home-manager
           {
@@ -87,6 +110,7 @@
       nixosConfigurations."monitor" = inputs.nixpkgs.lib.nixosSystem {
         system = "x86-linux";
         modules = [
+          nixpkgsConf
           ./common.nix
           inputs.home-manager.nixosModules.home-manager
           {
@@ -109,6 +133,7 @@
         "wil@drake" = inputs.home-manager.lib.homeManagerConfiguration {
           pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
           modules = [
+            nixpkgsConf
             {
               home.username = "wil";
               home.homeDirectory = "/home/wil";

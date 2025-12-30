@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   inputs,
@@ -7,10 +6,6 @@
   ...
 }:
 {
-  _module.args.pkgs-unstable = import inputs.nixpkgs-unstable {
-    inherit (config.nixpkgs) config system;
-  };
-
   nix = {
     enable = true;
     package = pkgs.nix;
@@ -39,23 +34,6 @@
         Minute = 0;
       };
     };
-  };
-
-  nixpkgs = {
-    config.allowUnfree = true;
-    overlays =
-      let
-        fromUnstable = pkg: final: prev: {
-          ${pkg} = inputs.nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system}.${pkg};
-        };
-      in
-      [
-        (fromUnstable "carapace")
-        (fromUnstable "neovim")
-        (fromUnstable "nushell")
-        (fromUnstable "opencode")
-        (fromUnstable "starship")
-      ];
   };
 
   networking.hostName = hostname;
