@@ -107,7 +107,7 @@
 
       homeConfigurations = {
         "wil@drake" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixos-stable.legacyPackages.x86_64-linux;
+          pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
           modules = [
             {
               home.username = "wil";

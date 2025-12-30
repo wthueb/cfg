@@ -132,7 +132,6 @@
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
       ${pkgs.defaultbrowser}/bin/defaultbrowser browser
       /bin/launchctl setenv ELECTRON_NO_UPDATER 1
-      ${pkgs.tldr}/bin/tldr --update
     '';
     serviceConfig.RunAtLoad = true;
   };
