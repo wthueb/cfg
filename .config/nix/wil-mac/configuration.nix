@@ -145,11 +145,11 @@
         mru-spaces = false;
         orientation = "bottom";
         persistent-apps = [
-          "${pkgs.brave}/Applications/Brave Browser.app"
-          "${pkgs.thunderbird-esr}/Applications/Thunderbird ESR.app"
+          "/Applications/Nix Apps/Brave Browser.app"
+          "/Applications/Nix Apps/Thunderbird ESR.app"
           "/System/Applications/Messages.app"
-          "${pkgs.discord}/Applications/Discord.app"
-          "${pkgs.spotify}/Applications/Spotify.app"
+          "/Applications/Nix Apps/Discord.app"
+          "/Applications/Nix Apps/Spotify.app"
           "${pkgs.wezterm}/Applications/WezTerm.app"
           "/Applications/Plex.app"
         ];
