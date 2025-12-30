@@ -38,6 +38,7 @@
               (fromUnstable "nushell")
               (fromUnstable "opencode")
               (fromUnstable "starship")
+              (fromUnstable "wezterm")
             ];
         };
       };
