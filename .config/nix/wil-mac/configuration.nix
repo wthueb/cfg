@@ -28,7 +28,7 @@
     discord
     ffmpeg-full
     firefox
-    #gcc
+    gimp-with-plugins
     htop
     inetutils
     litecli
@@ -68,17 +68,15 @@
         };
       in
       [
-        # TODO: try moving these to nixpkgs
-        (greedy "dbeaver-enterprise") # not available in nixpkgs
-        (greedy "docker-desktop")
-        (greedy "gimp")
-        (greedy "macfuse")
-        (greedy "mouseless")
-        (greedy "plex")
-        (greedy "private-internet-access")
-        (greedy "sabnzbd")
-        (greedy "stremio")
-        #(greedy "ubersicht")
+        (greedy "cleanshot") # not in nixpkgs
+        (greedy "dbeaver-enterprise") # not in nixpkgs
+        (greedy "docker-desktop") # not in nixpkgs
+        (greedy "macfuse") # not in nixpkgs
+        (greedy "mouseless") # no aarch64-darwin
+        (greedy "plex") # no aarch64-darwin
+        (greedy "private-internet-access") # not in nixpkgs
+        (greedy "sabnzbd") # no aarch64-darwin
+        #(greedy "ubersicht") # not in nixpkgs
       ];
   };
 
