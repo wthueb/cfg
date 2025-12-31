@@ -25,7 +25,7 @@
     "sd_mod"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
+  boot.kernelModules = [ "ip_tables" ];
   boot.extraModulePackages = [ pkgs.i915-sriov ];
 
   hardware = {
