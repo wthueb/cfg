@@ -444,4 +444,45 @@ def pkill [...args] {
     }
 }
 
+def "nix diff" [] {
+    if (which nix | is-empty) {
+        error make {msg: 'nix is not installed'}
+        return 1
+    }
+
+    let generations = if ('/run/current-system' | path exists) {
+        ls /nix/var/nix/profiles/system-*-link
+        | get name
+        | sort-by {$in | parse --regex 'system-(\d+)-link' | get capture0 | first | into int}
+        | last 2
+    } else {
+        home-manager generations
+        | lines
+        | first 2
+        | parse --regex '-> (\S*)' | get capture0
+        | reverse
+    }
+
+    nix run nixpkgs#nvd diff ...$generations
+}
+
+def "nix rebuild" [] {
+    if (which darwin-rebuild | is-not-empty) {
+        sudo darwin-rebuild switch --flake ~/.config/nix/
+    } else if (which nixos-rebuild | is-not-empty) {
+        sudo nixos-rebuild switch --flake (readlink -f /etc/nixos)
+    } else if (which home-manager | is-not-empty) {
+        home-manager switch --flake ~/.config/nix/
+    } else {
+        error make {msg: 'no rebuild command found, not in nix environment?'}
+        return 1
+    }
+    nix diff
+}
+
+def "nix upgrade" [] {
+    nix flake update --flake ~/.config/nix/
+    nix rebuild
+}
+
 source ($nu.default-config-dir | path join 'config.custom.nu')
