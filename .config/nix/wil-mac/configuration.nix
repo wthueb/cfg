@@ -147,7 +147,7 @@
           "/Applications/Nix Apps/Brave Browser.app"
           "/Applications/Nix Apps/Thunderbird ESR.app"
           "/System/Applications/Messages.app"
-          "/Applications/Nix Apps/Discord.app"
+          "${pkgs.discord}/Applications/Discord.app"
           "/Applications/Nix Apps/Spotify.app"
           "${pkgs.wezterm}/Applications/WezTerm.app"
           "/Applications/Plex.app"
