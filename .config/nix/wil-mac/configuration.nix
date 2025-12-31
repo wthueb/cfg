@@ -4,23 +4,6 @@
   ...
 }:
 {
-  nixpkgs.overlays = [
-    (final: prev: {
-      karabiner-elements = prev.karabiner-elements.overrideAttrs (old: {
-        version = "14.13.0";
-        src = pkgs.fetchurl {
-          inherit (old.src) url;
-          hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
-        };
-        dontFixup = true;
-      });
-    })
-  ];
-
-  environment.variables = {
-    "XDG_CONFIG_HOME" = "/Users/wil/.config";
-  };
-
   environment.systemPackages = with pkgs; [
     bartender
     bitwarden-desktop
@@ -43,6 +26,8 @@
     thunderbird-esr
     vscode
   ];
+
+  programs.bash.enable = true;
 
   homebrew = {
     enable = true;
@@ -83,9 +68,21 @@
   };
 
   services = {
-    karabiner-elements.enable = true;
+    karabiner-elements = {
+      enable = true;
+      package = pkgs.karabiner-elements.overrideAttrs (old: {
+        version = "14.13.0";
+        src = pkgs.fetchurl {
+          inherit (old.src) url;
+          hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
+        };
+        dontFixup = true;
+      });
+    };
+
     tailscale.enable = true;
     sketchybar.enable = true;
+
     yabai = {
       enable = true;
       enableScriptingAddition = true;
@@ -200,7 +197,7 @@
   users.users.wil = {
     name = "wil";
     home = "/Users/wil";
-    # nushell not currently supported, add `exec /run/current-system/sw/bin/nu` to ~/.customprofile
+    # nushell is functionally the default shell, see home.nix
     shell = pkgs.bashInteractive;
   };
 

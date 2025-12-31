@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  inputs,
   hostname,
   ...
 }:
@@ -27,7 +26,7 @@
       dates = "weekly";
       persistent = true;
     }
-    // lib.optionalAttrs (pkgs.stdenv.isDarwin) {
+    // lib.optionalAttrs pkgs.stdenv.isDarwin {
       interval = {
         Weekday = 0;
         Hour = 0;

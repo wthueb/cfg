@@ -1,5 +1,7 @@
-{ pkgs, ... }:
-
+{
+  pkgs,
+  ...
+}:
 {
   programs.home-manager.enable = true;
 
@@ -34,6 +36,14 @@
   ];
 
   programs = {
+    # nushell isn't supported directly as a login shell on macos, so we just use bash
+    # and launch nushell from it instead (only as a login shell so we can still use bash normally)
+    bash = {
+      enable = true;
+      profileExtra = ''
+        exec nu
+      '';
+    };
     bat.enable = true;
     btop.enable = true;
     carapace = {
@@ -95,7 +105,10 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
+    VISUAL = "nvim";
   };
+
+  xdg.enable = true;
 
   home.stateVersion = "24.11";
 }
