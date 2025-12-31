@@ -67,6 +67,7 @@
       "dbeaver-enterprise" # not in nixpkgs
       "docker-desktop" # not in nixpkgs
       "gimp" # no aarch64-darwin
+      "lyn" # not in nixpkgs
       "macfuse" # not in nixpkgs
       "mouseless" # no aarch64-darwin
       "plex" # no aarch64-darwin
