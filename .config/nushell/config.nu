@@ -483,5 +483,5 @@ def "nix upgrade" [] {
     nix rebuild
 }
 
-source (if ('./nix/config.nu' | path exists) { './nix/config.nu' } else { null })
-source (if ('./config.custom.nu' | path exists) { './config.custom.nu' } else { null })
+source (if ('~/.config/nushell/nix/config.nu' | path exists) { '~/.config/nushell/nix/config.nu' } else { null })
+source (if ('~/.config/nushell/config.custom.nu' | path exists) { '~/.config/nushell/config.custom.nu' } else { null })

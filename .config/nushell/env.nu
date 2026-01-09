@@ -31,4 +31,4 @@ $env.PROMPT_INDICATOR_VI_INSERT = ""
 
 #$env.DIRENV_CONFIG = "/etc/direnv"
 
-source (if ('./env.custom.nu' | path exists) { './env.custom.nu' } else { null })
+source (if ('~/.config/nushell/env.custom.nu' | path exists) { '~/.config/nushell/env.custom.nu' } else { null })
