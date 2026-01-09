@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "btop": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1767912029,
+        "narHash": "sha256-W1R18kwcodYLIVIQLM3+Dr5pAlAmjLytnRr3GD4EFQ0=",
+        "owner": "aristocratos",
+        "repo": "btop",
+        "rev": "8c9695d1faf1854f6b55274a3ad39ee7a8a48e1a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aristocratos",
+        "ref": "main",
+        "repo": "btop",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -113,6 +130,7 @@
     },
     "root": {
       "inputs": {
+        "btop": "btop",
         "home-manager": "home-manager",
         "i915-sriov": "i915-sriov",
         "nix-darwin": "nix-darwin",

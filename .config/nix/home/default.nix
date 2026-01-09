@@ -1,5 +1,6 @@
 {
   pkgs,
+  inputs,
   ...
 }:
 {
@@ -41,13 +42,20 @@
   programs = {
     bash.enable = true;
     bat.enable = true;
-    btop.enable = true;
-    carapace = {
+    btop = {
       enable = true;
+      settings = {
+        color_theme = "nord";
+        vim_keys = true;
+        proc_per_core = true;
+      };
+      themes = {
+        nord = builtins.readFile "${inputs.btop}/themes/nord.theme";
+      };
     };
-    direnv = {
-      enable = true;
-    };
+    carapace.enable = true;
+    dircolors.enable = true;
+    direnv.enable = true;
     discord = {
       enable = true;
       settings = {
@@ -59,12 +67,47 @@
     fzf.enable = true;
     git.enable = true;
     jq.enable = true;
-    less.enable = true;
-    neovim.enable = true;
-    ripgrep.enable = true;
-    starship = {
+    less = {
       enable = true;
+      config = ''
+        #command
+        j forw-line
+        k back-line
+        l right-scroll
+        h left-scroll
+
+        / forw-search
+        ? back-search
+        n repeat-search
+        N reverse-search
+
+        f forw-screen
+        b back-screen
+        d forw-scroll
+        u back-scroll
+      '';
     };
+    neovim.enable = true;
+    readline = {
+      enable = true;
+      extraConfig = ''
+        set editing-mode vi
+        set keymap vi
+        set show-mode-in-prompt on
+        set vi-ins-mode-string \1\e[2 q\2
+        set vi-cmd-mode-string \1\e[4 q\2
+
+        set colored-stats On
+        set completion-ignore-case On
+        set completion-prefix-display-length 3
+        set mark-symlinked-directories On
+        set show-all-if-ambiguous On
+        set show-all-if-unmodified On
+        set visible-stats On
+      '';
+    };
+    ripgrep.enable = true;
+    starship.enable = true;
     tealdeer = {
       enable = true;
       settings = {

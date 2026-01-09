@@ -18,6 +18,11 @@
       url = "github:strongtz/i915-sriov-dkms?ref=2025.12.10";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    btop = {
+      url = "github:aristocratos/btop/main";
+      flake = false;
+    };
   };
 
   outputs =
@@ -64,7 +69,8 @@
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
-          users.wil.imports = [ ./home ];
+          users.wil = import ./home;
+          extraSpecialArgs = { inherit inputs; };
         };
       };
     in
