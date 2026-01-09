@@ -26,6 +26,23 @@
     nixfmt-rfc-style
     nodejs
     nushell
+    (nushellPlugins.desktop_notifications.overrideAttrs (old: rec {
+      version = "0.109.1";
+      src = pkgs.fetchFromGitHub {
+        owner = "FMotalleb";
+        repo = "nu_plugin_desktop_notifications";
+        tag = "v0.109.1";
+        hash = "sha256-eNdaaOgQWd5qZQG9kypzpMsHiKX7J5BXPSsNLJYCVTo=";
+      };
+      cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+        inherit src;
+        hash = "sha256-Mo+v3725jVNTCy7qjvTnDDN2JSAI48tpPCoQoewo4wM=";
+      };
+      meta.platforms = lib.platforms.linux ++ lib.platforms.darwin;
+    }))
+    nushellPlugins.formats
+    nushellPlugins.polars
+    nushellPlugins.query
     opencode
     openssh
     python3
