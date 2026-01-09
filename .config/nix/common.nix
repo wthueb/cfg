@@ -64,16 +64,6 @@
     ];
   };
 
-  programs.nix-index = {
-    enable = true;
-  }
-  // lib.optionalAttrs (!pkgs.stdenv.isDarwin) {
-    enableBashIntegration = false;
-    enableZshIntegration = false;
-  };
-
-  programs.direnv.enable = true;
-
   fonts.packages = with pkgs; [
     nerd-fonts.sauce-code-pro
     nerd-fonts.fira-code

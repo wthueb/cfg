@@ -40,7 +40,7 @@
     bash = {
       enable = true;
     }
-    # nushell isn't supported directly as a login shell on macos, so we just use bash
+    # nushell isn't supported directly as a login shell via nix-darwin, so we just use bash
     # and launch nushell from it instead (only as a login shell so we can still use bash normally)
     # see nix-darwin/nix-darwin#1028
     // lib.optionalAttrs pkgs.stdenv.isDarwin {
@@ -76,6 +76,15 @@
     nushell = {
       enable = true;
       configDir = "${config.xdg.configHome}/nushell/nix";
+      extraLogin = ''
+        load-env (
+          open ${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh
+          | lines
+          | parse --regex 'export (?<var>\w+)=(?<val>.*)'
+          | update val { from nuon }
+          | transpose -r -d
+        )
+      '';
       plugins = with pkgs.nushellPlugins; [
         desktop_notifications
         formats
@@ -103,21 +112,11 @@
 
   services = {
     skhd.enable = pkgs.stdenv.isDarwin;
+    ssh-agent.enable = true;
   };
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
   home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
+    "${config.xdg.configHome}/nushell/login.nu".source = config.lib.file.mkOutOfStoreSymlink "${config.programs.nushell.configDir}/login.nu";
   };
 
   home.sessionVariables = {
