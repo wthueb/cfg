@@ -197,7 +197,7 @@
   users.users.wil = {
     name = "wil";
     home = "/Users/wil";
-    # nushell is functionally the default shell, see home.nix
+    # nushell is functionally the default shell, see home/nu.nix
     shell = pkgs.bashInteractive;
   };
 

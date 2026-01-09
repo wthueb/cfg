@@ -60,6 +60,13 @@
             ];
         };
       };
+      homeConfig = {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          users.wil.imports = [ ./home ];
+        };
+      };
     in
     {
       darwinConfigurations."wil-mac" = inputs.nix-darwin.lib.darwinSystem {
@@ -69,13 +76,7 @@
           ./common.nix
           ./wil-mac/configuration.nix
           inputs.home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.wil.imports = [ ./home.nix ];
-            };
-          }
+          homeConfig
         ];
         specialArgs = {
           inherit self inputs;
@@ -90,13 +91,7 @@
           ./common.nix
           ./osx/configuration.nix
           inputs.home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.wil.imports = [ ./home.nix ];
-            };
-          }
+          homeConfig
         ];
         specialArgs = {
           inherit self inputs;
@@ -109,16 +104,10 @@
         modules = [
           nixpkgsConf
           ./common.nix
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.wil.imports = [ ./home.nix ];
-            };
-          }
           ./modules/nixos.nix
           ./mbk/configuration.nix
+          inputs.home-manager.nixosModules.home-manager
+          homeConfig
         ];
         specialArgs = {
           inherit self inputs;
@@ -131,16 +120,10 @@
         modules = [
           nixpkgsConf
           ./common.nix
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.wil.imports = [ ./home.nix ];
-            };
-          }
           ./modules/nixos.nix
           ./monitor/configuration.nix
+          inputs.home-manager.nixosModules.home-manager
+          homeConfig
         ];
         specialArgs = {
           inherit self inputs;
@@ -157,7 +140,7 @@
               home.username = "wil";
               home.homeDirectory = "/home/wil";
             }
-            ./home.nix
+            ./home
           ];
         };
       };

@@ -1,4 +1,7 @@
+/nix/
 /vendor/
+/login.nu
+plugin.msgpackz
 env.custom.nu
 config.custom.nu
 history.txt
