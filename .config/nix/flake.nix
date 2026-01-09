@@ -148,6 +148,7 @@
             }
             ./home
           ];
+          extraSpecialArgs = { inherit inputs; };
         };
       };
     };
