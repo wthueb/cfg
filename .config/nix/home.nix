@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   ...
 }:
 {
@@ -36,10 +37,12 @@
   ];
 
   programs = {
-    # nushell isn't supported directly as a login shell on macos, so we just use bash
-    # and launch nushell from it instead (only as a login shell so we can still use bash normally)
     bash = {
       enable = true;
+    }
+    # nushell isn't supported directly as a login shell on macos, so we just use bash
+    # and launch nushell from it instead (only as a login shell so we can still use bash normally)
+    // lib.optionalAttrs pkgs.stdenv.isDarwin {
       profileExtra = ''
         exec nu
       '';
