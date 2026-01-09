@@ -1,8 +1,6 @@
 use std "path add"
 use std/dirs shells-aliases *
 
-source ($nu.default-config-dir | path join 'env.custom.nu')
-
 $env.ENV_CONVERSIONS = {
     "PATH": {
         from_string: { |s| $s | split row (char esep) | path expand --no-symlink }
@@ -31,12 +29,6 @@ $env.MANPAGER = "nvim +Man!"
 $env.PROMPT_INDICATOR_VI_NORMAL = ""
 $env.PROMPT_INDICATOR_VI_INSERT = ""
 
-mkdir ($nu.data-dir | path join 'vendor/autoload')
-starship init nu | save -f ($nu.data-dir | path join 'vendor/autoload/starship.nu')
+#$env.DIRENV_CONFIG = "/etc/direnv"
 
-$env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
-carapace _carapace nushell | save -f ($nu.data-dir | path join 'vendor/autoload/carapace.nu')
-
-$env.DIRENV_CONFIG = "/etc/direnv"
-
-#source ($nu.default-config-dir | path join 'prompt.nu')
+source (if ('./env.custom.nu' | path exists) { './env.custom.nu' } else { null })

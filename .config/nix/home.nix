@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   ...
@@ -25,24 +26,6 @@
     jc
     nixfmt-rfc-style
     nodejs
-    nushell
-    (nushellPlugins.desktop_notifications.overrideAttrs (old: rec {
-      version = "0.109.1";
-      src = pkgs.fetchFromGitHub {
-        owner = "FMotalleb";
-        repo = "nu_plugin_desktop_notifications";
-        tag = "v0.109.1";
-        hash = "sha256-eNdaaOgQWd5qZQG9kypzpMsHiKX7J5BXPSsNLJYCVTo=";
-      };
-      cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-        inherit src;
-        hash = "sha256-Mo+v3725jVNTCy7qjvTnDDN2JSAI48tpPCoQoewo4wM=";
-      };
-      meta.platforms = lib.platforms.linux ++ lib.platforms.darwin;
-    }))
-    nushellPlugins.formats
-    nushellPlugins.polars
-    nushellPlugins.query
     opencode
     openssh
     python3
@@ -59,6 +42,7 @@
     }
     # nushell isn't supported directly as a login shell on macos, so we just use bash
     # and launch nushell from it instead (only as a login shell so we can still use bash normally)
+    # see nix-darwin/nix-darwin#1028
     // lib.optionalAttrs pkgs.stdenv.isDarwin {
       profileExtra = ''
         exec nu
@@ -68,10 +52,12 @@
     btop.enable = true;
     carapace = {
       enable = true;
+      enableBashIntegration = true;
       enableNushellIntegration = true;
     };
     direnv = {
       enable = true;
+      enableBashIntegration = true;
       enableNushellIntegration = true;
     };
     discord = {
@@ -87,9 +73,20 @@
     jq.enable = true;
     less.enable = true;
     neovim.enable = true;
+    nushell = {
+      enable = true;
+      configDir = "${config.xdg.configHome}/nushell/nix";
+      plugins = with pkgs.nushellPlugins; [
+        desktop_notifications
+        formats
+        polars
+        query
+      ];
+    };
     ripgrep.enable = true;
     starship = {
       enable = true;
+      enableBashIntegration = true;
       enableNushellIntegration = true;
     };
     tealdeer = {

@@ -39,6 +39,24 @@
               (fromUnstable "opencode")
               (fromUnstable "starship")
               (fromUnstable "wezterm")
+              (final: prev: {
+                nushellPlugins = prev.nushellPlugins // {
+                  desktop_notifications = prev.nushellPlugins.desktop_notifications.overrideAttrs (old: rec {
+                    version = "0.109.1";
+                    src = final.fetchFromGitHub {
+                      owner = "FMotalleb";
+                      repo = "nu_plugin_desktop_notifications";
+                      tag = "v${version}";
+                      hash = "sha256-eNdaaOgQWd5qZQG9kypzpMsHiKX7J5BXPSsNLJYCVTo=";
+                    };
+                    cargoDeps = final.rustPlatform.fetchCargoVendor {
+                      inherit src;
+                      hash = "sha256-Mo+v3725jVNTCy7qjvTnDDN2JSAI48tpPCoQoewo4wM=";
+                    };
+                    meta.platforms = final.lib.platforms.linux ++ final.lib.platforms.darwin;
+                  });
+                };
+              })
             ];
         };
       };

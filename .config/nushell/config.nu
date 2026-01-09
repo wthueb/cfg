@@ -81,8 +81,6 @@ let nord_theme = {
     cursor: "#e5e9f0"
 }
 
-$env.CARAPACE_MATCH = 1
-
 def "gh gist search" [] {
     let gists = (
         gh gist list
@@ -485,4 +483,5 @@ def "nix upgrade" [] {
     nix rebuild
 }
 
-source ($nu.default-config-dir | path join 'config.custom.nu')
+source (if ('./nix/config.nu' | path exists) { './nix/config.nu' } else { null })
+source (if ('./config.custom.nu' | path exists) { './config.custom.nu' } else { null })
