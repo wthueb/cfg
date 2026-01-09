@@ -117,6 +117,7 @@
 
   home.file = {
     "${config.xdg.configHome}/nushell/login.nu".source = config.lib.file.mkOutOfStoreSymlink "${config.programs.nushell.configDir}/login.nu";
+    "${config.xdg.configHome}/nushell/plugin.msgpackz".source = config.lib.file.mkOutOfStoreSymlink "${config.programs.nushell.configDir}/plugin.msgpackz";
   };
 
   home.sessionVariables = {
