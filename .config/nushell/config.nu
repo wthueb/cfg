@@ -81,36 +81,6 @@ let nord_theme = {
     cursor: "#e5e9f0"
 }
 
-def "gh gist search" [] {
-    let gists = (
-        gh gist list
-        | lines
-        | parse --regex '(?P<id>\S+)\s*(?P<description>.*?)\s*(?P<files>\d+) files?\s*(?P<visibility>\w*)\s*(?P<updated>.*)'
-        | into datetime updated
-    )
-
-    let input = (
-        $gists
-        | each {|row| echo $"($row.id): ($row.description)"}
-        | to text --no-newline
-    )
-
-    let selection = $input | fzf
-
-    if ($selection | is-empty) {
-        return
-    }
-
-    let id = (
-        $selection
-        | parse '{id}: {description}'
-        | get id
-        | first
-    )
-
-    $id
-}
-
 $env.config.show_banner = false
 
 $env.config.explore = {
@@ -331,7 +301,7 @@ alias la = ls -a
 alias lla = ls -la
 
 alias vim = nvim
-alias vi = vim
+alias vi = nvim
 
 alias p = python
 
@@ -361,16 +331,46 @@ match $nu.os-info.name {
     },
 }
 
+def "gh gist search" [] {
+    let gists = (
+        gh gist list
+        | lines
+        | parse --regex '(?P<id>\S+)\s*(?P<description>.*?)\s*(?P<files>\d+) files?\s*(?P<visibility>\w*)\s*(?P<updated>.*)'
+        | into datetime updated
+    )
+
+    let input = (
+        $gists
+        | each {|row| echo $"($row.id): ($row.description)"}
+        | to text --no-newline
+    )
+
+    let selection = $input | fzf
+
+    if ($selection | is-empty) {
+        return
+    }
+
+    let id = (
+        $selection
+        | parse '{id}: {description}'
+        | get id
+        | first
+    )
+
+    $id
+}
+
 def --wrapped mkcd [dir: string, ...rest] {
     mkdir ...$rest $dir ; cd $dir
 }
 
 def activate [dir?: string] {
-    sh -i -c $'source ($dir | default 'env')/bin/activate ; nu -e "alias deactivate = exit"'
+    sh -i -c $'source ($dir | default '.venv')/bin/activate ; nu -e "alias deactivate = exit"'
 }
 
 def venv [dir?: string] {
-    python -m venv --upgrade-deps ($dir | default 'env')
+    python -m venv --upgrade-deps ($dir | default '.venv')
 
     activate $dir
 }

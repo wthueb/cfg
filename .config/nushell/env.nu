@@ -29,6 +29,4 @@ $env.MANPAGER = "nvim +Man!"
 $env.PROMPT_INDICATOR_VI_NORMAL = ""
 $env.PROMPT_INDICATOR_VI_INSERT = ""
 
-#$env.DIRENV_CONFIG = "/etc/direnv"
-
 source (if ('~/.config/nushell/env.custom.nu' | path exists) { '~/.config/nushell/env.custom.nu' } else { null })
