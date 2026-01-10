@@ -55,6 +55,7 @@
       "dbeaver-enterprise" # not in nixpkgs
       "docker-desktop" # not in nixpkgs
       "gimp" # no aarch64-darwin
+      "google-drive" # not in nixpkgs
       "keyboardcleantool" # not in nixpkgs
       "lyn" # not in nixpkgs
       "macfuse" # not in nixpkgs
