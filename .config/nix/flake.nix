@@ -31,40 +31,10 @@
       nixpkgsConf = {
         nixpkgs = {
           config.allowUnfree = true;
-          overlays =
-            let
-              fromUnstable = pkg: final: prev: {
-                ${pkg} = inputs.nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system}.${pkg};
-              };
-            in
-            [
-              (fromUnstable "carapace")
-              (fromUnstable "neovim")
-              (fromUnstable "nushell")
-              (fromUnstable "opencode")
-              (fromUnstable "starship")
-              (fromUnstable "wezterm")
-              (final: prev: {
-                nushellPlugins = prev.nushellPlugins // {
-                  desktop_notifications = prev.nushellPlugins.desktop_notifications.overrideAttrs (old: rec {
-                    version = "0.109.1";
-                    src = final.fetchFromGitHub {
-                      owner = "FMotalleb";
-                      repo = "nu_plugin_desktop_notifications";
-                      tag = "v${version}";
-                      hash = "sha256-eNdaaOgQWd5qZQG9kypzpMsHiKX7J5BXPSsNLJYCVTo=";
-                    };
-                    cargoDeps = final.rustPlatform.fetchCargoVendor {
-                      inherit src;
-                      hash = "sha256-Mo+v3725jVNTCy7qjvTnDDN2JSAI48tpPCoQoewo4wM=";
-                    };
-                    meta.platforms = final.lib.platforms.linux ++ final.lib.platforms.darwin;
-                  });
-                };
-              })
-            ];
+          overlays = import ./overlays.nix { inherit inputs; };
         };
       };
+
       homeConfig = {
         home-manager = {
           useGlobalPkgs = true;
@@ -73,68 +43,67 @@
           extraSpecialArgs = { inherit inputs; };
         };
       };
+
+      mkDarwinSystem =
+        {
+          system,
+          modules,
+          hostname,
+        }:
+        inputs.nix-darwin.lib.darwinSystem {
+          inherit system;
+          modules = [
+            nixpkgsConf
+            ./common.nix
+            inputs.home-manager.darwinModules.home-manager
+            homeConfig
+          ]
+          ++ modules;
+          specialArgs = { inherit self inputs hostname; };
+        };
+
+      mkNixosSystem =
+        {
+          system,
+          modules,
+          hostname,
+        }:
+        inputs.nixpkgs.lib.nixosSystem {
+          system = "x86-linux";
+          modules = [
+            nixpkgsConf
+            ./common.nix
+            ./modules/nixos.nix
+            inputs.home-manager.nixosModules.home-manager
+            homeConfig
+          ]
+          ++ modules;
+          specialArgs = { inherit self inputs hostname; };
+        };
     in
     {
-      darwinConfigurations."wil-mac" = inputs.nix-darwin.lib.darwinSystem {
+      darwinConfigurations."wil-mac" = mkDarwinSystem {
         system = "aarch64-darwin";
-        modules = [
-          nixpkgsConf
-          ./common.nix
-          ./wil-mac/configuration.nix
-          inputs.home-manager.darwinModules.home-manager
-          homeConfig
-        ];
-        specialArgs = {
-          inherit self inputs;
-          hostname = "wil-mac";
-        };
+        modules = [ ./hosts/wil-mac ];
+        hostname = "wil-mac";
       };
 
-      darwinConfigurations."osx" = inputs.nixpkgs.lib.darwinSystem {
+      darwinConfigurations."osx" = mkDarwinSystem {
         system = "x86_64-darwin";
-        modules = [
-          nixpkgsConf
-          ./common.nix
-          ./osx/configuration.nix
-          inputs.home-manager.darwinModules.home-manager
-          homeConfig
-        ];
-        specialArgs = {
-          inherit self inputs;
-          hostname = "osx";
-        };
+        modules = [ ./hosts/osx ];
+        hostname = "osx";
       };
 
-      nixosConfigurations."mbk" = inputs.nixpkgs.lib.nixosSystem {
+      nixosConfigurations."mbk" = mkNixosSystem {
         system = "x86_64-linux";
-        modules = [
-          nixpkgsConf
-          ./common.nix
-          ./modules/nixos.nix
-          ./mbk/configuration.nix
-          inputs.home-manager.nixosModules.home-manager
-          homeConfig
-        ];
-        specialArgs = {
-          inherit self inputs;
-          hostname = "mbk";
-        };
+        modules = [ ./hosts/mbk ];
+        hostname = "mbk";
       };
 
-      nixosConfigurations."monitor" = inputs.nixpkgs.lib.nixosSystem {
-        system = "x86-linux";
-        modules = [
-          nixpkgsConf
-          ./common.nix
-          ./modules/nixos.nix
-          ./monitor/configuration.nix
-          inputs.home-manager.nixosModules.home-manager
-          homeConfig
-        ];
-        specialArgs = {
-          inherit self inputs;
-          hostname = "monitor";
-        };
+      nixosConfigurations."monitor" = mkNixosSystem {
+        system = "x86_64-linux";
+        modules = [ ./hosts/monitor ];
+        hostname = "monitor";
       };
 
       homeConfigurations = {
