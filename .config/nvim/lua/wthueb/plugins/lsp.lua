@@ -50,21 +50,6 @@ return {
                 broad_search = true,
             },
         },
-        {
-            "folke/lazydev.nvim",
-            ft = "lua",
-            dependencies = {
-                "DrKJeff16/wezterm-types",
-                lazy = true,
-                version = false,
-            },
-            opts = {
-                library = {
-                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-                    { path = "wezterm-types", mods = { "wezterm" } },
-                },
-            },
-        },
         { "marilari88/twoslash-queries.nvim", opts = {} },
     },
 
@@ -298,7 +283,7 @@ return {
         })
 
         local lspconfig = require("lspconfig")
-        local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+        local capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
 
         vim.lsp.config("*", {
             capabilities = capabilities,
