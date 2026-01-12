@@ -41,11 +41,6 @@ return {
         { "creativenull/efmls-configs-nvim", version = "^1.0.0" },
         {
             "seblyng/roslyn.nvim",
-            ft = { "cs", "razor" },
-            dependencies = { { "tris203/rzls.nvim", opts = {} } },
-            init = function()
-                vim.filetype.add({ extension = { razor = "razor", cshtml = "razor" } })
-            end,
             opts = {
                 broad_search = true,
             },
@@ -54,42 +49,6 @@ return {
     },
 
     config = function()
-        local cmd = {}
-        local mason_registry = require("mason-registry")
-        local roslyn_package = mason_registry.get_package("roslyn")
-        if roslyn_package:is_installed() then
-            vim.list_extend(cmd, {
-                "roslyn",
-                "--stdio",
-                "--logLevel=Information",
-                "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
-            })
-
-            local rzls_package = mason_registry.get_package("rzls")
-            if rzls_package:is_installed() then
-                local rzls_path = vim.fn.expand("$MASON/packages/rzls/libexec")
-                table.insert(
-                    cmd,
-                    "--razorSourceGenerator=" .. vim.fs.joinpath(rzls_path, "Microsoft.CodeAnalysis.Razor.Compiler.dll")
-                )
-                table.insert(
-                    cmd,
-                    "--razorDesignTimePath="
-                        .. vim.fs.joinpath(rzls_path, "Targets", "Microsoft.NET.Sdk.Razor.DesignTime.targets")
-                )
-                vim.list_extend(cmd, {
-                    "--extension",
-                    vim.fs.joinpath(rzls_path, "RazorExtension", "Microsoft.VisualStudioCode.RazorExtension.dll"),
-                })
-            end
-        end
-
-        vim.lsp.config("roslyn", {
-            cmd = cmd,
-            handlers = require("rzls.roslyn_handlers"),
-        })
-        vim.lsp.enable("roslyn")
-
         vim.api.nvim_create_autocmd("LspAttach", {
             desc = "LSP actions",
             callback = function(event)
