@@ -308,6 +308,8 @@ alias p = python
 alias ffmpeg = ffmpeg -hide_banner
 alias ffplay = ffplay -hide_banner
 
+alias icat = wezterm imgcat
+
 if (cmd-exists fdfind) {
     alias fd = fdfind
 }
@@ -354,8 +356,7 @@ def "gh gist search" [] {
     let id = (
         $selection
         | parse '{id}: {description}'
-        | get id
-        | first
+        | get id.0
     )
 
     $id
@@ -436,7 +437,7 @@ def pkill [...args] {
     let selected = $processes | each {|p| $"($p.name) \(($p.pid)\)" } | to text | fzf
 
     if (confirm $"are you sure you want to kill ($selected)?") {
-        let pid = $selected | parse --regex '.*\((\d+)\)' | get capture0 | first | into int
+        let pid = $selected | parse --regex '.*\((\d+)\)' | get capture0.0 | into int
 
         kill ...$args $pid
     }
@@ -451,7 +452,7 @@ def "nix diff" [] {
     let generations = if ('/run/current-system' | path exists) {
         ls /nix/var/nix/profiles/system-*-link
         | get name
-        | sort-by {$in | parse --regex 'system-(\d+)-link' | get capture0 | first | into int}
+        | sort-by {$in | parse --regex 'system-(\d+)-link' | get capture0.0 | into int}
         | last 2
     } else {
         home-manager generations
