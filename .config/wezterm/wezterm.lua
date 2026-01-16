@@ -9,7 +9,8 @@ config.scrollback_lines = 10000
 
 --config.front_end = "WebGpu" -- wezterm/wezterm#5990
 
-config.color_scheme = "nord"
+--config.color_scheme = "nord"
+config.color_scheme = "Catppuccin Mocha"
 
 config.font = wezterm.font("SauceCodePro Nerd Font")
 config.font_size = 15.0
@@ -55,31 +56,31 @@ config.tab_bar_at_bottom = true
 config.tab_max_width = 18
 config.hide_tab_bar_if_only_one_tab = false
 
-config.colors = {
-    tab_bar = {
-        background = "#2e3440",
-
-        active_tab = {
-            bg_color = "#81a1c1",
-            fg_color = "#2e3440",
-
-            intensity = "Bold",
-            underline = "None",
-            italic = false,
-            strikethrough = false,
-        },
-
-        inactive_tab = {
-            bg_color = "#4e5668",
-            fg_color = "#d8dee9",
-
-            intensity = "Bold",
-            underline = "None",
-            italic = false,
-            strikethrough = false,
-        },
-    },
-}
+--config.colors = {
+--    tab_bar = {
+--        background = "#2e3440",
+--
+--        active_tab = {
+--            bg_color = "#81a1c1",
+--            fg_color = "#2e3440",
+--
+--            intensity = "Bold",
+--            underline = "None",
+--            italic = false,
+--            strikethrough = false,
+--        },
+--
+--        inactive_tab = {
+--            bg_color = "#4e5668",
+--            fg_color = "#d8dee9",
+--
+--            intensity = "Bold",
+--            underline = "None",
+--            italic = false,
+--            strikethrough = false,
+--        },
+--    },
+--}
 
 config.disable_default_key_bindings = true
 config.leader = { mods = "CTRL", key = "a", timeout_milliseconds = 5000 }
@@ -142,11 +143,12 @@ end)
 
 ---@diagnostic disable-next-line: unused-local
 wezterm.on("update-right-status", function(window, pane)
-    window:set_right_status(wezterm.format({
-        { Foreground = { Color = "#2e3440" } },
-        { Background = { Color = "#81a1c1" } },
-        { Text = " " .. string.basename(window:active_workspace()) .. " " },
-    }))
+    -- window:set_right_status(wezterm.format({
+    --     { Foreground = { Color = "#2e3440" } },
+    --     { Background = { Color = "#81a1c1" } },
+    --     { Text = " " .. string.basename(window:active_workspace()) .. " " },
+    -- }))
+    window:set_right_status(" " .. string.basename(window:active_workspace()) .. " ")
 end)
 
 require("session")

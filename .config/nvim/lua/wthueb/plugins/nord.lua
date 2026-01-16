@@ -1,12 +1,11 @@
 ---@module "lazy"
 ---@type LazySpec
 return {
-    "shaunsingh/nord.nvim",
-    lazy = false,
+    "gbprod/nord.nvim",
     priority = 1000,
     config = function()
-        vim.g.nord_italic = false
-        vim.g.nord_uniform_diff_background = true
-        require("nord").set()
+        ---@module "nord"
+        require("nord").setup({})
+        --vim.cmd.colorscheme("nord")
     end,
 }

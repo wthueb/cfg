@@ -37,6 +37,7 @@
     tmux
     tree
     unzip
+    vivid
   ];
 
   programs = {
@@ -45,11 +46,12 @@
     btop = {
       enable = true;
       settings = {
-        color_theme = "nord";
+        color_theme = "catppuccin";
         vim_keys = true;
         proc_per_core = true;
       };
       themes = {
+        catppuccin = builtins.readFile "${inputs.catppuccin-btop}/themes/catppuccin_mocha.theme";
         nord = builtins.readFile "${inputs.btop}/themes/nord.theme";
       };
     };

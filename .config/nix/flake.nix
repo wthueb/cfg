@@ -23,6 +23,11 @@
       url = "github:aristocratos/btop/main";
       flake = false;
     };
+
+    catppuccin-btop = {
+      url = "github:catppuccin/btop/main";
+      flake = false;
+    };
   };
 
   outputs =
