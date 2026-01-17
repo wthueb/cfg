@@ -14,7 +14,7 @@ for i in {1..9}; do
   space=(
     associated_space="$i"
     icon="$i"
-    icon.highlight_color="$NORD8"
+    icon.highlight_color="$COLOR_PRIMARY"
     icon.padding_left=0
     icon.padding_right=0
     label.drawing=off
@@ -38,7 +38,7 @@ sketchybar --add item space.right_spacer left \
            --set space.right_spacer "${right_spacer[@]}"
 
 spaces_bracket=(
-  background.color="$NORD1"
+  background.color="$COLOR_MODAL_BG"
 )
 
 sketchybar --add bracket spaces_bracket '/space\..*/'  \

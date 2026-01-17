@@ -13,7 +13,7 @@ update() {
   fi
 
   local color, icon
-  color=$NORD6
+  color=$COLOR_ICON
   icon=$BATTERY_0
 
   if [ "$percentage" -ge 80 ]; then
@@ -27,9 +27,9 @@ update() {
   fi
 
   if [ "$percentage" -le 20 ]; then
-    color=$NORD11
+    color=$COLOR_DANGER
   elif [ "$percentage" -le 30 ]; then
-    color=$NORD12
+    color=$COLOR_WARN
   fi
 
   if echo "$battery_info" | grep 'AC Power'; then
@@ -40,7 +40,6 @@ update() {
     icon="$icon"
     icon.color="$color"
     label="$percentage%"
-    label.color="$color"
   )
 
   sketchybar --set battery "${battery[@]}"

@@ -3,9 +3,6 @@
 source "$CONFIG_DIR/colors.sh"
 source "$CONFIG_DIR/icons.sh"
 
-ITEM_DIR="$CONFIG_DIR/items"
-PLUGIN_DIR="$CONFIG_DIR/plugins"
-
 FONT="SauceCodePro Nerd Font"
 
 # disable the native volume popup
@@ -13,7 +10,7 @@ launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist > /
 
 bar=(
   height=32
-  color="$NORD0"
+  color="$COLOR_BG"
   border_width=0
   shadow=off
   position=top
@@ -31,11 +28,11 @@ sketchybar --bar "${bar[@]}"
 defaults=(
   updates=when_shown
   icon.font="$FONT:Bold:14.0"
-  icon.color="$NORD5"
+  icon.color="$COLOR_ICON"
   icon.padding_left=0
   icon.padding_right=0
   label.font="$FONT:Semibold:13.0"
-  label.color="$NORD6"
+  label.color="$COLOR_TEXT"
   label.padding_left=0
   label.padding_right=0
   background.height=26
@@ -45,8 +42,8 @@ defaults=(
   background.border_width=2
   popup.background.border_width=1
   popup.background.corner_radius=3
-  popup.background.border_color="$NORD4"
-  popup.background.color="$NORD1"
+  popup.background.border_color="$COLOR_MODAL_BORDER"
+  popup.background.color="$COLOR_MODAL_BG"
   popup.blur_radius=20
   popup.background.shadow.drawing=on
 )
