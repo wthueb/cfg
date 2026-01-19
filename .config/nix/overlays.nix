@@ -30,7 +30,9 @@
           inherit src;
           hash = "sha256-Mo+v3725jVNTCy7qjvTnDDN2JSAI48tpPCoQoewo4wM=";
         };
-        meta.platforms = final.lib.platforms.linux ++ final.lib.platforms.darwin;
+        meta = old.meta // {
+          platforms = final.lib.platforms.linux ++ final.lib.platforms.darwin;
+        };
       });
     };
   })

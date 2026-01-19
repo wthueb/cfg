@@ -4,6 +4,11 @@
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
+    determinate = {
+      url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs-darwin";
@@ -59,6 +64,8 @@
           inherit system;
           modules = [
             nixpkgsConf
+            inputs.determinate.darwinModules.default
+            ./modules/darwin.nix
             ./common.nix
             inputs.home-manager.darwinModules.home-manager
             homeConfig
@@ -74,11 +81,12 @@
           hostname,
         }:
         inputs.nixpkgs.lib.nixosSystem {
-          system = "x86-linux";
+          inherit system;
           modules = [
             nixpkgsConf
-            ./common.nix
+            inputs.determinate.nixosModules.default
             ./modules/nixos.nix
+            ./common.nix
             inputs.home-manager.nixosModules.home-manager
             homeConfig
           ]

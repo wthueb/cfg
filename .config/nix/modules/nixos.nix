@@ -3,6 +3,8 @@
   ...
 }:
 {
+  determinate.enable = true;
+
   networking = {
     networkmanager.enable = true;
     firewall = {
