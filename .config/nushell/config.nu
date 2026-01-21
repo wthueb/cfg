@@ -229,6 +229,7 @@ alias vi = nvim
 alias p = python
 
 alias ffmpeg = ffmpeg -hide_banner
+alias ffprobe = ffprobe -hide_banner
 alias ffplay = ffplay -hide_banner
 
 alias icat = wezterm imgcat
