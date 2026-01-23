@@ -315,6 +315,7 @@ def "vim upgrade" [] {
         print $status.stderr
         return
     }
+    nvim --headless "+Lazy! clean" +qa
     nvim --headless "+TSUpdateSync" +qa
     nvim --headless "+MasonToolsUpdateSync" +qa
 }
