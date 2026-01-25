@@ -211,10 +211,6 @@ def cmd-exists [cmd: string] {
     not (which $cmd | is-empty)
 }
 
-def config --wrapped [...args] {
-    git --git-dir ~/.cfg --work-tree ~ ...$args
-}
-
 alias .. = cd ..
 alias cd.. = cd ..
 
@@ -390,13 +386,13 @@ def "nix diff" [] {
     nix run nixpkgs#nvd diff ...$generations
 }
 
-def "nix rebuild" [] {
+def "nix rebuild" [flake_path: path] {
     if (which darwin-rebuild | is-not-empty) {
-        sudo darwin-rebuild switch --flake ~/.config/nix/
+        sudo darwin-rebuild switch --flake $flake_path
     } else if (which nixos-rebuild | is-not-empty) {
-        sudo nixos-rebuild switch --flake (readlink -f /etc/nixos)
+        sudo nixos-rebuild switch --flake $flake_path
     } else if (which home-manager | is-not-empty) {
-        home-manager switch --flake ~/.config/nix/
+        home-manager switch --flake $flake_path
     } else {
         error make {msg: 'no rebuild command found, not in nix environment?'}
         return 1
@@ -404,9 +400,9 @@ def "nix rebuild" [] {
     nix diff
 }
 
-def "nix upgrade" [] {
-    nix flake update --flake ~/.config/nix/
-    nix rebuild
+def "nix upgrade" [flake_path: path] {
+    nix flake update --flake $flake_path
+    nix rebuild $flake_path
 }
 
 source (if ('~/.config/nushell/nix/config.nu' | path exists) { '~/.config/nushell/nix/config.nu' } else { null })
