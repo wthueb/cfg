@@ -386,13 +386,15 @@ def "nix diff" [] {
     nix run nixpkgs#nvd diff ...$generations
 }
 
-def "nix rebuild" [flake_path: path] {
+def "nix rebuild" [flake_path?: path] {
+    let path = $flake_path | default ('~/.cfg' | path expand)
+
     if (which darwin-rebuild | is-not-empty) {
-        sudo darwin-rebuild switch --flake $flake_path
+        sudo darwin-rebuild switch --flake $path
     } else if (which nixos-rebuild | is-not-empty) {
-        sudo nixos-rebuild switch --flake $flake_path
+        sudo nixos-rebuild switch --flake $path
     } else if (which home-manager | is-not-empty) {
-        home-manager switch --flake $flake_path
+        home-manager switch --flake $path
     } else {
         error make {msg: 'no rebuild command found, not in nix environment?'}
         return 1
@@ -400,9 +402,11 @@ def "nix rebuild" [flake_path: path] {
     nix diff
 }
 
-def "nix upgrade" [flake_path: path] {
-    nix flake update --flake $flake_path
-    nix rebuild $flake_path
+def "nix upgrade" [flake_path?: path] {
+    let path = $flake_path | default ('~/.cfg' | path expand)
+
+    nix flake update --flake $path
+    nix rebuild $path
 }
 
 source (if ('~/.config/nushell/nix/config.nu' | path exists) { '~/.config/nushell/nix/config.nu' } else { null })
