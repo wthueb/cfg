@@ -18,9 +18,6 @@
     }
   )
   (final: prev: {
-    deploy-rs = inputs.deploy-rs.packages.${final.stdenv.hostPlatform.system}.default;
-  })
-  (final: prev: {
     wezterm = inputs.wezterm.packages.${final.stdenv.hostPlatform.system}.default;
   })
   (final: prev: {

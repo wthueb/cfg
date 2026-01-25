@@ -19,7 +19,6 @@
 
   home.packages = with pkgs; [
     delta
-    deploy-rs
     dig
     dua
     gh

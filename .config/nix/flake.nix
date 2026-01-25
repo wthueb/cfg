@@ -45,10 +45,12 @@
       url = "github:szlend/deploy-rs/fix-show-derivation-parsing";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
   outputs =
-    { self, ... }@inputs:
+    inputs@{ self, flake-parts, ... }:
     let
       nixpkgsConf = {
         nixpkgs = {
@@ -106,85 +108,106 @@
           specialArgs = { inherit self inputs hostname; };
         };
     in
-    {
-      darwinConfigurations."wil-mac" = mkDarwinSystem {
-        system = "aarch64-darwin";
-        modules = [ ./hosts/wil-mac ];
-        hostname = "wil-mac";
-      };
-
-      darwinConfigurations."osx" = mkDarwinSystem {
-        system = "x86_64-darwin";
-        modules = [ ./hosts/osx ];
-        hostname = "osx";
-      };
-
-      nixosConfigurations."mbk" = mkNixosSystem {
-        system = "x86_64-linux";
-        modules = [ ./hosts/mbk ];
-        hostname = "mbk";
-      };
-
-      nixosConfigurations."monitor" = mkNixosSystem {
-        system = "x86_64-linux";
-        modules = [ ./hosts/monitor ];
-        hostname = "monitor";
-      };
-
-      homeConfigurations = {
-        "wil@drake" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-          modules = [
-            nixpkgsConf
-            {
-              home.username = "wil";
-              home.homeDirectory = "/home/wil";
-            }
-            ./home
-          ];
-          extraSpecialArgs = { inherit inputs; };
-        };
-      };
-
-      deploy.nodes = {
-        wil-mac = {
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      flake = {
+        darwinConfigurations."wil-mac" = mkDarwinSystem {
+          system = "aarch64-darwin";
+          modules = [ ./hosts/wil-mac ];
           hostname = "wil-mac";
-          profiles.system = {
-            user = "root";
-            path = inputs.deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.wil-mac;
-          };
         };
 
-        mbk = {
+        darwinConfigurations."osx" = mkDarwinSystem {
+          system = "x86_64-darwin";
+          modules = [ ./hosts/osx ];
+          hostname = "osx";
+        };
+
+        nixosConfigurations."mbk" = mkNixosSystem {
+          system = "x86_64-linux";
+          modules = [ ./hosts/mbk ];
           hostname = "mbk";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.mbk;
-          };
         };
 
-        monitor = {
+        nixosConfigurations."monitor" = mkNixosSystem {
+          system = "x86_64-linux";
+          modules = [ ./hosts/monitor ];
           hostname = "monitor";
-          remoteBuild = true;
-          profiles.system = {
-            user = "root";
-            path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.monitor;
+        };
+
+        homeConfigurations = {
+          "wil@drake" = inputs.home-manager.lib.homeManagerConfiguration {
+            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+            modules = [
+              nixpkgsConf
+              {
+                home.username = "wil";
+                home.homeDirectory = "/home/wil";
+              }
+              ./home
+            ];
+            extraSpecialArgs = { inherit inputs; };
           };
         };
 
-        drake = {
-          hostname = "drake";
-          remoteBuild = true;
-          profiles.home = {
-            user = "wil";
-            path = inputs.deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@drake";
+        deploy.nodes = {
+          wil-mac = {
+            hostname = "wil-mac";
+            profiles.system = {
+              user = "root";
+              path = inputs.deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.wil-mac;
+            };
+          };
+
+          mbk = {
+            hostname = "mbk";
+            remoteBuild = true;
+            profiles.system = {
+              user = "root";
+              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.mbk;
+            };
+          };
+
+          monitor = {
+            hostname = "monitor";
+            remoteBuild = true;
+            profiles.system = {
+              user = "root";
+              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.monitor;
+            };
+          };
+
+          drake = {
+            hostname = "drake";
+            remoteBuild = true;
+            profiles.home = {
+              user = "wil";
+              path = inputs.deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@drake";
+            };
           };
         };
+
+        checks = builtins.mapAttrs (
+          system: deployLib: deployLib.deployChecks self.deploy
+        ) inputs.deploy-rs.lib;
       };
 
-      checks = builtins.mapAttrs (
-        system: deployLib: deployLib.deployChecks self.deploy
-      ) inputs.deploy-rs.lib;
+      systems = [
+        "x86_64-linux"
+        "x86_64-darwin"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
+
+      perSystem =
+        { pkgs, ... }:
+        {
+          devShells.default = pkgs.mkShell {
+            packages = [
+              inputs.deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
+            ];
+          };
+
+          formatter = pkgs.nixfmt-tree;
+        };
     };
 }
