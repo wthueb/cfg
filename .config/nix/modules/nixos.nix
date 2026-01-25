@@ -5,6 +5,8 @@
 {
   determinate.enable = true;
 
+  nix.settings.trusted-users = [ "wil" ];
+
   networking = {
     networkmanager.enable = true;
     firewall = {
