@@ -12,11 +12,14 @@
         nushell
         opencode
         starship
-        wezterm
+        #wezterm
         yabai
         ;
     }
   )
+  (final: prev: {
+    wezterm = inputs.wezterm.packages.${final.stdenv.hostPlatform.system}.default;
+  })
   (final: prev: {
     nushellPlugins = prev.nushellPlugins // {
       desktop_notifications = prev.nushellPlugins.desktop_notifications.overrideAttrs (old: rec {

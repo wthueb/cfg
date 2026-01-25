@@ -24,6 +24,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    wezterm = {
+      url = "github:JafarAbdi/wezterm/render_fix?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.rust-overlay.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     btop = {
       url = "github:aristocratos/btop/main";
       flake = false;
