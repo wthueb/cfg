@@ -79,40 +79,40 @@
   };
 
   launchd.user.agents.raycast = {
-    command = "${pkgs.raycast}/Applications/Raycast.app/Contents/MacOS/Raycast";
     serviceConfig = {
+      Program = "${pkgs.raycast}/Applications/Raycast.app/Contents/MacOS/Raycast";
       RunAtLoad = true;
       KeepAlive = true;
     };
   };
 
   launchd.user.agents.bartender = {
-    command = "\"${pkgs.bartender}/Applications/Bartender 5.app/Contents/MacOS/Bartender 5\"";
     serviceConfig = {
+      Program = "${pkgs.bartender}/Applications/Bartender 5.app/Contents/MacOS/Bartender 5";
       RunAtLoad = true;
       KeepAlive = true;
     };
   };
 
   #launchd.user.agents.bitwarden-desktop = {
-  #  command = "${pkgs.bitwarden-desktop}/bin/bitwarden";
   #  serviceConfig = {
+  #    Program = "${pkgs.bitwarden-desktop}/bin/bitwarden";
   #    RunAtLoad = true;
   #    KeepAlive = true;
   #  };
   #};
 
   launchd.user.agents.mouseless = {
-    command = "/Applications/Mouseless.app/Contents/MacOS/mouseless";
     serviceConfig = {
+      Program = "/Applications/Mouseless.app/Contents/MacOS/mouseless";
       RunAtLoad = true;
       KeepAlive = true;
     };
   };
 
   launchd.user.agents.wezterm = {
-    command = "${pkgs.wezterm}/bin/wezterm-mux-server";
     serviceConfig = {
+      Program = "${pkgs.wezterm}/bin/wezterm-mux-server";
       RunAtLoad = true;
       KeepAlive = true;
     };
