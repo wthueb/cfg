@@ -13,6 +13,7 @@
         opencode
         starship
         wezterm
+        yabai
         ;
     }
   )
