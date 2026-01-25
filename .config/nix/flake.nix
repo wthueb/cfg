@@ -39,6 +39,12 @@
       url = "github:catppuccin/btop/main";
       flake = false;
     };
+
+    deploy-rs = {
+      #url = "github:serokell/deploy-rs";
+      url = "github:szlend/deploy-rs/fix-show-derivation-parsing";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -139,5 +145,46 @@
           extraSpecialArgs = { inherit inputs; };
         };
       };
+
+      deploy.nodes = {
+        wil-mac = {
+          hostname = "wil-mac";
+          profiles.system = {
+            user = "root";
+            path = inputs.deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.wil-mac;
+          };
+        };
+
+        mbk = {
+          hostname = "mbk";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.mbk;
+          };
+        };
+
+        monitor = {
+          hostname = "monitor";
+          remoteBuild = true;
+          profiles.system = {
+            user = "root";
+            path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.monitor;
+          };
+        };
+
+        drake = {
+          hostname = "drake";
+          remoteBuild = true;
+          profiles.home = {
+            user = "wil";
+            path = inputs.deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@drake";
+          };
+        };
+      };
+
+      checks = builtins.mapAttrs (
+        system: deployLib: deployLib.deployChecks self.deploy
+      ) inputs.deploy-rs.lib;
     };
 }
