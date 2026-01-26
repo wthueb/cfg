@@ -41,7 +41,12 @@
   ];
 
   programs = {
-    bash.enable = true;
+    bash = {
+      enable = true;
+      profileExtra = ''
+        [[ -f ~/.profile.custom ]] && source ~/.profile.custom
+      '';
+    };
     bat.enable = true;
     btop = {
       enable = true;
