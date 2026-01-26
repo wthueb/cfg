@@ -160,7 +160,6 @@
 
           mbk = {
             hostname = "mbk";
-            remoteBuild = true;
             profiles.system = {
               user = "root";
               path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.mbk;
@@ -169,7 +168,6 @@
 
           monitor = {
             hostname = "monitor";
-            remoteBuild = true;
             profiles.system = {
               user = "root";
               path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.monitor;
@@ -178,7 +176,6 @@
 
           drake = {
             hostname = "drake";
-            remoteBuild = true;
             profiles.home = {
               user = "wil";
               path = inputs.deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@drake";
@@ -186,9 +183,6 @@
           };
         };
 
-        checks = builtins.mapAttrs (
-          system: deployLib: deployLib.deployChecks self.deploy
-        ) inputs.deploy-rs.lib;
       };
 
       systems = [
@@ -208,6 +202,10 @@
           };
 
           formatter = pkgs.nixfmt-tree;
+
+          checks = pkgs.lib.optionalAttrs pkgs.stdenv.isLinux (
+            inputs.deploy-rs.lib.${pkgs.stdenv.hostPlatform.system}.deployChecks self.deploy
+          );
         };
     };
 }
