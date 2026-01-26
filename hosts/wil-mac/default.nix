@@ -24,7 +24,6 @@
     sqlite
     #teamviewer
     thunderbird-esr
-    vscode
   ];
 
   programs.bash.enable = true;
