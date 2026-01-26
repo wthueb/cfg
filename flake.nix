@@ -183,6 +183,7 @@
           };
         };
 
+        checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
       };
 
       systems = [
@@ -202,10 +203,6 @@
           };
 
           formatter = pkgs.nixfmt-tree;
-
-          checks = pkgs.lib.optionalAttrs pkgs.stdenv.isLinux (
-            inputs.deploy-rs.lib.${pkgs.stdenv.hostPlatform.system}.deployChecks self.deploy
-          );
         };
     };
 }
