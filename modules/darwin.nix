@@ -2,9 +2,8 @@
   ...
 }:
 {
-  nix.enable = false;
-
-  determinate-nix.customSettings = {
-    trusted-users = [ "wil" ];
+  determinateNix = {
+    enable = true;
+    customSettings.trusted-users = [ "wil" ];
   };
 }
