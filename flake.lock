@@ -488,6 +488,7 @@
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-darwin": "nixpkgs-darwin",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "rust-overlay": "rust-overlay",
         "wezterm": "wezterm"
       }
     },
@@ -498,11 +499,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764470739,
-        "narHash": "sha256-sa9f81B1dWO16QtgDTWHX8DQbiHKzHndpaunY5EQtwE=",
+        "lastModified": 1769396217,
+        "narHash": "sha256-YNzh46h8fby49yOIB40lNoQ9ucVoXe1bHVwkZ4AwGe0=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "3bfa664055e1a09c6aedab5533c5fc8d6ca5741a",
+        "rev": "e9bcd12156a577ac4e47d131c14dc0293cc9c8c2",
         "type": "github"
       },
       "original": {
@@ -568,7 +569,9 @@
         "nixpkgs": [
           "nixpkgs-unstable"
         ],
-        "rust-overlay": "rust-overlay",
+        "rust-overlay": [
+          "rust-overlay"
+        ],
         "zlib": "zlib"
       },
       "locked": {

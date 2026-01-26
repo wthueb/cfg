@@ -24,10 +24,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     wezterm = {
       url = "github:JafarAbdi/wezterm/render_fix?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
-      inputs.rust-overlay.inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.rust-overlay.follows = "rust-overlay";
     };
 
     btop = {
@@ -183,7 +188,9 @@
           };
         };
 
-        checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
+        checks = builtins.mapAttrs (
+          system: deployLib: deployLib.deployChecks self.deploy
+        ) inputs.deploy-rs.lib;
       };
 
       systems = [
