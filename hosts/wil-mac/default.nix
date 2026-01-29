@@ -1,5 +1,6 @@
 {
   self,
+  config,
   pkgs,
   ...
 }:
@@ -66,6 +67,10 @@
       #"ubersicht" # not in nixpkgs
     ];
   };
+
+  home-manager.users.wil.home.sessionPath = [
+    config.homebrew.brewPrefix
+  ];
 
   services = {
     karabiner-elements.enable = true;
