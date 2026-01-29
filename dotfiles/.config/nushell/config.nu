@@ -242,6 +242,8 @@ if (cmd-exists batcat) {
 #    alias cat = bat --paging=auto
 #}
 
+alias rg = rg --hidden --smart-case
+
 match $nu.os-info.name {
     macos => {
         alias copy = pbcopy
