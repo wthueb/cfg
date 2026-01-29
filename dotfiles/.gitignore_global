@@ -7,7 +7,7 @@
 *.so
 
 # python stuff
-env/
+.venv/
 __pycache__
 *.pyc
 *.pyo
