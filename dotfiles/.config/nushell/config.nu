@@ -412,18 +412,9 @@ def "nix upgrade" [flake_path?: path] {
 def "config update" [] {
     git -C ~/.cfg fetch
 
-    let diff = (
-        git -C ~/.cfg diff HEAD..@{u} --name-only
-        | lines
-        | where { str starts-with dotfiles }
-    )
+    let head = git -C ~/.cfg rev-parse HEAD
 
-    if ($diff | is-empty) {
-        print "no changes in configuration"
-        return
-    }
-
-    if (git -C ~/.cfg rev-parse HEAD) == (git -C ~/.cfg rev-parse @{u}) {
+    if $head == (git -C ~/.cfg rev-parse @{u}) {
         print "configuration is already up to date"
         return
     }
@@ -431,6 +422,18 @@ def "config update" [] {
     git -C ~/.cfg pull --rebase --autostash
 
     if $nu.os-info.family == "windows" {
+        # windows doesn't need to worry about nix stuff and windows-install.nu is not very performant
+        let diff = (
+            git -C ~/.cfg diff $"($head)..HEAD" --name-only
+            | lines
+            | where { str starts-with "dotfiles" }
+        )
+
+        if ($diff | is-empty) {
+            print "no changes to dotfiles"
+            return
+        }
+
         ~/.cfg/windows-install.nu
     } else if (cmd-exists darwin-rebuild) or (cmd-exists nixos-rebuild) or (cmd-exists home-manager) {
         nix rebuild
