@@ -8,7 +8,12 @@
       # {
       #   hostName = "mbk";
       #   systems = [ "x86_64-linux" ];
-      #   supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+      #   supportedFeatures = [
+      #     "nixos-test"
+      #     "benchmark"
+      #     "big-parallel"
+      #     "kvm"
+      #   ];
       #   maxJobs = 4;
       #   protocol = "ssh-ng";
       #   sshUser = "wil";
@@ -17,7 +22,12 @@
       {
         hostName = "drake";
         systems = [ "x86_64-linux" ];
-        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
         maxJobs = 2;
         protocol = "ssh-ng";
         sshUser = "wil";
@@ -25,6 +35,9 @@
       }
     ];
     distributedBuilds = true;
-    customSettings.trusted-users = [ "wil" ];
+    customSettings = {
+      trusted-users = [ "wil" ];
+      builders-use-substitutes = true;
+    };
   };
 }
