@@ -21,7 +21,6 @@
     delta
     dig
     dua
-    gh
     gnugrep
     gnumake
     gnused
@@ -72,6 +71,10 @@
     };
     fd.enable = true;
     fzf.enable = true;
+    gh = {
+      enable = true;
+      extensions = [ pkgs.gh-markdown-preview ];
+    };
     git.enable = true;
     jq.enable = true;
     less = {
