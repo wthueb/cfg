@@ -143,15 +143,15 @@ $env.config.keybindings = [
         event: {
             send: ExecuteHostCommand,
             cmd: "commandline edit --replace (
-                      history |
-                      where exit_status == 0 |
-                      sort-by -r start_timestamp |
-                      get command |
-                      uniq |
-                      str join (char -i 0) |
-                      fzf --scheme=history --read0 --layout=reverse --height=40% -q (commandline) |
-                      decode utf-8 |
-                      str trim
+                      history
+                      | where exit_status == 0
+                      | sort-by -r start_timestamp
+                      | get command
+                      | uniq
+                      | str join (char -i 0)
+                      | fzf --scheme=history --read0 --layout=reverse --height=40% -q (commandline)
+                      | decode utf-8
+                      | str trim
                   )"
         }
     }
@@ -407,6 +407,36 @@ def "nix upgrade" [flake_path?: path] {
 
     nix flake update --flake $path
     nix rebuild $path
+}
+
+def "config update" [] {
+    git -C ~/.cfg fetch
+
+    let diff = (
+        git -C ~/.cfg diff HEAD..@{u} --name-only
+        | lines
+        | where { str starts-with dotfiles }
+    )
+
+    if ($diff | is-empty) {
+        print "no changes in configuration"
+        return
+    }
+
+    if (git -C ~/.cfg rev-parse HEAD) == (git -C ~/.cfg rev-parse @{u}) {
+        print "configuration is already up to date"
+        return
+    }
+
+    git -C ~/.cfg pull --rebase --autostash
+
+    if $nu.os-info.family == "windows" {
+        ~/.cfg/windows-install.nu
+    } else if (cmd-exists darwin-rebuild) or (cmd-exists nixos-rebuild) or (cmd-exists home-manager) {
+        nix rebuild
+    } else {
+        print "don't know how to apply new configuration"
+    }
 }
 
 source (if ('~/.config/nushell/nix/config.nu' | path exists) { '~/.config/nushell/nix/config.nu' } else { null })
