@@ -4,11 +4,6 @@
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    determinate = {
-      url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs-darwin";
@@ -19,43 +14,50 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    i915-sriov = {
-      url = "github:strongtz/i915-sriov-dkms?ref=2025.12.10";
+    determinate = {
+      url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-
-    wezterm = {
-      url = "github:JafarAbdi/wezterm/render_fix?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-      inputs.rust-overlay.follows = "rust-overlay";
-    };
-
-    btop = {
-      url = "github:aristocratos/btop/main";
-      flake = false;
-    };
-
-    catppuccin-btop = {
-      url = "github:catppuccin/btop/main";
-      flake = false;
     };
 
     deploy-rs = {
       #url = "github:serokell/deploy-rs";
       url = "github:szlend/deploy-rs/fix-show-derivation-parsing";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.utils.follows = "flake-utils";
     };
 
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    i915-sriov = {
+      url = "github:strongtz/i915-sriov-dkms?ref=2025.12.10";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    wezterm = {
+      url = "github:JafarAbdi/wezterm/render_fix?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.rust-overlay.follows = "rust-overlay";
+      inputs.flake-utils.follows = "flake-utils";
+    };
 
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # deduped inputs
+    flake-utils.url = "github:numtide/flake-utils";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    btop = {
+      url = "github:aristocratos/btop/main";
+      flake = false;
+    };
+    catppuccin-btop = {
+      url = "github:catppuccin/btop/main";
+      flake = false;
     };
   };
 

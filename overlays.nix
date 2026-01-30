@@ -23,7 +23,7 @@
   (final: prev: {
     nushellPlugins = prev.nushellPlugins // {
       desktop_notifications = prev.nushellPlugins.desktop_notifications.overrideAttrs (old: rec {
-        version = "0.109.1";
+        version = final.nushell.version;
         src = final.fetchFromGitHub {
           owner = "FMotalleb";
           repo = "nu_plugin_desktop_notifications";
