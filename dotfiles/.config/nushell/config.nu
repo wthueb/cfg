@@ -213,25 +213,13 @@ alias lla = ls -la
 alias vim = nvim
 alias vi = nvim
 
-alias p = python
-
 alias ffmpeg = ffmpeg -hide_banner
 alias ffprobe = ffprobe -hide_banner
 alias ffplay = ffplay -hide_banner
 
 alias icat = wezterm imgcat
 
-if (cmd-exists fdfind) {
-    alias fd = fdfind
-}
-
-if (cmd-exists batcat) {
-    alias bat = batcat
-}
-
-#if (cmd-exists bat) {
-#    alias cat = bat --paging=auto
-#}
+alias cat = bat --paging=auto
 
 alias fd = fd --hidden
 alias rg = rg --hidden --smart-case

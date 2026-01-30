@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   inputs,
   ...
 }:
@@ -34,7 +35,6 @@
     openssh
     python3
     rustup
-    tmux
     tree
     unzip
     vivid
@@ -129,6 +129,32 @@
         };
       };
     };
+    tmux = {
+      enable = true;
+      keyMode = "vi";
+      prefix = "C-b";
+      focusEvents = true;
+      mouse = true;
+      baseIndex = 1;
+      sensibleOnTop = true;
+      plugins = with pkgs.tmuxPlugins; [
+        sensible
+        resurrect
+        {
+          plugin = continuum;
+          extraConfig = ''
+            set -g @continuum-restore 'on'
+            set -g @continuum-save-interval '5'
+          '';
+        }
+        {
+          plugin = catppuccin;
+          extraConfig = ''
+            set -g @catppuccin_flavor 'mocha'
+          '';
+        }
+      ];
+    };
     uv.enable = true;
     wezterm.enable = true;
   };
@@ -147,7 +173,6 @@
   xdg.enable = true;
 
   home.file =
-    with pkgs;
     let
       listFilesRecursive =
         dir: acc:
