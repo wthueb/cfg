@@ -4,8 +4,11 @@
     enable = pkgs.stdenv.isDarwin;
     package =
       let
+        # called in skhdrc, needed for skhd status in bar
         extraPackages = [
-          pkgs.sketchybar # called in skhdrc, needed for skhd status in bar
+          pkgs.sketchybar
+          pkgs.wezterm
+          pkgs.yabai
         ];
         makeWrapperArgs = [
           "--prefix"

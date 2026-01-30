@@ -1,9 +1,4 @@
-{
-  self,
-  pkgs,
-  inputs,
-  ...
-}:
+{ ... }:
 {
   fileSystems."/mnt/plex" = {
     # specify IP to avoid going through tailscale

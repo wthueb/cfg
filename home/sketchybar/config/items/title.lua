@@ -3,12 +3,6 @@ local sbar = require("sketchybar")
 sbar.add("event", "window_focus")
 sbar.add("event", "title_change")
 
-sbar.exec([[
-  yabai -m signal --add event=window_title_changed \
-                        active=yes \
-                        action="sketchybar --trigger title_change"
-]])
-
 local title = sbar.add("item", "title", {
     position = "left",
     icon = { drawing = false },

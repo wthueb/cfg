@@ -89,8 +89,8 @@
           modules = [
             nixpkgsConf
             inputs.determinate.darwinModules.default
-            ./modules/darwin.nix
-            ./common.nix
+            ./modules/darwin
+            ./modules/common.nix
             inputs.home-manager.darwinModules.home-manager
             homeConfig
           ]
@@ -109,8 +109,8 @@
           modules = [
             nixpkgsConf
             inputs.determinate.nixosModules.default
-            ./modules/nixos.nix
-            ./common.nix
+            ./modules/nixos
+            ./modules/common.nix
             inputs.home-manager.nixosModules.home-manager
             homeConfig
           ]
@@ -217,19 +217,20 @@
               ];
             };
 
-            sketchybar = pkgs.mkShell {
-              packages = with pkgs; [
-                lua5_4
-                sbarlua
-                lua54Packages.inspect
-              ];
-              env = {
-                LUA_CPATH = lib.concatMapStringsSep ";" pkgs.lua54Packages.getLuaCPath [
-                  pkgs.sbarlua
-                  pkgs.lua54Packages.inspect
+            sketchybar =
+              let
+                libs = with pkgs; [
+                  sbarlua
+                  lua54Packages.inspect
                 ];
+              in
+              pkgs.mkShell {
+                packages = [ pkgs.lua5_4 ] ++ libs;
+                env = {
+                  LUA_PATH = lib.concatMapStringsSep ";" pkgs.lua54Packages.getLuaPath libs;
+                  LUA_CPATH = lib.concatMapStringsSep ";" pkgs.lua54Packages.getLuaCPath libs;
+                };
               };
-            };
           };
 
           treefmt = {

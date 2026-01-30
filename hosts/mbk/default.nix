@@ -6,7 +6,7 @@
 {
   imports = [
     ./hardware.nix
-    ../../modules/plex.nix
+    ../../modules/nixos/plex.nix
   ];
 
   fileSystems."/mnt/data" = {

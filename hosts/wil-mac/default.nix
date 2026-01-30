@@ -5,6 +5,9 @@
   ...
 }:
 {
+  imports = [
+    ../../modules/darwin/yabai.nix
+  ];
   environment.systemPackages = with pkgs; [
     bartender
     bitwarden-desktop
@@ -72,60 +75,7 @@
     config.homebrew.brewPrefix
   ];
 
-  services = {
-    karabiner-elements.enable = true;
-    yabai = {
-      enable = true;
-      enableScriptingAddition = true;
-      config = {
-        debug_output = "off";
-        layout = "bsp";
-        split_ratio = 0.5;
-        split_type = "auto";
-        auto_balance = "on";
-        top_padding = 0;
-        bottom_padding = 0;
-        left_padding = 0;
-        right_padding = 0;
-        window_gap = 0;
-        mouse_follows_focus = "off";
-        focus_follows_mouse = "off";
-        window_opacity = "off";
-        active_window_opacity = 1.0;
-        normal_window_opacity = 0.9;
-        window_shadow = "float";
-        insert_feedback_color = "0xffd75f5f";
-        window_origin_display = "default";
-        window_placement = "second_child";
-        window_zoom_persist = "on";
-        window_animation_duration = 0.0;
-        window_animation_frame_rate = 120;
-        window_opacity_duration = 0.0;
-        mouse_modifier = "alt";
-        mouse_action1 = "move";
-        mouse_action2 = "resize";
-        mouse_drop_action = "swap";
-      };
-      extraConfig = ''
-        yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
-
-        yabai -m rule --add app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off layer=above
-        yabai -m rule --add app="^System Settings$" manage=off sticky=on
-        yabai -m rule --add app="^App Store$" manage=off
-        yabai -m rule --add app="^Bitwarden$" manage=off
-        yabai -m rule --add app="^Digital Color Meter$" manage=off sticky=on layer=above
-        yabai -m rule --add app="^IINA$" manage=off
-        yabai -m rule --add app="^Raycast$" manage=off
-        yabai -m rule --add title="^Picture in Picture$" manage=off sticky=on
-        yabai -m rule --add app="^GIMP$" title!="GIMP$" title!="^GNU Image Manipulation Program$" manage=off
-        yabai -m rule --add app="^CleanShot X$" manage=off
-        yabai -m rule --add app="^Google Drive$" manage=off
-
-        SPACEBAR_HEIGHT=$(sketchybar --query bar | jq .height)
-        yabai -m config external_bar "all:''\${SPACEBAR_HEIGHT}:0"
-      '';
-    };
-  };
+  services.karabiner-elements.enable = true;
 
   launchd.user.agents.raycast = {
     serviceConfig = {
@@ -244,7 +194,6 @@
   security = {
     accessibilityPrograms = [
       "${pkgs.skhd}/bin/skhd"
-      "${pkgs.yabai}/bin/yabai"
     ];
 
     pam.services.sudo_local.touchIdAuth = true;

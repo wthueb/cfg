@@ -1,6 +1,4 @@
-{
-  ...
-}:
+{ ... }:
 {
   determinateNix = {
     enable = true;
