@@ -163,10 +163,11 @@ $env.config.keybindings = [
         event: {
             send: ExecuteHostCommand,
             cmd: "commandline edit --insert (
-                      fd --hidden --follow . |
-                      fzf --layout=reverse --scheme=path --height=40% |
-                      decode utf-8 |
-                      str trim
+                      fd --hidden --follow --print0 .
+                      | fzf --scheme=path --read0 --layout=reverse --height=40%
+                      | decode utf-8
+                      | str trim
+                      | if ' ' in $in { $'`($in)`' } else { $in }
                   )"
         }
     }
@@ -178,10 +179,10 @@ $env.config.keybindings = [
         event: {
             send: ExecuteHostCommand,
             cmd: "cd (
-                      fd --type d --hidden --follow . |
-                      fzf --reverse --scheme=path --height=40% |
-                      decode utf-8 |
-                      str trim
+                      fd --type d --hidden --follow --print0 .
+                      | fzf --scheme=path --read0 --layout=reverse --height=40%
+                      | decode utf-8
+                      | str trim
                   )"
         }
     }
