@@ -23,23 +23,24 @@
     delta
     dig
     dua
-    gnugrep
     gnumake
-    gnused
-    gnutar
     jc
+    nerd-fonts.fira-code
+    nerd-fonts.sauce-code-pro
+    nil
     nixfmt-rfc-style
     nodejs
     opencode
     openssh
     python3
-    rsync
     rustup
     tmux
     tree
     unzip
     vivid
   ];
+
+  fonts.fontconfig.enable = true;
 
   programs = {
     bash = {

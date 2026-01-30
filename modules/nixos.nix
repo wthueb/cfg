@@ -45,12 +45,6 @@
     keyMap = "us";
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    neovim
-    wget
-  ];
-
   programs.nix-ld.enable = true;
 
   services.openssh = {
@@ -81,7 +75,7 @@
 
   systemd.settings.Manager.RunTimeWatchdogSec = "30s";
 
-  users.users."wil" = {
+  users.users.wil = {
     name = "wil";
     uid = 1000;
     home = "/home/wil";

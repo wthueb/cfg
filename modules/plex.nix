@@ -15,7 +15,7 @@
 
   users.groups.plex.gid = 5000;
 
-  users.users."wil" = {
+  users.users.wil = {
     extraGroups = [ "plex" ];
   };
 }

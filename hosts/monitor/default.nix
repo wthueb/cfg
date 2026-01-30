@@ -131,7 +131,7 @@
 
   services.prometheus.exporters.snmp = {
     enable = true;
-    configurationPath = ./snmp-exporter-conf.yml;
+    configurationPath = ./snmp-exporter-conf.yaml;
   };
 
   services.grafana = {

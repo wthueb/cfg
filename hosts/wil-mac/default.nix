@@ -74,7 +74,6 @@
 
   services = {
     karabiner-elements.enable = true;
-    tailscale.enable = true;
     yabai = {
       enable = true;
       enableScriptingAddition = true;

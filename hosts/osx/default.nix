@@ -1,16 +1,5 @@
+{ self, ... }:
 {
-  self,
-  pkgs,
-  ...
-}:
-{
-  environment.systemPackages = with pkgs; [
-  ];
-
-  services = {
-    tailscale.enable = true;
-  };
-
   security.sudo.extraConfig = ''
     wil ALL=(ALL) NOPASSWD: ALL
   '';

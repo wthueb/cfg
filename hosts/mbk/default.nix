@@ -31,7 +31,7 @@
     logDriver = "local";
   };
 
-  users.users."wil".extraGroups = [ "docker" ];
+  users.users.wil.extraGroups = [ "docker" ];
 
   services.qemuGuest.enable = true;
 
