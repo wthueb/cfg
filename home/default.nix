@@ -137,6 +137,11 @@
       mouse = true;
       baseIndex = 1;
       sensibleOnTop = true;
+      extraConfig = ''
+        # the PATH and such gets screwed on macos due to our bash -> nushell
+        # startup stuff if we use a login shell in tmux
+        set-option -g default-command "''${SHELL}"
+      '';
       plugins = with pkgs.tmuxPlugins; [
         sensible
         resurrect
