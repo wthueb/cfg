@@ -195,16 +195,6 @@ $env.config.keybindings = [
             cmd: "commandline edit --insert (gh gist search)"
         }
     }
-    {
-        name: tmux-sessionizer
-        modifier: control
-        keycode: char_f
-        mode: [emacs vi_normal vi_insert]
-        event: {
-            send: ExecuteHostCommand,
-            cmd: "tmux-sessionizer"
-        }
-    }
 ]
 
 def cmd-exists [cmd: string] {
