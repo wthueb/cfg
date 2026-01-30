@@ -6,6 +6,8 @@
 {
   imports = [
     ./nu.nix
+    ./sketchybar
+    ./skhd
   ];
 
   programs.home-manager.enable = true;
@@ -117,16 +119,6 @@
       '';
     };
     ripgrep.enable = true;
-    sketchybar = {
-      enable = pkgs.stdenv.isDarwin;
-      configType = "lua";
-      luaPackage = pkgs.lua5_4;
-      sbarLuaPackage = pkgs.sbarlua;
-      config = {
-        source = ../configs/sketchybar;
-        recursive = true;
-      };
-    };
     starship.enable = true;
     tealdeer = {
       enable = true;
@@ -143,7 +135,6 @@
   home.shell.enableShellIntegration = true;
 
   services = {
-    skhd.enable = pkgs.stdenv.isDarwin;
     ssh-agent.enable = true;
   };
 

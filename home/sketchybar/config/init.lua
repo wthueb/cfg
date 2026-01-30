@@ -54,6 +54,7 @@ sbar.default({
 
 require("items.spaces")
 require("items.title")
+require("items.skhd_status")
 require("items.calendar")
 require("items.battery")
 require("items.wifi")
