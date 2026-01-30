@@ -242,6 +242,7 @@ if (cmd-exists batcat) {
 #    alias cat = bat --paging=auto
 #}
 
+alias fd = fd --hidden
 alias rg = rg --hidden --smart-case
 
 match $nu.os-info.name {
