@@ -1,14 +1,27 @@
 #!/usr/bin/env nu
 
+def rm-with-parents [path: string] {
+    mut path = $path | path expand
+
+    rm -v $path
+
+    mut parent = $path | path parse | get parent
+
+    while not ($parent | is-empty) and (ls $parent | is-empty) {
+        rm -v $parent
+        $parent = $parent | path parse | get parent
+    }
+}
+
 def main [] {
     const dotfiles = path self | path dirname | path join 'dotfiles'
 
     let existing = (
-        fd --type symlink --hidden . $nu.home-dir
+        fd --type symlink --hidden . $nu.home-dir -E 'AppData'
         | lines
-        | each { path expand --no-symlink }
-        | wrap source
-        | insert target { $in.source | path expand }
+        | each --flatten { ls -l ($in | path expand --no-symlink) }
+        | select name target
+        | rename source target
         | where (try { $it.target | path relative-to $dotfiles } catch { null }) != null
     )
 
@@ -25,7 +38,15 @@ def main [] {
     let to_create = $files | where $it not-in $existing
 
     for remove in $to_remove {
-        rm -v $remove.source
+        rm-with-parents $remove.source
+    }
+
+    let removed_dirs = $to_remove | each { $in.source | path dirname } | uniq
+
+    for dir in $removed_dirs {
+        if (ls $dir | is-empty) {
+            rm -v $dir
+        }
     }
 
     for create in $to_create {
