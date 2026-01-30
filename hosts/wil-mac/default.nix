@@ -74,7 +74,6 @@
 
   services = {
     karabiner-elements.enable = true;
-    sketchybar.enable = true;
     tailscale.enable = true;
     yabai = {
       enable = true;

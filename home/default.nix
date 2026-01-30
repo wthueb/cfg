@@ -117,6 +117,14 @@
       '';
     };
     ripgrep.enable = true;
+    sketchybar = {
+      enable = pkgs.stdenv.isDarwin;
+      configType = "bash";
+      config = {
+        source = ../configs/sketchybar;
+        recursive = true;
+      };
+    };
     starship.enable = true;
     tealdeer = {
       enable = true;
