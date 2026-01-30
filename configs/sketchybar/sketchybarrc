@@ -1,68 +1,11 @@
-#!/usr/bin/env bash
+#!/usr/bin/env lua
 
-source "$CONFIG_DIR/colors.sh"
-source "$CONFIG_DIR/icons.sh"
+local sbar = require("sketchybar")
 
-FONT="SauceCodePro Nerd Font"
+sbar.begin_config()
+require("init")
+sbar.end_config()
 
-# disable the native volume popup
-launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist > /dev/null 2>&1 &
+sbar.hotload(true)
 
-bar=(
-  height=32
-  color="$COLOR_BG"
-  border_width=0
-  shadow=off
-  position=top
-  sticky=on
-  padding_left=10
-  padding_right=10
-  y_offset=0
-  margin=0
-  topmost=window
-)
-
-sketchybar --bar "${bar[@]}"
-
-# Setting up default values
-defaults=(
-  updates=when_shown
-  icon.font="$FONT:Bold:14.0"
-  icon.color="$COLOR_ICON"
-  icon.padding_left=0
-  icon.padding_right=0
-  label.font="$FONT:Semibold:13.0"
-  label.color="$COLOR_TEXT"
-  label.padding_left=0
-  label.padding_right=0
-  background.height=26
-  background.padding_left=5
-  background.padding_right=5
-  background.corner_radius=8
-  background.border_width=2
-  popup.background.border_width=1
-  popup.background.corner_radius=3
-  popup.background.border_color="$COLOR_MODAL_BORDER"
-  popup.background.color="$COLOR_MODAL_BG"
-  popup.blur_radius=20
-  popup.background.shadow.drawing=on
-)
-
-sketchybar --default "${defaults[@]}"
-
-# left
-source "spaces/item.sh"
-source "title/item.sh"
-
-source "skhd_status.sh"
-
-# right
-source "calendar/item.sh"
-source "battery/item.sh"
-source "wifi/item.sh"
-source "volume/item.sh"
-
-# forcing all item scripts to run (never do this outside of sketchybarrc)
-sketchybar --update
-
-echo "sketchybar configuation loaded.."
+sbar.event_loop()

@@ -21,4 +21,3 @@ function table.shallow_copy(t)
     end
     return t2
 end
-

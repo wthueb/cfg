@@ -52,6 +52,11 @@
     };
 
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -114,6 +119,8 @@
         };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [ inputs.treefmt-nix.flakeModule ];
+
       flake = {
         darwinConfigurations."wil-mac" = mkDarwinSystem {
           system = "aarch64-darwin";
@@ -201,15 +208,36 @@
       ];
 
       perSystem =
-        { pkgs, ... }:
+        { pkgs, lib, ... }:
         {
-          devShells.default = pkgs.mkShell {
-            packages = [
-              inputs.deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
-            ];
+          devShells = {
+            default = pkgs.mkShell {
+              packages = [
+                inputs.deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
+              ];
+            };
+
+            sketchybar = pkgs.mkShell {
+              packages = with pkgs; [
+                lua5_4
+                sbarlua
+                lua54Packages.inspect
+              ];
+              env = {
+                LUA_CPATH = lib.concatMapStringsSep ";" pkgs.lua54Packages.getLuaCPath [
+                  pkgs.sbarlua
+                  pkgs.lua54Packages.inspect
+                ];
+              };
+            };
           };
 
-          formatter = pkgs.nixfmt-tree;
+          treefmt = {
+            projectRootFile = "flake.nix";
+
+            programs.nixfmt.enable = true;
+            programs.stylua.enable = true;
+          };
         };
     };
 }

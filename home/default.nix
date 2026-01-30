@@ -119,7 +119,9 @@
     ripgrep.enable = true;
     sketchybar = {
       enable = pkgs.stdenv.isDarwin;
-      configType = "bash";
+      configType = "lua";
+      luaPackage = pkgs.lua5_4;
+      sbarLuaPackage = pkgs.sbarlua;
       config = {
         source = ../configs/sketchybar;
         recursive = true;
