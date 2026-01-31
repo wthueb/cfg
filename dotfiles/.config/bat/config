@@ -1,1 +1,6 @@
 --theme="Catppuccin Mocha"
+
+# -R is for escape codes to not break everything
+# -F is for quitting if it fits on one screen (bat already does this tho)
+# -X is for not using an altscreen so it shows in the scrollback
+--pager="less -RFX"
