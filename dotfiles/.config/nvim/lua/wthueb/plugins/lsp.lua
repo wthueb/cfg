@@ -7,6 +7,8 @@ return {
         {
             "mason-org/mason.nvim",
             version = "^2.0.0",
+            ---@module "mason"
+            ---@type MasonSettings
             opts = {
                 registries = {
                     "github:mason-org/mason-registry",
@@ -17,6 +19,8 @@ return {
         { "mason-org/mason-lspconfig.nvim", version = "^2.0.0", opts = {} },
         {
             "WhoIsSethDaniel/mason-tool-installer",
+            ---@module "mason-tool-installer"
+            ---@type MasonToolInstallerSettings
             opts = {
                 ensure_installed = {
                     "angularls",
@@ -30,7 +34,7 @@ return {
                     "prettier",
                     "ruff",
                     "rust_analyzer",
-                    "lua_ls",
+                    { "lua_ls", version = "3.16.4" },
                     "stylua",
                     "vtsls",
                     "yamlls",
@@ -41,11 +45,26 @@ return {
         { "creativenull/efmls-configs-nvim", version = "^1.0.0" },
         {
             "seblyng/roslyn.nvim",
-            opts = {
-                broad_search = true,
-            },
+            ---@module "roslyn"
+            ---@type RoslynNvimConfig
+            opts = { broad_search = true },
         },
         { "marilari88/twoslash-queries.nvim", opts = {} },
+        {
+            "folke/lazydev.nvim",
+            ft = "lua",
+            dependencies = {
+                { "DrKJeff16/wezterm-types", lazy = true, version = false },
+            },
+            ---@module "lazydev"
+            ---@type lazydev.Config
+            opts = {
+                library = {
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                    { path = "wezterm-types", mods = { "wezterm" } },
+                },
+            },
+        },
     },
 
     config = function()
@@ -244,9 +263,7 @@ return {
         local lspconfig = require("lspconfig")
         local capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-        vim.lsp.config("*", {
-            capabilities = capabilities,
-        })
+        vim.lsp.config("*", { capabilities = capabilities })
 
         local prettier = require("efmls-configs.formatters.prettier")
 
