@@ -48,19 +48,18 @@ end)
 workspace_switcher.get_choices = function()
     ---@alias Choice {label: string, id: string}
     ---@type Choice[]
-    local choices = workspace_switcher.choices.get_workspace_elements({})
+    local workspaces = workspace_switcher.choices.get_workspace_elements({})
 
     -- put ~ workspace at the top
-
-    for i, choice in ipairs(choices) do
+    for i, choice in ipairs(workspaces) do
         if choice.id == "~" then
-            table.remove(choices, i)
-            table.insert(choices, 1, choice)
+            table.remove(workspaces, i)
+            table.insert(workspaces, 1, choice)
             break
         end
     end
 
-    local workspaces = table.shallow_copy(choices)
+    local choices = table.shallow_copy(workspaces)
 
     ---@param potential Choice
     local function check_exists(potential)
@@ -81,39 +80,45 @@ workspace_switcher.get_choices = function()
         return exists
     end
 
+    ---@param choice Choice
+    local function add_choice(choice)
+        local exists = check_exists(choice)
+
+        if not exists then
+            table.insert(choices, choice)
+        end
+    end
+
     ---@param path string
-    local function add_dirs(path)
-        ---@type boolean, string, string
+    local function add_raw(path)
+        local label = path:gsub(wezterm.home_dir, "~")
+        add_choice({ label = label, id = path })
+    end
+
+    ---@param path string
+    local function add_dir(path)
         local _, stdout, _ = wezterm.run_child_process({
             "fd",
             "-t",
             "d",
             "-Ha",
+            "--max-depth=1",
             ".",
             path,
-            "--max-depth=1",
         })
 
         for line in stdout:gmatch("[^\n]*\n?") do
-            ---@type string
-            line = line:match("^%s*(.-)[\\/]?%s*$") -- trim whitepsace
+            line = line:match("^%s*(.-)[\\/]?%s*$") -- trim whitepsace and trailing slash
 
             local label = line:gsub(wezterm.home_dir, "~")
 
-            local potential = { label = label, id = line }
-
-            local exists = check_exists(potential)
-
-            if not exists then
-                table.insert(choices, potential)
-            end
+            add_choice({ label = label, id = line })
         end
     end
 
     ---@param path string
-    local function add_git_dirs(path)
-        ---@type boolean, string, string
-        local _, stdout, _ = wezterm.run_child_process({
+    local function add_git_dir(path)
+        local _, stdout, stderr = wezterm.run_child_process({
             "fd",
             "-t",
             "d",
@@ -129,19 +134,14 @@ workspace_switcher.get_choices = function()
             "dirname",
         })
 
+        print(stderr)
+
         for line in stdout:gmatch("[^\n]*\n?") do
-            ---@type string
             line = line:match("^%s*(.-)%s*$") -- trim whitepsace
 
             local dir = string.basename(line)
 
-            local potential = { label = dir, id = line }
-
-            local exists = check_exists(potential)
-
-            if not exists then
-                table.insert(choices, potential)
-            end
+            add_choice({ label = dir, id = line })
         end
     end
 
@@ -149,18 +149,16 @@ workspace_switcher.get_choices = function()
 
     if file then
         for line in file:lines() do
-            line = line
+            line = line:gsub("~", wezterm.home_dir)
+
             local method, path = line:match("^(%w+) (.-)$")
-            if method == nil or path == nil then
-                local label = line:gsub(wezterm.home_dir, "~")
-                table.insert(choices, { label = label, id = line })
+
+            if method == nil or path == nil or method == "raw" then
+                add_raw(line)
             elseif method == "git" then
-                add_git_dirs(path)
+                add_git_dir(path)
             elseif method == "dir" then
-                add_dirs(path)
-            elseif method == "raw" then
-                local label = path:gsub(wezterm.home_dir, "~")
-                table.insert(choices, { label = label, id = path })
+                add_dir(path)
             end
         end
         file:close()
@@ -175,7 +173,7 @@ workspace_switcher.get_choices = function()
     end
 
     if not has_default then
-        table.insert(choices, 1, { id = wezterm.home_dir, label = "~" })
+        table.insert(choices, 1, { label = "~", id = wezterm.home_dir })
     end
 
     return choices
