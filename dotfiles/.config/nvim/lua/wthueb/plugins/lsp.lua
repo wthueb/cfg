@@ -26,16 +26,18 @@ return {
                     "angularls",
                     "basedpyright",
                     "cssls",
+                    "docker-language-server",
                     "efm",
                     "emmet_language_server",
                     "eslint",
                     "html",
                     "jsonls",
+                    { "lua_ls", version = "3.16.4" },
                     "prettier",
                     "ruff",
                     "rust_analyzer",
-                    { "lua_ls", version = "3.16.4" },
                     "stylua",
+                    "systemd-lsp",
                     "vtsls",
                     "yamlls",
                 },
@@ -343,23 +345,6 @@ return {
             },
         })
 
-        vim.lsp.config("nil_ls", {
-            settings = {
-                ["nil"] = {
-                    formatting = {
-                        command = { "nixfmt" },
-                    },
-                    nix = {
-                        flake = {
-                            autoArchive = true,
-                            autoEvalInputs = true,
-                            nixpkgsInputName = "nixpkgs",
-                        },
-                    },
-                },
-            },
-        })
-
         vim.lsp.config("cssls", {
             filetypes = {
                 "css",
@@ -379,5 +364,23 @@ return {
         })
 
         vim.lsp.enable("nushell")
+
+        vim.lsp.config("nil_ls", {
+            settings = {
+                ["nil"] = {
+                    formatting = {
+                        command = { "nixfmt" },
+                    },
+                    nix = {
+                        flake = {
+                            autoArchive = true,
+                            autoEvalInputs = true,
+                            nixpkgsInputName = "nixpkgs",
+                        },
+                    },
+                },
+            },
+        })
+        vim.lsp.enable("nil_ls", vim.fn.executable("nil") == 1)
     end,
 }

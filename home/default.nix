@@ -24,17 +24,13 @@
     delta
     dig
     dua
-    gnumake
     jc
     nerd-fonts.fira-code
     nerd-fonts.sauce-code-pro
     nil
     nixfmt-rfc-style
-    nodejs
     opencode
     openssh
-    python3
-    rustup
     tree
     unzip
     vivid
@@ -100,7 +96,13 @@
         u back-scroll
       '';
     };
-    neovim.enable = true;
+    neovim = {
+      enable = true;
+      extraPackages = [
+        pkgs.nodejs
+        pkgs.python3
+      ];
+    };
     readline = {
       enable = true;
       extraConfig = ''
