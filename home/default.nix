@@ -182,22 +182,26 @@
   home.file =
     let
       listFilesRecursive =
-        dir: acc:
+        rootDir: relativePath:
         lib.flatten (
           lib.mapAttrsToList (
-            k: v: if v == "regular" then "${acc}${k}" else listFilesRecursive dir "${acc}${k}/"
-          ) (builtins.readDir "${dir}/${acc}")
+            basename: type:
+            if type == "regular" then
+              "${relativePath}${basename}"
+            else
+              listFilesRecursive rootDir "${relativePath}${basename}/"
+          ) (builtins.readDir "${rootDir}/${relativePath}")
         );
 
       toHomeFiles =
-        dir:
+        rootDir:
         builtins.listToAttrs (
-          map (x: {
-            name = x;
+          map (relativePath: {
+            name = relativePath;
             value = {
-              source = "${dir}/${x}";
+              source = "${rootDir}/${relativePath}";
             };
-          }) (listFilesRecursive dir "")
+          }) (listFilesRecursive rootDir "")
         );
     in
     toHomeFiles ../dotfiles;
