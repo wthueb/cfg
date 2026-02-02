@@ -20,8 +20,7 @@
     };
 
     deploy-rs = {
-      #url = "github:serokell/deploy-rs";
-      url = "github:szlend/deploy-rs/fix-show-derivation-parsing";
+      url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.utils.follows = "flake-utils";
     };
