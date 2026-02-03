@@ -10,15 +10,12 @@ Set-Alias -Name cat -Value bat -Option AllScope
 Set-Alias p python
 Set-Alias vim nvim
 
-function config { git --git-dir=$HOME\.cfg --work-tree=$HOME $args }
-
 Import-Module PSReadLine
 Set-PSReadLineOption -EditMode vi
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd:$true
 Set-PSReadLineKeyHandler -Key Tab -Function Complete
 
-Import-Module PSFzf
-Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
+Import-Module gsudoModule
 
 # Import the Chocolatey Profile that contains the necessary code to enable
 # tab-completions to function for `choco`.
