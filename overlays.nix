@@ -1,44 +1,31 @@
 { inputs }:
 [
-  (
-    final: prev:
-    let
-      unstable = inputs.nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system};
-    in
-    {
-      inherit (unstable)
-        carapace
-        neovim
-        nushell
-        opencode
-        starship
-        #wezterm
-        yabai
-        ;
-    }
-  )
   (final: prev: {
-    wezterm = inputs.wezterm.packages.${final.stdenv.hostPlatform.system}.default;
+    inherit (inputs.nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system})
+      carapace
+      neovim
+      nushell
+      nushellPlugins
+      opencode
+      starship
+      #wezterm
+      yabai
+      ;
+  })
+  (final: prev: {
+    nushell = prev.nushell.overrideAttrs (old: {
+      doCheck = false;
+    });
   })
   (final: prev: {
     nushellPlugins = prev.nushellPlugins // {
-      desktop_notifications = prev.nushellPlugins.desktop_notifications.overrideAttrs (old: rec {
-        version = final.nushell.version;
-        src = final.fetchFromGitHub {
-          owner = "FMotalleb";
-          repo = "nu_plugin_desktop_notifications";
-          tag = "v${version}";
-          hash = "sha256-eNdaaOgQWd5qZQG9kypzpMsHiKX7J5BXPSsNLJYCVTo=";
-        };
-        cargoDeps = final.rustPlatform.fetchCargoVendor {
-          inherit src;
-          hash = "sha256-Mo+v3725jVNTCy7qjvTnDDN2JSAI48tpPCoQoewo4wM=";
-        };
-        meta = old.meta // {
-          platforms = final.lib.platforms.linux ++ final.lib.platforms.darwin;
-        };
+      desktop_notifications = prev.nushellPlugins.desktop_notifications.overrideAttrs (old: {
+        meta.platforms = prev.lib.platforms.linux ++ prev.lib.platforms.darwin;
       });
     };
+  })
+  (final: prev: {
+    wezterm = inputs.wezterm.packages.${final.stdenv.hostPlatform.system}.default;
   })
   (final: prev: {
     karabiner-elements = prev.karabiner-elements.overrideAttrs (old: {
