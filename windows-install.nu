@@ -1,5 +1,11 @@
 #!/usr/bin/env nu
 
+let windows_links = {
+    "~/.config/nushell": "~/AppData/Roaming/nushell",
+    "~/.config/nvim": "~/AppData/Local/nvim",
+    "~/.config/powershell": "~/Documents/Powershell"
+};
+
 def rm-with-parents [path: string] {
     mut path = $path | path expand
 
@@ -59,4 +65,8 @@ def main [] {
 
         ln -sv $create.target $create.source
     }
+
+    ln -sv ~/.config/nushell ~/AppData/Roaming/nushell
+    ln -sv ~/.config/nvim ~/AppData/Local/nvim
+    ln -sv ~/.config/powershell ~/Documents/Powershell
 }
