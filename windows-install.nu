@@ -1,10 +1,19 @@
 #!/usr/bin/env nu
 
-let windows_links = {
-    "~/.config/nushell": "~/AppData/Roaming/nushell",
-    "~/.config/nvim": "~/AppData/Local/nvim",
-    "~/.config/powershell": "~/Documents/Powershell"
+let extra_links = {
+    "~/AppData/Roaming/nushell": "~/.config/nushell",
+    "~/AppData/Local/nvim": "~/.config/nvim",
+    "~/Documents/Powershell": "~/.config/powershell",
 };
+
+def "path is-relative-to" [base: string] {
+    try {
+        $in | path relative-to $base
+        true
+    } catch {
+        false
+    }
+}
 
 def rm-with-parents [path: string] {
     mut path = $path | path expand
@@ -22,13 +31,21 @@ def rm-with-parents [path: string] {
 def main [] {
     const dotfiles = path self | path dirname | path join 'dotfiles'
 
+    let extra_links = (
+        $extra_links
+        | transpose source target
+        | update source { path expand --no-symlink }
+        | update target { path expand --no-symlink }
+    )
+
     let existing = (
-        fd --type symlink --hidden . $nu.home-dir -E 'AppData'
+        fd --type symlink --hidden . $nu.home-dir
         | lines
-        | each --flatten { ls -l ($in | path expand --no-symlink) }
-        | select name target
-        | rename source target
-        | where (try { $it.target | path relative-to $dotfiles } catch { null }) != null
+        | each { path expand --no-symlink }
+        | where not ($extra_links.source | any {|e| $it | path is-relative-to $e })
+        | wrap source
+        | insert target { get source | path expand }
+        | where ($it.target | path is-relative-to $dotfiles)
     )
 
     let files = (
@@ -66,7 +83,28 @@ def main [] {
         ln -sv $create.target $create.source
     }
 
-    ln -sv ~/.config/nushell ~/AppData/Roaming/nushell
-    ln -sv ~/.config/nvim ~/AppData/Local/nvim
-    ln -sv ~/.config/powershell ~/Documents/Powershell
+    for link in $extra_links {
+        print $link
+
+        let parent = $link.source | path dirname
+
+        print parent $parent
+
+        if ($parent | path type) != 'dir' {
+            print removing parent and creating
+            rm -vf $parent
+            mkdir -v $parent
+        }
+
+        if ($link.source | path exists) {
+            print $"source ($link.source) exists"
+            print $"expanded: ($link.source | path expand) == ($link.target)"
+            if ($link.source | path expand) == $link.target {
+                continue
+            }
+            rm -rv $link.source
+        }
+
+        ln -sv $link.target $link.source
+    }
 }
