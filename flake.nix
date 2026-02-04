@@ -232,6 +232,12 @@
                   LUA_CPATH = lib.concatMapStringsSep ";" pkgs.lua54Packages.getLuaCPath libs;
                 };
               };
+
+            powershell = pkgs.mkShell {
+              packages = [
+                pkgs.powershell
+              ];
+            };
           };
 
           treefmt = {
