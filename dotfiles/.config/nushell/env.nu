@@ -29,4 +29,12 @@ $env.MANPAGER = "nvim +Man!"
 $env.PROMPT_INDICATOR_VI_NORMAL = ""
 $env.PROMPT_INDICATOR_VI_INSERT = ""
 
+if $nu.os-info.family == "windows" {
+    let autoload_path = ($nu.data-dir | path join 'vendor/autoload')
+    mkdir $autoload_path
+
+    starship init nu | save --force ($autoload_path | path join 'starship.nu')
+    carapace _carapace nushell | save --force ($autoload_path | path join 'carapace.nu')
+}
+
 source (if ('~/.config/nushell/env.custom.nu' | path exists) { '~/.config/nushell/env.custom.nu' } else { null })
