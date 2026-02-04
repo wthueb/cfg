@@ -84,21 +84,14 @@ def main [] {
     }
 
     for link in $extra_links {
-        print $link
-
         let parent = $link.source | path dirname
 
-        print parent $parent
-
         if ($parent | path type) != 'dir' {
-            print removing parent and creating
             rm -vf $parent
             mkdir -v $parent
         }
 
         if ($link.source | path exists) {
-            print $"source ($link.source) exists"
-            print $"expanded: ($link.source | path expand) == ($link.target)"
             if ($link.source | path expand) == $link.target {
                 continue
             }
