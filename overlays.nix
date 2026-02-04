@@ -20,7 +20,9 @@
   (final: prev: {
     nushellPlugins = prev.nushellPlugins // {
       desktop_notifications = prev.nushellPlugins.desktop_notifications.overrideAttrs (old: {
-        meta.platforms = old.meta.platforms ++ final.lib.platforms.darwin;
+        meta = old.meta // {
+          platforms = old.meta.platforms ++ final.lib.platforms.darwin;
+        };
       });
     };
   })
