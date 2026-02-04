@@ -294,16 +294,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1765365658,
-        "narHash": "sha256-0ScqO5ADh2f9qsvlNixiOk0rflDehNW1LVzcN96SGBo=",
+        "lastModified": 1770174326,
+        "narHash": "sha256-SJ5WkQgPRczkHFwYh+IkNjDJq7jpyIYSJi9KXUJr7vo=",
         "owner": "strongtz",
         "repo": "i915-sriov-dkms",
-        "rev": "2482f8fa4b1aabf10c5c9e5c1d4e37a84f2cdf57",
+        "rev": "0a17695f8eee5559195c45f6caf637642be9d8b1",
         "type": "github"
       },
       "original": {
         "owner": "strongtz",
-        "ref": "2025.12.10",
         "repo": "i915-sriov-dkms",
         "type": "github"
       }
