@@ -53,7 +53,7 @@
       window_zoom_persist = "on";
       window_animation_duration = 0.0;
       window_opacity_duration = 0.0;
-      mouse_modifier = "alt";
+      mouse_modifier = "fn";
       mouse_action1 = "move";
       mouse_action2 = "resize";
       mouse_drop_action = "swap";
