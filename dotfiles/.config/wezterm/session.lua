@@ -118,25 +118,20 @@ workspace_switcher.get_choices = function()
 
     ---@param path string
     local function add_git_dir(path)
-        local _, stdout, stderr = wezterm.run_child_process({
+        local _, stdout, _ = wezterm.run_child_process({
             "fd",
-            "-t",
-            "d",
             "-Ha",
             [[\.git$]],
             path,
-            "-x",
-            "dirname",
         })
-
-        print(stderr)
 
         for line in stdout:gmatch("[^\n]*\n?") do
             line = line:match("^%s*(.-)%s*$") -- trim whitepsace
 
-            local dir = string.basename(line)
+            local parent = line:match([[^(.+)[\/].git[\/]?$]])
+            local dir = string.basename(parent)
 
-            add_choice({ label = dir, id = line })
+            add_choice({ label = dir, id = parent })
         end
     end
 
