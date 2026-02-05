@@ -2,7 +2,7 @@ local M = {}
 
 ---@diagnostic disable-next-line: assign-type-mismatch
 local wezterm = require("wezterm") ---@type Wezterm
-local workspace_switcher = wezterm.plugin.require("https://github.com/MLFlexer/smart_workspace_switcher.wezterm")
+local session = require("session")
 
 local mod = "CTRL|SHIFT"
 
@@ -82,7 +82,7 @@ M.keys = {
     {
         mods = "CTRL",
         key = "f",
-        action = workspace_switcher.switch_workspace(),
+        action = session.show(),
     },
 }
 
