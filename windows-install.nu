@@ -6,7 +6,7 @@ let extra_links = {
     "~/Documents/Powershell": "~/.config/powershell",
 };
 
-def "path is-relative-to" [base: string] {
+def "path is-relative-to" [base: path] {
     try {
         $in | path relative-to $base
         true

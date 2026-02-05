@@ -264,26 +264,8 @@ def "gh gist search" [] {
     $id
 }
 
-def --wrapped mkcd [dir: string, ...rest] {
+def --wrapped mkcd [dir: path, ...rest] {
     mkdir ...$rest $dir ; cd $dir
-}
-
-def activate [dir?: string] {
-    sh -i -c $'source ($dir | default '.venv')/bin/activate ; nu -e "alias deactivate = exit"'
-}
-
-def venv [dir?: string] {
-    python -m venv --upgrade-deps ($dir | default '.venv')
-
-    activate $dir
-}
-
-def dev [path?: string] {
-    if ($path == null) {
-        nix develop -c nu
-    } else {
-        nix develop ($path | path expand) -c nu
-    }
 }
 
 def "vim upgrade" [] {
