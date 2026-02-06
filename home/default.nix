@@ -24,6 +24,7 @@
     delta
     dig
     dua
+    gcc
     jc
     nerd-fonts.fira-code
     nerd-fonts.sauce-code-pro
