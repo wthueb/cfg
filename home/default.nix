@@ -32,6 +32,7 @@
     opencode
     openssh
     tree
+    tree-sitter
     unzip
     vivid
   ];
