@@ -148,8 +148,8 @@ local schema = {
     sessionizer.DefaultWorkspace({ label_overwrite = "~", id_overwrite = wezterm.home_dir }),
     dirs_txt_generator,
     processing = function(entries)
+        -- remove duplicates (happens with created workspaces)
         local seen = {}
-
         local i = 1
         while i <= #entries do
             if seen[entries[i].id] then
@@ -159,6 +159,39 @@ local schema = {
                 i = i + 1
             end
         end
+
+        -- sort active workspace first, then the created workspaces, then the rest alphabetically
+        local active = wezterm.mux.get_active_workspace():gsub("~", wezterm.home_dir)
+        table.sort(entries, function(a, b)
+            if a.id == active then
+                return true
+            elseif b.id == active then
+                return false
+            end
+
+            local a_is_active = a.label:match("󱂬 : ") ~= nil
+            local b_is_active = b.label:match("󱂬 : ") ~= nil
+
+            if a_is_active and not b_is_active then
+                return true
+            elseif not a_is_active and b_is_active then
+                return false
+            end
+
+            local a_label = a.label:gsub("󱂬 : ", "")
+            local b_label = b.label:gsub("󱂬 : ", "")
+
+            local a_is_home = a_label:match("^~") ~= nil
+            local b_is_home = b_label:match("^~") ~= nil
+
+            if a_is_home and not b_is_home then
+                return true
+            elseif not a_is_home and b_is_home then
+                return false
+            end
+
+            return a_label < b_label
+        end)
     end,
 }
 
