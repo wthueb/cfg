@@ -1,25 +1,58 @@
 {
+  config,
   pkgs,
+  inputs,
   ...
 }:
 {
   imports = [
     ./hardware.nix
+    inputs.nix-minecraft.nixosModules.minecraft-servers
   ];
 
-  services.minecraft-server = {
+  nixpkgs.overlays = [ inputs.nix-minecraft.overlay ];
+
+  services.minecraft-servers = {
     enable = true;
     eula = true;
-    openFirewall = true;
-    declarative = true;
-    serverProperties = {
-      server-port = 25565;
-      max-players = 10;
-      gamemode = "survival";
-      difficulty = "normal";
-      white-list = false;
+    environmentFile = config.sops.secrets.minecraft.path;
+
+    servers.vanilla = {
+      enable = true;
+      autoStart = true;
+      openFirewall = true;
+
+      package = pkgs.vanillaServers.vanilla;
+
+      operators = {
+        wi1h = {
+          uuid = "806957cb-7383-4ed4-a7a9-d01122b63c91";
+          level = 4;
+          bypassesPlayerLimit = true;
+        };
+      };
+
+      serverProperties = {
+        server-port = 25565;
+        max-players = 10;
+        gamemode = "survival";
+        difficulty = "normal";
+        white-list = false;
+        enable-rcon = true;
+        "rcon.password" = "@rcon_password@";
+      };
+
+      jvmOpts = "-Xms6G -Xmx6G -XX:+UseZGC -XX:+ZGenerational";
     };
-    jvmOpts = "-Xms6G -Xmx6G -XX:+UseZGC -XX:+ZGenerational";
+  };
+
+  sops.secrets.minecraft = {
+    sopsFile = ../../secrets/minecraft.txt;
+    key = "";
+    mode = "0440";
+    owner = config.services.minecraft-servers.user;
+    group = config.services.minecraft-servers.group;
+    restartUnits = [ "minecraft-servers-vanilla.service" ];
   };
 
   services.qemuGuest.enable = true;

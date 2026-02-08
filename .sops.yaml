@@ -1,0 +1,21 @@
+keys:
+  - &admin_wil age1te5q0klrgvyy25vxanxawc7zdvgactkrvgtdadwz8kn7phkshsfqhqhg27
+  - &server_wil-mac age1aj7lu0lfe8h55lx7g00vnd6pq86qsljpwrw946klvkls6zvhc33qenr7pq
+  - &server_mbk age19v8nn6fs0akrrm7khuwstvd7kqhfp9fdkqakepmsg9zc855n3vzqh0np03
+  - &server_monitor age1gf5769a6f8r88eeryvn57xvv2vf2ex907akfmlud4cltx38hm4tsj88w6y
+  - &server_minecraft age1w84a8pd9przgpgjk33r4t7pau84luy6kxe34kfg4hlckjds5mprsnnp9u5
+
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *admin_wil
+      - *server_wil-mac
+      - *server_mbk
+      - *server_monitor
+      - *server_minecraft
+  - path_regex: secrets/minecraft\.txt$
+    key_groups:
+    - age:
+      - *admin_wil
+      - *server_minecraft

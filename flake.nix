@@ -47,6 +47,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # deduped inputs
     flake-utils.url = "github:numtide/flake-utils";
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -66,7 +76,7 @@
   };
 
   outputs =
-    inputs@{ self, flake-parts, ... }:
+    inputs@{ self, ... }:
     let
       nixpkgsConf = {
         nixpkgs = {
@@ -99,6 +109,7 @@
             ./modules/common.nix
             inputs.home-manager.darwinModules.home-manager
             homeConfig
+            inputs.sops-nix.darwinModules.sops
           ]
           ++ modules;
           specialArgs = { inherit self inputs hostname; };
@@ -119,12 +130,13 @@
             ./modules/common.nix
             inputs.home-manager.nixosModules.home-manager
             homeConfig
+            inputs.sops-nix.nixosModules.sops
           ]
           ++ modules;
           specialArgs = { inherit self inputs hostname; };
         };
     in
-    flake-parts.lib.mkFlake { inherit inputs; } {
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [ inputs.treefmt-nix.flakeModule ];
 
       flake = {
@@ -158,6 +170,12 @@
           hostname = "minecraft";
         };
 
+        nixosConfigurations.iso = mkNixosSystem {
+          system = "x86_64-linux";
+          modules = [ ./hosts/iso.nix ];
+          hostname = "nixos";
+        };
+
         homeConfigurations = {
           "wil@drake" = inputs.home-manager.lib.homeManagerConfiguration {
             pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
@@ -168,6 +186,7 @@
                 home.homeDirectory = "/home/wil";
               }
               ./home
+              inputs.sops-nix.homeManagerModules.sops
             ];
             extraSpecialArgs = { inherit inputs; };
           };
@@ -219,21 +238,6 @@
           system: deployLib: deployLib.deployChecks self.deploy
         ) inputs.deploy-rs.lib;
 
-        nixosConfigurations.iso = inputs.nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            nixpkgsConf
-            inputs.determinate.nixosModules.default
-            ./modules/nixos
-            ./modules/common.nix
-            ./hosts/iso.nix
-          ];
-          specialArgs = {
-            inherit self inputs;
-            hostname = "nixos";
-          };
-        };
-
         packages.x86_64-linux.iso = self.nixosConfigurations.iso.config.system.build.isoImage;
       };
 
@@ -251,6 +255,7 @@
             default = pkgs.mkShell {
               packages = [
                 inputs.deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
+                pkgs.sops
               ];
             };
 

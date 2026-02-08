@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   determinate.enable = true;
 
@@ -72,16 +77,24 @@
 
   systemd.settings.Manager.RunTimeWatchdogSec = "30s";
 
+  users.mutableUsers = false;
+
   users.users.wil = {
     name = "wil";
     uid = 1000;
     home = "/home/wil";
     isNormalUser = true;
+    hashedPasswordFile = config.sops.secrets.wil-password.path;
     extraGroups = [
       "networkmanager"
       "wheel"
     ];
     shell = pkgs.nushell;
+  };
+
+  sops.secrets.wil-password = {
+    sopsFile = ../../secrets/users.yaml;
+    neededForUsers = true;
   };
 
   services.getty.autologinUser = lib.mkForce "wil";
