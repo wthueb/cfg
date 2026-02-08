@@ -76,7 +76,18 @@
   };
 
   outputs =
-    inputs@{ self, ... }:
+    inputs@{
+      self,
+      nixpkgs,
+      nix-darwin,
+      determinate,
+      home-manager,
+      sops-nix,
+      deploy-rs,
+      flake-parts,
+      treefmt-nix,
+      ...
+    }:
     let
       nixpkgsConf = {
         nixpkgs = {
@@ -97,96 +108,91 @@
       mkDarwinSystem =
         {
           system,
-          modules,
-          hostname,
+          name,
+          hostname ? name,
         }:
-        inputs.nix-darwin.lib.darwinSystem {
+        nix-darwin.lib.darwinSystem {
           inherit system;
           modules = [
             nixpkgsConf
-            inputs.determinate.darwinModules.default
-            ./modules/darwin
+            determinate.darwinModules.default
+            sops-nix.darwinModules.sops
+            home-manager.darwinModules.home-manager
             ./modules/common.nix
-            inputs.home-manager.darwinModules.home-manager
+            ./modules/darwin
+            ./hosts/${name}
             homeConfig
-            inputs.sops-nix.darwinModules.sops
-          ]
-          ++ modules;
+          ];
           specialArgs = { inherit self inputs hostname; };
         };
 
       mkNixosSystem =
         {
           system,
-          modules,
-          hostname,
+          name,
+          hostname ? name,
         }:
-        inputs.nixpkgs.lib.nixosSystem {
+        nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
             nixpkgsConf
-            inputs.determinate.nixosModules.default
-            ./modules/nixos
+            determinate.nixosModules.default
+            sops-nix.nixosModules.sops
+            home-manager.nixosModules.home-manager
             ./modules/common.nix
-            inputs.home-manager.nixosModules.home-manager
+            ./modules/nixos
+            ./hosts/${name}
             homeConfig
-            inputs.sops-nix.nixosModules.sops
-          ]
-          ++ modules;
+          ];
           specialArgs = { inherit self inputs hostname; };
         };
     in
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ inputs.treefmt-nix.flakeModule ];
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [ treefmt-nix.flakeModule ];
 
       flake = {
         darwinConfigurations.wil-mac = mkDarwinSystem {
+          name = "wil-mac";
           system = "aarch64-darwin";
-          modules = [ ./hosts/wil-mac ];
-          hostname = "wil-mac";
         };
 
         darwinConfigurations.osx = mkDarwinSystem {
+          name = "osx";
           system = "x86_64-darwin";
-          modules = [ ./hosts/osx ];
-          hostname = "osx";
         };
 
         nixosConfigurations.mbk = mkNixosSystem {
+          name = "mbk";
           system = "x86_64-linux";
-          modules = [ ./hosts/mbk ];
-          hostname = "mbk";
         };
 
         nixosConfigurations.monitor = mkNixosSystem {
+          name = "monitor";
           system = "x86_64-linux";
-          modules = [ ./hosts/monitor ];
-          hostname = "monitor";
         };
 
         nixosConfigurations.minecraft = mkNixosSystem {
+          name = "minecraft";
           system = "x86_64-linux";
-          modules = [ ./hosts/minecraft ];
-          hostname = "minecraft";
         };
 
         nixosConfigurations.iso = mkNixosSystem {
-          system = "x86_64-linux";
-          modules = [ ./hosts/iso.nix ];
+          name = "iso";
           hostname = "nixos";
+          system = "x86_64-linux";
         };
 
         homeConfigurations = {
-          "wil@drake" = inputs.home-manager.lib.homeManagerConfiguration {
-            pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+          "wil@drake" = home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.x86_64-linux;
             modules = [
               nixpkgsConf
+              sops-nix.homeManagerModules.sops
               {
                 home.username = "wil";
                 home.homeDirectory = "/home/wil";
               }
               ./home
-              inputs.sops-nix.homeManagerModules.sops
             ];
             extraSpecialArgs = { inherit inputs; };
           };
@@ -197,7 +203,7 @@
             hostname = "wil-mac";
             profiles.system = {
               user = "root";
-              path = inputs.deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.wil-mac;
+              path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.wil-mac;
             };
           };
 
@@ -205,7 +211,7 @@
             hostname = "mbk";
             profiles.system = {
               user = "root";
-              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.mbk;
+              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.mbk;
             };
           };
 
@@ -213,7 +219,7 @@
             hostname = "monitor";
             profiles.system = {
               user = "root";
-              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.monitor;
+              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.monitor;
             };
           };
 
@@ -221,7 +227,7 @@
             hostname = "minecraft";
             profiles.system = {
               user = "root";
-              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.minecraft;
+              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.minecraft;
             };
           };
 
@@ -229,14 +235,12 @@
             hostname = "drake";
             profiles.home = {
               user = "wil";
-              path = inputs.deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@drake";
+              path = deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@drake";
             };
           };
         };
 
-        checks = builtins.mapAttrs (
-          system: deployLib: deployLib.deployChecks self.deploy
-        ) inputs.deploy-rs.lib;
+        checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
 
         packages.x86_64-linux.iso = self.nixosConfigurations.iso.config.system.build.isoImage;
       };
@@ -254,7 +258,7 @@
           devShells = {
             default = pkgs.mkShell {
               packages = [
-                inputs.deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
+                deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
                 pkgs.sops
               ];
             };
