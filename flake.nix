@@ -123,25 +123,25 @@
       imports = [ inputs.treefmt-nix.flakeModule ];
 
       flake = {
-        darwinConfigurations."wil-mac" = mkDarwinSystem {
+        darwinConfigurations.wil-mac = mkDarwinSystem {
           system = "aarch64-darwin";
           modules = [ ./hosts/wil-mac ];
           hostname = "wil-mac";
         };
 
-        darwinConfigurations."osx" = mkDarwinSystem {
+        darwinConfigurations.osx = mkDarwinSystem {
           system = "x86_64-darwin";
           modules = [ ./hosts/osx ];
           hostname = "osx";
         };
 
-        nixosConfigurations."mbk" = mkNixosSystem {
+        nixosConfigurations.mbk = mkNixosSystem {
           system = "x86_64-linux";
           modules = [ ./hosts/mbk ];
           hostname = "mbk";
         };
 
-        nixosConfigurations."monitor" = mkNixosSystem {
+        nixosConfigurations.monitor = mkNixosSystem {
           system = "x86_64-linux";
           modules = [ ./hosts/monitor ];
           hostname = "monitor";
@@ -199,6 +199,23 @@
         checks = builtins.mapAttrs (
           system: deployLib: deployLib.deployChecks self.deploy
         ) inputs.deploy-rs.lib;
+
+        nixosConfigurations.iso = inputs.nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            nixpkgsConf
+            inputs.determinate.nixosModules.default
+            ./modules/nixos
+            ./modules/common.nix
+            ./hosts/iso.nix
+          ];
+          specialArgs = {
+            inherit self inputs;
+            hostname = "nixos";
+          };
+        };
+
+        packages.x86_64-linux.iso = self.nixosConfigurations.iso.config.system.build.isoImage;
       };
 
       systems = [

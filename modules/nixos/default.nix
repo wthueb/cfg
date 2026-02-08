@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   determinate.enable = true;
 
@@ -84,7 +84,7 @@
     shell = pkgs.nushell;
   };
 
-  services.getty.autologinUser = "wil";
+  services.getty.autologinUser = lib.mkForce "wil";
 
   security.sudo = {
     enable = true;
