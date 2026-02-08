@@ -42,6 +42,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # deduped inputs
     flake-utils.url = "github:numtide/flake-utils";
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -147,6 +152,12 @@
           hostname = "monitor";
         };
 
+        nixosConfigurations.minecraft = mkNixosSystem {
+          system = "x86_64-linux";
+          modules = [ ./hosts/minecraft ];
+          hostname = "minecraft";
+        };
+
         homeConfigurations = {
           "wil@drake" = inputs.home-manager.lib.homeManagerConfiguration {
             pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
@@ -184,6 +195,14 @@
             profiles.system = {
               user = "root";
               path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.monitor;
+            };
+          };
+
+          minecraft = {
+            hostname = "minecraft";
+            profiles.system = {
+              user = "root";
+              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.minecraft;
             };
           };
 
