@@ -2,7 +2,7 @@
 [
   (final: prev: {
     inherit (inputs.nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system})
-      carapace
+      inetutils
       neovim
       nushell
       nushellPlugins
