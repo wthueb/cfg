@@ -276,7 +276,6 @@ def "vim upgrade" [] {
         return
     }
     nvim --headless "+Lazy! clean" +qa
-    nvim --headless "+TSUpdateSync" +qa
     nvim --headless "+MasonToolsUpdateSync" +qa
 }
 
