@@ -1,5 +1,6 @@
 {
   config,
+  hostname,
   ...
 }:
 {
@@ -134,6 +135,8 @@
     configurationPath = ./snmp-exporter-conf.yaml;
   };
 
+  services.influxdb2.enable = true;
+
   services.grafana = {
     enable = true;
     settings = {
@@ -142,6 +145,7 @@
         http_port = 3000;
         enforce_domain = false;
         enable_gzip = true;
+        domain = hostname;
       };
       analytics.reporting_enabled = false;
     };
@@ -155,8 +159,28 @@
           isDefault = true;
           editable = false;
         }
+        {
+          name = "InfluxDB";
+          type = "influxdb";
+          access = "proxy";
+          url = "http://localhost:8086";
+          jsonData = {
+            organization = "admin";
+            version = "Flux";
+          };
+          secureJsonData = {
+            token = "$__file{${config.sops.secrets.influxdb-token.path}}";
+          };
+          editable = false;
+        }
       ];
     };
+  };
+
+  sops.secrets.influxdb-token = {
+    sopsFile = ../../secrets/monitor.yaml;
+    owner = config.systemd.services.grafana.serviceConfig.User;
+    restartUnits = [ "grafana.service" ];
   };
 
   services.qemuGuest.enable = true;
