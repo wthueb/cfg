@@ -178,7 +178,7 @@
   };
 
   sops.secrets.influxdb-token = {
-    sopsFile = ../../secrets/monitor.yaml;
+    sopsFile = ./secrets.yaml;
     owner = config.systemd.services.grafana.serviceConfig.User;
     restartUnits = [ "grafana.service" ];
   };

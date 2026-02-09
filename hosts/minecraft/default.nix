@@ -15,7 +15,7 @@
   services.minecraft-servers = {
     enable = true;
     eula = true;
-    environmentFile = config.sops.secrets.minecraft.path;
+    environmentFile = config.sops.secrets.minecraft-environment.path;
 
     servers.vanilla = {
       enable = true;
@@ -46,13 +46,11 @@
     };
   };
 
-  sops.secrets.minecraft = {
-    sopsFile = ../../secrets/minecraft.txt;
-    key = "";
-    mode = "0440";
+  sops.secrets.minecraft-environment = {
+    sopsFile = ./secrets.yaml;
     owner = config.services.minecraft-servers.user;
     group = config.services.minecraft-servers.group;
-    restartUnits = [ "minecraft-servers-vanilla.service" ];
+    restartUnits = [ "minecraft-server-vanilla.service" ];
   };
 
   services.qemuGuest.enable = true;
