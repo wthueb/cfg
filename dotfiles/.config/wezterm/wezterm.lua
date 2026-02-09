@@ -118,15 +118,13 @@ elseif wezterm.target_triple == "x86_64-pc-windows-msvc" then
     })
 
     wezterm.on("gui-startup", function(cmd)
-        ---@diagnostic disable-next-line: unused-local
-        local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+        local _, _, window = wezterm.mux.spawn_window(cmd or {})
 
         window:gui_window():maximize()
     end)
 end
 
----@diagnostic disable-next-line: unused-local
-wezterm.on("format-tab-title", function(tab, tabs, panes, c, hover, max_width)
+wezterm.on("format-tab-title", function(tab, _tabs, _panes, _c, _hover, _max_width)
     -- https://wezterm.org/config/lua/PaneInformation.html
     ---@diagnostic disable-next-line: undefined-field
     local process_name = string.basename(tab.active_pane.foreground_process_name)
@@ -141,8 +139,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, c, hover, max_width)
     return title
 end)
 
----@diagnostic disable-next-line: unused-local
-wezterm.on("update-right-status", function(window, pane)
+wezterm.on("update-right-status", function(window, _pane)
     -- window:set_right_status(wezterm.format({
     --     { Foreground = { Color = "#2e3440" } },
     --     { Background = { Color = "#81a1c1" } },

@@ -363,6 +363,16 @@ return {
             },
         })
 
+        vim.lsp.config("lua_ls", {
+            settings = {
+                Lua = {
+                    diagnostics = {
+                        unusedLocalExclude = { "_*" },
+                    },
+                },
+            },
+        })
+
         vim.lsp.enable("nushell")
 
         vim.lsp.config("nil_ls", {
