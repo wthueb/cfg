@@ -13,6 +13,15 @@
       ;
   })
   (final: prev: {
+    bartender = prev.bartender.overrideAttrs (old: {
+      version = "6.3.1";
+      src = final.fetchurl {
+        inherit (old.src) name url;
+        hash = "sha256-zdVzRUitqF7Bef7Eq/HJYlYTLdEO54zrjI5zUH1pw1Q=";
+      };
+    });
+  })
+  (final: prev: {
     nushell = prev.nushell.overrideAttrs (old: {
       doCheck = false;
     });

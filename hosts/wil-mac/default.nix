@@ -86,11 +86,15 @@
   };
 
   launchd.user.agents.bartender = {
-    serviceConfig = {
-      Program = "${pkgs.bartender}/Applications/Bartender 5.app/Contents/MacOS/Bartender 5";
-      RunAtLoad = true;
-      KeepAlive = true;
-    };
+    serviceConfig =
+      let
+        version = pkgs.lib.versions.major pkgs.bartender.version;
+      in
+      {
+        Program = "${pkgs.bartender}/Applications/Bartender ${version}.app/Contents/MacOS/Bartender ${version}";
+        RunAtLoad = true;
+        KeepAlive = true;
+      };
   };
 
   #launchd.user.agents.bitwarden-desktop = {
