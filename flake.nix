@@ -76,20 +76,18 @@
   };
 
   outputs =
-    inputs@{
+    {
       self,
       nixpkgs,
-      nix-darwin,
-      determinate,
       home-manager,
       sops-nix,
       deploy-rs,
       flake-parts,
       treefmt-nix,
       ...
-    }:
+    }@inputs:
     let
-      nixpkgsConf = {
+      nixpkgsConfig = {
         nixpkgs = {
           config.allowUnfree = true;
           overlays = import ./overlays.nix { inherit inputs; };
@@ -105,88 +103,57 @@
         };
       };
 
-      mkDarwinSystem =
-        {
-          system,
-          name,
-          hostname ? name,
-        }:
-        nix-darwin.lib.darwinSystem {
-          inherit system;
-          modules = [
-            nixpkgsConf
-            determinate.darwinModules.default
-            sops-nix.darwinModules.sops
-            home-manager.darwinModules.home-manager
-            ./modules/common.nix
-            ./modules/darwin
-            ./hosts/${name}
-            homeConfig
-          ];
-          specialArgs = { inherit self inputs hostname; };
-        };
-
-      mkNixosSystem =
-        {
-          system,
-          name,
-          hostname ? name,
-        }:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [
-            nixpkgsConf
-            determinate.nixosModules.default
-            sops-nix.nixosModules.sops
-            home-manager.nixosModules.home-manager
-            ./modules/common.nix
-            ./modules/nixos
-            ./hosts/${name}
-            homeConfig
-          ];
-          specialArgs = { inherit self inputs hostname; };
-        };
+      mkSystem = import ./lib/mkSystem.nix {
+        inherit
+          self
+          inputs
+          nixpkgsConfig
+          homeConfig
+          ;
+      };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [ treefmt-nix.flakeModule ];
 
       flake = {
-        darwinConfigurations.wil-mac = mkDarwinSystem {
+        darwinConfigurations.wil-mac = mkSystem {
           name = "wil-mac";
           system = "aarch64-darwin";
         };
 
-        darwinConfigurations.osx = mkDarwinSystem {
+        darwinConfigurations.osx = mkSystem {
           name = "osx";
           system = "x86_64-darwin";
         };
 
-        nixosConfigurations.mbk = mkNixosSystem {
+        nixosConfigurations.mbk = mkSystem {
           name = "mbk";
           system = "x86_64-linux";
         };
 
-        nixosConfigurations.monitor = mkNixosSystem {
+        nixosConfigurations.monitor = mkSystem {
           name = "monitor";
           system = "x86_64-linux";
         };
 
-        nixosConfigurations.minecraft = mkNixosSystem {
+        nixosConfigurations.minecraft = mkSystem {
           name = "minecraft";
           system = "x86_64-linux";
         };
 
-        nixosConfigurations.iso = mkNixosSystem {
+        nixosConfigurations.iso = mkSystem {
           name = "iso";
           hostname = "nixos";
           system = "x86_64-linux";
         };
 
+        packages.x86_64-linux.iso = self.nixosConfigurations.iso.config.system.build.isoImage;
+
         homeConfigurations = {
           "wil@drake" = home-manager.lib.homeManagerConfiguration {
             pkgs = nixpkgs.legacyPackages.x86_64-linux;
             modules = [
-              nixpkgsConf
+              nixpkgsConfig
               sops-nix.homeManagerModules.sops
               {
                 home.username = "wil";
@@ -241,8 +208,6 @@
         };
 
         checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
-
-        packages.x86_64-linux.iso = self.nixosConfigurations.iso.config.system.build.isoImage;
       };
 
       systems = [
