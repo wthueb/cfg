@@ -14,10 +14,10 @@
   })
   (final: prev: {
     bartender = prev.bartender.overrideAttrs (old: {
-      version = "6.3.1";
+      version = "6.4.1";
       src = final.fetchurl {
         inherit (old.src) name url;
-        hash = "sha256-zdVzRUitqF7Bef7Eq/HJYlYTLdEO54zrjI5zUH1pw1Q=";
+        hash = "sha256-UbBymSFwhk7sTCQP4R9XMBKE0VuaG1J+Y4OGIsMttWc=";
       };
     });
   })

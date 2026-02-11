@@ -34,7 +34,7 @@
 
 [alias]
     a = add --all
-    b = branch -v
+    b = branch -vv
     ba = branch -a
     bc = rev-parse HEAD
     bd = branch -d

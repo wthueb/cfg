@@ -2,6 +2,7 @@
   self,
   config,
   pkgs,
+  lib,
   ...
 }:
 {
@@ -88,7 +89,7 @@
   launchd.user.agents.bartender = {
     serviceConfig =
       let
-        version = pkgs.lib.versions.major pkgs.bartender.version;
+        version = lib.versions.major pkgs.bartender.version;
       in
       {
         Program = "${pkgs.bartender}/Applications/Bartender ${version}.app/Contents/MacOS/Bartender ${version}";
