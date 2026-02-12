@@ -48,4 +48,28 @@
       dontFixup = true;
     });
   })
+  (final: prev: {
+    # DeterminateSystems/nix-src#345
+    nil =
+      let
+        pkgs = prev;
+        lib = pkgs.lib;
+        extraPackages = [ pkgs.nix ];
+        makeWrapperArgs = [
+          "--prefix"
+          "PATH"
+          ":"
+          (lib.makeBinPath extraPackages)
+        ];
+      in
+      pkgs.symlinkJoin {
+        name = pkgs.nil.pname;
+        paths = [ pkgs.nil ];
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/${pkgs.nil.pname} ${lib.escapeShellArgs makeWrapperArgs}
+        '';
+        inherit (pkgs.nil) meta;
+      };
+  })
 ]
