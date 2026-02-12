@@ -1,32 +1,29 @@
 { inputs }:
 [
-  (final: prev: {
-    inherit (inputs.nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system})
-      inetutils
-      neovim
-      nushell
-      nushellPlugins
-      opencode
-      starship
-      #wezterm
-      yabai
-      ;
-  })
-  (final: prev: {
-    bartender = prev.bartender.overrideAttrs (old: {
-      version = "6.4.1";
-      src = final.fetchurl {
-        inherit (old.src) name url;
-        hash = "sha256-UbBymSFwhk7sTCQP4R9XMBKE0VuaG1J+Y4OGIsMttWc=";
+  (
+    final: prev:
+    let
+      unstable = import inputs.nixpkgs-unstable {
+        system = final.stdenv.hostPlatform.system;
+        config.allowUnfree = true;
       };
-    });
-  })
+    in
+    {
+      inherit (unstable)
+        bartender
+        inetutils
+        neovim
+        nushell
+        nushellPlugins
+        opencode
+        starship
+        #wezterm
+        yabai
+        ;
+    }
+  )
   (final: prev: {
-    nushell = prev.nushell.overrideAttrs (old: {
-      doCheck = false;
-    });
-  })
-  (final: prev: {
+    # NixOS/nixpkgs#478305
     nushellPlugins = prev.nushellPlugins // {
       desktop_notifications = prev.nushellPlugins.desktop_notifications.overrideAttrs (old: {
         meta = old.meta // {
