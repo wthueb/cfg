@@ -59,29 +59,92 @@
       mouse_drop_action = "swap";
     };
 
-    extraConfig = ''
-      sudo yabai --load-sa
+    extraConfig =
+      let
+        rules = [
+          {
+            app = "Finder";
+            title = "(Co(py|nnect)|Move|Info|Pref)";
+            manage = "off";
+            layer = "above";
+          }
+          {
+            app = "System Settings";
+            manage = "off";
+            sticky = true;
+          }
+          {
+            app = "App Store";
+            manage = "off";
+          }
+          {
+            app = "Bitwarden";
+            manage = "off";
+          }
+          {
+            app = "Digital Color Meter";
+            manage = "off";
+            sticky = true;
+            layer = "above";
+          }
+          {
+            app = "IINA";
+            manage = "off";
+          }
+          {
+            app = "Raycast";
+            manage = "off";
+          }
+          {
+            title = "^Picture in Picture$";
+            manage = "off";
+            sticky = true;
+          }
+          {
+            app = "GIMP";
+            notitle = "(^GNU Image Manipulation Program)|(GIMP)$";
+            manage = "off";
+          }
+          {
+            app = "CleanShot X";
+            manage = "off";
+          }
+          {
+            app = "Google Drive";
+            manage = "off";
+          }
+          {
+            app = "Lyn";
+            title = "Preferences$";
+            manage = "off";
+          }
+        ];
 
-      yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+        ruleAttrToArg =
+          name: value:
+          if name == "notitle" then
+            "title!=${lib.escapeShellArg value}"
+          else
+            "${name}=${lib.escapeShellArg value}";
 
-      yabai -m signal --add event=window_title_changed active=yes action="sketchybar --trigger title_change"
+        rulesConfig = lib.concatStringsSep "\n" (
+          map (
+            rule: "yabai -m rule --add " + (lib.concatStringsSep " " (lib.mapAttrsToList ruleAttrToArg rule))
+          ) rules
+        );
+      in
+      ''
+        sudo yabai --load-sa
 
-      yabai -m rule --add app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off layer=above
-      yabai -m rule --add app="^System Settings$" manage=off sticky=on
-      yabai -m rule --add app="^App Store$" manage=off
-      yabai -m rule --add app="^Bitwarden$" manage=off
-      yabai -m rule --add app="^Digital Color Meter$" manage=off sticky=on layer=above
-      yabai -m rule --add app="^IINA$" manage=off
-      yabai -m rule --add app="^Raycast$" manage=off
-      yabai -m rule --add title="^Picture in Picture$" manage=off sticky=on
-      yabai -m rule --add app="^GIMP$" title!="GIMP$" title!="^GNU Image Manipulation Program$" manage=off
-      yabai -m rule --add app="^CleanShot X$" manage=off
-      yabai -m rule --add app="^Google Drive$" manage=off
-      yabai -m rule --add app="^Lyn$" title="Preferences$" manage=off
+        yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
-      SPACEBAR_HEIGHT=$(sketchybar --query bar | jq .height)
-      yabai -m config external_bar "all:''\${SPACEBAR_HEIGHT}:0"
-    '';
+        yabai -m signal --add event=window_title_changed active=yes action="sketchybar --trigger title_change"
+
+        ${rulesConfig}
+
+        SPACEBAR_HEIGHT=$(sketchybar --query bar | jq .height)
+        yabai -m config external_bar "all:''\${SPACEBAR_HEIGHT}:0"
+      '';
   };
 
   security.accessibilityPrograms = [ (lib.getExe config.services.yabai.package) ];
