@@ -77,6 +77,7 @@
       yabai -m rule --add app="^GIMP$" title!="GIMP$" title!="^GNU Image Manipulation Program$" manage=off
       yabai -m rule --add app="^CleanShot X$" manage=off
       yabai -m rule --add app="^Google Drive$" manage=off
+      yabai -m rule --add app="^Lyn$" title="Preferences$" manage=off
 
       SPACEBAR_HEIGHT=$(sketchybar --query bar | jq .height)
       yabai -m config external_bar "all:''\${SPACEBAR_HEIGHT}:0"
