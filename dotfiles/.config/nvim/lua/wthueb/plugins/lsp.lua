@@ -35,7 +35,6 @@ return {
                     { "lua_ls", version = "3.16.4" },
                     "prettier",
                     "ruff",
-                    "rust_analyzer",
                     "stylua",
                     "systemd-lsp",
                     "vtsls",
@@ -324,6 +323,7 @@ return {
                 },
             },
         })
+        vim.lsp.enable("rust_analyzer", vim.fn.executable("rust-analyzer") == 1)
 
         vim.lsp.config("vtsls", {
             settings = {
