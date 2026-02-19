@@ -37,4 +37,8 @@ if $nu.os-info.family == "windows" {
     carapace _carapace nushell | save --force ($autoload_path | path join 'carapace.nu')
 }
 
+if not (which carapace | is-empty) {
+    $env.CARAPACE_MATCH = "1"
+}
+
 source (if ('~/.config/nushell/env.custom.nu' | path exists) { '~/.config/nushell/env.custom.nu' } else { null })
