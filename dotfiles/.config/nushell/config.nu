@@ -269,12 +269,7 @@ def --wrapped mkcd [dir: path, ...rest] {
 }
 
 def "vim upgrade" [] {
-    let status = nvim --headless "+Lazy! sync" +qa | complete
-    if ($status.stderr | str length) > 0 {
-        print "Error syncing plugins:"
-        print $status.stderr
-        return
-    }
+    nvim --headless "+Lazy! sync" +qa
     nvim --headless "+Lazy! clean" +qa
     nvim --headless "+MasonToolsUpdateSync" +qa
 }
