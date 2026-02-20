@@ -118,6 +118,11 @@
             title = "Preferences$";
             manage = "off";
           }
+          {
+            app = "DBeaver";
+            notitle = "^DBeaver";
+            manage = "off";
+          }
         ];
 
         ruleAttrToArg =
