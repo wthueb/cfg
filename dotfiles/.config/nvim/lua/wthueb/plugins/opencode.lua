@@ -1,9 +1,8 @@
 ---@module "lazy"
 ---@type LazySpec
 return {
-    "NickvanDyke/opencode.nvim",
+    "nickjvandyke/opencode.nvim",
     dependencies = {
-        ---@module "snacks"
         ---@type LazySpec
         {
             "folke/snacks.nvim",
@@ -16,15 +15,31 @@ return {
         },
     },
     config = function()
-        ---@module "opencode"
+        local opencode_cmd = "opencode --port"
+
+        ---@type snacks.terminal.Opts
+        local snacks_terminal_opts = {
+            win = {
+                position = "right",
+                enter = false,
+                on_win = function(win)
+                    require("opencode.terminal").setup(win.win)
+                end,
+            },
+        }
+
         ---@type opencode.Opts
         vim.g.opencode_opts = {
-            provider = {
-                enabled = "snacks",
-                --enabled = "wezterm",
-                --wezterm = {
-                --    direction = "left",
-                --},
+            server = {
+                start = function()
+                    require("snacks.terminal").open(opencode_cmd, snacks_terminal_opts)
+                end,
+                stop = function()
+                    require("snacks.terminal").get(opencode_cmd, snacks_terminal_opts):close()
+                end,
+                toggle = function()
+                    require("snacks.terminal").toggle(opencode_cmd, snacks_terminal_opts)
+                end,
             },
         }
 

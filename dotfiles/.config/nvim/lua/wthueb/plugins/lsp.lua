@@ -4,44 +4,6 @@ return {
     "neovim/nvim-lspconfig",
 
     dependencies = {
-        {
-            "mason-org/mason.nvim",
-            version = "^2.0.0",
-            ---@module "mason"
-            ---@type MasonSettings
-            opts = {
-                registries = {
-                    "github:mason-org/mason-registry",
-                    "github:Crashdummyy/mason-registry",
-                },
-            },
-        },
-        { "mason-org/mason-lspconfig.nvim", version = "^2.0.0", opts = {} },
-        {
-            "WhoIsSethDaniel/mason-tool-installer",
-            ---@module "mason-tool-installer"
-            ---@type MasonToolInstallerSettings
-            opts = {
-                ensure_installed = {
-                    "angularls",
-                    "basedpyright",
-                    "cssls",
-                    "docker-language-server",
-                    "efm",
-                    "emmet_language_server",
-                    "eslint",
-                    "html",
-                    "jsonls",
-                    { "lua_ls", version = "3.16.4" },
-                    "prettier",
-                    "ruff",
-                    "stylua",
-                    "systemd-lsp",
-                    "vtsls",
-                    "yamlls",
-                },
-            },
-        },
         { "j-hui/fidget.nvim", opts = {} },
         { "creativenull/efmls-configs-nvim", version = "^1.0.0" },
         {
@@ -50,7 +12,11 @@ return {
             ---@type RoslynNvimConfig
             opts = { broad_search = true },
         },
-        { "marilari88/twoslash-queries.nvim", opts = {} },
+        {
+            "marilari88/twoslash-queries.nvim",
+            opts = {},
+            ft = { "typescript", "typescriptreact" },
+        },
         {
             "folke/lazydev.nvim",
             ft = "lua",
@@ -308,22 +274,6 @@ return {
                 "svelte",
             },
         })
-
-        vim.lsp.config("rust_analyzer", {
-            settings = {
-                ["rust-analyzer"] = {
-                    check = {
-                        command = "clippy",
-                    },
-                    files = {
-                        exclude = {
-                            ".direnv",
-                        },
-                    },
-                },
-            },
-        })
-        vim.lsp.enable("rust_analyzer", vim.fn.executable("rust-analyzer") == 1)
 
         vim.lsp.config("vtsls", {
             settings = {
