@@ -13,13 +13,12 @@
           "kvm"
         ];
         maxJobs = 4;
-        speedFactor = 2;
         protocol = "ssh-ng";
         sshUser = "wil";
         sshKey = "/Users/wil/.ssh/id_ed25519";
       }
       {
-        hostName = "drake";
+        hostName = "minecraft";
         systems = [ "x86_64-linux" ];
         supportedFeatures = [
           "nixos-test"
@@ -27,7 +26,8 @@
           "big-parallel"
           "kvm"
         ];
-        maxJobs = 3;
+        maxJobs = 4;
+        speedFactor = 2;
         protocol = "ssh-ng";
         sshUser = "wil";
         sshKey = "/Users/wil/.ssh/id_ed25519";

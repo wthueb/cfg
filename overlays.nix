@@ -1,5 +1,8 @@
-{ inputs }:
+{ self, inputs }:
 [
+  (final: prev: {
+    copilot-api = self.packages.${final.stdenv.hostPlatform.system}.copilot-api;
+  })
   (
     final: prev:
     let

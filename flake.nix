@@ -96,7 +96,7 @@
       nixpkgsConfig = {
         nixpkgs = {
           config.allowUnfree = true;
-          overlays = import ./overlays.nix { inherit inputs; };
+          overlays = import ./overlays.nix { inherit self inputs; };
         };
       };
 
@@ -226,6 +226,10 @@
       perSystem =
         { pkgs, lib, ... }:
         {
+          packages = {
+            copilot-api = pkgs.callPackage ./packages/copilot-api.nix { };
+          };
+
           devShells = {
             default = pkgs.mkShell {
               packages = [
