@@ -317,11 +317,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770642304,
-        "narHash": "sha256-lOgWtmS/bU+y8pi0PTR2DhcYQRkJVvhl7WiyBEn6V9s=",
+        "lastModified": 1772692464,
+        "narHash": "sha256-uOAzxutLKQIKajX17C8fD7pxWjQJqj4486EZ5DgnK8U=",
         "owner": "strongtz",
         "repo": "i915-sriov-dkms",
-        "rev": "9539d37f4254c2567ee6d1f58f360c588fd94e19",
+        "rev": "0481357c40951b6edab10d058010c3a2f5df0aa3",
         "type": "github"
       },
       "original": {

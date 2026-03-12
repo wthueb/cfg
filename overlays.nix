@@ -26,16 +26,6 @@
     }
   )
   (final: prev: {
-    # NixOS/nixpkgs#478305
-    nushellPlugins = prev.nushellPlugins // {
-      desktop_notifications = prev.nushellPlugins.desktop_notifications.overrideAttrs (old: {
-        meta = old.meta // {
-          platforms = old.meta.platforms ++ final.lib.platforms.darwin;
-        };
-      });
-    };
-  })
-  (final: prev: {
     wezterm = inputs.wezterm.packages.${final.stdenv.hostPlatform.system}.default;
   })
   (final: prev: {

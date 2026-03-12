@@ -23,7 +23,6 @@
       )
     '';
     plugins = with pkgs.nushellPlugins; [
-      desktop_notifications
       formats
       polars
       query
