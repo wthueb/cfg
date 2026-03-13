@@ -224,10 +224,23 @@
       ];
 
       perSystem =
-        { pkgs, lib, ... }:
         {
+          pkgs,
+          lib,
+          system,
+          ...
+        }:
+        {
+          _module.args.pkgs = import nixpkgs (
+            {
+              inherit system;
+            }
+            // nixpkgsConfig.nixpkgs
+          );
+
           packages = {
             copilot-api = pkgs.callPackage ./packages/copilot-api.nix { };
+            keyboardcleantool = pkgs.callPackage ./packages/keyboardcleantool.nix { };
           };
 
           devShells = {

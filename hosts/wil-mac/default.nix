@@ -19,6 +19,7 @@
     #gimp-with-plugins
     htop
     inetutils
+    keyboardcleantool
     litecli
     #mouseless
     #plex-desktop
@@ -61,7 +62,6 @@
       "docker-desktop" # not in nixpkgs
       "gimp" # no aarch64-darwin
       "google-drive" # not in nixpkgs
-      "keyboardcleantool" # not in nixpkgs
       "lyn" # not in nixpkgs
       "macfuse" # not in nixpkgs
       "mouseless" # no aarch64-darwin
@@ -103,7 +103,7 @@
 
   #launchd.user.agents.bitwarden-desktop = {
   #  serviceConfig = {
-  #    Program = "${pkgs.bitwarden-desktop}/bin/bitwarden";
+  #    Program = "${lib.getExe pkgs.bitwarden-desktop}/bin/bitwarden";
   #    RunAtLoad = true;
   #    KeepAlive = true;
   #  };
@@ -119,7 +119,7 @@
 
   launchd.user.agents.wezterm = {
     serviceConfig = {
-      Program = "${pkgs.wezterm}/bin/wezterm-mux-server";
+      Program = lib.getExe' pkgs.wezterm "wezterm-mux-server";
       RunAtLoad = true;
       KeepAlive = true;
     };
@@ -128,7 +128,7 @@
   launchd.user.agents.startup = {
     script = ''
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-      ${pkgs.defaultbrowser}/bin/defaultbrowser browser
+      ${lib.getExe pkgs.defaultbrowser} browser
       /bin/launchctl setenv ELECTRON_NO_UPDATER 1
     '';
     serviceConfig.RunAtLoad = true;
@@ -201,7 +201,7 @@
 
   security = {
     accessibilityPrograms = [
-      "${pkgs.skhd}/bin/skhd"
+      (lib.getExe pkgs.skhd)
     ];
 
     pam.services.sudo_local.touchIdAuth = true;

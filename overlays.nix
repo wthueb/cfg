@@ -2,6 +2,7 @@
 [
   (final: prev: {
     copilot-api = self.packages.${final.stdenv.hostPlatform.system}.copilot-api;
+    keyboardcleantool = self.packages.${final.stdenv.hostPlatform.system}.keyboardcleantool;
   })
   (
     final: prev:

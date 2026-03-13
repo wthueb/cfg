@@ -74,7 +74,7 @@ in
           ++ cfg.extraArgs;
         in
         {
-          ProgramArguments = [ "${cfg.package}/bin/copilot-api" ] ++ args;
+          ProgramArguments = [ (lib.getExe cfg.package) ] ++ args;
           RunAtLoad = true;
           KeepAlive = true;
           StandardOutPath = "/tmp/copilot-api.log";
