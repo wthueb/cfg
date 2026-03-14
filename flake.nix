@@ -96,7 +96,7 @@
       nixpkgsConfig = {
         nixpkgs = {
           config.allowUnfree = true;
-          overlays = import ./overlays.nix { inherit self inputs; };
+          overlays = (import ./overlays.nix { inherit self inputs; }) ++ [ self.overlays.default ];
         };
       };
 
@@ -213,6 +213,15 @@
           };
         };
 
+        overlays.default =
+          final: prev:
+          builtins.listToAttrs (
+            builtins.map (file: {
+              name = builtins.replaceStrings [ ".nix" ] [ "" ] file;
+              value = final.callPackage ./packages/${file} { };
+            }) (builtins.attrNames (builtins.readDir ./packages))
+          );
+
         checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
       };
 
@@ -238,10 +247,13 @@
             // nixpkgsConfig.nixpkgs
           );
 
-          packages = {
-            copilot-api = pkgs.callPackage ./packages/copilot-api.nix { };
-            keyboardcleantool = pkgs.callPackage ./packages/keyboardcleantool.nix { };
-          };
+          packages =
+            let
+              packageNames = builtins.map (f: lib.removeSuffix ".nix" f) (
+                builtins.attrNames (builtins.readDir ./packages)
+              );
+            in
+            lib.genAttrs packageNames (name: pkgs.${name});
 
           devShells = {
             default = pkgs.mkShell {
