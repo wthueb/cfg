@@ -8,7 +8,6 @@
 {
   imports = [
     ../../modules/darwin/yabai.nix
-    ../../modules/darwin/copilot-api.nix
   ];
   environment.systemPackages = with pkgs; [
     bartender
@@ -78,8 +77,6 @@
   ];
 
   services.karabiner-elements.enable = true;
-
-  services.copilot-api.enable = true;
 
   launchd.user.agents.raycast = {
     serviceConfig = {
