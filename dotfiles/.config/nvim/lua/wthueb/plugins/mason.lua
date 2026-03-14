@@ -28,7 +28,7 @@ return {
                 "eslint",
                 "html",
                 "jsonls",
-                { "lua_ls", version = "3.16.4" },
+                "lua_ls",
                 "prettier",
                 "ruff",
                 "stylua",
