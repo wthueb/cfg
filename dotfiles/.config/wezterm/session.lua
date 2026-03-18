@@ -12,13 +12,15 @@ resurrect.state_manager.periodic_save({
 
 wezterm.on("gui-startup", resurrect.state_manager.resurrect_on_gui_startup)
 
+local ACTIVE_PREFIX = "󱂬 : "
+
 local function resurrect_callback(window, pane, id, label)
     if not id or not label then
         -- when you hit esc in the chooser
         return
     end
 
-    label = label:gsub("󱂬 : ", "")
+    label = label:gsub(ACTIVE_PREFIX, "")
 
     --- save current workspace before switching
     local current_workspace = window:active_workspace()
@@ -49,8 +51,6 @@ local function resurrect_callback(window, pane, id, label)
         })
     end
 end
-
----@alias Entry {label: string, id: string}
 
 local function dirs_txt_generator()
     local file = io.open(wezterm.config_dir .. "/dirs.txt", "r")
@@ -130,7 +130,7 @@ local function active_workspaces_generator()
 
     for _, ws in ipairs(wezterm.mux.get_workspace_names()) do
         local path = ws:gsub("~", wezterm.home_dir)
-        table.insert(entries, { label = "󱂬 : " .. ws, id = path })
+        table.insert(entries, { label = ACTIVE_PREFIX .. ws, id = path })
     end
 
     return entries
@@ -147,20 +147,46 @@ local schema = {
     active_workspaces_generator,
     sessionizer.DefaultWorkspace({ label_overwrite = "~", id_overwrite = wezterm.home_dir }),
     dirs_txt_generator,
+    ---@param entries Entry[]
     processing = function(entries)
-        -- remove duplicates (happens with created workspaces)
+        -- first remove all duplicate entries, keeping the last one
         local seen = {}
         local i = 1
         while i <= #entries do
-            if seen[entries[i].id] then
+            if entries[i].label:match(ACTIVE_PREFIX) then
+                -- skip active workspaces, we always want to keep those
+                i = i + 1
+            else
+                local id = entries[i].id
+                if seen[id] then
+                    table.remove(entries, seen[id])
+                    for k, v in pairs(seen) do
+                        if v > seen[id] then
+                            seen[k] = v - 1
+                        end
+                    end
+                    seen[id] = i - 1
+                else
+                    seen[id] = i
+                    i = i + 1
+                end
+            end
+        end
+
+        -- now remove duplicates caused by active workspaces, keeping the active ones
+        seen = {}
+        i = 1
+        while i <= #entries do
+            local label = entries[i].label:gsub(ACTIVE_PREFIX, "")
+            if seen[label] then
                 table.remove(entries, i)
             else
-                seen[entries[i].id] = true
+                seen[label] = true
                 i = i + 1
             end
         end
 
-        -- sort active workspace first, then the created workspaces, then the rest alphabetically
+        -- sort entries: active -> home-relative -> alphabetical
         local active = wezterm.mux.get_active_workspace():gsub("~", wezterm.home_dir)
         table.sort(entries, function(a, b)
             if a.id == active then
@@ -169,8 +195,8 @@ local schema = {
                 return false
             end
 
-            local a_is_active = a.label:match("󱂬 : ") ~= nil
-            local b_is_active = b.label:match("󱂬 : ") ~= nil
+            local a_is_active = a.label:match(ACTIVE_PREFIX) ~= nil
+            local b_is_active = b.label:match(ACTIVE_PREFIX) ~= nil
 
             if a_is_active and not b_is_active then
                 return true
@@ -178,8 +204,8 @@ local schema = {
                 return false
             end
 
-            local a_label = a.label:gsub("󱂬 : ", "")
-            local b_label = b.label:gsub("󱂬 : ", "")
+            local a_label = a.label:gsub(ACTIVE_PREFIX, "")
+            local b_label = b.label:gsub(ACTIVE_PREFIX, "")
 
             local a_is_home = a_label:match("^~") ~= nil
             local b_is_home = b_label:match("^~") ~= nil
