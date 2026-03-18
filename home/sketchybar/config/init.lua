@@ -2,9 +2,6 @@ local sbar = require("sketchybar")
 
 local colors = require("colors")
 
--- disable native volume popup
-sbar.exec("launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist")
-
 sbar.bar({
     height = 32,
     color = colors.bg,
@@ -58,4 +55,3 @@ require("items.skhd_status")
 require("items.calendar")
 require("items.battery")
 require("items.wifi")
-require("items.volume")
