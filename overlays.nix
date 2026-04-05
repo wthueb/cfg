@@ -13,6 +13,7 @@
         bartender
         inetutils
         neovim
+        neovim-unwrapped
         nushell
         nushellPlugins
         opencode
