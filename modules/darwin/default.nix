@@ -2,6 +2,12 @@
 {
   determinateNix = {
     enable = true;
+
+    determinateNixd = {
+      builder.state = "enabled";
+      garbageCollector.strategy = "automatic";
+    };
+
     buildMachines =
       let
         mkBuildMachine =

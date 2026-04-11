@@ -7,6 +7,14 @@
 {
   determinate.enable = true;
 
+  environment.etc."determinate/config.json".text = ''
+    {
+      "garbageCollector": {
+        "strategy": "automatic"
+      }
+    }
+  '';
+
   nix.settings.trusted-users = [ "wil" ];
 
   networking = {

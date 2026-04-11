@@ -10,6 +10,7 @@
     ../../modules/darwin/yabai.nix
   ];
   environment.systemPackages = with pkgs; [
+    alcove
     bartender
     bitwarden-desktop
     brave
@@ -61,6 +62,7 @@
       "docker-desktop" # not in nixpkgs
       "gimp" # no aarch64-darwin
       "google-drive" # not in nixpkgs
+      "linearmouse" # not in nixpkgs
       "lyn" # not in nixpkgs
       "macfuse" # not in nixpkgs
       "mouseless" # no aarch64-darwin
