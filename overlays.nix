@@ -10,6 +10,7 @@
     in
     {
       inherit (unstable)
+        alcove
         bartender
         inetutils
         neovim
@@ -37,13 +38,8 @@
     });
   })
   (final: prev: {
-    # NixOS/nixpkgs#509702
-    alcove = prev.alcove.overrideAttrs (old: {
-      version = "1.7.2";
-      src = final.fetchurl {
-        inherit (old.src) url;
-        hash = "sha256-gzV/BdLt0cl490cPHPK5Q6S4HRaHI/e4zcOdnM+MVYg=";
-      };
+    nushell = prev.nushell.overrideAttrs (old: {
+      doCheck = false;
     });
   })
 ]

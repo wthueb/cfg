@@ -48,6 +48,7 @@
       inputs.systems.follows = "systems";
     };
 
+    # wezterm/wezterm#7444
     wezterm = {
       url = "github:JafarAbdi/wezterm/render_fix?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
