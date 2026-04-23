@@ -72,6 +72,10 @@
       url = "github:catppuccin/btop/main";
       flake = false;
     };
+    catppuccin-neomutt = {
+      url = "github:catppuccin/neomutt/main";
+      flake = false;
+    };
 
     # deduped inputs
     flake-utils = {

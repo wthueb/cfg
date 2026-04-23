@@ -26,6 +26,7 @@
     dua
     gcc
     jc
+    neomutt
     nerd-fonts.fira-code
     nerd-fonts.sauce-code-pro
     nil
@@ -180,6 +181,13 @@
   };
 
   xdg.enable = true;
+
+  xdg.configFile."neomutt/neomuttrc".text = ''
+    set folder = ~/.mail
+    set move = no
+    source ${pkgs.neomutt}/share/neomutt/vim-keys/vim-keys.rc
+    source ${inputs.catppuccin-neomutt}/neomuttrc
+  '';
 
   home.file =
     let

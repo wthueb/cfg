@@ -34,6 +34,23 @@
         "type": "github"
       }
     },
+    "catppuccin-neomutt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1664239314,
+        "narHash": "sha256-ye16nP2DL4VytDKB+JdMkBXU+Y9Z4dHmY+DsPcR2EG0=",
+        "owner": "catppuccin",
+        "repo": "neomutt",
+        "rev": "f6ce83da47cc36d5639b0d54e7f5f63cdaf69f11",
+        "type": "github"
+      },
+      "original": {
+        "owner": "catppuccin",
+        "ref": "main",
+        "repo": "neomutt",
+        "type": "github"
+      }
+    },
     "deploy-rs": {
       "inputs": {
         "flake-compat": [
@@ -528,6 +545,7 @@
       "inputs": {
         "btop": "btop",
         "catppuccin-btop": "catppuccin-btop",
+        "catppuccin-neomutt": "catppuccin-neomutt",
         "deploy-rs": "deploy-rs",
         "determinate": "determinate",
         "disko": "disko",

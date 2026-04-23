@@ -213,6 +213,8 @@ alias lla = ls -la
 alias vim = nvim
 alias vi = nvim
 
+alias mail = neomutt
+
 alias ffmpeg = ffmpeg -hide_banner
 alias ffprobe = ffprobe -hide_banner
 alias ffplay = ffplay -hide_banner
