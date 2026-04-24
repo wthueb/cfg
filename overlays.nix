@@ -37,9 +37,4 @@
       dontFixup = true;
     });
   })
-  (final: prev: {
-    nushell = prev.nushell.overrideAttrs (old: {
-      doCheck = false;
-    });
-  })
 ]
