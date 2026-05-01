@@ -173,7 +173,56 @@
           };
           editable = false;
         }
+        {
+          name = "Loki";
+          type = "loki";
+          url = "http://localhost:3100";
+          jsonData = {
+            maxLines = 1000;
+          };
+          isDefault = false;
+          editable = false;
+        }
       ];
+    };
+  };
+
+  services.loki = {
+    enable = true;
+    configuration = {
+      auth_enabled = false;
+      server = {
+        http_listen_port = 3100;
+      };
+      common = {
+        ring = {
+          instance_addr = "0.0.0.0";
+          kvstore = {
+            store = "inmemory";
+          };
+        };
+        replication_factor = 1;
+        path_prefix = "/var/lib/loki";
+      };
+      schema_config = {
+        configs = [
+          {
+            from = "2026-01-01";
+            store = "tsdb";
+            object_store = "filesystem";
+            schema = "v13";
+            index = {
+              prefix = "index_";
+              period = "24h";
+            };
+          }
+        ];
+      };
+      storage_config = {
+        filesystem = {
+          directory = "/var/lib/loki/chunks";
+        };
+      };
     };
   };
 
