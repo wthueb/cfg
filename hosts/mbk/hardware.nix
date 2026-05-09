@@ -25,6 +25,7 @@
     "sd_mod"
   ];
   boot.initrd.kernelModules = [ ];
+  boot.kernelPackages = pkgs.linuxPackages_6_18;
   boot.kernelModules = [ "ip_tables" ];
   boot.extraModulePackages = [ pkgs.i915-sriov ];
 
