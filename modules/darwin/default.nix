@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   determinateNix = {
     enable = true;
@@ -54,5 +54,12 @@
       trusted-users = [ "wil" ];
       builders-use-substitutes = true;
     };
+  };
+
+  users.users.wil = {
+    name = "wil";
+    home = "/Users/wil";
+    # nushell is functionally the default shell, see home/nu.nix
+    shell = pkgs.bashInteractive;
   };
 }
