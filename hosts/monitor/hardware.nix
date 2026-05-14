@@ -25,6 +25,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
+  boot.growPartition = true;
 
   hardware = {
     cpu.intel.updateMicrocode = true;
@@ -34,12 +35,13 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/4257aff3-ee94-48b9-a8e1-57ba5bbb351e";
     fsType = "ext4";
+    autoResize = true;
   };
 
   swapDevices = [
     {
       device = "/swapfile";
-      size = 32 * 1024; # 32GB
+      size = 8 * 1024; # 8GB
     }
   ];
 
