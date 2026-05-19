@@ -12,6 +12,8 @@
       inherit (unstable)
         alcove
         bartender
+        claude-code
+        codex
         inetutils
         neovim
         neovim-unwrapped
