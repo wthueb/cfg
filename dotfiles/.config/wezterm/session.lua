@@ -77,6 +77,9 @@ local function dirs_txt_generator()
                 local _, stdout, _ = wezterm.run_child_process({
                     "fd",
                     "-Ha",
+                    "--follow",
+                    "--max-depth=10",
+                    "--prune",
                     [[\.git$]],
                     path,
                 })
@@ -103,6 +106,7 @@ local function dirs_txt_generator()
                     "d",
                     "-Ha",
                     "--max-depth=1",
+                    "--follow",
                     ".",
                     path,
                 })
