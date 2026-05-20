@@ -52,6 +52,7 @@ ehthumbs.db
 Icon?
 Thumbs.db
 *.dSYM
+.lyndisk
 
 # latex stuff
 *.aux
