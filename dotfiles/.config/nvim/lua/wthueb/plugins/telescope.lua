@@ -12,11 +12,11 @@ return {
             defaults = {
                 mappings = {
                     n = {
-                        ["<C-q>"] = require("telescope.actions").send_to_qflist,
+                        ["<C-q>"] = require("telescope.actions").send_selected_to_qflist,
                         ["<C-t>"] = require("trouble.sources.telescope").open,
                     },
                     i = {
-                        ["<C-q>"] = require("telescope.actions").send_to_qflist,
+                        ["<C-q>"] = require("telescope.actions").send_selected_to_qflist,
                         ["<C-t>"] = require("trouble.sources.telescope").open,
                     },
                 },

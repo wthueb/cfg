@@ -85,18 +85,28 @@ vim.keymap.set("n", "N", "Nzz", { silent = true, desc = "Keep cursor in middle w
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true, desc = "Move selection down" })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true, desc = "Move selection up" })
 
+vim.keymap.set("n", "<leader>q", function()
+    for _, win in ipairs(vim.fn.getwininfo()) do
+        if win.quickfix == 1 then
+            vim.cmd.cclose()
+            return
+        end
+    end
+
+    vim.cmd.copen()
+end, { silent = true, desc = "Toggle quickfix list" })
 vim.keymap.set(
     "n",
-    "<C-f>",
-    "<cmd>silent !tmux neww tmux-sessionizer<CR>",
-    { silent = true, desc = "Open tmux-sessionizer" }
+    "[q",
+    "<cmd>try | cprevious | catch | clast | catch | endtry<CR>",
+    { silent = true, desc = "Go to previous quickfix item" }
 )
-
-vim.filetype.add({
-    pattern = {
-        [".*%.component%.html"] = "htmlangular",
-    },
-})
+vim.keymap.set(
+    "n",
+    "]q",
+    "<cmd>try | cnext | catch | cfirst | catch | endtry<CR>",
+    { silent = true, desc = "Go to next quickfix item" }
+)
 
 P = function(...)
     vim.print(...)
