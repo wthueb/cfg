@@ -148,6 +148,25 @@
         domain = hostname;
       };
       analytics.reporting_enabled = false;
+      "auth.generic_oauth" = {
+        enabled = true;
+        allow_sign_up = false;
+        auto_login = true;
+        name = "Authelia";
+        client_id = "grafana";
+        client_secret = "\$__file{${config.sops.secrets.grafana-client-secret.path}}";
+        scopes = "openid profile email groups";
+        empty_scopes = false;
+        auth_url = "https://auth.wi1.xyz/api/oidc/authorization";
+        token_url = "https://auth.wi1.xyz/api/oidc/token";
+        api_url = "https://auth.wi1.xyz/api/oidc/userinfo";
+        use_pkce = true;
+        login_attribute_path = "preferred_username";
+        groups_attribute_path = "groups";
+        role_attribute_path = "contains(groups, 'Grafana Admins') && 'Admin' || contains(groups, 'Grafana Editors') && 'Editor' || 'Viewer'";
+        name_attribute_path = "name";
+        auth_style = "InHeader";
+      };
     };
     provision = {
       enable = true;
@@ -185,6 +204,12 @@
         }
       ];
     };
+  };
+
+  sops.secrets.grafana-client-secret = {
+    sopsFile = ./secrets.yaml;
+    owner = config.systemd.services.grafana.serviceConfig.User;
+    restartUnits = [ "grafana.service" ];
   };
 
   services.loki = {
