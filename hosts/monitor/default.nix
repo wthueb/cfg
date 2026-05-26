@@ -195,9 +195,9 @@
         {
           name = "Loki";
           type = "loki";
-          url = "http://localhost:3100";
+          url = "http://localhost:${toString config.services.loki.configuration.server.http_listen_port}";
           jsonData = {
-            maxLines = 1000;
+            maxLines = 5000;
           };
           isDefault = false;
           editable = false;
@@ -246,6 +246,17 @@
         filesystem = {
           directory = "/var/lib/loki/chunks";
         };
+      };
+      limits_config = {
+        retention_period = "90d";
+      };
+      compactor = {
+        working_directory = "/var/lib/loki/compactor";
+        compaction_interval = "10m";
+        retention_enabled = true;
+        retention_delete_delay = "2h";
+        retention_delete_worker_count = 150;
+        delete_request_store = "filesystem";
       };
     };
   };

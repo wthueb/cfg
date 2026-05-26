@@ -106,7 +106,7 @@
       host = "unix:///var/run/docker.sock"
     }
 
-    discovery.relabel "logs_integrations_docker" {
+    discovery.relabel "set_container_labels" {
       targets = discovery.docker.containers.targets
 
       rule {
@@ -128,7 +128,7 @@
 
     loki.source.docker "containers" {
       host       = "unix:///var/run/docker.sock"
-      targets    = discovery.relabel.logs_integrations_docker.output
+      targets    = discovery.relabel.set_container_labels.output
       forward_to = [loki.write.loki.receiver]
     }
 
