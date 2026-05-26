@@ -139,5 +139,38 @@
     }
   '';
 
+  services.ddclient = {
+    enable = true;
+    interval = "1min";
+    configFile = config.sops.templates."ddclient.conf".path;
+  };
+
+  sops.templates."ddclient.conf".content = ''
+    cache=/var/lib/ddclient/ddclient.cache
+    foreground=yes
+    quiet=no
+    verbose=yes
+
+    ssl=yes
+
+    use=web, web=https://api.ipify.org
+
+    protocol=cloudflare
+    ttl=1
+    password=${config.sops.placeholder.cloudflare-token}
+    zone=wi1.xyz
+    wi1.xyz
+
+    protocol=cloudflare
+    ttl=1
+    password=${config.sops.placeholder.cloudflare-token}
+    zone=willsplex.com
+    willsplex.com
+  '';
+
+  sops.secrets.cloudflare-token = { };
+
+  sops.defaultSopsFile = ./secrets.yaml;
+
   system.stateVersion = "24.11";
 }

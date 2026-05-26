@@ -47,13 +47,14 @@
   };
 
   sops.secrets.minecraft-environment = {
-    sopsFile = ./secrets.yaml;
     owner = config.services.minecraft-servers.user;
     group = config.services.minecraft-servers.group;
     restartUnits = [ "minecraft-server-vanilla.service" ];
   };
 
   services.qemuGuest.enable = true;
+
+  sops.defaultSopsFile = ./secrets.yaml;
 
   system.stateVersion = "24.11";
 }

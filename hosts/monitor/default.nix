@@ -207,7 +207,6 @@
   };
 
   sops.secrets.grafana-client-secret = {
-    sopsFile = ./secrets.yaml;
     owner = config.systemd.services.grafana.serviceConfig.User;
     restartUnits = [ "grafana.service" ];
   };
@@ -252,12 +251,13 @@
   };
 
   sops.secrets.influxdb-token = {
-    sopsFile = ./secrets.yaml;
     owner = config.systemd.services.grafana.serviceConfig.User;
     restartUnits = [ "grafana.service" ];
   };
 
   services.qemuGuest.enable = true;
+
+  sops.defaultSopsFile = ./secrets.yaml;
 
   system.stateVersion = "25.05";
 }
