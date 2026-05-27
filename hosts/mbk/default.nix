@@ -166,6 +166,12 @@
     password=${config.sops.placeholder.cloudflare-token}
     zone=willsplex.com
     willsplex.com
+
+    protocol=cloudflare
+    ttl=1
+    password=${config.sops.placeholder.cloudflare-token}
+    zone=willsjellyfin.com
+    willsjellyfin.com
   '';
 
   sops.secrets.cloudflare-token = { };
