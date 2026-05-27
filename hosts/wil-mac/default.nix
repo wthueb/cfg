@@ -51,6 +51,7 @@
 
     masApps = {
       "Amphetamine" = 937984704;
+      "Home Assistant" = 1099568401;
       "Xcode" = 497799835;
     };
 
