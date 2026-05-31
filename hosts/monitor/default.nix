@@ -167,6 +167,7 @@
         name_attribute_path = "name";
         auth_style = "InHeader";
       };
+      security.secret_key = "$__file{${config.sops.secrets.grafana-secret-key.path}}";
     };
     provision = {
       enable = true;
@@ -207,6 +208,11 @@
   };
 
   sops.secrets.grafana-client-secret = {
+    owner = config.systemd.services.grafana.serviceConfig.User;
+    restartUnits = [ "grafana.service" ];
+  };
+
+  sops.secrets.grafana-secret-key = {
     owner = config.systemd.services.grafana.serviceConfig.User;
     restartUnits = [ "grafana.service" ];
   };
