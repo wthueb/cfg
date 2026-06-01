@@ -76,7 +76,7 @@
   };
 
   home-manager.users.wil.home.sessionPath = [
-    config.homebrew.brewPrefix
+    (config.homebrew.prefix + "/bin")
   ];
 
   services.karabiner-elements.enable = true;

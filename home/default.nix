@@ -22,19 +22,21 @@
 
   home.packages = with pkgs; [
     claude-code
-    codex
     delta
     dig
     dua
     gcc
     jc
+    nodejs
     neomutt
+    neovim
     nerd-fonts.fira-code
     nerd-fonts.sauce-code-pro
     nil
-    nixfmt-rfc-style
+    nixfmt
     opencode
     openssh
+    python3
     tree
     tree-sitter
     unzip
@@ -100,13 +102,6 @@
         d forw-scroll
         u back-scroll
       '';
-    };
-    neovim = {
-      enable = true;
-      extraPackages = [
-        pkgs.nodejs
-        pkgs.python3
-      ];
     };
     readline = {
       enable = true;
@@ -218,5 +213,5 @@
     in
     toHomeFiles ../dotfiles;
 
-  home.stateVersion = "24.11";
+  home.stateVersion = "26.05";
 }

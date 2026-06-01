@@ -1,16 +1,16 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
-    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     nix-darwin = {
-      url = "github:LnL7/nix-darwin/nix-darwin-25.11";
+      url = "github:LnL7/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -101,6 +101,9 @@
       nixpkgsConfig = {
         nixpkgs = {
           config.allowUnfree = true;
+          config.permittedInsecurePackages = [
+            "electron-39.8.10" # bitwarden-desktop
+          ];
           overlays = (import ./overlays.nix { inherit self inputs; }) ++ [ self.overlays.default ];
         };
       };
@@ -276,7 +279,7 @@
                 ];
               in
               pkgs.mkShell {
-                packages = [ pkgs.lua5_4 ] ++ libs;
+                packages = [ pkgs.lua5_5 ] ++ libs;
                 env = {
                   LUA_PATH = lib.concatMapStringsSep ";" pkgs.lua54Packages.getLuaPath libs;
                   LUA_CPATH = lib.concatMapStringsSep ";" pkgs.lua54Packages.getLuaCPath libs;
