@@ -16,6 +16,7 @@
         inetutils
         neovim
         neovim-unwrapped
+        nil
         nushell
         nushellPlugins
         opencode
