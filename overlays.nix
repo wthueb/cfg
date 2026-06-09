@@ -39,19 +39,28 @@
       dontFixup = true;
     });
   })
-  # NixOS/nixpkgs#523142
   (final: prev: {
-    llvmPackages_18 = prev.llvmPackages_18.overrideScope (
-      llvmFinal: llvmPrev: {
-        compiler-rt-libc = llvmPrev.compiler-rt-libc.overrideAttrs (old: {
-          cmakeFlags = (old.cmakeFlags or [ ]) ++ [
-            (prev.lib.cmakeBool "COMPILER_RT_BUILD_XRAY" false)
-            (prev.lib.cmakeBool "COMPILER_RT_BUILD_LIBFUZZER" false)
-            (prev.lib.cmakeBool "COMPILER_RT_BUILD_MEMPROF" false)
-            (prev.lib.cmakeBool "COMPILER_RT_BUILD_ORC" false)
-          ];
-        });
-      }
-    );
+    bitwarden-desktop =
+      (import inputs.nixpkgs-bitwarden {
+        system = final.stdenv.hostPlatform.system;
+        config.permittedInsecurePackages = [ "electron-39.8.10" ];
+        overlays = [
+          # NixOS/nixpkgs#523142
+          (final: prev: {
+            llvmPackages_18 = prev.llvmPackages_18.overrideScope (
+              llvmFinal: llvmPrev: {
+                compiler-rt-libc = llvmPrev.compiler-rt-libc.overrideAttrs (old: {
+                  cmakeFlags = (old.cmakeFlags or [ ]) ++ [
+                    (prev.lib.cmakeBool "COMPILER_RT_BUILD_XRAY" false)
+                    (prev.lib.cmakeBool "COMPILER_RT_BUILD_LIBFUZZER" false)
+                    (prev.lib.cmakeBool "COMPILER_RT_BUILD_MEMPROF" false)
+                    (prev.lib.cmakeBool "COMPILER_RT_BUILD_ORC" false)
+                  ];
+                });
+              }
+            );
+          })
+        ];
+      }).bitwarden-desktop;
   })
 ]

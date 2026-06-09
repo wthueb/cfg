@@ -41,6 +41,11 @@
       autoUpdate = true;
       upgrade = true;
       cleanup = "zap"; # remove all formulae not listed below
+      # nix-darwin/nix-darwin#1789
+      extraFlags = [
+        "--zap"
+        "--force-cleanup"
+      ];
     };
 
     taps = [ ];
