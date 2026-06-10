@@ -21,7 +21,6 @@
   };
 
   home.packages = with pkgs; [
-    claude-code
     delta
     dig
     dua
@@ -34,7 +33,6 @@
     nerd-fonts.sauce-code-pro
     nil
     nixfmt
-    opencode
     openssh
     python3
     tree

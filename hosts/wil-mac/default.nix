@@ -51,6 +51,7 @@
     taps = [ ];
 
     brews = [
+      "opencode" # better updates
       "mas"
     ];
 
@@ -63,6 +64,7 @@
     greedyCasks = true;
 
     casks = [
+      "claude-code@latest" # better updates
       "cleanshot" # not in nixpkgs
       "dbeaver-enterprise" # not in nixpkgs
       "docker-desktop" # not in nixpkgs

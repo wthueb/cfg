@@ -12,14 +12,12 @@
       inherit (unstable)
         alcove
         bartender
-        claude-code
         inetutils
         neovim
         neovim-unwrapped
         nil
         nushell
         nushellPlugins
-        opencode
         starship
         #wezterm
         yabai
