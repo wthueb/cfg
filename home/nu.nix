@@ -8,7 +8,9 @@
   # nushell isn't supported directly as a login shell via nix-darwin, so we just use bash
   # and launch nushell from it instead (only as a login shell so we can still use bash normally)
   # see nix-darwin/nix-darwin#1028
-  programs.bash.profileExtra = lib.mkIf pkgs.stdenv.isDarwin (lib.mkAfter "exec nu");
+  programs.bash.profileExtra = lib.mkIf pkgs.stdenv.isDarwin (
+    lib.mkAfter "[[ $- == *i* ]] && exec nu"
+  );
 
   programs.nushell = {
     enable = true;
