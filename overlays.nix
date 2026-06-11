@@ -61,4 +61,14 @@
         ];
       }).bitwarden-desktop;
   })
+  # NixOS/nixpkgs#530591
+  (final: prev: {
+    bartender = prev.bartender.overrideAttrs (old: {
+      version = "6.5.2";
+      src = final.fetchzip {
+        url = "https://downloads.macbartender.com/B2/updates/6-5-2/Bartender%206.zip";
+        hash = "sha256-b2FOhbsVCk8Ae5g/Si9RJLmgN+v5ETnxaRas3GOTb08=";
+      };
+    });
+  })
 ]
