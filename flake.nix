@@ -137,11 +137,6 @@
           system = "aarch64-darwin";
         };
 
-        darwinConfigurations.osx = mkSystem {
-          name = "osx";
-          system = "x86_64-darwin";
-        };
-
         nixosConfigurations.mbk = mkSystem {
           name = "mbk";
           system = "x86_64-linux";
