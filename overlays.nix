@@ -19,7 +19,6 @@
         nushell
         nushellPlugins
         starship
-        #wezterm
         yabai
         ;
     }
@@ -43,7 +42,7 @@
         system = final.stdenv.hostPlatform.system;
         config.permittedInsecurePackages = [ "electron-39.8.10" ];
         overlays = [
-          # NixOS/nixpkgs#523142
+          # NixOS/nixpkgs#523142 https://nixpkgs-tracker.ocfox.me/?pr=523142
           (final: prev: {
             llvmPackages_18 = prev.llvmPackages_18.overrideScope (
               llvmFinal: llvmPrev: {
@@ -60,15 +59,5 @@
           })
         ];
       }).bitwarden-desktop;
-  })
-  # NixOS/nixpkgs#530591
-  (final: prev: {
-    bartender = prev.bartender.overrideAttrs (old: {
-      version = "6.5.2";
-      src = final.fetchzip {
-        url = "https://downloads.macbartender.com/B2/updates/6-5-2/Bartender%206.zip";
-        hash = "sha256-b2FOhbsVCk8Ae5g/Si9RJLmgN+v5ETnxaRas3GOTb08=";
-      };
-    });
   })
 ]
