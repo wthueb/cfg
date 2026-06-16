@@ -1,27 +1,71 @@
 let mapleader = ' '
 let maplocalleader = ' '
 
+set number
+set relativenumber
+set scrolloff=5
+
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+
+"set expandtab
+"set tabstop=4
+"set shiftwidth=4
+
 imap kj <Esc>
+cmap kj <C-c>
 
 nmap <leader>. :nohl<CR>
-nmap <C-o> :vsc View.NavigateBackward<CR>
-nmap <C-i> :vsc View.NavigateForward<CR>
-nmap [d :vsc View.PreviousError<CR>
-nmap ]d :vsc View.NextError<CR>
+
+" keep cursor in place when joining lines
+nnoremap J mzJ`z
+" keep cursor centered while scrolling / searching
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+nnoremap n nzz
+nnoremap N Nzz
+" move the visual selection up / down
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+" yank to the system clipboard
+nnoremap <leader>y "+y
+xnoremap <leader>y "+y
+
+"nmap <C-o> :vsc View.NavigateBackward<CR>
+"nmap <C-i> :vsc View.NavigateForward<CR>
+
+nmap <leader><space> :vsc Window.NextDocumentWindowNav<CR>
+nmap <leader>sf :vsc Edit.GoToFile<CR>
+nmap <leader>ss :vsc Edit.GoToSymbol<CR>
+nmap <leader>sg :vsc Edit.FindinFiles<CR>
+nmap <leader>sd :vsc View.ErrorList<CR>
+nmap <leader>/ :vsc Edit.Find<CR>
+nmap <C-p> :vsc Window.QuickLaunch<CR>
+nmap - :vsc View.SolutionExplorer<CR>
 
 nmap K :vsc Edit.QuickInfo<CR>
 imap <C-h> <Esc>:vsc Edit.ParameterInfo<CR>a
 nmap gd :vsc Edit.GoToDefinition<CR>
 nmap gi :vsc Edit.GoToImplementation<CR>
-nmap <leader>rn :vsc Editor.Rename<CR>
-nmap <leader>rf :vsc Editor.Refactor<CR>
+nmap gt :vsc Edit.GoToTypeDefinition<CR>
+nmap gr :vsc Edit.FindAllReferences<CR>
 nmap <leader>f :vsc Edit.FormatDocument<CR>
-nmap <leader>ra :vsc Editor.Action<CR>
+nmap <leader>r :vsc Editor.Rename<CR>
 nmap <leader>dca :vsc Editor.CodeAction<CR>
 
-set smartcase
-set number
-set relativenumber
-set scrolloff=5
-set incsearch
-set hlsearch
+nmap gcc :vsc Edit.ToggleLineComment<CR>
+vmap gc :vsc Edit.ToggleLineComment<CR>
+nmap gbc :vsc Edit.ToggleBlockComment<CR>
+vmap gb :vsc Edit.ToggleBlockComment<CR>
+
+nmap [d :vsc View.PreviousError<CR>
+nmap ]d :vsc View.NextError<CR>
+nmap [D :vsc View.PreviousError<CR>
+nmap ]D :vsc View.NextError<CR>
+nmap [q :vsc View.PreviousError<CR>
+nmap ]q :vsc View.NextError<CR>
+nmap H :vsc View.PreviousError<CR>
+nmap L :vsc View.NextError<CR>
+nmap <leader>q :vsc View.ErrorList<CR>

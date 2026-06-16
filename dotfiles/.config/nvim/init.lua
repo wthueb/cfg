@@ -66,8 +66,6 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.keymap.set("i", "kj", "<Esc>", { silent = true, desc = "Exit insert mode" })
 vim.keymap.set("c", "kj", "<C-c>", { silent = true, desc = "Exit command mode" })
 
-vim.keymap.set("n", ";d", "<cmd>bd<CR>", { silent = true, desc = "Close current buffer" })
-
 vim.keymap.set("n", "<leader>.", ":nohl<CR>", { silent = true, desc = "Remove highlighting" })
 vim.keymap.set("n", "<leader>y", '"+y', { silent = true, desc = "Yank to system clipboard" })
 
