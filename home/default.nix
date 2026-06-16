@@ -38,7 +38,6 @@
     tree
     tree-sitter
     unzip
-    vivid
   ];
 
   fonts.fontconfig.enable = true;
@@ -46,6 +45,10 @@
   programs = {
     bash = {
       enable = true;
+      shellAliases = {
+        ls = "ls --color=auto";
+        grep = "grep --color=auto";
+      };
       profileExtra = ''
         [[ -f ~/.profile.custom ]] && source ~/.profile.custom
       '';
@@ -64,7 +67,6 @@
       };
     };
     carapace.enable = true;
-    dircolors.enable = true;
     direnv.enable = true;
     discord = {
       enable = true;
@@ -161,6 +163,12 @@
       ];
     };
     uv.enable = true;
+    vivid = {
+      enable = true;
+      activeTheme = "catppuccin-mocha";
+      enableBashIntegration = true;
+      enableNushellIntegration = false;
+    };
     wezterm.enable = true;
   };
 
