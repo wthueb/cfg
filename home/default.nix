@@ -6,6 +6,7 @@
 }:
 {
   imports = [
+    ./desktop.nix
     ./nu.nix
     ./sketchybar
     ./skhd
@@ -26,21 +27,15 @@
     dua
     gcc
     jc
-    nodejs
     neomutt
     neovim
-    nerd-fonts.fira-code
-    nerd-fonts.sauce-code-pro
-    nil
-    nixfmt
+    nodejs
     openssh
     python3
     tree
     tree-sitter
     unzip
   ];
-
-  fonts.fontconfig.enable = true;
 
   programs = {
     bash = {
@@ -68,13 +63,6 @@
     };
     carapace.enable = true;
     direnv.enable = true;
-    discord = {
-      enable = true;
-      settings = {
-        SKIP_HOST_UPDATE = true;
-        DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING = true;
-      };
-    };
     fd.enable = true;
     fzf.enable = true;
     gh = {
@@ -169,7 +157,6 @@
       enableBashIntegration = true;
       enableNushellIntegration = false;
     };
-    wezterm.enable = true;
   };
 
   home.shell.enableShellIntegration = true;

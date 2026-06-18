@@ -86,6 +86,8 @@
     (config.homebrew.prefix + "/bin")
   ];
 
+  home-manager.users.wil.wthueb.desktop.enable = true;
+
   services.karabiner-elements.enable = true;
 
   launchd.user.agents.raycast = {
@@ -126,7 +128,7 @@
 
   launchd.user.agents.wezterm = {
     serviceConfig = {
-      Program = lib.getExe' pkgs.wezterm "wezterm-mux-server";
+      Program = lib.getExe' config.home-manager.users.wil.programs.wezterm.package "wezterm-mux-server";
       RunAtLoad = true;
       KeepAlive = true;
     };
@@ -149,15 +151,19 @@
         minimize-to-application = true;
         mru-spaces = false;
         orientation = "bottom";
-        persistent-apps = [
-          "/Applications/Nix Apps/Brave Browser.app"
-          "/Applications/Nix Apps/Thunderbird ESR.app"
-          "/System/Applications/Messages.app"
-          "${pkgs.discord}/Applications/Discord.app"
-          "/Applications/Nix Apps/Spotify.app"
-          "${pkgs.wezterm}/Applications/WezTerm.app"
-          "/Applications/Plex.app"
-        ];
+        persistent-apps =
+          let
+            hmApps = "${config.home-manager.users.wil.home.homeDirectory}/${config.home-manager.users.wil.targets.darwin.copyApps.directory}";
+          in
+          [
+            "/Applications/Nix Apps/Brave Browser.app"
+            "/Applications/Nix Apps/Thunderbird ESR.app"
+            "/System/Applications/Messages.app"
+            "${hmApps}/Discord.app"
+            "/Applications/Nix Apps/Spotify.app"
+            "${hmApps}/WezTerm.app"
+            "/Applications/Plex.app"
+          ];
         persistent-others = [ ];
         show-process-indicators = true;
         show-recents = false;
