@@ -14,7 +14,6 @@
   networking.firewall.allowedTCPPorts = [
     80
     443
-    config.services.cadvisor.port
   ];
 
   environment.systemPackages = with pkgs; [
@@ -51,12 +50,7 @@
         cmdline = [ "bazarr" ];
       }
     ];
-  };
-
-  services.cadvisor = {
-    enable = true;
-    listenAddress = "0.0.0.0";
-    port = 9080;
+    cadvisor.enable = true;
   };
 
   services.alloy.enable = true;

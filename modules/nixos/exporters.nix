@@ -37,6 +37,40 @@ in
         ]
       '';
     };
+
+    cadvisor = {
+      enable = lib.mkEnableOption "cAdvisor container metrics exporter";
+
+      port = lib.mkOption {
+        type = lib.types.port;
+        default = 9080;
+        description = "Port for the cAdvisor exporter.";
+      };
+    };
+
+    scrapeTargets = lib.mkOption {
+      type = lib.types.listOf (
+        lib.types.submodule {
+          options = {
+            job = lib.mkOption {
+              type = lib.types.str;
+              description = "Prometheus job name this exporter belongs to.";
+            };
+
+            port = lib.mkOption {
+              type = lib.types.port;
+              description = "Port the exporter listens on.";
+            };
+          };
+        }
+      );
+      internal = true;
+      default = [ ];
+      description = ''
+        Exporters this host exposes. Consumed by the monitor host to build its
+        Prometheus scrapeConfigs. Computed from the enabled exporters above.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -64,6 +98,29 @@ in
           cmdline = [ ".+" ];
         }
       ];
+    };
+
+    services.cadvisor = lib.mkIf cfg.cadvisor.enable {
+      enable = true;
+      listenAddress = "0.0.0.0";
+      port = cfg.cadvisor.port;
+    };
+
+    networking.firewall.allowedTCPPorts = lib.optional cfg.cadvisor.enable cfg.cadvisor.port;
+
+    wthueb.exporters.scrapeTargets = [
+      {
+        job = "node";
+        port = cfg.ports.node;
+      }
+      {
+        job = "process";
+        port = cfg.ports.process;
+      }
+    ]
+    ++ lib.optional cfg.cadvisor.enable {
+      job = "cadvisor";
+      port = cfg.cadvisor.port;
     };
   };
 }
