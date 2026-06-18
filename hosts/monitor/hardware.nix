@@ -1,35 +1,16 @@
-{
-  lib,
-  modulesPath,
-  ...
-}:
+{ ... }:
 {
   imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
+    ../../modules/nixos/proxmox-guest.nix
   ];
 
-  boot.loader.grub = {
-    enable = true;
-    devices = [ "/dev/sda" ];
-  };
+  boot = {
+    loader.grub = {
+      enable = true;
+      devices = [ "/dev/sda" ];
+    };
 
-  boot.initrd.availableKernelModules = [
-    "uhci_hcd"
-    "ehci_pci"
-    "ahci"
-    "virtio_pci"
-    "virtio_scsi"
-    "sd_mod"
-    "sr_mod"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
-  boot.growPartition = true;
-
-  hardware = {
-    cpu.intel.updateMicrocode = true;
-    graphics.enable = false;
+    growPartition = true;
   };
 
   fileSystems."/" = {
@@ -37,15 +18,4 @@
     fsType = "ext4";
     autoResize = true;
   };
-
-  swapDevices = [
-    {
-      device = "/swapfile";
-      size = 8 * 1024; # 8GB
-    }
-  ];
-
-  networking.useDHCP = lib.mkDefault true;
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }

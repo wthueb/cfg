@@ -9,10 +9,7 @@
     ../../modules/nixos/plex.nix
   ];
 
-  fileSystems."/mnt/data" = {
-    device = "192.168.1.207:/volume1/data";
-    fsType = "nfs";
-  };
+  wthueb.nas.shares.data.path = "/volume1/data";
 
   networking.firewall.allowedTCPPorts = [
     80
@@ -33,8 +30,6 @@
 
   users.users.wil.extraGroups = [ "docker" ];
 
-  services.qemuGuest.enable = true;
-
   services.postfix = {
     enable = true;
     settings.main = {
@@ -42,49 +37,20 @@
     };
   };
 
-  services.prometheus.exporters.node = {
+  wthueb.exporters = {
     enable = true;
-    port = 9100;
-    enabledCollectors = [
-      "ethtool"
-      "softirqs"
-      "systemd"
-      "tcpstat"
+    extraProcessNames = [
+      {
+        name = "sabnzbd";
+        comm = [ "python3" ];
+        cmdline = [ "SABnzbd.py" ];
+      }
+      {
+        name = "bazarr";
+        comm = [ "python3" ];
+        cmdline = [ "bazarr" ];
+      }
     ];
-    extraFlags = [
-      "--collector.ethtool.device-exclude=^veth.*$"
-      "--collector.netdev.device-exclude=^veth.*$"
-    ];
-  };
-
-  services.prometheus.exporters.process = {
-    enable = true;
-    port = 9256;
-    settings = {
-      process_names = [
-        {
-          name = "sabnzbd";
-          comm = [ "python3" ];
-          cmdline = [ "SABnzbd.py" ];
-        }
-        {
-          name = "bazarr";
-          comm = [ "python3" ];
-          cmdline = [ "bazarr" ];
-        }
-        {
-          name = "{{.Comm}}";
-          cmdline = [ ".+" ];
-        }
-        # {
-        #   comm = [
-        #     "Plex Media Serv"
-        #     "Radarr"
-        #     "Sonarr"
-        #   ];
-        # }
-      ];
-    };
   };
 
   services.cadvisor = {
@@ -175,8 +141,6 @@
   '';
 
   sops.secrets.cloudflare-token = { };
-
-  sops.defaultSopsFile = ./secrets.yaml;
 
   system.stateVersion = "24.11";
 }

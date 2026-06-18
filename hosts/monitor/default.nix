@@ -106,29 +106,7 @@
     ];
   };
 
-  services.prometheus.exporters.node = {
-    enable = true;
-    port = 9100;
-    enabledCollectors = [
-      "ethtool"
-      "softirqs"
-      "systemd"
-      "tcpstat"
-    ];
-  };
-
-  services.prometheus.exporters.process = {
-    enable = true;
-    port = 9256;
-    settings = {
-      process_names = [
-        {
-          name = "{{.Comm}}";
-          cmdline = [ ".+" ];
-        }
-      ];
-    };
-  };
+  wthueb.exporters.enable = true;
 
   services.prometheus.exporters.snmp = {
     enable = true;
@@ -271,10 +249,6 @@
     owner = config.systemd.services.grafana.serviceConfig.User;
     restartUnits = [ "grafana.service" ];
   };
-
-  services.qemuGuest.enable = true;
-
-  sops.defaultSopsFile = ./secrets.yaml;
 
   system.stateVersion = "25.05";
 }

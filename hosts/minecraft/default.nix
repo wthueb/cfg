@@ -52,9 +52,5 @@
     restartUnits = [ "minecraft-server-vanilla.service" ];
   };
 
-  services.qemuGuest.enable = true;
-
-  sops.defaultSopsFile = ./secrets.yaml;
-
   system.stateVersion = "24.11";
 }

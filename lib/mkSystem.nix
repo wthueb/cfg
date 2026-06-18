@@ -31,6 +31,8 @@ let
       throw "unsupported system: ${system}";
 
   modulesName = "${os}Modules";
+
+  secretsFile = ../hosts/${name}/secrets.yaml;
 in
 assert
   parsedSystem != null && builtins.length parsedSystem == 1
@@ -47,6 +49,9 @@ systemFunc {
     ../modules/${os}
     ../hosts/${name}
     homeConfig
-  ];
+  ]
+  ++ inputs.nixpkgs.lib.optional (builtins.pathExists secretsFile) {
+    sops.defaultSopsFile = secretsFile;
+  };
   specialArgs = { inherit self inputs hostname; };
 }

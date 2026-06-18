@@ -1,13 +1,11 @@
 {
-  pkgs,
   lib,
   inputs,
-  modulesPath,
   ...
 }:
 {
   imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
+    ../../modules/nixos/proxmox-guest.nix
     inputs.disko.nixosModules.disko
   ];
 
@@ -15,20 +13,6 @@
     enable = true;
     configurationLimit = 10;
   };
-
-  boot.initrd.availableKernelModules = [
-    "uhci_hcd"
-    "ehci_pci"
-    "ahci"
-    "virtio_pci"
-    "virtio_scsi"
-    "sd_mod"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
-
-  hardware.cpu.intel.updateMicrocode = true;
 
   disko.devices = {
     disk = {
@@ -61,13 +45,4 @@
       };
     };
   };
-
-  swapDevices = [
-    {
-      device = "/swapfile";
-      size = 8 * 1024; # 8 GB
-    }
-  ];
-
-  networking.useDHCP = lib.mkDefault true;
 }

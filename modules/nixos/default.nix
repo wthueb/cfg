@@ -5,6 +5,11 @@
   ...
 }:
 {
+  imports = [
+    ./exporters.nix
+    ./nas.nix
+  ];
+
   determinate.enable = true;
 
   environment.etc."determinate/config.json".text = ''
