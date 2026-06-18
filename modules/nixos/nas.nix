@@ -6,7 +6,7 @@ in
   options.wthueb.nas = {
     host = lib.mkOption {
       type = lib.types.str;
-      default = "192.168.1.207";
+      default = "192.168.1.227";
       description = ''
         Address of the NAS. An IP is used by default so traffic stays on the
         local network instead of going through Tailscale.
