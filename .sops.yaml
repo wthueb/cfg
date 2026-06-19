@@ -15,19 +15,19 @@ creation_rules:
       - *server_monitor
       - *server_minecraft
 
-  - path_regex: ^hosts/mbk/secrets\.yaml$
+  - path_regex: ^hosts/mbk/secrets(-\w+)?\.yaml$
     key_groups:
     - age:
       - *admin_wil
       - *server_mbk
 
-  - path_regex: ^hosts/monitor/secrets\.yaml$
+  - path_regex: ^hosts/monitor/secrets(-\w+)?\.yaml$
     key_groups:
     - age:
       - *admin_wil
       - *server_monitor
 
-  - path_regex: ^hosts/minecraft/secrets\.yaml$
+  - path_regex: ^hosts/minecraft/secrets(-\w+)\.yaml$
     key_groups:
     - age:
       - *admin_wil

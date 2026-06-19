@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   hostname,
   self,
@@ -41,27 +42,19 @@ let
     {
       job_name = "smart";
       scrape_interval = "60s";
-      static_configs = [
-        {
-          targets = [ "drake:9633" ];
-        }
-      ];
+      static_configs = [ { targets = [ "drake:9633" ]; } ];
     }
     {
       job_name = "gpu";
-      static_configs = [
-        {
-          targets = [ "drake:9835" ];
-        }
-      ];
+      static_configs = [ { targets = [ "drake:9835" ]; } ];
     }
     {
-      job_name = "snmp";
-      static_configs = [
-        {
-          targets = [ "jdr" ];
-        }
-      ];
+      job_name = "mktxp";
+      static_configs = [ { targets = [ "127.0.0.1:49090" ]; } ];
+    }
+    {
+      job_name = "snmp-jdr";
+      static_configs = [ { targets = [ "jdr" ]; } ];
       metrics_path = "/snmp";
       params = {
         module = [ "synology" ];
@@ -100,6 +93,50 @@ in
   services.prometheus.exporters.snmp = {
     enable = true;
     configurationPath = ./snmp-exporter-conf.yaml;
+  };
+
+  environment.systemPackages = [ pkgs.mktxp ];
+
+  users.users.mktxp = {
+    isSystemUser = true;
+    group = "mktxp";
+  };
+  users.groups.mktxp = { };
+
+  systemd.services.mktxp = {
+    description = "mktxp - Mikrotik RouterOS Prometheus exporter";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+
+    path = [ pkgs.coreutils ];
+    preStart = ''
+      install -m 0644 ${./mktxp.conf}  /run/mktxp/mktxp.conf
+      install -m 0644 ${./_mktxp.conf} /run/mktxp/_mktxp.conf
+    '';
+
+    serviceConfig = {
+      User = "mktxp";
+      Group = "mktxp";
+      RuntimeDirectory = "mktxp";
+      ExecStart = "${pkgs.mktxp}/bin/mktxp --cfg-dir /run/mktxp export";
+      Restart = "on-failure";
+      RestartSec = 10;
+
+      NoNewPrivileges = true;
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      PrivateTmp = true;
+    };
+  };
+
+  sops.secrets.mktxp = {
+    sopsFile = ./secrets-mktxp.yaml;
+    format = "yaml";
+    key = "";
+
+    owner = config.systemd.services.mktxp.serviceConfig.User;
+    restartUnits = [ "mktxp.service" ];
   };
 
   services.influxdb2.enable = true;
