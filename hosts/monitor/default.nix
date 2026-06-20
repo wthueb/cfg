@@ -50,7 +50,7 @@ let
     }
     {
       job_name = "mktxp";
-      static_configs = [ { targets = [ "127.0.0.1:49090" ]; } ];
+      static_configs = [ { targets = [ config.wthueb.mktxp.settings.listen ]; } ];
     }
     {
       job_name = "snmp-jdr";
@@ -95,38 +95,14 @@ in
     configurationPath = ./snmp-exporter-conf.yaml;
   };
 
-  environment.systemPackages = [ pkgs.mktxp ];
-
-  users.users.mktxp = {
-    isSystemUser = true;
-    group = "mktxp";
-  };
-  users.groups.mktxp = { };
-
-  systemd.services.mktxp = {
-    description = "mktxp - Mikrotik RouterOS Prometheus exporter";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-
-    path = [ pkgs.coreutils ];
-    preStart = ''
-      install -m 0644 ${./mktxp.conf}  /run/mktxp/mktxp.conf
-      install -m 0644 ${./_mktxp.conf} /run/mktxp/_mktxp.conf
-    '';
-
-    serviceConfig = {
-      User = "mktxp";
-      Group = "mktxp";
-      RuntimeDirectory = "mktxp";
-      ExecStart = "${pkgs.mktxp}/bin/mktxp --cfg-dir /run/mktxp export";
-      Restart = "on-failure";
-      RestartSec = 10;
-
-      NoNewPrivileges = true;
-      ProtectSystem = "strict";
-      ProtectHome = true;
-      PrivateTmp = true;
+  wthueb.mktxp = {
+    enable = true;
+    settings.listen = "127.0.0.1:49090";
+    defaults.credentials_file = config.sops.secrets.mktxp.path;
+    routers.mt-pipeline = {
+      hostname = "192.168.1.232";
+      connection_stats = true;
+      poe = false;
     };
   };
 
@@ -135,7 +111,7 @@ in
     format = "yaml";
     key = "";
 
-    owner = config.systemd.services.mktxp.serviceConfig.User;
+    # Read as root by systemd LoadCredential, then handed to the mktxp DynamicUser.
     restartUnits = [ "mktxp.service" ];
   };
 

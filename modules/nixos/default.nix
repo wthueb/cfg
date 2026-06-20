@@ -7,6 +7,7 @@
 {
   imports = [
     ./exporters.nix
+    ./mktxp.nix
     ./nas.nix
   ];
 
