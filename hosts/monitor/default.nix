@@ -1,8 +1,6 @@
 {
   config,
-  pkgs,
   lib,
-  hostname,
   self,
   ...
 }:
@@ -125,7 +123,8 @@ in
         http_port = 3000;
         enforce_domain = false;
         enable_gzip = true;
-        domain = hostname;
+        domain = "\$__file{${config.sops.secrets.grafana-domain.path}}";
+        root_url = "https://\$__file{${config.sops.secrets.grafana-domain.path}}";
       };
       analytics.reporting_enabled = false;
       "auth.generic_oauth" = {
@@ -185,6 +184,11 @@ in
         }
       ];
     };
+  };
+
+  sops.secrets.grafana-domain = {
+    owner = config.systemd.services.grafana.serviceConfig.User;
+    restartUnits = [ "grafana.service" ];
   };
 
   sops.secrets.grafana-client-secret = {
