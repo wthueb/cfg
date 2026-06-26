@@ -12,13 +12,27 @@ in
   options.wthueb.desktop.enable = lib.mkEnableOption "desktop GUI applications";
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      nerd-fonts.fira-code
-      nerd-fonts.sauce-code-pro
-      nil
-      nixfmt
-      winbox
-    ];
+    home.packages =
+      with pkgs;
+      [
+        bitwarden-desktop
+        brave
+        firefox-bin
+        nerd-fonts.fira-code
+        nerd-fonts.sauce-code-pro
+        nil
+        nixfmt
+        postman
+        spotify
+        thunderbird-esr-bin
+        winbox
+      ]
+      ++ lib.optionals pkgs.stdenv.isDarwin [
+        alcove
+        bartender
+        keyboardcleantool
+        raycast
+      ];
 
     fonts.fontconfig.enable = true;
 

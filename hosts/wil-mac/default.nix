@@ -10,27 +10,16 @@
     ../../modules/darwin/yabai.nix
   ];
   environment.systemPackages = with pkgs; [
-    alcove
-    bartender
-    bitwarden-desktop
-    brave
     ffmpeg-full
-    firefox
     #gimp-with-plugins
     htop
     inetutils
-    keyboardcleantool
     litecli
     #mouseless
     #plex-desktop
-    postman
-    qbittorrent
-    raycast
     #sabnzbd
-    spotify
     sqlite
     #teamviewer
-    thunderbird-esr
   ];
 
   programs.bash.enable = true;
@@ -150,11 +139,11 @@
             hmApps = "${config.home-manager.users.wil.home.homeDirectory}/${config.home-manager.users.wil.targets.darwin.copyApps.directory}";
           in
           [
-            "/Applications/Nix Apps/Brave Browser.app"
-            "/Applications/Nix Apps/Thunderbird ESR.app"
+            "${hmApps}/Brave Browser.app"
+            "${hmApps}/Thunderbird.app"
             "/System/Applications/Messages.app"
             "${hmApps}/Discord.app"
-            "/Applications/Nix Apps/Spotify.app"
+            "${hmApps}/Spotify.app"
             "${hmApps}/WezTerm.app"
             "/Applications/Plex.app"
           ];
