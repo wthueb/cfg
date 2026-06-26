@@ -103,9 +103,6 @@
       nixpkgsConfig = {
         nixpkgs = {
           config.allowUnfree = true;
-          config.permittedInsecurePackages = [
-            "electron-39.8.10" # bitwarden-desktop
-          ];
           overlays = (import ./overlays.nix { inherit self inputs; }) ++ [ self.overlays.default ];
         };
       };
