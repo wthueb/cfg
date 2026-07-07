@@ -66,16 +66,6 @@ M.keys = {
     },
     {
         mods = mod,
-        key = "-",
-        action = wezterm.action.DecreaseFontSize,
-    },
-    {
-        mods = mod,
-        key = "=",
-        action = wezterm.action.IncreaseFontSize,
-    },
-    {
-        mods = mod,
         key = "l",
         action = wezterm.action.ShowDebugOverlay,
     },
@@ -85,5 +75,29 @@ M.keys = {
         action = session.show(),
     },
 }
+
+if mod:find("SHIFT", 1, true) then
+    table.insert(M.keys, {
+        mods = mod,
+        key = "_",
+        action = wezterm.action.DecreaseFontSize,
+    })
+    table.insert(M.keys, {
+        mods = mod,
+        key = "+",
+        action = wezterm.action.IncreaseFontSize,
+    })
+else
+    table.insert(M.keys, {
+        mods = mod,
+        key = "-",
+        action = wezterm.action.DecreaseFontSize,
+    })
+    table.insert(M.keys, {
+        mods = mod,
+        key = "=",
+        action = wezterm.action.IncreaseFontSize,
+    })
+end
 
 return M

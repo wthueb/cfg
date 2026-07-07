@@ -27,6 +27,11 @@ table.insert(config.hyperlink_rules, {
     format = "https://www.github.com/$1/$2",
 })
 
+table.insert(config.hyperlink_rules, {
+    regex = [[\b((CCADA|CINS|SMY|ESC)-\d+)\b]],
+    format = "https://jira.cleverdevices.com/browse/$1",
+})
+
 config.audible_bell = "Disabled"
 
 config.window_padding = {
