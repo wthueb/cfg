@@ -24,6 +24,9 @@
         | transpose -r -d
       )
     '';
+    extraEnv = ''
+      $env.NIXPKGS_ALLOW_UNFREE = 1
+    '';
     plugins = with pkgs.nushellPlugins; [
       formats
       polars
