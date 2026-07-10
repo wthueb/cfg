@@ -9,7 +9,8 @@
     ./exporters.nix
     ./mktxp.nix
     ./nas.nix
-  ];
+  ]
+  ++ (import ../../lib/features.nix).importsFor "nixos";
 
   determinate.enable = true;
 

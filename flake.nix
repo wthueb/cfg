@@ -160,10 +160,13 @@
             pkgs = nixpkgs.legacyPackages.x86_64-linux;
             modules = [
               nixpkgsConfig
-              sops-nix.homeManagerModules.sops
               {
-                home.username = "wil";
-                home.homeDirectory = "/home/wil";
+                home = {
+                  username = "wil";
+                  homeDirectory = "/home/wil";
+                };
+
+                wthueb.video.enable = true;
               }
               ./home
             ];

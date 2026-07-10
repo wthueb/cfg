@@ -1,5 +1,12 @@
-{ pkgs, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  imports = (import ../../lib/features.nix).importsFor "darwin";
+
   determinateNix = {
     enable = true;
 
@@ -61,5 +68,32 @@
     home = "/Users/wil";
     # nushell is functionally the default shell, see home/nu.nix
     shell = pkgs.bashInteractive;
+  };
+
+  programs.bash.enable = true;
+
+  homebrew = {
+    enable = true;
+    onActivation = {
+      autoUpdate = true;
+      upgrade = true;
+      cleanup = "zap"; # remove all formulae not listed
+    };
+
+    taps = [ ];
+    brews = [ "mas" ];
+  };
+
+  launchd.user.agents.startup = {
+    script = ''
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+      ${lib.getExe pkgs.defaultbrowser} browser
+      /bin/launchctl setenv ELECTRON_NO_UPDATER 1
+    '';
+    serviceConfig.RunAtLoad = true;
+  };
+
+  home-manager.users.wil.home = {
+    sessionPath = lib.optional config.homebrew.enable (config.homebrew.prefix + "/bin");
   };
 }

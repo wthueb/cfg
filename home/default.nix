@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   inputs,
@@ -6,11 +7,11 @@
 }:
 {
   imports = [
-    ./desktop.nix
+    inputs.sops-nix.homeManagerModules.sops
     ./nu.nix
     ./sketchybar
-    ./skhd
-  ];
+  ]
+  ++ (import ../lib/features.nix).importsFor "home";
 
   programs.home-manager.enable = true;
 
@@ -205,6 +206,8 @@
         );
     in
     toHomeFiles ../dotfiles;
+
+  sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 
   home.stateVersion = "26.05";
 }

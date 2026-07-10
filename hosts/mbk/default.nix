@@ -18,9 +18,10 @@
 
   environment.systemPackages = with pkgs; [
     docker-compose
-    ffmpeg-full
     mailutils
   ];
+
+  wthueb.video.enable = true;
 
   virtualisation.docker = {
     enable = true;

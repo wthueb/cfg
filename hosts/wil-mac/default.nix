@@ -2,45 +2,25 @@
   self,
   config,
   pkgs,
-  lib,
   ...
 }:
 {
-  imports = [
-    ../../modules/darwin/yabai.nix
-  ];
   environment.systemPackages = with pkgs; [
-    ffmpeg-full
     #gimp-with-plugins
-    htop
     inetutils
     litecli
-    #mouseless
     #plex-desktop
     #sabnzbd
     sqlite
     #teamviewer
   ];
 
-  programs.bash.enable = true;
-
   homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = true;
-      upgrade = true;
-      cleanup = "zap"; # remove all formulae not listed below
-    };
-
-    taps = [ ];
-
     brews = [
       "opencode" # better updates
-      "mas"
     ];
 
     masApps = {
-      "Amphetamine" = 937984704;
       "Home Assistant" = 1099568401;
     };
 
@@ -48,15 +28,11 @@
 
     casks = [
       "claude-code@latest" # better updates
-      "cleanshot" # not in nixpkgs
       "dbeaver-enterprise" # not in nixpkgs
       "docker-desktop" # not in nixpkgs
       "gimp" # no aarch64-darwin
       "google-drive" # not in nixpkgs
-      "linearmouse" # not in nixpkgs
       "lyn" # not in nixpkgs
-      "macfuse" # not in nixpkgs
-      "mouseless" # no aarch64-darwin
       "plex" # no aarch64-darwin
       "private-internet-access" # not in nixpkgs
       "sabnzbd" # no aarch64-darwin
@@ -65,32 +41,9 @@
     ];
   };
 
-  home-manager.users.wil.home.sessionPath = [
-    (config.homebrew.prefix + "/bin")
-  ];
-
-  home-manager.users.wil.wthueb.desktop.enable = true;
-
-  services.karabiner-elements.enable = true;
-
-  launchd.user.agents.raycast = {
-    serviceConfig = {
-      Program = "${pkgs.raycast}/Applications/Raycast.app/Contents/MacOS/Raycast";
-      RunAtLoad = true;
-      KeepAlive = true;
-    };
-  };
-
-  launchd.user.agents.bartender = {
-    serviceConfig =
-      let
-        version = lib.versions.major pkgs.bartender.version;
-      in
-      {
-        Program = "${pkgs.bartender}/Applications/Bartender ${version}.app/Contents/MacOS/Bartender ${version}";
-        RunAtLoad = true;
-        KeepAlive = true;
-      };
+  wthueb = {
+    desktop.enable = true;
+    video.enable = true;
   };
 
   #launchd.user.agents.bitwarden-desktop = {
@@ -100,31 +53,6 @@
   #    KeepAlive = true;
   #  };
   #};
-
-  launchd.user.agents.mouseless = {
-    serviceConfig = {
-      Program = "/Applications/Mouseless.app/Contents/MacOS/mouseless";
-      RunAtLoad = true;
-      KeepAlive = true;
-    };
-  };
-
-  launchd.user.agents.wezterm = {
-    serviceConfig = {
-      Program = lib.getExe' config.home-manager.users.wil.programs.wezterm.package "wezterm-mux-server";
-      RunAtLoad = true;
-      KeepAlive = true;
-    };
-  };
-
-  launchd.user.agents.startup = {
-    script = ''
-      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-      ${lib.getExe pkgs.defaultbrowser} browser
-      /bin/launchctl setenv ELECTRON_NO_UPDATER 1
-    '';
-    serviceConfig.RunAtLoad = true;
-  };
 
   system = {
     primaryUser = "wil";
@@ -189,10 +117,6 @@
   ids.gids.nixbld = 30000;
 
   security = {
-    accessibilityPrograms = [
-      (lib.getExe pkgs.skhd)
-    ];
-
     pam.services.sudo_local.touchIdAuth = true;
 
     sudo.extraConfig = ''

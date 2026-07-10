@@ -1,10 +1,16 @@
 {
+  config,
+  lib,
   pkgs,
   hostname,
   ...
 }:
 {
   networking.hostName = hostname;
+
+  home-manager.users.wil.wthueb = lib.getAttrs (builtins.filter (
+    n: builtins.hasAttr n config.wthueb
+  ) (import ../lib/features.nix).names) config.wthueb;
 
   environment = {
     systemPackages = with pkgs; [
@@ -17,6 +23,7 @@
       gnugrep
       gnused
       gnutar
+      htop
       neovim
       nushell
       rsync
