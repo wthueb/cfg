@@ -268,16 +268,18 @@
 
             sketchybar =
               let
-                libs = with pkgs; [
-                  sbarlua
-                  lua54Packages.inspect
+                cfg = self.darwinConfigurations.wil-mac.config.home-manager.users.wil.programs.sketchybar;
+                luaPackages = cfg.luaPackage.pkgs;
+                libs = [
+                  cfg.sbarLuaPackage
+                  luaPackages.inspect
                 ];
               in
               pkgs.mkShell {
-                packages = [ pkgs.lua5_5 ] ++ libs;
+                packages = [ cfg.luaPackage ] ++ libs;
                 env = {
-                  LUA_PATH = lib.concatMapStringsSep ";" pkgs.lua54Packages.getLuaPath libs;
-                  LUA_CPATH = lib.concatMapStringsSep ";" pkgs.lua54Packages.getLuaCPath libs;
+                  LUA_PATH = lib.concatMapStringsSep ";" luaPackages.getLuaPath libs;
+                  LUA_CPATH = lib.concatMapStringsSep ";" luaPackages.getLuaCPath libs;
                 };
               };
 
