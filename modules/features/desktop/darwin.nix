@@ -68,7 +68,7 @@ in
           rules = [
             {
               app = "Finder";
-              title = "(Co(py|nnect)|Move|Info|Pref)";
+              title = "^(Co(py|nnect)|Move|Info|Pref|Trash)$";
               manage = "off";
               layer = "above";
             }
@@ -106,7 +106,7 @@ in
             }
             {
               app = "GIMP";
-              notitle = "(^GNU Image Manipulation Program)|(GIMP)$";
+              "title!" = "^(GNU Image Manipulation Program|GIMP)$";
               manage = "off";
             }
             {
@@ -124,17 +124,12 @@ in
             }
             {
               app = "DBeaver";
-              notitle = "^DBeaver";
+              "title!" = "^DBeaver";
               manage = "off";
             }
           ];
 
-          ruleAttrToArg =
-            name: value:
-            if name == "notitle" then
-              "title!=${lib.escapeShellArg value}"
-            else
-              "${name}=${lib.escapeShellArg value}";
+          ruleAttrToArg = name: value: "${name}=${lib.escapeShellArg value}";
 
           rulesConfig = lib.concatStringsSep "\n" (
             map (
