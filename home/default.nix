@@ -9,7 +9,6 @@
   imports = [
     inputs.sops-nix.homeManagerModules.sops
     ./nu.nix
-    ./sketchybar
   ]
   ++ (import ../lib/features.nix).importsFor "home";
 

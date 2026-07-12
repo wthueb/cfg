@@ -8,6 +8,8 @@ let
   cfg = config.wthueb.desktop;
 in
 {
+  imports = [ ./sketchybar ];
+
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       bitwarden-desktop
