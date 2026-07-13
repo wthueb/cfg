@@ -182,11 +182,14 @@ in
 
     services.karabiner-elements.enable = true;
 
+    wthueb.services = {
+      bartender.enable = true;
+      raycast.enable = true;
+    };
+
     environment.systemPackages = with pkgs; [
       alcove
-      bartender
       keyboardcleantool
-      raycast
     ];
 
     security.accessibilityPrograms = [
@@ -205,26 +208,6 @@ in
         "macfuse" # not in nixpkgs
         "mouseless" # no aarch64-darwin
       ];
-    };
-
-    launchd.user.agents.raycast = {
-      serviceConfig = {
-        Program = "${pkgs.raycast}/Applications/Raycast.app/Contents/MacOS/Raycast";
-        RunAtLoad = true;
-        KeepAlive = true;
-      };
-    };
-
-    launchd.user.agents.bartender = {
-      serviceConfig =
-        let
-          version = lib.versions.major pkgs.bartender.version;
-        in
-        {
-          Program = "${pkgs.bartender}/Applications/Bartender ${version}.app/Contents/MacOS/Bartender ${version}";
-          RunAtLoad = true;
-          KeepAlive = true;
-        };
     };
 
     launchd.user.agents.mouseless = {

@@ -5,7 +5,11 @@
   ...
 }:
 {
-  imports = (import ../../lib/features.nix).importsFor "darwin";
+  imports = [
+    ./services/bartender.nix
+    ./services/raycast.nix
+  ]
+  ++ (import ../../lib/features.nix).importsFor "darwin";
 
   determinateNix = {
     enable = true;
