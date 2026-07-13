@@ -80,8 +80,11 @@
       cleanup = "zap"; # remove all formulae not listed
     };
 
-    taps = [ ];
-    brews = [ "mas" ];
+    taps = [ "vjeantet/tap" ];
+    brews = [
+      "mas"
+      "vjeantet/tap/alerter"
+    ];
   };
 
   launchd.user.agents.startup = {
