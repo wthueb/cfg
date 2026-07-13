@@ -41,5 +41,7 @@ if not (which carapace | is-empty) {
     $env.CARAPACE_MATCH = "1"
 }
 
+path add ~/.local/bin
+
 source (if ('~/.config/nushell/nix/env.nu' | path exists) { '~/.config/nushell/nix/env.nu' } else { null })
 source (if ('~/.config/nushell/env.custom.nu' | path exists) { '~/.config/nushell/env.custom.nu' } else { null })
