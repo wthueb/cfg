@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.wthueb.mktxp;
+  cfg = config.wthueb.services.mktxp;
 
   inherit (lib) types;
 
@@ -572,7 +572,7 @@ let
     || cfg.defaults.username != null;
 in
 {
-  options.wthueb.mktxp = {
+  options.wthueb.services.mktxp = {
     enable = lib.mkEnableOption "mktxp, the Mikrotik RouterOS Prometheus exporter";
 
     package = lib.mkPackageOption pkgs "mktxp" { };
@@ -588,7 +588,7 @@ in
       default = { };
       description = ''
         Settings shared by every router (the [default] section of mktxp.conf).
-        Each per-router entry in {option}`wthueb.mktxp.routers` overrides these.
+        Each per-router entry in {option}`wthueb.services.mktxp.routers` overrides these.
       '';
     };
 
@@ -598,7 +598,7 @@ in
       description = ''
         RouterOS devices to collect metrics from. The attribute name is the
         entry name. Any option left unset inherits its value from
-        {option}`wthueb.mktxp.defaults`.
+        {option}`wthueb.services.mktxp.defaults`.
       '';
       example = lib.literalExpression ''
         {
@@ -612,13 +612,13 @@ in
     assertions = [
       {
         assertion = cfg.routers != { };
-        message = "wthueb.mktxp.enable is set but no routers are defined in wthueb.mktxp.routers.";
+        message = "wthueb.services.mktxp.enable is set but no routers are defined in wthueb.services.mktxp.routers.";
       }
       {
         assertion = lib.all hasCredentials (lib.attrValues cfg.routers);
         message = ''
-          Every wthueb.mktxp router needs credentials: set credentials_file (or
-          username/password) either on the router or on wthueb.mktxp.defaults.
+          Every wthueb.services.mktxp router needs credentials: set credentials_file (or
+          username/password) either on the router or on wthueb.services.mktxp.defaults.
         '';
       }
     ];

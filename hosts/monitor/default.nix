@@ -48,7 +48,7 @@ let
     }
     {
       job_name = "mktxp";
-      static_configs = [ { targets = [ config.wthueb.mktxp.settings.listen ]; } ];
+      static_configs = [ { targets = [ config.wthueb.services.mktxp.settings.listen ]; } ];
     }
     {
       job_name = "snmp-jdr";
@@ -93,7 +93,7 @@ in
     configurationPath = ./snmp-exporter-conf.yaml;
   };
 
-  wthueb.mktxp = {
+  wthueb.services.mktxp = {
     enable = true;
     settings.listen = "127.0.0.1:49090";
     defaults.credentials_file = config.sops.secrets.mktxp.path;
