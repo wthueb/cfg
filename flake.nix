@@ -171,6 +171,23 @@
             ];
             extraSpecialArgs = { inherit inputs; };
           };
+
+          "wil@nate" = home-manager.lib.homeManagerConfiguration {
+            pkgs = nixpkgs.legacyPackages.x86_64-linux;
+            modules = [
+              nixpkgsConfig
+              {
+                home = {
+                  username = "wil";
+                  homeDirectory = "/home/wil";
+                };
+
+                wthueb.video.enable = true;
+              }
+              ./home
+            ];
+            extraSpecialArgs = { inherit inputs; };
+          };
         };
 
         deploy.nodes = {
@@ -211,6 +228,14 @@
             profiles.home = {
               user = "wil";
               path = deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@drake";
+            };
+          };
+
+          nate = {
+            hostname = "nate";
+            profiles.home = {
+              user = "wil";
+              path = deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@nate";
             };
           };
         };
