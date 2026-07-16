@@ -33,7 +33,7 @@
   services.postfix = {
     enable = true;
     settings.main = {
-      myhostname = "mbk";
+      myhostname = config.networking.hostName;
     };
   };
 
@@ -63,6 +63,13 @@
   };
   users.groups.alloy = { };
   environment.etc."alloy/config.alloy".text = ''
+    import.git "log_utils" {
+      repository     = "https://github.com/grafana/alloy-modules.git"
+      path           = "modules/utils/logs/log-levels.alloy"
+      revision       = "main"
+      pull_frequency = "24h"
+    }
+
     discovery.docker "containers" {
       host = "unix:///var/run/docker.sock"
     }
@@ -78,7 +85,7 @@
 
       rule {
         target_label = "instance"
-        replacement  = constants.hostname
+        replacement  = "${config.networking.hostName}"
       }
 
       rule {
@@ -90,6 +97,14 @@
     loki.source.docker "containers" {
       host       = "unix:///var/run/docker.sock"
       targets    = discovery.relabel.set_container_labels.output
+      forward_to = [log_utils.default_level.detect.receiver]
+    }
+
+    log_utils.default_level "detect" {
+      forward_to = [log_utils.normalize_level.normalize.receiver]
+    }
+
+    log_utils.normalize_level "normalize" {
       forward_to = [loki.write.loki.receiver]
     }
 
