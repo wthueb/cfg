@@ -97,11 +97,40 @@
     loki.source.docker "containers" {
       host       = "unix:///var/run/docker.sock"
       targets    = discovery.relabel.set_container_labels.output
+      forward_to = [loki.process.strip_ansi.receiver]
+    }
+
+    loki.process "strip_ansi" {
       forward_to = [log_utils.default_level.detect.receiver]
+
+      stage.replace {
+        expression = "(\\x1b\\[[0-9;]*m)"
+        replace    = ""
+      }
     }
 
     log_utils.default_level "detect" {
+      forward_to = [loki.process.detect_clef_level.receiver]
+    }
+
+    loki.process "detect_clef_level" {
       forward_to = [log_utils.normalize_level.normalize.receiver]
+
+      stage.match {
+        selector = "{level=\"unknown\"}"
+
+        stage.json {
+          expressions = {
+            level = "\"@l\"",
+          }
+        }
+
+        stage.labels {
+          values = {
+            level = "",
+          }
+        }
+      }
     }
 
     log_utils.normalize_level "normalize" {
