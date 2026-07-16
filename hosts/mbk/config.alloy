@@ -12,6 +12,13 @@ discovery.docker "containers" {
 discovery.relabel "set_container_labels" {
 	targets = discovery.docker.containers.targets
 
+	// loki.source.file.seerr
+	rule {
+		source_labels = ["__meta_docker_container_name"]
+		regex         = "/(seerr|seerr-jellyfin)"
+		action        = "drop"
+	}
+
 	rule {
 		source_labels = ["__meta_docker_container_name"]
 		regex         = "/(.*)"
@@ -35,12 +42,32 @@ loki.source.docker "containers" {
 	forward_to = [loki.process.strip_ansi.receiver]
 }
 
+local.file_match "seerr" {
+	path_targets = [
+		{
+			__path__       = "/opt/docker/plex/seerr/logs/.machinelogs.json",
+			container_name = "seerr",
+			instance       = constants.hostname,
+			job            = "docker",
+		},
+		{
+			__path__       = "/opt/docker/plex/seerr-jellyfin/logs/.machinelogs.json",
+			container_name = "seerr-jellyfin",
+			instance       = constants.hostname,
+			job            = "docker",
+		},
+	]
+}
+
+loki.source.file "seerr" {
+	targets    = local.file_match.seerr.targets
+	forward_to = [loki.process.strip_ansi.receiver]
+}
+
 loki.process "strip_ansi" {
 	forward_to = [log_utils.default_level.detect.receiver]
 
 	stage.replace {
-		// capture group is required: loki's replace stage substitutes captured
-		// groups, not the whole match, so without it nothing is stripped.
 		expression = "(\\x1b\\[[0-9;]*m)"
 		replace    = ""
 	}
@@ -51,7 +78,7 @@ log_utils.default_level "detect" {
 }
 
 loki.process "detect_clef_level" {
-	forward_to = [log_utils.normalize_level.normalize.receiver]
+	forward_to = [loki.process.detect_bunyan_level.receiver]
 
 	stage.match {
 		selector = "{level=\"unknown\"}"
@@ -60,6 +87,32 @@ loki.process "detect_clef_level" {
 			expressions = {
 				level = "\"@l\"",
 			}
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
+		}
+	}
+}
+
+loki.process "detect_bunyan_level" {
+	forward_to = [log_utils.normalize_level.normalize.receiver]
+
+	stage.match {
+		selector = "{level=\"unknown\"}"
+
+		stage.json {
+			expressions = {
+				level = "level",
+			}
+		}
+
+		// https://github.com/trentm/node-bunyan#levels
+		stage.template {
+			source   = "level"
+			template = "{{ $l := printf \"%v\" .Value }}{{ if eq $l \"10\" }}trace{{ else if eq $l \"20\" }}debug{{ else if eq $l \"30\" }}info{{ else if eq $l \"40\" }}warn{{ else if eq $l \"50\" }}error{{ else if eq $l \"60\" }}fatal{{ else }}unknown{{ end }}"
 		}
 
 		stage.labels {
