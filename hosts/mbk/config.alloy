@@ -98,7 +98,7 @@ loki.process "detect_clef_level" {
 }
 
 loki.process "detect_bunyan_level" {
-	forward_to = [log_utils.normalize_level.normalize.receiver]
+	forward_to = [loki.process.detect_bracket_level.receiver]
 
 	stage.match {
 		selector = "{level=\"unknown\"}"
@@ -113,6 +113,24 @@ loki.process "detect_bunyan_level" {
 		stage.template {
 			source   = "level"
 			template = "{{ $l := printf \"%v\" .Value }}{{ if eq $l \"10\" }}trace{{ else if eq $l \"20\" }}debug{{ else if eq $l \"30\" }}info{{ else if eq $l \"40\" }}warn{{ else if eq $l \"50\" }}error{{ else if eq $l \"60\" }}fatal{{ else }}unknown{{ end }}"
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
+		}
+	}
+}
+
+loki.process "detect_bracket_level" {
+	forward_to = [log_utils.normalize_level.normalize.receiver]
+
+	stage.match {
+		selector = "{level=\"unknown\"}"
+
+		stage.regex {
+			expression = "\\[(?i)(?P<level>trace|debug|info|warn|warning|error|fatal|panic)\\]"
 		}
 
 		stage.labels {
