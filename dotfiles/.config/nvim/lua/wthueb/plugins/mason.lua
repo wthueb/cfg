@@ -20,7 +20,6 @@ return {
         require("mason-tool-installer").setup({
             ensure_installed = {
                 "angularls",
-                "basedpyright",
                 "cssls",
                 "docker-language-server",
                 "efm",
@@ -33,6 +32,7 @@ return {
                 "ruff",
                 "stylua",
                 "systemd-lsp",
+                "ty",
                 "vtsls",
                 "yamlls",
             },

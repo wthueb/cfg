@@ -302,17 +302,6 @@ return {
             },
         })
 
-        vim.lsp.config("basedpyright", {
-            settings = {
-                basedpyright = {
-                    analysis = {
-                        typeCheckingMode = "strict",
-                        diagnosticMode = "workspace",
-                    },
-                },
-            },
-        })
-
         vim.lsp.config("lua_ls", {
             settings = {
                 Lua = {
