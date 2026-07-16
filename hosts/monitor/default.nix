@@ -248,6 +248,9 @@ in
         retention_delete_worker_count = 150;
         delete_request_store = "filesystem";
       };
+      pattern_ingester = {
+        enabled = true;
+      };
     };
   };
 
