@@ -72,6 +72,11 @@ let
         }
       ];
     }
+    {
+      job_name = "traefik";
+      scrape_interval = "5s";
+      static_configs = [ { targets = [ "mbk:8080" ]; } ];
+    }
   ];
 in
 {
