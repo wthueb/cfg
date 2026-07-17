@@ -8,13 +8,13 @@ discovery.relabel "set_container_labels" {
 	// loki.source.file.seerr
 	rule {
 		source_labels = ["__meta_docker_container_name"]
-		regex         = "/(seerr|seerr-jellyfin)"
+		regex         = `/(seerr|seerr-jellyfin)`
 		action        = "drop"
 	}
 
 	rule {
 		source_labels = ["__meta_docker_container_name"]
-		regex         = "/(.*)"
+		regex         = `/(.*)`
 		target_label  = "container_name"
 	}
 
@@ -62,7 +62,7 @@ loki.process "strip_ansi" {
 	forward_to = [loki.process.detect_level.receiver]
 
 	stage.replace {
-		expression = "(\\x1b\\[[0-9;]*m)"
+		expression = `(\x1b\[[\d;]*m)`
 		replace    = ""
 	}
 }
@@ -76,13 +76,25 @@ loki.process "detect_level" {
 		}
 	}
 
-	// CLEF: @l field
+	// json
 	stage.match {
-		selector = "{level=\"unknown\"}"
+		selector = `{level="unknown"}`
 
 		stage.json {
 			expressions = {
-				level = "\"@l\"",
+				level = `level || lvl || "@l"`,
+			}
+		}
+
+		stage.logfmt {
+			mapping = {
+				level = "",
+			}
+		}
+
+		stage.logfmt {
+			mapping = {
+				level = "lvl",
 			}
 		}
 
@@ -93,15 +105,83 @@ loki.process "detect_level" {
 		}
 	}
 
-	// bunyan (https://github.com/trentm/node-bunyan#levels)
+	// klog format (https://github.com/kubernetes/klog), e.g. I0119
 	stage.match {
-		selector = "{level=\"unknown\"}"
+		selector = `{level="unknown"} |~ "([IWED]\\d{4}\\s+\\d{2}:\\d{2}:\\d{2}\\.\\d+)"`
 
-		stage.json {
-			expressions = {
-				level = "level",
+		// klog uses a single-letter code followed by the month and day, i.e. I0119
+		stage.regex {
+			expression = `(?P<level>[A-Z])\d{4}`
+		}
+
+		stage.replace {
+			source     = "level"
+			expression = `(I)`
+			replace    = "info"
+		}
+
+		stage.replace {
+			source     = "level"
+			expression = `(W)`
+			replace    = "warn"
+		}
+
+		stage.replace {
+			source     = "level"
+			expression = `(E)`
+			replace    = "error"
+		}
+
+		stage.replace {
+			source     = "level"
+			expression = `(D)`
+			replace    = "debug"
+		}
+
+		stage.labels {
+			values = {
+				level = "",
 			}
 		}
+	}
+
+	// bracketed level, e.g. [INFO], [info]
+	stage.match {
+		selector = `{level="unknown"}`
+
+		stage.regex {
+			expression = `(?i)(^|\s)\[(?P<level>trace?|trc|(debug?|dbg)\d*|info?(mation(al)?)?|wa?rn(ing)?|err(or)?|fatal|ftl|crit(ical)?|panic|pnc)\]\s`
+			labels_from_groups = true
+		}
+	}
+
+	// ::LEVEL:: format
+	stage.match {
+		selector = `{level="unknown"}`
+
+		stage.regex {
+			expression = `(?i)::(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)::`
+			labels_from_groups = true
+		}
+	}
+
+	// all caps levels by themselves
+	stage.match {
+		selector = `{level="unknown"}`
+
+		stage.regex {
+			expression = `(^|\s)(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)($|\s)`
+			labels_from_groups = true
+		}
+	}
+}
+
+loki.process "normalize_level" {
+	forward_to = [loki.write.loki.receiver]
+
+	// bunyan (https://github.com/trentm/node-bunyan#levels)
+	stage.match {
+		selector = `{level=~"^[1-6]0$"}`
 
 		stage.template {
 			source   = "level"
@@ -115,141 +195,52 @@ loki.process "detect_level" {
 		}
 	}
 
-	// bracketed level, e.g. [INFO]
-	stage.match {
-		selector = "{level=\"unknown\"}"
-
-		stage.regex {
-			expression = "(?:^|\\s)\\[(?i)(?P<level>trace|debug|info|warn(ing)?|error|fatal|panic|critical)\\]\\s"
-		}
-
-		stage.labels {
-			values = {
-				level = "",
-			}
-		}
-	}
-
-	// klog format (https://github.com/kubernetes/klog), e.g. I0119
-	stage.match {
-		selector = "{level=\"unknown\"} |~ \"([IWED][0-9]{4}\\\\s+[0-9]{2}:[0-9]{2}:[0-9]{2}\\\\.[0-9]+)\""
-
-		// klog uses a single-letter code followed by the month and day, i.e. I0119
-		stage.regex {
-			expression = "((?P<level>[A-Z])[0-9])"
-		}
-
-		stage.replace {
-			source     = "level"
-			expression = "(I)"
-			replace    = "info"
-		}
-
-		stage.replace {
-			source     = "level"
-			expression = "(W)"
-			replace    = "warn"
-		}
-
-		stage.replace {
-			source     = "level"
-			expression = "(E)"
-			replace    = "error"
-		}
-
-		stage.replace {
-			source     = "level"
-			expression = "(D)"
-			replace    = "debug"
-		}
-
-		stage.labels {
-			values = {
-				level = "",
-			}
-		}
-	}
-
-	// zerolog format
-	stage.match {
-		selector = "{level=\"unknown\"} |~ \"^.+(TRC|DBG|INF|WRN|ERR|FTL|PNC)[^=]+(\\\\w+=(\\\"[^\\\"]*\\\"|\\\\S+))(\\\\s+(\\\\w+=(\\\"[^\\\"]*\\\"|\\\\S+)))*\\\\s*$\""
-
-		stage.regex {
-			expression = "(?P<timestamp>[0-9]{4}-[0-9]{2}-[0-9]{2}(T|\\s+)[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]+[^ ]*\\s+)(?P<level>(TRC|DBG|INF|WRN|ERR|FTL|PNC)).+"
-		}
-
-		stage.labels {
-			values = {
-				level = "",
-			}
-		}
-	}
-
-	// last attempt: detect based on common level patterns
-	stage.match {
-		selector = "{level=\"unknown\"}"
-
-		stage.regex {
-			expression = "(?i)(?:\"(?:level|loglevel|levelname|lvl|levelText|SeverityText)\":\\s*\"|\\s*(?:level|loglevel|levelText|lvl)=\"?|\\s+\\[?)(?P<level>(DEBUG?|DBG|INFO?(RMATION)?|WA?RN(ING)?|ERR(OR)?|CRI?T(ICAL)?|FATAL|FTL|NOTICE|TRACE|TRC|PANIC|PNC|ALERT|EMERGENCY))(\"|\\s+|-|\\s*\\])"
-		}
-
-		stage.labels {
-			values = {
-				level = "",
-			}
-		}
-	}
-}
-
-loki.process "normalize_level" {
-	forward_to = [loki.write.loki.receiver]
-
 	// trace: trc, trac, trace
 	stage.replace {
 		source     = "level"
-		expression = "(?i)(trace?|trc)\\d*"
+		expression = `(?i)(trace?|trc)\d*`
 		replace    = "trace"
 	}
 
 	// debug: dbg, debu, debug, debug1..N
 	stage.replace {
 		source     = "level"
-		expression = "(?i)(debug?|dbg)\\d*"
+		expression = `(?i)(debug?|dbg)\d*`
 		replace    = "debug"
 	}
 
 	// info: inf, info, information, informational
 	stage.replace {
 		source     = "level"
-		expression = "(?i)(info?(mation(al)?)?)"
+		expression = `(?i)(info?(mation(al)?)?)`
 		replace    = "info"
 	}
 
 	// warning: wrn, warn, warning
 	stage.replace {
 		source     = "level"
-		expression = "(?i)(wa?rn(ing)?)"
+		expression = `(?i)(wa?rn(ing)?)`
 		replace    = "warning"
 	}
 
 	// error: err, error
 	stage.replace {
 		source     = "level"
-		expression = "(?i)(err(or)?)"
+		expression = `(?i)(err(or)?)`
 		replace    = "error"
 	}
 
 	// fatal: ftl, fatal
 	stage.replace {
 		source     = "level"
-		expression = "(?i)(fatal|ftl)"
+		expression = `(?i)(fatal|ftl)`
 		replace    = "fatal"
 	}
 
 	// critical: crit, critical, pnc, panic
 	stage.replace {
 		source     = "level"
-		expression = "(?i)(crit(ical)?|panic|pnc)"
+		expression = `(?i)(crit(ical)?|panic|pnc)`
 		replace    = "critical"
 	}
 
