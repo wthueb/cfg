@@ -1,3 +1,39 @@
+$env.ENV_CONVERSIONS = {
+    "PATH": {
+        from_string: { |s| $s | split row (char esep) | path expand --no-symlink }
+        to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
+    }
+    "Path": {
+        from_string: { |s| $s | split row (char esep) | path expand --no-symlink }
+        to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
+    }
+}
+
+$env.NU_PLUGIN_DIRS = [
+    ($nu.default-config-dir | path join 'plugins')
+]
+
+$env.EDITOR = "nvim"
+$env.VISUAL = "nvim"
+
+#$env.PAGER = "nvim -R"
+$env.MANPAGER = "nvim +Man!"
+
+$env.PROMPT_INDICATOR_VI_NORMAL = ""
+$env.PROMPT_INDICATOR_VI_INSERT = ""
+
+if $nu.os-info.family == "windows" {
+    let autoload_path = ($nu.data-dir | path join 'vendor/autoload')
+    mkdir $autoload_path
+
+    starship init nu | save --force ($autoload_path | path join 'starship.nu')
+    carapace _carapace nushell | save --force ($autoload_path | path join 'carapace.nu')
+}
+
+if not (which carapace | is-empty) {
+    $env.CARAPACE_MATCH = "1"
+}
+
 $env.config.show_banner = false
 
 #source ./themes/nord.nu
@@ -79,14 +115,6 @@ $env.config.shell_integration = { # see osc_entries!: https://github.com/wezterm
 $env.config.render_right_prompt_on_last_line = false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
 
 $env.config.hooks = {
-    pre_prompt: [
-        {
-            if (which direnv | is-empty) { return }
-
-            direnv export json | from json | default {} | load-env
-            $env.PATH = $env.PATH | split row (char env_sep)
-        }
-    ]
     pre_execution: [{ null }] # run before the repl input is run
     env_change: {
         PWD: [{|before, after| null }] # run if the PWD environment is different since the last repl input

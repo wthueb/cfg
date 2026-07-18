@@ -1,6 +1,7 @@
 {
   self,
   config,
+  lib,
   pkgs,
   ...
 }:
@@ -14,6 +15,20 @@
     sqlite
     #teamviewer
   ];
+
+  environment.etc."ssh/sshd_config.d/150-login-path.conf".text =
+    let
+      home = config.home-manager.users.${config.system.primaryUser}.home;
+
+      path = lib.concatStringsSep ":" (home.sessionPath ++ [ config.environment.systemPath ]);
+
+      # environment.systemPath holds literal $HOME/$USER which SetEnv doesn't expand
+      user = config.system.primaryUser;
+      fullPath = builtins.replaceStrings [ "$HOME" "$USER" ] [ home.homeDirectory user ] path;
+    in
+    ''
+      SetEnv PATH=${fullPath}
+    '';
 
   homebrew = {
     brews = [

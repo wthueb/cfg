@@ -9,6 +9,7 @@
   imports = [
     inputs.sops-nix.homeManagerModules.sops
     ./nu.nix
+    ./direnv.nix
   ]
   ++ (import ../lib/features.nix).importsFor "home";
 
@@ -62,7 +63,6 @@
       };
     };
     carapace.enable = true;
-    direnv.enable = true;
     fd.enable = true;
     fzf.enable = true;
     gh = {

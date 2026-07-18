@@ -71,7 +71,7 @@
     name = "wil";
     home = "/Users/wil";
     # nushell is functionally the default shell, see home/nu.nix
-    shell = pkgs.bashInteractive;
+    shell = pkgs.nushell;
   };
 
   programs.bash.enable = true;
