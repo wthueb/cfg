@@ -33,6 +33,9 @@
     nodejs
     openssh
     python3
+    rbw
+    sqlit-tui
+    sqlite
     tree
     tree-sitter
     unzip

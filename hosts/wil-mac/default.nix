@@ -12,7 +12,6 @@
     litecli
     #plex-desktop
     #sabnzbd
-    sqlite
     #teamviewer
   ];
 
