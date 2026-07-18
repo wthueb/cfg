@@ -28,6 +28,7 @@
 
     casks = [
       "claude-code@latest" # better updates
+      "codex" # better updates
       "dbeaver-enterprise" # not in nixpkgs
       "docker-desktop" # not in nixpkgs
       "gimp" # no aarch64-darwin
