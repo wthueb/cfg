@@ -19,11 +19,6 @@ discovery.relabel "set_container_labels" {
 	}
 
 	rule {
-		target_label = "instance"
-		replacement  = constants.hostname
-	}
-
-	rule {
 		target_label = "job"
 		replacement  = "docker"
 	}
@@ -40,13 +35,11 @@ local.file_match "seerr" {
 		{
 			__path__       = "/opt/docker/plex/seerr/logs/.machinelogs.json",
 			container_name = "seerr",
-			instance       = constants.hostname,
 			job            = "docker",
 		},
 		{
 			__path__       = "/opt/docker/plex/seerr-jellyfin/logs/.machinelogs.json",
 			container_name = "seerr-jellyfin",
-			instance       = constants.hostname,
 			job            = "docker",
 		},
 	]
@@ -150,8 +143,13 @@ loki.process "detect_level" {
 		selector = `{level="unknown"}`
 
 		stage.regex {
-			expression         = `(?i)(^|\s)\[(?P<level>trace?|trc|(debug?|dbg)\d*|info?(mation(al)?)?|wa?rn(ing)?|err(or)?|fatal|ftl|crit(ical)?|panic|pnc)\]\s`
-			labels_from_groups = true
+			expression = `(?i)(^|\s)\[(?P<level>trace?|trc|(debug?|dbg)\d*|info?(mation(al)?)?|wa?rn(ing)?|err(or)?|fatal|ftl|crit(ical)?|panic|pnc)\]\s`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
 		}
 	}
 
@@ -160,8 +158,13 @@ loki.process "detect_level" {
 		selector = `{level="unknown"}`
 
 		stage.regex {
-			expression         = `(?i)::(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)::`
-			labels_from_groups = true
+			expression = `(?i)::(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)::`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
 		}
 	}
 
@@ -170,8 +173,13 @@ loki.process "detect_level" {
 		selector = `{level="unknown"}`
 
 		stage.regex {
-			expression         = `(^|\s)(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)($|\s)`
-			labels_from_groups = true
+			expression = `(^|\s)(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)($|\s)`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
 		}
 	}
 
@@ -301,5 +309,8 @@ loki.process "normalize_level" {
 loki.write "loki" {
 	endpoint {
 		url = "http://ida:3100/loki/api/v1/push"
+	}
+	external_labels = {
+		instance = constants.hostname,
 	}
 }

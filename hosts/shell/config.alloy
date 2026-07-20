@@ -1,9 +1,8 @@
 loki.source.journal "traefik" {
 	forward_to = [loki.process.traefik.receiver]
 	labels     = {
-		instance = constants.hostname,
-		job      = "journal",
-		service  = "traefik",
+		job          = "journal",
+		service_name = "traefik",
 	}
 	matches = "_SYSTEMD_UNIT=traefik.service"
 }
@@ -32,5 +31,8 @@ loki.process "traefik" {
 loki.write "loki" {
 	endpoint {
 		url = "http://ida:3100/loki/api/v1/push"
+	}
+	external_labels = {
+		instance = constants.hostname,
 	}
 }
