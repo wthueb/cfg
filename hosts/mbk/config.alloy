@@ -150,7 +150,7 @@ loki.process "detect_level" {
 		selector = `{level="unknown"}`
 
 		stage.regex {
-			expression = `(?i)(^|\s)\[(?P<level>trace?|trc|(debug?|dbg)\d*|info?(mation(al)?)?|wa?rn(ing)?|err(or)?|fatal|ftl|crit(ical)?|panic|pnc)\]\s`
+			expression         = `(?i)(^|\s)\[(?P<level>trace?|trc|(debug?|dbg)\d*|info?(mation(al)?)?|wa?rn(ing)?|err(or)?|fatal|ftl|crit(ical)?|panic|pnc)\]\s`
 			labels_from_groups = true
 		}
 	}
@@ -160,7 +160,7 @@ loki.process "detect_level" {
 		selector = `{level="unknown"}`
 
 		stage.regex {
-			expression = `(?i)::(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)::`
+			expression         = `(?i)::(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)::`
 			labels_from_groups = true
 		}
 	}
@@ -170,8 +170,49 @@ loki.process "detect_level" {
 		selector = `{level="unknown"}`
 
 		stage.regex {
-			expression = `(^|\s)(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)($|\s)`
+			expression         = `(^|\s)(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)($|\s)`
 			labels_from_groups = true
+		}
+	}
+
+	// redis logs
+	stage.match {
+		selector = `{level="unknown"} |~ "^\\d+:[A-Z] \\d{2} \\w+ \\d+ \\d{2}:\\d{2}:\\d{2}\\.\\d{3} [#*.\\-] .+$"`
+
+		stage.regex {
+			expression = `^(?P<pid>\d+):(?P<role>[A-Z]{1}) (?P<ts>\d{2} \w+ \d+ \d{2}:\d{2}:\d{2}\.\d{3}) (?P<level>[#*\-.]) (?P<msg>.+)$`
+		}
+
+		stage.timestamp {
+			source            = "ts"
+			format            = "02 Jan 2006 15:04:05.000"
+			location          = "UTC"
+			action_on_failure = "skip"
+		}
+
+		stage.template {
+			source = "level"
+
+			template = `{{- if eq .level "." -}} debug {{- else if eq .level "-" -}} info {{- else if eq .level "*" -}} info {{- else if eq .level "#" -}} warn {{- else -}} unknown {{- end -}}`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
+		}
+
+		stage.template {
+			source   = "json"
+			template = `{{- if .pid -}}
+			{"ts":{{ .ts | toJson }},"level":{{ .level | toJson }},"pid":{{ .pid | toJson }},"role":{{ .role | toJson }},"msg":{{ .msg | toRawJson }}}
+			{{- else -}}
+			{"msg":{{ .Entry | toJson }},"parse_error":true}
+			{{- end -}}`
+		}
+
+		stage.output {
+			source = "json"
 		}
 	}
 }
@@ -220,7 +261,7 @@ loki.process "normalize_level" {
 	stage.replace {
 		source     = "level"
 		expression = `(?i)(wa?rn(ing)?)`
-		replace    = "warning"
+		replace    = "warn"
 	}
 
 	// error: err, error
@@ -241,7 +282,7 @@ loki.process "normalize_level" {
 	stage.replace {
 		source     = "level"
 		expression = `(?i)(crit(ical)?|panic|pnc)`
-		replace    = "critical"
+		replace    = "panic"
 	}
 
 	// lower-case anything else (notice, alert, emergency, ...)
