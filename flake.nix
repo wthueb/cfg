@@ -136,8 +136,8 @@
           system = "x86_64-linux";
         };
 
-        nixosConfigurations.monitor = mkSystem {
-          name = "monitor";
+        nixosConfigurations.ida = mkSystem {
+          name = "ida";
           system = "x86_64-linux";
         };
 
@@ -207,11 +207,11 @@
             };
           };
 
-          monitor = {
-            hostname = "monitor";
+          ida = {
+            hostname = "ida";
             profiles.system = {
               user = "root";
-              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.monitor;
+              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.ida;
             };
           };
 

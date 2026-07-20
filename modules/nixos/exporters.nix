@@ -67,7 +67,7 @@ in
       internal = true;
       default = [ ];
       description = ''
-        Exporters this host exposes. Consumed by the monitor host to build its
+        Exporters this host exposes. Consumed by the ida host to build its
         Prometheus scrapeConfigs. Computed from the enabled exporters above.
       '';
     };

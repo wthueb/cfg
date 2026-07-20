@@ -259,6 +259,6 @@ loki.process "normalize_level" {
 
 loki.write "loki" {
 	endpoint {
-		url = "http://monitor:3100/loki/api/v1/push"
+		url = "http://ida:3100/loki/api/v1/push"
 	}
 }

@@ -4,7 +4,7 @@ keys:
   - &home_wil-mac age1te5q0klrgvyy25vxanxawc7zdvgactkrvgtdadwz8kn7phkshsfqhqhg27
   - &server_mbk age19v8nn6fs0akrrm7khuwstvd7kqhfp9fdkqakepmsg9zc855n3vzqh0np03
   - &home_mbk age1mgjw4nu5n0wl7cg7dyntlwweg6yy7jvlgensnfzxd984nxgfh4wq59jurr
-  - &server_monitor age1gf5769a6f8r88eeryvn57xvv2vf2ex907akfmlud4cltx38hm4tsj88w6y
+  - &server_ida age1gf5769a6f8r88eeryvn57xvv2vf2ex907akfmlud4cltx38hm4tsj88w6y
   - &server_minecraft age1w84a8pd9przgpgjk33r4t7pau84luy6kxe34kfg4hlckjds5mprsnnp9u5
   - &home_drake age1cn3ey3za3msgye9jzqwhf4aave5kgg9gh5sk9dxzvaycam3049us8rfzhw
   - &home_nate age196svzwnwddg64s442l5lhf6fdg8pp54evw06cq9xn7fglsg4cqqsa4cx4x
@@ -16,7 +16,7 @@ creation_rules:
       - *admin_wil
       - *server_wil-mac
       - *server_mbk
-      - *server_monitor
+      - *server_ida
       - *server_minecraft
 
   - path_regex: ^secrets/filebot.psm$
@@ -36,11 +36,11 @@ creation_rules:
       - *admin_wil
       - *server_mbk
 
-  - path_regex: ^hosts/monitor/secrets(-\w+)?\.yaml$
+  - path_regex: ^hosts/ida/secrets(-\w+)?\.yaml$
     key_groups:
     - age:
       - *admin_wil
-      - *server_monitor
+      - *server_ida
 
   - path_regex: ^hosts/minecraft/secrets(-\w+)?\.yaml$
     key_groups:
