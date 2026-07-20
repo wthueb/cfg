@@ -49,3 +49,9 @@ creation_rules:
     - age:
       - *admin_wil
       - *server_minecraft
+
+  - path_regex: ^hosts/shell/secrets(-\w+)?\.yaml$
+    key_groups:
+    - age:
+      - *admin_wil
+      - *server_shell
