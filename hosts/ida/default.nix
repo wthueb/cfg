@@ -5,17 +5,19 @@
   ...
 }:
 let
+  hosts = builtins.filter (node: builtins.hasAttr "wthueb" node.config) (
+    lib.mapAttrsToList (_: v: v) self.nixosConfigurations
+  );
+
   # Targets auto-derived from every NixOS host in the flake. Each host declares
   # its exporters via wthueb.exporters; hosts with none contribute an empty list.
-  autoEntries = lib.flatten (
-    lib.mapAttrsToList (
-      _: node:
-      map (t: {
-        inherit (t) job;
-        target = "${node.config.networking.hostName}:${toString t.port}";
-      }) node.config.wthueb.exporters.scrapeTargets
-    ) self.nixosConfigurations
-  );
+  autoEntries = builtins.concatMap (
+    node:
+    map (target: {
+      inherit (target) job;
+      target = "${node.config.networking.hostName}:${toString target.port}";
+    }) node.config.wthueb.exporters.scrapeTargets
+  ) hosts;
 
   # Static targets for hosts that are not NixOS systems in this flake,
   # merged into the matching auto-derived job.

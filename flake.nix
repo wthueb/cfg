@@ -94,6 +94,7 @@
       deploy-rs,
       flake-parts,
       treefmt-nix,
+      disko,
       ...
     }@inputs:
     let
@@ -146,10 +147,36 @@
           system = "x86_64-linux";
         };
 
-        nixosConfigurations.iso = mkSystem {
-          name = "iso";
-          hostname = "nixos";
+        nixosConfigurations.shell = mkSystem {
+          name = "shell";
           system = "x86_64-linux";
+        };
+
+        nixosConfigurations.iso = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+
+          modules = [
+            "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+            {
+              nix.settings.experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+
+              environment.systemPackages = [
+                disko.packages.x86_64-linux.disko-install
+              ];
+
+              services.openssh = {
+                enable = true;
+                settings.PermitRootLogin = "prohibit-password";
+              };
+
+              users.users.root.openssh.authorizedKeys.keys = [
+                "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEAlhysK1b0FyyN0XXKf8BR76UIZGHiVnMUPNjYmuJ6k wil@wil-mac"
+              ];
+            }
+          ];
         };
 
         packages.x86_64-linux.iso = self.nixosConfigurations.iso.config.system.build.isoImage;
@@ -220,6 +247,14 @@
             profiles.system = {
               user = "root";
               path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.minecraft;
+            };
+          };
+
+          shell = {
+            hostname = "shell";
+            profiles.system = {
+              user = "root";
+              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.shell;
             };
           };
 
