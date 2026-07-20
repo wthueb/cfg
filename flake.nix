@@ -321,6 +321,7 @@
               packages = [
                 deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
                 pkgs.sops
+                pkgs.grafana-alloy
               ];
             };
 
@@ -353,6 +354,20 @@
 
             programs.nixfmt.enable = true;
             programs.stylua.enable = true;
+
+            settings.formatter.alloy = {
+              command = lib.getExe pkgs.bash;
+              options = [
+                "-euc"
+                ''
+                  for file in "$@"; do
+                    ${lib.getExe pkgs.grafana-alloy} fmt --write "$file"
+                  done
+                ''
+                "--"
+              ];
+              includes = [ "*.alloy" ];
+            };
           };
         };
     };

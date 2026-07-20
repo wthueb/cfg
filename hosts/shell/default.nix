@@ -165,6 +165,9 @@
         );
     };
 
+  services.alloy.enable = true;
+  environment.etc."alloy/config.alloy".source = ./config.alloy;
+
   sops.secrets = {
     cloudflare-token = { };
     acme-email = { };

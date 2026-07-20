@@ -1,0 +1,36 @@
+loki.source.journal "traefik" {
+	forward_to = [loki.process.traefik.receiver]
+	labels     = {
+		instance = constants.hostname,
+		job      = "journal",
+		service  = "traefik",
+	}
+	matches = "_SYSTEMD_UNIT=traefik.service"
+}
+
+loki.process "traefik" {
+	forward_to = [loki.write.loki.receiver]
+
+	stage.json {
+		expressions = {
+			level = "level",
+		}
+	}
+
+	stage.template {
+		source   = "level"
+		template = "{{ ToLower .Value }}"
+	}
+
+	stage.labels {
+		values = {
+			level = "",
+		}
+	}
+}
+
+loki.write "loki" {
+	endpoint {
+		url = "http://ida:3100/loki/api/v1/push"
+	}
+}
