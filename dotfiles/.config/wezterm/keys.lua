@@ -74,6 +74,11 @@ M.keys = {
         key = "f",
         action = session.show(),
     },
+    {
+        mods = "SHIFT",
+        key = "Enter",
+        action = wezterm.action.SendString("\x0a"),
+    },
 }
 
 if mod:find("SHIFT", 1, true) then
