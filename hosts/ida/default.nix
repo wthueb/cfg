@@ -77,7 +77,7 @@ let
     {
       job_name = "traefik";
       scrape_interval = "5s";
-      static_configs = [ { targets = [ "mbk:8080" ]; } ];
+      static_configs = [ { targets = [ "shell:8080" ]; } ];
     }
     {
       job_name = "qbittorrent";
