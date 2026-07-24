@@ -79,6 +79,10 @@ let
       scrape_interval = "5s";
       static_configs = [ { targets = [ "mbk:8080" ]; } ];
     }
+    {
+      job_name = "qbittorrent";
+      static_configs = [ { targets = [ "mbk:8090" ]; } ];
+    }
   ];
 in
 {
