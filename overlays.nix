@@ -13,6 +13,7 @@
       inherit (unstable)
         alcove
         bartender
+        bitwarden-desktop
         inetutils
         neovim
         neovim-unwrapped
@@ -20,26 +21,11 @@
         nushell
         nushellPlugins
         starship
+        wezterm
         yabai
         ;
-
-      # Root fix: NixOS/nixpkgs#536365 ("ld64: disable hardening again", merged to
-      # staging-next 2026-07-15). Drop this once that reaches nixpkgs-unstable.
-      bitwarden-desktop =
-        if unstable.stdenv.hostPlatform.isDarwin then
-          unstable.bitwarden-desktop.overrideAttrs (old: {
-            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ unstable.llvmPackages.lld ];
-            env = (old.env or { }) // {
-              NIX_CFLAGS_LINK = "-fuse-ld=lld";
-            };
-          })
-        else
-          unstable.bitwarden-desktop;
     }
   )
-  (final: prev: {
-    wezterm = inputs.wezterm.packages.${final.stdenv.hostPlatform.system}.default;
-  })
   (final: prev: {
     karabiner-elements = prev.karabiner-elements.overrideAttrs (old: {
       version = "14.13.0";

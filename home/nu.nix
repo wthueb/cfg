@@ -23,7 +23,7 @@
     '';
     plugins = with pkgs.nushellPlugins; [
       formats
-      polars
+      #polars
       query
     ];
   };
