@@ -19,6 +19,7 @@ in
       nerd-fonts.sauce-code-pro
       nil
       nixfmt
+      plezy
       postman
       spotify
       thunderbird-esr-bin

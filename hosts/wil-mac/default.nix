@@ -88,7 +88,7 @@
             "${hmApps}/Discord.app"
             "${hmApps}/Spotify.app"
             "${hmApps}/WezTerm.app"
-            "/Applications/Plex.app"
+            "${hmApps}/Plezy.app"
           ];
         persistent-others = [ ];
         show-process-indicators = true;
