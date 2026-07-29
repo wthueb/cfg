@@ -41,6 +41,7 @@
     greedyCasks = true;
 
     casks = [
+      "chatgpt" # better updates
       "claude-code@latest" # better updates
       "codex" # better updates
       "dbeaver-enterprise" # not in nixpkgs
@@ -85,7 +86,7 @@
             "${hmApps}/Brave Browser.app"
             "${hmApps}/Thunderbird.app"
             "/System/Applications/Messages.app"
-            "${hmApps}/Discord.app"
+            "${hmApps}/Vesktop.app"
             "${hmApps}/Spotify.app"
             "${hmApps}/WezTerm.app"
             "${hmApps}/Plezy.app"

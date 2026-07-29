@@ -23,20 +23,12 @@ in
       postman
       spotify
       thunderbird-esr-bin
+      vesktop
       winbox
     ];
 
     fonts.fontconfig.enable = true;
 
-    programs = {
-      discord = {
-        enable = true;
-        settings = {
-          SKIP_HOST_UPDATE = true;
-          DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING = true;
-        };
-      };
-      wezterm.enable = true;
-    };
+    programs.wezterm.enable = true;
   };
 }
