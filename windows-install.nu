@@ -33,7 +33,7 @@ def main [] {
 
     let extra_links = (
         $extra_links
-        | transpose source target
+        | items {|k, v| {source: $k, target: $v} }
         | update source { path expand --no-symlink }
         | update target { path expand --no-symlink }
     )
