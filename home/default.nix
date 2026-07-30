@@ -211,5 +211,7 @@
 
   sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 
+  manual.manpages.enable = false;
+
   home.stateVersion = "26.05";
 }
