@@ -6,6 +6,7 @@
 }:
 {
   imports = [
+    ./security/tcc.nix
     ./services/bartender.nix
     ./services/raycast.nix
   ]

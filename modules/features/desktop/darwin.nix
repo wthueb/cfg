@@ -47,14 +47,45 @@ in
       raycast.enable = true;
     };
 
+    wthueb.security.tcc =
+      let
+        karabinerPackage = config.services.karabiner-elements.package;
+        weztermPackage = config.home-manager.users.${config.system.primaryUser}.programs.wezterm.package;
+        weztermMuxServer = lib.getExe' weztermPackage "wezterm-mux-server";
+      in
+      {
+        enable = true;
+
+        permissions = {
+          accessibility = [
+            pkgs.runtimeShell
+            (lib.getExe pkgs.skhd)
+            (lib.getExe pkgs.yabai)
+          ];
+
+          inputMonitoring = [
+            "${karabinerPackage}/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_grabber"
+            "${karabinerPackage}/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_observer"
+          ];
+
+          contacts = [ pkgs.runtimeShell ];
+          photos = [ weztermMuxServer ];
+
+          appleEvents = [
+            {
+              client = weztermMuxServer;
+              indirectObject = {
+                identifier = "com.apple.systemevents";
+                path = "/System/Library/CoreServices/System Events.app";
+              };
+            }
+          ];
+        };
+      };
+
     environment.systemPackages = with pkgs; [
       alcove
       keyboardcleantool
-    ];
-
-    security.accessibilityPrograms = [
-      (lib.getExe config.services.yabai.package)
-      (lib.getExe pkgs.skhd)
     ];
 
     homebrew = {

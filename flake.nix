@@ -284,7 +284,15 @@
             }) (builtins.attrNames (builtins.readDir ./packages))
           );
 
-        checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+        checks = builtins.mapAttrs (
+          system: deployLib:
+          deployLib.deployChecks self.deploy
+          // nixpkgs.lib.optionalAttrs (system == "aarch64-darwin") {
+            tcc = self.darwinConfigurations.wil-mac.pkgs.callPackage ./modules/darwin/security/tcc-test.nix {
+              tccManager = self.darwinConfigurations.wil-mac.config.system.build.tccManager;
+            };
+          }
+        ) deploy-rs.lib;
       };
 
       systems = [
