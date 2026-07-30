@@ -228,8 +228,8 @@ return {
         })
 
         local lspconfig = require("lspconfig")
-        local capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
 
+        local capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities())
         vim.lsp.config("*", { capabilities = capabilities })
 
         local prettier = require("efmls-configs.formatters.prettier")
@@ -331,5 +331,9 @@ return {
             },
         })
         vim.lsp.enable("nil_ls", vim.fn.executable("nil") == 1)
+
+        vim.lsp.config("home_assistant", {
+            workspace_required = true,
+        })
     end,
 }
