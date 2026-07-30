@@ -20,6 +20,7 @@
         nil
         nushell
         nushellPlugins
+        plezy
         starship
         wezterm
         yabai
