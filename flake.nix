@@ -217,60 +217,49 @@
           };
         };
 
-        deploy.nodes = {
-          wil-mac = {
-            hostname = "wil-mac";
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.wil-mac;
-            };
-          };
+        deploy = {
+          user = "root";
 
-          mbk = {
-            hostname = "mbk";
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.mbk;
+          nodes = {
+            wil-mac = {
+              hostname = "wil-mac";
+              profiles.system.path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.wil-mac;
             };
-          };
 
-          ida = {
-            hostname = "ida";
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.ida;
+            mbk = {
+              hostname = "mbk";
+              profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.mbk;
             };
-          };
 
-          minecraft = {
-            hostname = "minecraft";
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.minecraft;
+            ida = {
+              hostname = "ida";
+              profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.ida;
             };
-          };
 
-          shell = {
-            hostname = "shell";
-            profiles.system = {
-              user = "root";
-              path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.shell;
+            minecraft = {
+              hostname = "minecraft";
+              profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.minecraft;
             };
-          };
 
-          drake = {
-            hostname = "drake";
-            profiles.home = {
-              user = "wil";
-              path = deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@drake";
+            shell = {
+              hostname = "shell";
+              profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.shell;
             };
-          };
 
-          nate = {
-            hostname = "nate";
-            profiles.home = {
-              user = "wil";
-              path = deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@nate";
+            drake = {
+              hostname = "drake";
+              profiles.home = {
+                user = "wil";
+                path = deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@drake";
+              };
+            };
+
+            nate = {
+              hostname = "nate";
+              profiles.home = {
+                user = "wil";
+                path = deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@nate";
+              };
             };
           };
         };
