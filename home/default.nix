@@ -70,7 +70,10 @@
     fzf.enable = true;
     gh = {
       enable = true;
-      extensions = [ pkgs.gh-markdown-preview ];
+      extensions = [
+        pkgs.gh-markdown-preview
+        pkgs.gh-stack
+      ];
     };
     git.enable = true;
     jq.enable = true;

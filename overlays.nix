@@ -14,6 +14,7 @@
         alcove
         bartender
         bitwarden-desktop
+        gh-stack
         inetutils
         neovim
         neovim-unwrapped
