@@ -54,7 +54,7 @@
   services = {
     qbittorrent = {
       loadBalancer = {
-        servers = [ { url = "http://mbk:7475"; } ];
+        servers = [ { url = "http://mbk:8080"; } ];
         passHostHeader = false;
       };
     };

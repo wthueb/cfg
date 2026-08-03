@@ -28,8 +28,12 @@
     networkmanager.enable = true;
     firewall = {
       enable = true;
+
+      trustedInterfaces = [ config.services.tailscale.interfaceName ];
+
       allowedTCPPorts = [ ];
-      allowedUDPPorts = [ ];
+      allowedUDPPorts = [ config.services.tailscale.port ];
+
       extraCommands = ''
         iptables -A nixos-fw -p all -s 192.168.0.0/16 -j nixos-fw-accept
       '';
