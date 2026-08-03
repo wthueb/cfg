@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   self,
   ...
 }:
@@ -83,6 +84,35 @@ let
       job_name = "qbittorrent";
       static_configs = [ { targets = [ "mbk:8090" ]; } ];
     }
+    {
+      job_name = "proxmox-api";
+      metrics_path = "/probe";
+      params.module = [ "proxmox_https" ];
+      static_configs = [
+        {
+          targets = [ "https://ms01-a:8006/api2/json/version" ];
+          labels.node = "ms01-a";
+        }
+        {
+          targets = [ "https://ms01-b:8006/api2/json/version" ];
+          labels.node = "ms01-b";
+        }
+      ];
+      relabel_configs = [
+        {
+          source_labels = [ "__address__" ];
+          target_label = "__param_target";
+        }
+        {
+          source_labels = [ "__param_target" ];
+          target_label = "instance";
+        }
+        {
+          target_label = "__address__";
+          replacement = "localhost:9115";
+        }
+      ];
+    }
   ];
 in
 {
@@ -102,6 +132,26 @@ in
   services.prometheus.exporters.snmp = {
     enable = true;
     configurationPath = ./snmp-exporter-conf.yaml;
+  };
+
+  services.prometheus.exporters.blackbox = {
+    enable = true;
+    listenAddress = "127.0.0.1";
+    configFile = pkgs.writeText "blackbox-exporter.yaml" ''
+      modules:
+        proxmox_https:
+          prober: http
+          timeout: 5s
+          http:
+            method: GET
+            valid_status_codes:
+              - 200
+              - 401
+            preferred_ip_protocol: ip4
+            follow_redirects: false
+            tls_config:
+              insecure_skip_verify: true
+    '';
   };
 
   wthueb.services.mktxp = {
