@@ -298,6 +298,22 @@ def --wrapped mkcd [dir: path, ...rest] {
     mkdir ...$rest $dir ; cd $dir
 }
 
+def --wrapped pwatch [duration: duration, command: oneof<closure, string>, ...args] {
+    loop {
+        # clear first so if the command writes to stdout it's preserved
+        clear --keep-scrollback
+
+        let output = if ($command | describe) == "closure" {
+            do $command
+        } else {
+            run-external $command ...$args
+        }
+
+        print $output
+        sleep $duration
+    }
+}
+
 def "vim upgrade" [] {
     nvim --headless "+Lazy! sync" +qa
     nvim --headless "+Lazy! clean" +qa
