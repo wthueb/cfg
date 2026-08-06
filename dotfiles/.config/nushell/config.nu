@@ -430,5 +430,20 @@ def "config update" [] {
     }
 }
 
+def complete_docker_containers [] {
+    ^docker ps --format "{{.Names}}" | lines
+}
+
+def dlog [
+    container: string@complete_docker_containers
+    --json (-j)
+    --follow (-f)
+] {
+    let language = if $json { "json" } else { "log" }
+    let follow_arg = if $follow { ["--follow"] } else { [] }
+
+    ^docker logs ...$follow_arg $container o+e>| ^bat --paging=never --style=plain --language $language
+}
+
 source (if ('~/.config/nushell/nix/config.nu' | path exists) { '~/.config/nushell/nix/config.nu' } else { null })
 source (if ('~/.config/nushell/config.custom.nu' | path exists) { '~/.config/nushell/config.custom.nu' } else { null })
