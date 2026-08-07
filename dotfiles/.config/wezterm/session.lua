@@ -76,8 +76,10 @@ local function dirs_txt_generator()
 
                 local _, stdout, _ = wezterm.run_child_process({
                     "fd",
-                    "-Ha",
+                    "--hidden",
+                    "--no-global-ignore-file", -- global ignore contains .git/
                     "--follow",
+                    "--absolute-path",
                     "--max-depth=10",
                     "--prune",
                     [[\.git$]],
@@ -85,12 +87,14 @@ local function dirs_txt_generator()
                 })
 
                 for line in stdout:gmatch("[^\n]*\n?") do
-                    line = line:match("^%s*(.-)%s*$") -- trim whitepsace
+                    line = line:match("^%s*(.-)%s*$") -- trim whitespace
 
-                    local parent = line:match([[^(.+)[\/].git[\/]?$]])
-                    local dir = string.basename(parent)
+                    if line then
+                        local parent = line:match([[^(.+)[\/].git[\/]?$]])
+                        local dir = string.basename(parent)
 
-                    table.insert(entries, { label = dir, id = parent })
+                        table.insert(entries, { label = dir, id = parent })
+                    end
                 end
 
                 return entries
@@ -102,17 +106,17 @@ local function dirs_txt_generator()
 
                 local _, stdout, _ = wezterm.run_child_process({
                     "fd",
-                    "-t",
-                    "d",
-                    "-Ha",
-                    "--max-depth=1",
+                    "--type=dir",
+                    "--hidden",
                     "--follow",
+                    "--absolute-path",
+                    "--max-depth=1",
                     ".",
                     path,
                 })
 
                 for line in stdout:gmatch("[^\n]*\n?") do
-                    line = line:match("^%s*(.-)[\\/]?%s*$") -- trim whitepsace and trailing slash
+                    line = line:match("^%s*(.-)[\\/]?%s*$") -- trim whitespace and trailing slash
 
                     local label = line:gsub(wezterm.home_dir, "~")
 
