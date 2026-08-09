@@ -70,6 +70,14 @@
     configFile = config.sops.templates."ddclient.conf".path;
   };
 
+  # ddclient's pre-start script resolves $USER when copying its config. Keep a
+  # static account available in case the DynamicUser NSS entry is unavailable.
+  users.users.ddclient = {
+    isSystemUser = true;
+    group = "ddclient";
+  };
+  users.groups.ddclient = { };
+
   sops.templates."ddclient.conf".content = ''
     cache=/var/lib/ddclient/ddclient.cache
     foreground=yes
