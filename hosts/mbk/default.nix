@@ -38,7 +38,6 @@
   };
 
   wthueb.exporters = {
-    enable = true;
     extraProcessNames = [
       {
         name = "sabnzbd";

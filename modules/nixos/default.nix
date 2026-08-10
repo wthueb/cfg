@@ -94,6 +94,8 @@
     variant = "";
   };
 
+  wthueb.exporters.enable = true;
+
   systemd.settings.Manager.RunTimeWatchdogSec = "30s";
 
   users.mutableUsers = false;

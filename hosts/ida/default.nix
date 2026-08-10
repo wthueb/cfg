@@ -127,8 +127,6 @@ in
     scrapeConfigs = simpleJobs ++ specialJobs;
   };
 
-  wthueb.exporters.enable = true;
-
   services.prometheus.exporters.snmp = {
     enable = true;
     configurationPath = ./snmp-exporter-conf.yaml;
