@@ -85,6 +85,10 @@ let
       static_configs = [ { targets = [ "mbk:8090" ]; } ];
     }
     {
+      job_name = "wi1-bot";
+      static_configs = [ { targets = [ "mbk:9000" ]; } ];
+    }
+    {
       job_name = "proxmox-api";
       metrics_path = "/probe";
       params.module = [ "proxmox_https" ];
