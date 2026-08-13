@@ -16,5 +16,7 @@
     app = "plex";
   };
 
-  services.plex.loadBalancer.servers = [ { url = "http://mbk:32400"; } ];
+  # could use `mbk` here instead of raw IP but plex is broken with tailscale
+  # https://forums.plex.tv/t/x-forwarded-for-and-x-real-ip-not-used-when-request-is-coming-from-tailscale-ip-100-x-x-x/898294
+  services.plex.loadBalancer.servers = [ { url = "http://mbk.home.arpa:32400"; } ];
 }
