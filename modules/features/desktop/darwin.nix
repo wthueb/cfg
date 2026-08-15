@@ -92,6 +92,7 @@ in
       masApps = {
         "Amphetamine" = 937984704;
         "Bitwarden" = 1352778147;
+        "WhatsApp Messenger" = 310633997;
       };
 
       casks = [
