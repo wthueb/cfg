@@ -12,7 +12,6 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      bitwarden-desktop
       brave
       firefox-bin
       nerd-fonts.fira-code

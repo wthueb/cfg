@@ -91,6 +91,7 @@ in
     homebrew = {
       masApps = {
         "Amphetamine" = 937984704;
+        "Bitwarden" = 1352778147;
       };
 
       casks = [

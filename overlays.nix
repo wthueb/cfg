@@ -12,7 +12,6 @@
       inherit (unstable)
         alcove
         bartender
-        bitwarden-desktop
         gh-stack
         inetutils
         neovim

@@ -62,14 +62,6 @@
     video.enable = true;
   };
 
-  #launchd.user.agents.bitwarden-desktop = {
-  #  serviceConfig = {
-  #    Program = "${lib.getExe pkgs.bitwarden-desktop}/bin/bitwarden";
-  #    RunAtLoad = true;
-  #    KeepAlive = true;
-  #  };
-  #};
-
   system = {
     primaryUser = "wil";
     defaults = {
