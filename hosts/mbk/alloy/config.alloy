@@ -19,6 +19,13 @@ discovery.relabel "set_container_labels" {
 	}
 
 	rule {
+		source_labels = ["__meta_docker_container_name"]
+		regex         = `/qbittorrent`
+		target_label  = "container_name"
+		replacement   = "arch-qbittorrentvpn"
+	}
+
+	rule {
 		target_label = "job"
 		replacement  = "docker"
 	}
@@ -50,6 +57,11 @@ loki.source.file "seerr" {
 	forward_to = [loki.process.strip_ansi.receiver]
 }
 
+qbittorrent_logs "default" {
+	path       = "/opt/docker/plex/qbittorrent/qBittorrent/data/logs/qbittorrent.log"
+	forward_to = [loki.process.normalize_level.receiver]
+}
+
 // strip ANSI colour codes
 loki.process "strip_ansi" {
 	forward_to = [loki.process.detect_level.receiver]
@@ -71,13 +83,24 @@ loki.process "detect_level" {
 
 	// json
 	stage.match {
-		selector = `{level="unknown"}`
+		selector = `{level="unknown"} |~ "^\\s*\\{"`
 
 		stage.json {
 			expressions = {
 				level = `level || lvl || "@l"`,
 			}
 		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
+		}
+	}
+
+	// logfmt
+	stage.match {
+		selector = `{level="unknown"} |~ "^\\s*[A-Za-z_][A-Za-z0-9_.-]*="`
 
 		stage.logfmt {
 			mapping = {
@@ -227,6 +250,11 @@ loki.process "detect_level" {
 
 loki.process "normalize_level" {
 	forward_to = [loki.write.loki.receiver]
+
+	stage.drop {
+		older_than          = "167h"
+		drop_counter_reason = "too_old_for_loki"
+	}
 
 	// bunyan (https://github.com/trentm/node-bunyan#levels)
 	stage.match {

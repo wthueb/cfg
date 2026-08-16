@@ -1,0 +1,154 @@
+declare "qbittorrent_logs" {
+	argument "path" {
+		optional = false
+	}
+
+	argument "forward_to" {
+		optional = false
+	}
+
+	local.file_match "qbittorrent" {
+		path_targets = [
+			{
+				__path__       = argument.path.value,
+				container_name = "qbittorrent",
+				job            = "docker",
+			},
+		]
+	}
+
+	loki.source.file "qbittorrent" {
+		targets    = local.file_match.qbittorrent.targets
+		forward_to = [loki.process.qbittorrent.receiver]
+	}
+
+	loki.process "qbittorrent" {
+		forward_to = argument.forward_to.value
+
+		stage.regex {
+			expression = `^(?:\x00+)?\((?P<level>[NIWC])\) (?P<ts>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}) - (?P<msg>.+)$`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `Torrent: "(?P<torrent>[^"]+)"`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `Unexpected data detected\. Torrent: (?P<torrent>.+?)\. Data:`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `Existing torrent: "(?P<torrent>[^"]+)"\. Torrent infohash: (?P<infohash>[0-9a-fA-F]+)\. Result: (?P<result>.+)$`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `WebUI Set location: moving "(?P<torrent>[^"]+)", from "(?P<source>[^"]+)" to "(?P<destination>[^"]+)"`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `Source: "(?P<source>[^"]+)"`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `Destination: "(?P<destination>[^"]+)"`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `Reason: "(?P<reason>[^"]+)"`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `Message: "(?P<reason>[^"]+)"`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `File: "(?P<file>[^"]+)"`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `Data: total_wanted=(?P<total_wanted>\d+) total_wanted_done=(?P<total_wanted_done>\d+)`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `\. IP: "(?P<ip>[^"]+)"`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `\. Port: "(?P<transport>TCP|UTP)/(?P<port>\d+)"`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `WebUI: Now listening on IP: (?P<ip>[^,]+), port: (?P<port>\d+)$`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `Request source IP: '(?P<ip>[^']+)'\. Server port: '(?P<port>\d+)'\. Received Host header: '(?P<host>[^']+)'`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `WebAPI login failure\. Reason: (?P<reason>[^,]+), attempt count: (?P<attempt_count>\d+), IP: (?P<ip>[^,]+), username: (?P<username>.+)$`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `WebAPI login failure\. Reason: (?P<reason>[^,]+), IP: (?P<ip>[^,]+), username: (?P<username>.+)$`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `WebAPI login success\. IP: (?P<ip>.+)$`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `^qBittorrent v(?P<version>[^ ]+) started\. Process ID: (?P<process_id>\d+)$`
+		}
+
+		stage.regex {
+			source     = "msg"
+			expression = `^(?P<message>.+?)\. (?:Torrent|Existing torrent|Source|Destination|Reason|Message|Data|File|IP|Process ID|Request source IP):`
+		}
+
+		stage.timestamp {
+			source            = "ts"
+			format            = "2006-01-02T15:04:05"
+			location          = "America/New_York"
+			action_on_failure = "skip"
+		}
+
+		stage.template {
+			source   = "level"
+			template = `{{ if eq .Value "W" }}warn{{ else if eq .Value "C" }}error{{ else }}info{{ end }}`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
+		}
+
+		stage.template {
+			source   = "json"
+			template = `{{- if .ts -}}{"ts":{{ .ts | toJson }},"level":{{ .level | toJson }},"msg":{{ if .message }}{{ .message | toJson }}{{ else }}{{ .msg | toJson }}{{ end }}{{ with .torrent }},"torrent":{{ . | toJson }}{{ end }}{{ with .source }},"source":{{ . | toJson }}{{ end }}{{ with .destination }},"destination":{{ . | toJson }}{{ end }}{{ with .reason }},"reason":{{ . | toJson }}{{ end }}{{ with .file }},"file":{{ . | toJson }}{{ end }}{{ with .infohash }},"infohash":{{ . | toJson }}{{ end }}{{ with .result }},"result":{{ . | toJson }}{{ end }}{{ with .ip }},"ip":{{ . | toJson }}{{ end }}{{ with .port }},"port":{{ . }}{{ end }}{{ with .transport }},"transport":{{ . | toJson }}{{ end }}{{ with .host }},"host":{{ . | toJson }}{{ end }}{{ with .attempt_count }},"attempt_count":{{ . }}{{ end }}{{ with .username }},"username":{{ . | toJson }}{{ end }}{{ with .total_wanted }},"total_wanted":{{ . }}{{ end }}{{ with .total_wanted_done }},"total_wanted_done":{{ . }}{{ end }}{{ with .version }},"version":{{ . | toJson }}{{ end }}{{ with .process_id }},"process_id":{{ . }}{{ end }}}{{- else -}}{"msg":{{ .Entry | toJson }},"parse_error":true}{{- end -}}`
+		}
+
+		stage.output {
+			source = "json"
+		}
+	}
+}

@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
@@ -61,7 +62,34 @@
     extraGroups = [ "docker" ];
   };
   users.groups.alloy = { };
-  environment.etc."alloy/config.alloy".source = ./config.alloy;
+
+  environment.etc =
+    lib.mapAttrs'
+      (
+        name: _:
+        lib.nameValuePair "alloy/${name}" {
+          source = ./alloy + "/${name}";
+        }
+      )
+      (
+        lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".alloy" name) (
+          builtins.readDir ./alloy
+        )
+      );
+
+  systemd.services.alloy-qbittorrent-log-access = {
+    wantedBy = [ "multi-user.target" ];
+    before = [ "alloy.service" ];
+    unitConfig.ConditionPathExists = "/opt/docker/plex/qbittorrent/qBittorrent/data/logs/qbittorrent.log";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${lib.getExe' pkgs.acl "setfacl"} -m u:alloy:r-- /opt/docker/plex/qbittorrent/qBittorrent/data/logs/qbittorrent.log";
+    };
+  };
+  systemd.paths.alloy-qbittorrent-log-access = {
+    wantedBy = [ "multi-user.target" ];
+    pathConfig.PathChanged = "/opt/docker/plex/qbittorrent/qBittorrent/data/logs";
+  };
 
   services.ddclient = {
     enable = true;
