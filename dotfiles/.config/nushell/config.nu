@@ -460,5 +460,6 @@ def dlog --wrapped [
     ^docker logs ...$args $container o+e>| ^bat --paging=never --style=plain --language $language
 }
 
+use ~/.config/nushell/scripts/alloy.nu *
 source (if ('~/.config/nushell/nix/config.nu' | path exists) { '~/.config/nushell/nix/config.nu' } else { null })
 source (if ('~/.config/nushell/config.custom.nu' | path exists) { '~/.config/nushell/config.custom.nu' } else { null })
