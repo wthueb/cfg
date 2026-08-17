@@ -27,6 +27,14 @@
     }
   )
   (final: prev: {
+    # web.archive.org having trouble
+    filebot = prev.filebot.overrideAttrs (old: {
+      src = final.fetchurl {
+        url = "https://get.filebot.net/filebot/FileBot_${old.version}/FileBot_${old.version}-portable.tar.xz";
+        hash = old.src.outputHash;
+      };
+    });
+
     karabiner-elements = prev.karabiner-elements.overrideAttrs (old: {
       version = "14.13.0";
       src = final.fetchurl {
