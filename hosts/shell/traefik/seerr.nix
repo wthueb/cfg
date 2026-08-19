@@ -2,21 +2,34 @@
 {
   routers = {
     seerr = {
-      rule = "Host(`overseerr.wi1.xyz`) || Host(`seerr.wi1.xyz`)";
+      rule = "Host(`seerr.willsplex.com`)";
       service = "seerr";
       middlewares = [ "seerr-theme" ];
     };
+    seerr-old = {
+      rule = "Host(`overseerr.wi1.xyz`) || Host(`seerr.wi1.xyz`)";
+      service = "noop@internal";
+      middlewares = [ "redirect-to-seerr-plex" ];
+    };
 
     seerr-jellyfin = {
-      rule = "Host(`seerr-jellyfin.wi1.xyz`)";
+      rule = "Host(`seerr.willsjellyfin.com`)";
       service = "seerr-jellyfin";
       middlewares = [ "seerr-theme" ];
     };
   };
 
-  middlewares.seerr-theme.plugin.themepark = {
-    inherit theme;
-    app = "overseerr";
+  middlewares = {
+    seerr-theme.plugin.themepark = {
+      inherit theme;
+      app = "overseerr";
+    };
+
+    redirect-to-seerr-plex.redirectRegex = {
+      regex = "^https?://[^/]+\\.wi1\\.xyz(/.*)";
+      replacement = "https://seerr.willsplex.com\${1}";
+      permanent = true;
+    };
   };
 
   services = {

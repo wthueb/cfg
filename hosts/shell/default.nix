@@ -43,8 +43,14 @@
                   main = "wi1.xyz";
                   sans = [ "*.wi1.xyz" ];
                 }
-                { main = "willsplex.com"; }
-                { main = "willsjellyfin.com"; }
+                {
+                  main = "willsplex.com";
+                  sans = [ "*.willsplex.com" ];
+                }
+                {
+                  main = "willsjellyfin.com";
+                  sans = [ "*.willsjellyfin.com" ];
+                }
               ];
             };
           };
