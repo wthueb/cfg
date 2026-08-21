@@ -32,6 +32,7 @@
   homebrew = {
     brews = [
       "opencode" # better updates
+      "pi-coding-agent" # better updates
     ];
 
     masApps = {
