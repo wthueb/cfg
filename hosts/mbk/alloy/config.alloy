@@ -57,6 +57,41 @@ loki.source.file "seerr" {
 	forward_to = [loki.process.strip_ansi.receiver]
 }
 
+local.file_match "plex" {
+	path_targets = [
+		{
+			__path__       = "/opt/docker/plex/plex/Library/Application Support/Plex Media Server/Logs/*.log",
+			container_name = "plex",
+			job            = "docker",
+		},
+		{
+			__path__       = "/opt/docker/plex/plex/Library/Application Support/Plex Media Server/Logs/PMS Plugin Logs/*.log",
+			container_name = "plex",
+			job            = "docker",
+		},
+	]
+}
+
+loki.source.file "plex" {
+	targets    = local.file_match.plex.targets
+	forward_to = [loki.process.plex.receiver]
+}
+
+loki.process "plex" {
+	forward_to = [loki.process.strip_ansi.receiver]
+
+	stage.regex {
+		source     = "filename"
+		expression = `/(?P<log_title>[^/]+?)(?:\.\d+)?\.log$`
+	}
+
+	stage.labels {
+		values = {
+			log_title = "",
+		}
+	}
+}
+
 qbittorrent_logs "default" {
 	path       = "/opt/docker/plex/qbittorrent/qBittorrent/data/logs/qbittorrent.log"
 	forward_to = [loki.process.normalize_level.receiver]
