@@ -223,6 +223,7 @@
           nodes = {
             wil-mac = {
               hostname = "wil-mac";
+              tempPath = "/private/tmp";
               profiles.system.path = deploy-rs.lib.aarch64-darwin.activate.darwin self.darwinConfigurations.wil-mac;
             };
 
