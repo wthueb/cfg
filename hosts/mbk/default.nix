@@ -54,7 +54,8 @@
     cadvisor.enable = true;
   };
 
-  services.alloy.enable = true;
+  wthueb.services.alloy.extraConfig = builtins.readFile ./config.alloy;
+
   systemd.services.alloy.serviceConfig.User = "alloy";
   users.users.alloy = {
     isSystemUser = true;
@@ -62,20 +63,6 @@
     extraGroups = [ "docker" ];
   };
   users.groups.alloy = { };
-
-  environment.etc =
-    lib.mapAttrs'
-      (
-        name: _:
-        lib.nameValuePair "alloy/${name}" {
-          source = ./alloy + "/${name}";
-        }
-      )
-      (
-        lib.filterAttrs (name: type: type == "regular" && lib.hasSuffix ".alloy" name) (
-          builtins.readDir ./alloy
-        )
-      );
 
   systemd.services.alloy-qbittorrent-log-access = {
     wantedBy = [ "multi-user.target" ];

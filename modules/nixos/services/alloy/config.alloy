@@ -1,100 +1,29 @@
-discovery.docker "containers" {
-	host = "unix:///var/run/docker.sock"
-}
-
-discovery.relabel "set_container_labels" {
-	targets = discovery.docker.containers.targets
-
-	// loki.source.file.seerr
-	rule {
-		source_labels = ["__meta_docker_container_name"]
-		regex         = `/(seerr|seerr-jellyfin)`
-		action        = "drop"
-	}
+loki.relabel "journal" {
+	forward_to = []
 
 	rule {
-		source_labels = ["__meta_docker_container_name"]
-		regex         = `/(.*)`
-		target_label  = "container_name"
+		source_labels = ["__journal__systemd_unit"]
+		target_label  = "unit"
 	}
 
+	// nginx.service             -> nginx
+	// postgresql.service        -> postgresql
+	// getty@tty1.service        -> getty
+	// sshd@192.168.1.5.service  -> sshd
 	rule {
-		source_labels = ["__meta_docker_container_name"]
-		regex         = `/qbittorrent`
-		target_label  = "container_name"
-		replacement   = "arch-qbittorrentvpn"
-	}
-
-	rule {
-		target_label = "job"
-		replacement  = "docker"
+		source_labels = ["__journal__systemd_unit"]
+		regex         = `^([^@]+)(?:@.*)?\.service$`
+		replacement   = "$1"
+		target_label  = "service_name"
 	}
 }
 
-loki.source.docker "containers" {
-	host       = "unix:///var/run/docker.sock"
-	targets    = discovery.relabel.set_container_labels.output
-	forward_to = [loki.process.strip_ansi.receiver]
-}
-
-local.file_match "seerr" {
-	path_targets = [
-		{
-			__path__       = "/opt/docker/plex/seerr/logs/.machinelogs.json",
-			container_name = "seerr",
-			job            = "docker",
-		},
-		{
-			__path__       = "/opt/docker/plex/seerr-jellyfin/logs/.machinelogs.json",
-			container_name = "seerr-jellyfin",
-			job            = "docker",
-		},
-	]
-}
-
-loki.source.file "seerr" {
-	targets    = local.file_match.seerr.targets
-	forward_to = [loki.process.strip_ansi.receiver]
-}
-
-local.file_match "plex" {
-	path_targets = [
-		{
-			__path__       = "/opt/docker/plex/plex/Library/Application Support/Plex Media Server/Logs/*.log",
-			container_name = "plex",
-			job            = "docker",
-		},
-		{
-			__path__       = "/opt/docker/plex/plex/Library/Application Support/Plex Media Server/Logs/PMS Plugin Logs/*.log",
-			container_name = "plex",
-			job            = "docker",
-		},
-	]
-}
-
-loki.source.file "plex" {
-	targets    = local.file_match.plex.targets
-	forward_to = [loki.process.plex.receiver]
-}
-
-loki.process "plex" {
-	forward_to = [loki.process.strip_ansi.receiver]
-
-	stage.regex {
-		source     = "filename"
-		expression = `/(?P<log_title>[^/]+?)(?:\.\d+)?\.log$`
+loki.source.journal "journal" {
+	relabel_rules = loki.relabel.journal.rules
+	forward_to    = [loki.process.strip_ansi.receiver]
+	labels        = {
+		job = "journal",
 	}
-
-	stage.labels {
-		values = {
-			log_title = "",
-		}
-	}
-}
-
-qbittorrent_logs "default" {
-	path       = "/opt/docker/plex/qbittorrent/qBittorrent/data/logs/qbittorrent.log"
-	forward_to = [loki.process.normalize_level.receiver]
 }
 
 // strip ANSI colour codes
@@ -110,9 +39,13 @@ loki.process "strip_ansi" {
 loki.process "detect_level" {
 	forward_to = [loki.process.normalize_level.receiver]
 
-	stage.static_labels {
-		values = {
-			level = "unknown",
+	stage.match {
+		selector = `{level=""}`
+
+		stage.static_labels {
+			values = {
+				level = "unknown",
+			}
 		}
 	}
 
@@ -284,7 +217,7 @@ loki.process "detect_level" {
 }
 
 loki.process "normalize_level" {
-	forward_to = [loki.write.loki.receiver]
+	forward_to = [loki.write.default.receiver]
 
 	stage.drop {
 		older_than          = "167h"
@@ -366,14 +299,5 @@ loki.process "normalize_level" {
 		values = {
 			level = "",
 		}
-	}
-}
-
-loki.write "loki" {
-	endpoint {
-		url = "http://ida:3100/loki/api/v1/push"
-	}
-	external_labels = {
-		instance = constants.hostname,
 	}
 }

@@ -6,6 +6,7 @@
 }:
 {
   imports = [
+    ./services/alloy
     ./services/mktxp.nix
     ./exporters.nix
     ./nas.nix
@@ -95,6 +96,7 @@
   };
 
   wthueb.exporters.enable = true;
+  wthueb.services.alloy.enable = true;
 
   systemd.settings.Manager.RunTimeWatchdogSec = "30s";
 

@@ -171,8 +171,7 @@
         );
     };
 
-  services.alloy.enable = true;
-  environment.etc."alloy/config.alloy".source = ./config.alloy;
+  wthueb.services.alloy.enable = true;
 
   sops.secrets = {
     cloudflare-token = { };
