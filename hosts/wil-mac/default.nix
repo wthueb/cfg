@@ -31,7 +31,6 @@
 
   homebrew = {
     brews = [
-      "opencode" # better updates
       "pi-coding-agent" # better updates
     ];
 
@@ -42,9 +41,7 @@
     greedyCasks = true;
 
     casks = [
-      "chatgpt" # better updates
-      "claude-code@latest" # better updates
-      "codex" # better updates
+      # "claude-code@latest" # better updates
       "dbeaver-enterprise" # not in nixpkgs
       "docker-desktop" # not in nixpkgs
       "gimp" # no aarch64-darwin
