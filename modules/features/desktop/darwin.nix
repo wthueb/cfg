@@ -113,7 +113,9 @@ in
 
     launchd.user.agents.wezterm = {
       serviceConfig = {
-        Program = lib.getExe' config.home-manager.users.wil.programs.wezterm.package "wezterm-mux-server";
+        # Program = lib.getExe' config.home-manager.users.wil.programs.wezterm.package "wezterm-mux-server";
+        # using the home-manager profile path so the service doesn't get reloaded during upgrades
+        Program = "/etc/profiles/per-user/${config.system.primaryUser}/bin/wezterm-mux-server";
         RunAtLoad = true;
         KeepAlive = true;
       };
