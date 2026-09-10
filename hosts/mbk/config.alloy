@@ -5,13 +5,6 @@ discovery.docker "containers" {
 discovery.relabel "set_container_labels" {
 	targets = discovery.docker.containers.targets
 
-	// loki.source.file.seerr
-	rule {
-		source_labels = ["__meta_docker_container_name"]
-		regex         = `/(seerr|seerr-jellyfin)`
-		action        = "drop"
-	}
-
 	rule {
 		source_labels = ["__meta_docker_container_name"]
 		regex         = `/(.*)`
@@ -19,15 +12,20 @@ discovery.relabel "set_container_labels" {
 	}
 
 	rule {
-		source_labels = ["__meta_docker_container_name"]
-		regex         = `/qbittorrent`
-		target_label  = "container_name"
-		replacement   = "arch-qbittorrentvpn"
+		target_label = "job"
+		replacement  = "docker"
 	}
 
 	rule {
-		target_label = "job"
-		replacement  = "docker"
+		target_label = "log_source"
+		replacement  = "container"
+	}
+
+	// using loki.source.file.seerr instead because the machine log files are in json
+	rule {
+		source_labels = ["__meta_docker_container_name"]
+		regex         = `/(seerr|seerr-jellyfin)`
+		action        = "drop"
 	}
 }
 
@@ -63,11 +61,13 @@ local.file_match "plex" {
 			__path__       = "/opt/docker/plex/plex/Library/Application Support/Plex Media Server/Logs/*.log",
 			container_name = "plex",
 			job            = "docker",
+			log_source     = "application",
 		},
 		{
 			__path__       = "/opt/docker/plex/plex/Library/Application Support/Plex Media Server/Logs/PMS Plugin Logs/*.log",
 			container_name = "plex",
 			job            = "docker",
+			log_source     = "application",
 		},
 	]
 }
@@ -98,6 +98,7 @@ local.file_match "qbittorrent" {
 			__path__       = "/opt/docker/plex/qbittorrent/qBittorrent/data/logs/qbittorrent.log",
 			container_name = "qbittorrent",
 			job            = "docker",
+			log_source     = "application",
 		},
 	]
 }
