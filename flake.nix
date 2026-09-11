@@ -56,11 +56,14 @@
 
     meridian = {
       url = "github:rynfar/meridian";
-      inputs.bun2nix.inputs.treefmt-nix.follows = "treefmt-nix";
       inputs.flake-parts.follows = "flake-parts";
-      inputs.home-manager.follows = "home-manager";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.systems.follows = "systems";
+    };
+
+    codex-lb = {
+      url = "github:Soju06/codex-lb";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # utilities

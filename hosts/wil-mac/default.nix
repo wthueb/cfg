@@ -7,6 +7,7 @@
   ...
 }:
 let
+  codex-lb = inputs.codex-lb.packages.${pkgs.stdenv.hostPlatform.system}.codex-lb;
   meridian = inputs.meridian.packages.${pkgs.stdenv.hostPlatform.system}.meridian;
 in
 {
@@ -125,19 +126,41 @@ in
   };
 
   home-manager.users.wil = {
-    home.packages = [ meridian ];
+    home.packages = [
+      codex-lb
+      meridian
+    ];
 
-    launchd.agents.meridian = {
-      enable = true;
-      config = {
-        ProgramArguments = [ (lib.getExe meridian) ];
-        EnvironmentVariables.MERIDIAN_PASSTHROUGH = "1";
-        RunAtLoad = true;
-        KeepAlive.SuccessfulExit = false;
-        ProcessType = "Background";
-        ThrottleInterval = 5;
-        StandardOutPath = "/Users/wil/Library/Logs/meridian.log";
-        StandardErrorPath = "/Users/wil/Library/Logs/meridian.error.log";
+    launchd.agents = {
+      codex-lb = {
+        enable = true;
+        config = {
+          ProgramArguments = [ (lib.getExe codex-lb) ];
+          EnvironmentVariables = {
+            CODEX_LB_DATA_DIR = "/Users/wil/.codex-lb";
+            CODEX_LB_DASHBOARD_AUTH_MODE = "disabled";
+          };
+          RunAtLoad = true;
+          KeepAlive.SuccessfulExit = false;
+          ProcessType = "Background";
+          ThrottleInterval = 5;
+          StandardOutPath = "/Users/wil/Library/Logs/codex-lb.log";
+          StandardErrorPath = "/Users/wil/Library/Logs/codex-lb.log";
+        };
+      };
+
+      meridian = {
+        enable = true;
+        config = {
+          ProgramArguments = [ (lib.getExe meridian) ];
+          EnvironmentVariables.MERIDIAN_PASSTHROUGH = "1";
+          RunAtLoad = true;
+          KeepAlive.SuccessfulExit = false;
+          ProcessType = "Background";
+          ThrottleInterval = 5;
+          StandardOutPath = "/Users/wil/Library/Logs/meridian.log";
+          StandardErrorPath = "/Users/wil/Library/Logs/meridian.log";
+        };
       };
     };
   };
