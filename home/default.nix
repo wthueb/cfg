@@ -8,6 +8,7 @@
 {
   imports = [
     inputs.sops-nix.homeManagerModules.sops
+    ../modules/home/services
     ./nu.nix
     ./direnv.nix
   ]

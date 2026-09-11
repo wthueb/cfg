@@ -29,5 +29,10 @@ in
     fonts.fontconfig.enable = true;
 
     programs.wezterm.enable = true;
+
+    wthueb.services = {
+      bartender.enable = pkgs.stdenv.isDarwin;
+      raycast.enable = pkgs.stdenv.isDarwin;
+    };
   };
 }

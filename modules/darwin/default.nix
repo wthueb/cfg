@@ -4,11 +4,12 @@
   pkgs,
   ...
 }:
+let
+  logPath = name: "${config.users.users.${config.system.primaryUser}.home}/Library/Logs/${name}.log";
+in
 {
   imports = [
     ./security/tcc.nix
-    ./services/bartender.nix
-    ./services/raycast.nix
   ]
   ++ (import ../../lib/features.nix).importsFor "darwin";
 
@@ -98,7 +99,11 @@
       ${lib.getExe pkgs.defaultbrowser} browser
       /bin/launchctl setenv ELECTRON_NO_UPDATER 1
     '';
-    serviceConfig.RunAtLoad = true;
+    serviceConfig = {
+      RunAtLoad = true;
+      StandardOutPath = logPath "startup";
+      StandardErrorPath = logPath "startup";
+    };
   };
 
   home-manager.users.wil.home = {

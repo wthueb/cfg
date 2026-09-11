@@ -9,6 +9,7 @@
 let
   codex-lb = inputs.codex-lb.packages.${pkgs.stdenv.hostPlatform.system}.codex-lb;
   meridian = inputs.meridian.packages.${pkgs.stdenv.hostPlatform.system}.meridian;
+  logPath = name: "/Users/wil/Library/Logs/${name}.log";
 in
 {
   environment.systemPackages = with pkgs; [
@@ -144,8 +145,8 @@ in
           KeepAlive.SuccessfulExit = false;
           ProcessType = "Background";
           ThrottleInterval = 5;
-          StandardOutPath = "/Users/wil/Library/Logs/codex-lb.log";
-          StandardErrorPath = "/Users/wil/Library/Logs/codex-lb.log";
+          StandardOutPath = logPath "codex-lb";
+          StandardErrorPath = logPath "codex-lb";
         };
       };
 
@@ -158,9 +159,24 @@ in
           KeepAlive.SuccessfulExit = false;
           ProcessType = "Background";
           ThrottleInterval = 5;
-          StandardOutPath = "/Users/wil/Library/Logs/meridian.log";
-          StandardErrorPath = "/Users/wil/Library/Logs/meridian.log";
+          StandardOutPath = logPath "meridian";
+          StandardErrorPath = logPath "meridian";
         };
+      };
+
+      nix-gc.config = {
+        StandardOutPath = logPath "nix-gc";
+        StandardErrorPath = logPath "nix-gc";
+      };
+
+      ssh-agent.config = {
+        StandardOutPath = logPath "ssh-agent";
+        StandardErrorPath = logPath "ssh-agent";
+      };
+
+      tldr-update.config = {
+        StandardOutPath = logPath "tldr-update";
+        StandardErrorPath = logPath "tldr-update";
       };
     };
   };

@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.wthueb.desktop;
+  logPath = "${config.users.users.${config.system.primaryUser}.home}/Library/Logs/yabai.log";
 in
 {
   config = lib.mkIf cfg.enable {
@@ -151,6 +152,11 @@ in
           SPACEBAR_HEIGHT=$(sketchybar --query bar | jq .height)
           yabai -m config external_bar "all:''\${SPACEBAR_HEIGHT}:0"
         '';
+    };
+
+    launchd.user.agents.yabai.serviceConfig = {
+      StandardOutPath = logPath;
+      StandardErrorPath = logPath;
     };
   };
 }

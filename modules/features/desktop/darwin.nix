@@ -6,6 +6,11 @@
 }:
 let
   cfg = config.wthueb.desktop;
+  logPath = name: "${config.users.users.${config.system.primaryUser}.home}/Library/Logs/${name}.log";
+  logConfig = name: {
+    StandardOutPath = logPath name;
+    StandardErrorPath = logPath name;
+  };
 in
 {
   imports = [ ./yabai.nix ];
@@ -41,11 +46,6 @@ in
     };
 
     services.karabiner-elements.enable = true;
-
-    wthueb.services = {
-      bartender.enable = true;
-      raycast.enable = true;
-    };
 
     wthueb.security.tcc =
       let
@@ -103,16 +103,18 @@ in
       ];
     };
 
-    launchd.user.agents.mouseless = {
-      serviceConfig = {
+    launchd.user.agents = {
+      activate_karabiner_system_ext.serviceConfig = logConfig "activate_karabiner_system_ext";
+      karabiner_session_monitor.serviceConfig = logConfig "karabiner_session_monitor";
+      skhd.serviceConfig = logConfig "skhd";
+
+      mouseless.serviceConfig = logConfig "mouseless" // {
         Program = "/Applications/Mouseless.app/Contents/MacOS/mouseless";
         RunAtLoad = true;
         KeepAlive = true;
       };
-    };
 
-    launchd.user.agents.wezterm = {
-      serviceConfig = {
+      wezterm.serviceConfig = logConfig "wezterm" // {
         # Program = lib.getExe' config.home-manager.users.wil.programs.wezterm.package "wezterm-mux-server";
         # using the home-manager profile path so the service doesn't get reloaded during upgrades
         Program = "/etc/profiles/per-user/${config.system.primaryUser}/bin/wezterm-mux-server";
