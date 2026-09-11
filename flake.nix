@@ -59,7 +59,6 @@
       inputs.bun2nix.inputs.treefmt-nix.follows = "treefmt-nix";
       inputs.flake-parts.follows = "flake-parts";
       inputs.home-manager.follows = "home-manager";
-      inputs.meridian-plugin-pi-scrub.follows = "meridian-plugin-pi-scrub";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.systems.follows = "systems";
     };
@@ -73,11 +72,6 @@
     };
 
     # non-flakes
-    meridian-plugin-pi-scrub = {
-      url = "github:rynfar/meridian-plugin-pi-scrub";
-      flake = false;
-    };
-
     btop = {
       url = "github:aristocratos/btop/main";
       flake = false;

@@ -421,9 +421,7 @@
         ],
         "meridian-plugin-hermes-scrub": "meridian-plugin-hermes-scrub",
         "meridian-plugin-opencode-scrub": "meridian-plugin-opencode-scrub",
-        "meridian-plugin-pi-scrub": [
-          "meridian-plugin-pi-scrub"
-        ],
+        "meridian-plugin-pi-scrub": "meridian-plugin-pi-scrub",
         "nixpkgs": [
           "nixpkgs-unstable"
         ],
@@ -684,7 +682,6 @@
         "home-manager": "home-manager",
         "i915-sriov": "i915-sriov",
         "meridian": "meridian",
-        "meridian-plugin-pi-scrub": "meridian-plugin-pi-scrub",
         "nix-darwin": "nix-darwin",
         "nix-minecraft": "nix-minecraft",
         "nixpkgs": "nixpkgs_2",

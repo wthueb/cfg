@@ -7,17 +7,7 @@
   ...
 }:
 let
-  system = pkgs.stdenv.hostPlatform.system;
-  meridian = inputs.meridian.packages.${system}.meridian;
-  meridianPiScrub = inputs.meridian.legacyPackages.${system}.meridianPlugins.pi-scrub;
-  meridianPluginConfig = (pkgs.formats.json { }).generate "meridian-plugins.json" {
-    plugins = [
-      {
-        enabled = true;
-        path = meridianPiScrub.path;
-      }
-    ];
-  };
+  meridian = inputs.meridian.packages.${pkgs.stdenv.hostPlatform.system}.meridian;
 in
 {
   environment.systemPackages = with pkgs; [
@@ -137,12 +127,11 @@ in
   home-manager.users.wil = {
     home.packages = [ meridian ];
 
-    xdg.configFile."meridian/plugins.json".source = meridianPluginConfig;
-
     launchd.agents.meridian = {
       enable = true;
       config = {
         ProgramArguments = [ (lib.getExe meridian) ];
+        EnvironmentVariables.MERIDIAN_PASSTHROUGH = "1";
         RunAtLoad = true;
         KeepAlive.SuccessfulExit = false;
         ProcessType = "Background";
