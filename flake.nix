@@ -54,6 +54,16 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    meridian = {
+      url = "github:rynfar/meridian";
+      inputs.bun2nix.inputs.treefmt-nix.follows = "treefmt-nix";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.home-manager.follows = "home-manager";
+      inputs.meridian-plugin-pi-scrub.follows = "meridian-plugin-pi-scrub";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.systems.follows = "systems";
+    };
+
     # utilities
     flake-parts.url = "github:hercules-ci/flake-parts";
 
@@ -63,6 +73,11 @@
     };
 
     # non-flakes
+    meridian-plugin-pi-scrub = {
+      url = "github:rynfar/meridian-plugin-pi-scrub";
+      flake = false;
+    };
+
     btop = {
       url = "github:aristocratos/btop/main";
       flake = false;
@@ -315,7 +330,7 @@
             lib.genAttrs packageNames (name: pkgs.${name});
 
           devShells = {
-            default = pkgs.mkShell {
+            default = pkgs.mkShellNoCC {
               packages = [
                 deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.default
                 pkgs.sops

@@ -1,10 +1,24 @@
 {
   self,
   config,
+  inputs,
   lib,
   pkgs,
   ...
 }:
+let
+  system = pkgs.stdenv.hostPlatform.system;
+  meridian = inputs.meridian.packages.${system}.meridian;
+  meridianPiScrub = inputs.meridian.legacyPackages.${system}.meridianPlugins.pi-scrub;
+  meridianPluginConfig = (pkgs.formats.json { }).generate "meridian-plugins.json" {
+    plugins = [
+      {
+        enabled = true;
+        path = meridianPiScrub.path;
+      }
+    ];
+  };
+in
 {
   environment.systemPackages = with pkgs; [
     #gimp-with-plugins
@@ -41,7 +55,7 @@
     greedyCasks = true;
 
     casks = [
-      # "claude-code@latest" # better updates
+      "claude-code@latest" # better updates
       "dbeaver-enterprise" # not in nixpkgs
       "docker-desktop" # not in nixpkgs
       "gimp" # no aarch64-darwin
@@ -118,6 +132,25 @@
     # Used for backwards compatibility, please read the changelog before changing.
     # $ darwin-rebuild changelog
     stateVersion = 6;
+  };
+
+  home-manager.users.wil = {
+    home.packages = [ meridian ];
+
+    xdg.configFile."meridian/plugins.json".source = meridianPluginConfig;
+
+    launchd.agents.meridian = {
+      enable = true;
+      config = {
+        ProgramArguments = [ (lib.getExe meridian) ];
+        RunAtLoad = true;
+        KeepAlive.SuccessfulExit = false;
+        ProcessType = "Background";
+        ThrottleInterval = 5;
+        StandardOutPath = "/Users/wil/Library/Logs/meridian.log";
+        StandardErrorPath = "/Users/wil/Library/Logs/meridian.error.log";
+      };
+    };
   };
 
   ids.gids.nixbld = 30000;

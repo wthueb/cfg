@@ -254,6 +254,8 @@ alias cat = bat --paging=auto
 alias fd = fd --hidden
 alias rg = rg --hidden --smart-case
 
+alias claude = claude --mcp-config ~/.agents/mcp.json
+
 match $nu.os-info.name {
     macos => {
         alias copy = pbcopy
