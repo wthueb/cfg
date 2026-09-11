@@ -205,11 +205,20 @@ return {
                     vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.ERROR })
                 end, { silent = true, desc = "Go to next error", buffer = true })
 
-                if client and client.server_capabilities.documentHighlightProvider then
+                if client and client:supports_method("textDocument/documentHighlight", event.buf) then
                     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
                         desc = "Highlight symbol under cursor",
                         buffer = event.buf,
-                        callback = vim.lsp.buf.document_highlight,
+                        callback = function()
+                            local clients = vim.lsp.get_clients({
+                                bufnr = event.buf,
+                                method = "textDocument/documentHighlight",
+                            })
+
+                            if #clients > 0 then
+                                vim.lsp.buf.document_highlight()
+                            end
+                        end,
                     })
 
                     vim.api.nvim_create_autocmd("CursorMoved", {
