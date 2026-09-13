@@ -123,5 +123,7 @@
 
   sops.secrets.cloudflare-token = { };
 
+  services.atd.enable = true;
+
   system.stateVersion = "24.11";
 }
