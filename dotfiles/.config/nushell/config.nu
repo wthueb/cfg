@@ -462,6 +462,15 @@ def dlog --wrapped [
     ^docker logs ...$args $container o+e>| ^bat --paging=never --style=plain --language $language
 }
 
+def atq [] {
+    ^atq -o %s
+    | lines
+    | parse --regex '^(?<job>\d+)\s+(?<date>\d+)\s+(?<queue>\S+)\s+(?<user>\w+)'
+    | update date {into datetime --format %s}
+    | insert command {^at -c $in.job | lines | last}
+    | sort-by date
+}
+
 use ~/.config/nushell/scripts/alloy.nu *
 use ~/.config/nushell/scripts/logfmt.nu *
 source (if ('~/.config/nushell/nix/config.nu' | path exists) { '~/.config/nushell/nix/config.nu' } else { null })
