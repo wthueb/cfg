@@ -57,7 +57,10 @@ M.keys = {
     {
         mods = mod,
         key = "k",
-        action = wezterm.action.ClearScrollback("ScrollbackAndViewport"),
+        action = wezterm.action.Multiple({
+            wezterm.action.ClearScrollback("ScrollbackAndViewport"),
+            wezterm.action.SendKey({ mods = "CTRL", key = "l" }),
+        }),
     },
     {
         mods = mod,
