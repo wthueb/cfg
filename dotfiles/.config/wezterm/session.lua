@@ -79,9 +79,13 @@ local function dirs_txt_generator()
                     "--hidden",
                     "--no-global-ignore-file", -- global ignore contains .git/
                     "--follow",
-                    "--absolute-path",
                     "--max-depth=10",
                     "--prune",
+                    "--exclude",
+                    ".direnv",
+                    "--exclude",
+                    "node_modules",
+                    "--absolute-path",
                     [[\.git$]],
                     path,
                 })
