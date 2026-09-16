@@ -1,0 +1,18 @@
+{
+  "packages": [
+    "npm:pi-catppuccin-tui",
+    "npm:pi-mcp-adapter",
+    "npm:pi-meridian-extension",
+    "npm:pi-subagents",
+    "npm:pi-vim",
+    "npm:pi-web-access",
+    "npm:@narumitw/pi-btw",
+    "npm:@narumitw/pi-caffeinate",
+    "npm:@narumitw/pi-goal",
+    "npm:@narumitw/pi-lsp",
+    "npm:@narumitw/pi-plan-mode",
+    "npm:@narumitw/pi-tool",
+    "npm:@narumitw/pi-usage",
+    "git:github.com/GeneGulanesJr/LaPis"
+  ]
+}
