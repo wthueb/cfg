@@ -7,25 +7,34 @@ add_newline = false
 
 [username]
 format = '[$user]($style)'
+style_root = 'red'
+style_user = 'yellow'
 show_always = false
 
 [hostname]
 format = '[$hostname]($style)'
-style = 'blue bold'
+style = 'blue'
 ssh_only = true
 
 [directory]
 format = '[$path]($style)'
+style = 'cyan'
 use_os_path_sep = false
 
 [git_branch]
 format = '[$branch(:$remote_branch)]($style)'
+style = 'purple'
+
+[git_state]
+style = 'yellow'
 
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style))'
+style = 'red'
 
 [python]
 format = '( [\($virtualenv\)]($style))'
+style = 'yellow'
 
 [time]
 format = '[$time]($style)'
@@ -35,4 +44,13 @@ disabled = false
 
 [nix_shell]
 format = ' [\(nix\)]($style)'
+style = 'blue'
 heuristic = true
+
+[character]
+success_symbol = '[❯](green)'
+error_symbol = '[❯](red)'
+vimcmd_symbol = '[❮](green)'
+vimcmd_visual_symbol = '[❮](yellow)'
+vimcmd_replace_symbol = '[❮](purple)'
+vimcmd_replace_one_symbol = '[❮](purple)'

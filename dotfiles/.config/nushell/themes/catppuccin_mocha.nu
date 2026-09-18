@@ -164,4 +164,9 @@ $env.config.explore = {
     },
     selected_cell: { bg: $theme.blue fg: $theme.base },
 }
-$env.LS_COLORS = (vivid generate catppuccin-mocha)
+$env.LS_COLORS = (
+  vivid generate catppuccin-mocha
+  | str replace --all --regex '=1(?P<suffix>:|$)' '=0${suffix}'
+  | str replace --all --regex '(?P<prefix>=|;)1;' '${prefix}'
+  | str replace --all --regex ';1(?P<suffix>:|$)' '${suffix}'
+)
