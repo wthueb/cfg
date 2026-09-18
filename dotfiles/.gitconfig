@@ -32,6 +32,9 @@
 [pull]
     rebase = true
 
+[push]
+    autoSetupRemote = true
+
 [alias]
     a = add -v --all
     b = branch -vv
