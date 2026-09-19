@@ -1,4 +1,42 @@
+.shell "/bin/bash"
+
+.path [
+    "/run/current-system/sw/bin"
+    "/etc/profiles/per-user/wil/bin"
+    "$HOME/.nix-profile/bin"
+    "/opt/homebrew/bin"
+]
+
+.device builtin { vendor: 0x0000, product: 0x0000 }
+
 :: default : sketchybar --set skhd_status label=''
+
+:: fn_layer
+
+.remap grave [device builtin] {
+    tap                     : grave
+    hold                    : fn_layer
+    timeout                 : 300ms
+    hold_on_other_key_press : on
+}
+
+.remap caps_lock [device builtin] {
+    tap                     : escape
+    hold                    : lctrl
+    timeout                 : 300ms
+    hold_on_other_key_press : on
+}
+
+fn_layer < h      | left
+fn_layer < j      | down
+fn_layer < k      | up
+fn_layer < l      | right
+fn_layer < v      | rewind
+fn_layer < b      | play
+fn_layer < n      | fast
+fn_layer < m      | mute
+fn_layer < 0x2B | sound_down
+fn_layer < 0x2F | sound_up
 
 :: modify_window : sketchybar --set skhd_status label='modify window'
 modify_window < escape ; default

@@ -16,40 +16,8 @@ in
   imports = [ ./yabai.nix ];
 
   config = lib.mkIf cfg.enable {
-    services.skhd = {
-      enable = true;
-      package =
-        let
-          # called in skhdrc, needed for skhd status in bar
-          extraPackages = [
-            pkgs.sketchybar
-            pkgs.wezterm
-            pkgs.yabai
-          ];
-          makeWrapperArgs = [
-            "--prefix"
-            "PATH"
-            ":"
-            (lib.makeBinPath extraPackages)
-          ];
-        in
-        pkgs.symlinkJoin {
-          name = "skhd";
-          paths = [ pkgs.skhd ];
-          nativeBuildInputs = [ pkgs.makeWrapper ];
-          postBuild = ''
-            wrapProgram $out/bin/skhd ${lib.escapeShellArgs makeWrapperArgs}
-          '';
-          inherit (pkgs.skhd) meta;
-        };
-      skhdConfig = builtins.readFile ./skhdrc;
-    };
-
-    services.karabiner-elements.enable = true;
-
     wthueb.security.tcc =
       let
-        karabinerPackage = config.services.karabiner-elements.package;
         weztermPackage = config.home-manager.users.${config.system.primaryUser}.programs.wezterm.package;
         weztermMuxServer = lib.getExe' weztermPackage "wezterm-mux-server";
       in
@@ -59,13 +27,7 @@ in
         permissions = {
           accessibility = [
             pkgs.runtimeShell
-            (lib.getExe pkgs.skhd)
             (lib.getExe pkgs.yabai)
-          ];
-
-          inputMonitoring = [
-            "${karabinerPackage}/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_grabber"
-            "${karabinerPackage}/Library/Application Support/org.pqrs/Karabiner-Elements/bin/karabiner_observer"
           ];
 
           contacts = [ pkgs.runtimeShell ];
@@ -89,6 +51,13 @@ in
     ];
 
     homebrew = {
+      taps = [
+        {
+          name = "jackielii/tap";
+          trusted = true;
+        }
+      ];
+
       masApps = {
         "Amphetamine" = 937984704;
         "Bitwarden" = 1352778147;
@@ -97,6 +66,7 @@ in
 
       casks = [
         "cleanshot" # not in nixpkgs
+        "jackielii/tap/skhd-zig"
         "linearmouse" # not in nixpkgs
         "macfuse" # not in nixpkgs
         "mouseless" # no aarch64-darwin
@@ -104,10 +74,6 @@ in
     };
 
     launchd.user.agents = {
-      activate_karabiner_system_ext.serviceConfig = logConfig "activate_karabiner_system_ext";
-      karabiner_session_monitor.serviceConfig = logConfig "karabiner_session_monitor";
-      skhd.serviceConfig = logConfig "skhd";
-
       mouseless.serviceConfig = logConfig "mouseless" // {
         Program = "/Applications/Mouseless.app/Contents/MacOS/mouseless";
         RunAtLoad = true;
