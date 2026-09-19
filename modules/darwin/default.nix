@@ -9,6 +9,7 @@ let
 in
 {
   imports = [
+    ./launchd-cleanup.nix
     ./security/tcc.nix
   ]
   ++ (import ../../lib/features.nix).importsFor "darwin";
