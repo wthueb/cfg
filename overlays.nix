@@ -35,4 +35,7 @@
       };
     });
   })
+  (final: prev: {
+    plezy = inputs.nixpkgs-fork.legacyPackages.${final.stdenv.hostPlatform.system}.plezy;
+  })
 ]

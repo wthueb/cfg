@@ -693,6 +693,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-fork": {
+      "locked": {
+        "lastModified": 1790105400,
+        "narHash": "sha256-TOgGraUKPxox3flMpc84qzT36Ny6lIVfyyC20P7AQCY=",
+        "owner": "wthueb",
+        "repo": "nixpkgs",
+        "rev": "4c98b79d5074abe95eca4244811a3b0ac48ac3c6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wthueb",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1788057806,
@@ -825,6 +841,7 @@
         "nix-minecraft": "nix-minecraft",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-darwin": "nixpkgs-darwin",
+        "nixpkgs-fork": "nixpkgs-fork",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "sops-nix": "sops-nix",
         "systems": "systems_2",
