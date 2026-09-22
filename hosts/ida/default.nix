@@ -23,7 +23,11 @@ let
   # Static targets for hosts that are not NixOS systems in this flake,
   # merged into the matching auto-derived job.
   extraTargets = {
-    node = [ "drake:9100" ];
+    node = [
+      "drake:9100"
+      "ms01-a:9100"
+      "ms01-b:9100"
+    ];
   };
 
   jobNames = lib.unique ((map (e: e.job) autoEntries) ++ lib.attrNames extraTargets);
