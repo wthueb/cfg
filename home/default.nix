@@ -24,7 +24,7 @@
   };
 
   home.packages = with pkgs; [
-    delta
+    diffnav
     dig
     dua
     gcc
