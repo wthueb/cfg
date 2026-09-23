@@ -44,8 +44,9 @@ def main [] {
         | each { path expand --no-symlink }
         | where not ($extra_links.source | any {|e| $it | path is-relative-to $e })
         | wrap source
-        | insert target { get source | path expand }
-        | where ($it.target | path is-relative-to $dotfiles)
+        | insert target { do -i { ls -l $in.source | get 0.target | path expand --no-symlink } }
+        | where target != null
+        | where ($it.target | path is-relative-to ~/.cfg/dotfiles)
     )
 
     let files = (
