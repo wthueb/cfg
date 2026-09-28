@@ -119,11 +119,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1789955792,
-        "narHash": "sha256-T6NLZ9CMve5fbxxSxCv9nIvYkm61Y+YaVyNUxbVNtAU=",
+        "lastModified": 1790595590,
+        "narHash": "sha256-mwXRDF1MswfyDESaGzSQGnO6LErxkDyN4qrb/B6/gIs=",
         "owner": "Soju06",
         "repo": "codex-lb",
-        "rev": "3d23d53f89dbbaa2353040a30451cf90ca48ee92",
+        "rev": "f8ffbac2099a113fba54dfd8d77774f5bca80ffa",
         "type": "github"
       },
       "original": {
