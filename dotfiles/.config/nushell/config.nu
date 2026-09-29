@@ -23,11 +23,19 @@ $env.PROMPT_INDICATOR_VI_NORMAL = ""
 $env.PROMPT_INDICATOR_VI_INSERT = ""
 
 if $nu.os-info.family == "windows" {
-    let autoload_path = ($nu.data-dir | path join 'vendor/autoload')
-    mkdir $autoload_path
+   let autoload_path = ($nu.data-dir | path join 'vendor/autoload')
+   mkdir $autoload_path
 
-    starship init nu | save --force ($autoload_path | path join 'starship.nu')
-    carapace _carapace nushell | save --force ($autoload_path | path join 'carapace.nu')
+   def --env regen-if-stale [bin: string, out: path, gen: closure] {
+       let src = (which $bin | get -o 0.path)
+       if $src == null { return }
+       if (not ($out | path exists)) or ((ls -l $out | get 0.modified) < (ls -l $src | get 0.modified)) {
+           do $gen | save --force $out
+       }
+   }
+
+   regen-if-stale starship ($autoload_path | path join 'starship.nu') { starship init nu }
+   regen-if-stale carapace ($autoload_path | path join 'carapace.nu') { carapace _carapace nushell }
 }
 
 if not (which carapace | is-empty) {
