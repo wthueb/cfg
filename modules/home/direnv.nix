@@ -1,10 +1,18 @@
-{ ... }:
+{ config, lib, ... }:
 {
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-    enableBashIntegration = true;
-    enableNushellIntegration = true;
+  programs = {
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+      enableBashIntegration = false;
+      enableNushellIntegration = true;
+    };
+
+    bash.initExtra = ''
+      if [[ -z ''${NIXPKGS_REVIEW_ROOT:-} ]]; then
+        eval "$(${lib.getExe config.programs.direnv.package} hook bash)"
+      fi
+    '';
   };
 
   xdg.configFile."direnv/lib/zzz-restore-login-shell.sh".text = ''
