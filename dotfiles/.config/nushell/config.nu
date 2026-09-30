@@ -479,6 +479,68 @@ def atq [] {
     | sort-by date
 }
 
+# calculate the duration remaining until a given time of day
+def until [
+    time: string  # time of day in HH:MM or HH:MM:SS format
+    --seconds (-s)  # output whole seconds instead of a duration
+]: [nothing -> oneof<duration, int>] {
+    let parts = $time | split row ':'
+
+    if ($parts | length) not-in [2 3] {
+        error make {
+            msg: 'time must be in HH:MM or HH:MM:SS format'
+        }
+    }
+
+    let hour = $parts.0 | into int
+    let minute = $parts.1 | into int
+    let second = if ($parts | length) == 3 {
+        $parts.2 | into int
+    } else {
+        0
+    }
+
+    if $hour not-in 0..23 {
+        error make { msg: 'hour must be between 0 and 23' }
+    }
+
+    if $minute not-in 0..59 {
+        error make { msg: 'minute must be between 0 and 59' }
+    }
+
+    if $second not-in 0..59 {
+        error make { msg: 'second must be between 0 and 59' }
+    }
+
+    let target = (
+        ($hour * 1hr)
+        + ($minute * 1min)
+        + ($second * 1sec)
+    )
+
+    let now = date now
+
+    let current = (
+        (($now | format date '%H' | into int) * 1hr)
+        + (($now | format date '%M' | into int) * 1min)
+        + (($now | format date '%S' | into int) * 1sec)
+    )
+
+    let difference = $target - $current
+
+    let remaining = if $difference <= 0sec {
+        $difference + 1day
+    } else {
+        $difference
+    }
+
+    if $seconds {
+        $remaining / 1sec | into int
+    } else {
+        $remaining
+    }
+}
+
 use ~/.config/nushell/scripts/alloy.nu *
 use ~/.config/nushell/scripts/logfmt.nu *
 source (if ('~/.config/nushell/nix/config.nu' | path exists) { '~/.config/nushell/nix/config.nu' } else { null })
