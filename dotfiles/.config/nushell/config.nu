@@ -1,3 +1,8 @@
+source (if ('~/.config/nushell/nix/config.nu' | path exists) { '~/.config/nushell/nix/config.nu' } else { null })
+
+use std "path add"
+use std/dirs shells-aliases *
+
 $env.ENV_CONVERSIONS = {
     "PATH": {
         from_string: { |s| $s | split row (char esep) | path expand --no-symlink }
@@ -12,6 +17,26 @@ $env.ENV_CONVERSIONS = {
 $env.NU_PLUGIN_DIRS = [
     ($nu.default-config-dir | path join 'plugins')
 ]
+
+$env.config.completions = {
+    case_sensitive: false
+    quick: true # auto accept if it's the only option
+    partial: true
+    algorithm: "prefix" # "prefix" or "fuzzy"
+    external: { max_results: 100 }
+    use_ls_colors: true
+}
+
+$env.config.render_right_prompt_on_last_line = false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
+
+$env.config.hooks = {
+    pre_execution: [{ null }] # run before the repl input is run
+    env_change: {
+        PWD: [{|before, after| null }] # run if the PWD environment is different since the last repl input
+    }
+    display_output: "if (term size).columns >= 100 { table -e } else { table }" # run to display the output of a pipeline
+    command_not_found: { null } # return an error message when a command is not found
+}
 
 $env.EDITOR = "nvim"
 $env.VISUAL = "nvim"
@@ -42,386 +67,13 @@ if not (which carapace | is-empty) {
     $env.CARAPACE_MATCH = "1"
 }
 
-$env.config.show_banner = false
+path add ~/.local/bin
 
-#source ./themes/nord.nu
-source ./themes/catppuccin_mocha.nu
-
-$env.config.explore = {
-    status_bar_background: { fg: "#1D1F21", bg: "#C4C9C6" },
-    command_bar_text: { fg: "#C4C9C6" },
-    highlight: { fg: "black", bg: "yellow" },
-    status: {
-        error: { fg: "white", bg: "red" },
-        warn: {}
-        info: {}
-    },
-    table: {
-        split_line: { fg: "#404040" },
-        selected_cell: { bg: light_blue },
-        selected_row: {},
-        selected_column: {},
-    },
-}
-
-$env.config.history = {
-    max_size: 100_000
-    sync_on_enter: true
-    file_format: "sqlite"
-    isolation: false
-}
-
-$env.config.ls.use_ls_colors = true
-
-$env.config.completions = {
-    case_sensitive: false
-    quick: true # auto accept if it's the only option
-    partial: true
-    algorithm: "prefix" # "prefix" or "fuzzy"
-    external: { max_results: 100 }
-    use_ls_colors: true
-}
-
-$env.config.filesize.unit = "metric"
-
-$env.config.cursor_shape = {
-    emacs: line # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (line is the default)
-    vi_insert: block # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (block is the default)
-    vi_normal: underscore # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (underscore is the default)
-}
-
-$env.config.buffer_editor = "nvim" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
-$env.config.edit_mode = 'vi'
-$env.config.shell_integration = { # see osc_entries!: https://github.com/wezterm/wezterm/blob/main/wezterm-escape-parser/src/osc.rs
-    # osc2 abbreviates the path if in the home_dir, sets the tab/window title, shows the running command in the tab/window title
-    osc2: true
-    # osc7 is a way to communicate the path to the terminal, this is helpful for spawning new tabs in the same directory
-    osc7: true
-    # osc8 is also implemented as the deprecated setting ls.show_clickable_links, it shows clickable links in ls output if your terminal supports it. show_clickable_links is deprecated in favor of osc8
-    osc8: true
-    # osc9_9 is from ConEmu and is starting to get wider support. It's similar to osc7 in that it communicates the path to the terminal
-    osc9_9: false
-    # osc133 is several escapes invented by Final Term which include the supported ones below.
-    # 133;A - Mark prompt start
-    # 133;B - Mark prompt end
-    # 133;C - Mark pre-execution
-    # 133;D;exit - Mark execution finished with exit code
-    # This is used to enable terminals to know where the prompt is, the command is, where the command finishes, and where the output of the command is
-    osc133: true
-    # osc633 is closely related to osc133 but only exists in visual studio code (vscode) and supports their shell integration features
-    # 633;A - Mark prompt start
-    # 633;B - Mark prompt end
-    # 633;C - Mark pre-execution
-    # 633;D;exit - Mark execution finished with exit code
-    # 633;E - NOT IMPLEMENTED - Explicitly set the command line with an optional nonce
-    # 633;P;Cwd=<path> - Mark the current working directory and communicate it to the terminal
-    # and also helps with the run recent menu in vscode
-    osc633: true
-    # reset_application_mode is escape \x1b[?1l and was added to help ssh work better
-    reset_application_mode: true
-}
-$env.config.render_right_prompt_on_last_line = false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
-
-$env.config.hooks = {
-    pre_execution: [{ null }] # run before the repl input is run
-    env_change: {
-        PWD: [{|before, after| null }] # run if the PWD environment is different since the last repl input
-    }
-    display_output: "if (term size).columns >= 100 { table -e } else { table }" # run to display the output of a pipeline
-    command_not_found: { null } # return an error message when a command is not found
-}
-
-$env.config.menus = [
-    {
-        name: completion_menu
-        only_buffer_difference: false
-        marker: "| "
-        type: {
-            layout: columnar
-            columns: 4
-            col_width: 20     # Optional value. If missing all the screen width is used to calculate column width
-            col_padding: 2
-        }
-        style: {
-            text: green
-            selected_text: { attr: r }
-            description_text: yellow
-            match_text: { attr: u }
-            selected_match_text: { attr: ur }
-        }
-    }
-    {
-        name: help_menu
-        only_buffer_difference: true
-        marker: "? "
-        type: {
-            layout: description
-            columns: 4
-            col_width: 20     # Optional value. If missing all the screen width is used to calculate column width
-            col_padding: 2
-            selection_rows: 4
-            description_rows: 10
-        }
-        style: {
-            text: green
-            selected_text: green_reverse
-            description_text: yellow
-        }
-    }
-]
-
-$env.config.keybindings = [
-    {
-        name: fzf_history
-        modifier: control
-        keycode: char_r
-        mode: [emacs, vi_normal, vi_insert]
-        event: {
-            send: ExecuteHostCommand,
-            cmd: "commandline edit --replace (
-                      history
-                      | where exit_status == 0
-                      | sort-by -r start_timestamp
-                      | get command
-                      | uniq
-                      | str join (char -i 0)
-                      | fzf --scheme=history --read0 --layout=reverse --height=40% -q (commandline)
-                      | decode utf-8
-                      | str trim
-                  )"
-        }
-    }
-    {
-        name: fzf_file
-        modifier: control
-        keycode: char_t
-        mode: [emacs, vi_normal, vi_insert]
-        event: {
-            send: ExecuteHostCommand,
-            cmd: "commandline edit --insert (
-                      fd --hidden --follow --print0 .
-                      | fzf --scheme=path --read0 --layout=reverse --height=40%
-                      | decode utf-8
-                      | str trim
-                      | if ' ' in $in { $'`($in)`' } else { $in }
-                  )"
-        }
-    }
-    {
-        name: fzf_cd
-        modifier: alt
-        keycode: char_c
-        mode: [emacs, vi_normal, vi_insert]
-        event: {
-            send: ExecuteHostCommand,
-            cmd: "cd (
-                      fd --type d --hidden --follow --print0 .
-                      | fzf --scheme=path --read0 --layout=reverse --height=40%
-                      | decode utf-8
-                      | str trim
-                  )"
-        }
-    }
-    {
-        name: fzf_gist_id
-        modifier: control
-        keycode: char_g
-        mode: [emacs, vi_normal, vi_insert]
-        event: {
-            send: ExecuteHostCommand,
-            cmd: "commandline edit --insert (gh gist search)"
-        }
-    }
-]
-
-def cmd-exists [cmd: string] {
-    not (which $cmd | is-empty)
-}
-
-alias .. = cd ..
-alias cd.. = cd ..
-
-alias l = ls
-alias ll = ls -l
-alias la = ls -a
-alias lla = ls -la
-
-alias vim = nvim
-alias vi = nvim
-
-alias mail = neomutt
-
-alias ffmpeg = ffmpeg -hide_banner
-alias ffprobe = ffprobe -hide_banner
-alias ffplay = ffplay -hide_banner
-
-alias icat = wezterm imgcat
-
-alias cat = bat --paging=auto
-
-alias fd = fd --hidden
-alias rg = rg --hidden --smart-case
-
-alias claude = claude --mcp-config ~/.agents/mcp.json
-
-match $nu.os-info.name {
-    macos => {
-        alias copy = pbcopy
-        alias paste = pbpaste
-    },
-    windows => {
-        alias copy = clip.exe
-        alias paste = powershell.exe Get-Clipboard
-    },
-}
-
-def "gh gist search" [] {
-    let gists = (
-        gh gist list
-        | lines
-        | parse --regex '(?P<id>\S+)\s*(?P<description>.*?)\s*(?P<files>\d+) files?\s*(?P<visibility>\w*)\s*(?P<updated>.*)'
-        | into datetime updated
-    )
-
-    let input = (
-        $gists
-        | each {|row| echo $"($row.id): ($row.description)"}
-        | to text --no-newline
-    )
-
-    let selection = $input | fzf
-
-    if ($selection | is-empty) {
-        return
-    }
-
-    let id = (
-        $selection
-        | parse '{id}: {description}'
-        | get id.0
-    )
-
-    $id
-}
-
-def --wrapped mkcd [dir: path, ...rest] {
-    mkdir ...$rest $dir ; cd $dir
-}
-
-def --wrapped pwatch [duration: duration, command: oneof<closure, string>, ...args] {
-    loop {
-        # clear first so if the command writes to stdout it's preserved
-        clear --keep-scrollback
-
-        let output = if ($command | describe) == "closure" {
-            do $command
-        } else {
-            run-external $command ...$args
-        }
-
-        print $output
-        sleep $duration
-    }
-}
-
-def "vim upgrade" [] {
-    nvim --headless "+Lazy! sync" +qa
-    nvim --headless "+Lazy! clean" +qa
-    nvim --headless "+MasonToolsUpdateSync" +qa
-}
-
-def "git restash" [entry?: string] {
-    let base_dir = git rev-parse --show-toplevel
-    enter $base_dir
-    git stash show -p ($entry | default 'stash@{0}') | git apply --reverse
-    dexit
-}
-
-def confirm [prompt?: string] {
-    print -n $'($prompt | default 'confirm?') [y/n]: '
-
-    let input = (input -s --numchar 1)
-    print $input
-
-    return ($input == 'y')
-}
-
-def "git skip" [] {
-    git status -s
-    | lines
-    | str substring 3..
-    | each {|f| git update-index --skip-worktree $f ; $f}
-}
-
-def "git show-skipped" [] {
-    git ls-files -v (git rev-parse --show-toplevel)
-    | lines
-    | where $it =~ '^S'
-    | str substring 2..
-}
-
-def "git unskip" [branch?: string] {
-    let files = git show-skipped
-
-    git update-index --no-skip-worktree ...$files
-}
-
-def pkill [...args] {
-    let processes = ps
-
-    let selected = $processes | each {|p| $"($p.name) \(($p.pid)\)" } | to text | fzf
-
-    if (confirm $"are you sure you want to kill ($selected)?") {
-        let pid = $selected | parse --regex '.*\((\d+)\)' | get capture0.0 | into int
-
-        kill ...$args $pid
-    }
-}
-
-def "nix diff" [] {
-    if (which nix | is-empty) {
-        error make {msg: 'nix is not installed'}
-        return 1
-    }
-
-    let generations = if ('/run/current-system' | path exists) {
-        ls /nix/var/nix/profiles/system-*-link
-        | get name
-        | sort-by {$in | parse --regex 'system-(\d+)-link' | get capture0.0 | into int}
-        | last 2
-    } else {
-        home-manager generations
-        | lines
-        | first 2
-        | parse --regex '-> (\S*)' | get capture0
-        | reverse
-    }
-
-    nix run nixpkgs#nvd diff ...$generations
-}
-
-def "nix rebuild" [flake_path?: path] {
-    let path = $flake_path | default ('~/.cfg' | path expand)
-
-    if (which darwin-rebuild | is-not-empty) {
-        sudo darwin-rebuild switch --flake $path
-    } else if (which nixos-rebuild | is-not-empty) {
-        sudo nixos-rebuild switch --flake $path
-    } else if (which home-manager | is-not-empty) {
-        home-manager switch --flake $path
-    } else {
-        error make {msg: 'no rebuild command found, not in nix environment?'}
-        return 1
-    }
-    nix diff
-}
-
-def "nix upgrade" [flake_path?: path] {
-    let path = $flake_path | default ('~/.cfg' | path expand)
-
-    nix flake update --flake $path
-    nix rebuild $path
-}
+use (if (
+    ("/nix/var/nix/profiles/default/bin/nix" | path exists)
+    or ("/run/current-system/sw/bin/nix" | path exists)
+    or ("~/.nix-profile/bin/nix" | path expand | path exists)
+) { "./modules/nix.nu" } else { null }) *
 
 def "config update" [] {
     git -C ~/.cfg fetch
@@ -455,93 +107,3 @@ def "config update" [] {
         print "don't know how to apply new configuration"
     }
 }
-
-def complete_docker_containers [] {
-    ^docker ps --format "{{.Names}}" | lines
-}
-
-def dlog --wrapped [
-    container: string@complete_docker_containers
-    --json (-j)
-    ...args
-] {
-    let language = if $json { "json" } else { "log" }
-
-    ^docker logs ...$args $container o+e>| ^bat --paging=never --style=plain --language $language
-}
-
-def atq [] {
-    ^atq -o %s
-    | lines
-    | parse --regex '^(?<job>\d+)\s+(?<date>\d+)\s+(?<queue>\S+)\s+(?<user>\w+)'
-    | update date {into datetime --format %s}
-    | insert command {^at -c $in.job | lines | last}
-    | sort-by date
-}
-
-# calculate the duration remaining until a given time of day
-def until [
-    time: string  # time of day in HH:MM or HH:MM:SS format
-    --seconds (-s)  # output whole seconds instead of a duration
-]: [nothing -> oneof<duration, int>] {
-    let parts = $time | split row ':'
-
-    if ($parts | length) not-in [2 3] {
-        error make {
-            msg: 'time must be in HH:MM or HH:MM:SS format'
-        }
-    }
-
-    let hour = $parts.0 | into int
-    let minute = $parts.1 | into int
-    let second = if ($parts | length) == 3 {
-        $parts.2 | into int
-    } else {
-        0
-    }
-
-    if $hour not-in 0..23 {
-        error make { msg: 'hour must be between 0 and 23' }
-    }
-
-    if $minute not-in 0..59 {
-        error make { msg: 'minute must be between 0 and 59' }
-    }
-
-    if $second not-in 0..59 {
-        error make { msg: 'second must be between 0 and 59' }
-    }
-
-    let target = (
-        ($hour * 1hr)
-        + ($minute * 1min)
-        + ($second * 1sec)
-    )
-
-    let now = date now
-
-    let current = (
-        (($now | format date '%H' | into int) * 1hr)
-        + (($now | format date '%M' | into int) * 1min)
-        + (($now | format date '%S' | into int) * 1sec)
-    )
-
-    let difference = $target - $current
-
-    let remaining = if $difference <= 0sec {
-        $difference + 1day
-    } else {
-        $difference
-    }
-
-    if $seconds {
-        $remaining / 1sec | into int
-    } else {
-        $remaining
-    }
-}
-
-use ~/.config/nushell/scripts/alloy.nu *
-use ~/.config/nushell/scripts/logfmt.nu *
-source (if ('~/.config/nushell/nix/config.nu' | path exists) { '~/.config/nushell/nix/config.nu' } else { null })
-source (if ('~/.config/nushell/config.custom.nu' | path exists) { '~/.config/nushell/config.custom.nu' } else { null })

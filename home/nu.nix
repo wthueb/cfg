@@ -8,7 +8,7 @@
   programs.nushell = {
     enable = true;
     configDir = "${config.xdg.configHome}/nushell/nix";
-    envFile.text = ''
+    configFile.text = ''
       let vars = (
         ${lib.getExe pkgs.bashInteractive} -lic ${lib.getExe' pkgs.coreutils "env"}
         | lines
