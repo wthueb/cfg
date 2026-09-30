@@ -1,4 +1,5 @@
 {
+  "theme": "catppuccin-tui-mocha",
   "packages": [
     "npm:pi-catppuccin-tui",
     "npm:pi-mcp-adapter",
@@ -14,5 +15,10 @@
     "npm:@narumitw/pi-tool",
     "npm:@narumitw/pi-usage",
     "git:github.com/GeneGulanesJr/LaPis"
-  ]
+  ],
+  "terminal": {
+    "clearOnShrink": false
+  },
+  "tuiMode": "fullscreen",
+  "fullscreenWheelScrollLines": 2
 }
