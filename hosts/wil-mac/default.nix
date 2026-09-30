@@ -44,7 +44,7 @@ in
     greedyCasks = true;
 
     casks = [
-      "claude-code@latest" # better updates
+      #"claude-code@latest" # better updates
       "dbeaver-enterprise" # not in nixpkgs
       "docker-desktop" # not in nixpkgs
       "gimp" # no aarch64-darwin
@@ -62,7 +62,7 @@ in
     desktop.enable = true;
     services = {
       codex-lb.enable = true;
-      meridian.enable = true;
+      #meridian.enable = true;
     };
     video.enable = true;
   };
