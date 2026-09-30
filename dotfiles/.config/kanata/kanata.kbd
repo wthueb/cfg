@@ -1,0 +1,48 @@
+;; Panic exit at the OS-input level: hold lctl + space + esc together.
+
+(platform (macos)
+  (defcfg
+    process-unmapped-keys yes
+    macos-dev-names-include ("Apple Internal Keyboard / Trackpad")))
+
+;; Requires kanata_windows_tty_wintercept_x64.exe + the Interception driver,
+;; plus interception.dll copied next to that exe (the /install command does
+;; NOT deploy it; it ships in the Interception zip at library/x64/).
+;; The winIOv2/LLHOOK builds cannot distinguish devices.
+;;
+;; hwid below is the Dell built-in keyboard, decoded from the kanata log as
+;; UTF-16LE: "ACPI\VEN_DLLK&DEV_0C41\0ACPI\DLLK0C41\0*DLLK0C41\0\0" = 96 bytes.
+;; kanata compares the whole zero-padded array, so this must be exactly the
+;; first `res` bytes from the log - no more, no less.
+;; Re-derive with: kanata_windows_tty_wintercept_x64.exe --cfg <this> --debug
+;; with the list left empty, then press a key on the built-in keyboard.
+(platform (wintercept)
+  (defcfg
+    process-unmapped-keys yes
+    windows-interception-keyboard-hwids (
+      "65, 0, 67, 0, 80, 0, 73, 0, 92, 0, 86, 0, 69, 0, 78, 0, 95, 0, 68, 0, 76, 0, 76, 0, 75, 0, 38, 0, 68, 0, 69, 0, 86, 0, 95, 0, 48, 0, 67, 0, 52, 0, 49, 0, 0, 0, 65, 0, 67, 0, 80, 0, 73, 0, 92, 0, 68, 0, 76, 0, 76, 0, 75, 0, 48, 0, 67, 0, 52, 0, 49, 0, 0, 0, 42, 0, 68, 0, 76, 0, 76, 0, 75, 0, 48, 0, 67, 0, 52, 0, 49, 0, 0, 0, 0, 0"
+    )))
+
+(defvar
+  tap-timeout  300
+  hold-timeout 300)
+
+(defalias
+  ;; tap-hold-press == skhd `hold_on_other_key_press : on`
+  ect (tap-hold-press $tap-timeout $hold-timeout esc lctl)
+  gfn (tap-hold-press $tap-timeout $hold-timeout grv (layer-while-held fn)))
+
+(defsrc
+  grv
+  caps h    j    k    l
+  v    b    n    m    ,    .)
+
+(deflayer base
+  @gfn
+  @ect _    _    _    _
+  _    _    _    _    _    _)
+
+(deflayer fn
+  XX
+  caps left down up   right
+  prev pp   next mute vold volu)
