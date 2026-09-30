@@ -5,12 +5,12 @@
 }:
 
 {
-  imports = [
-    ../../modules/nixos/proxmox-guest.nix
-    inputs.i915-sriov.nixosModules.default
-  ];
+  imports = [ inputs.i915-sriov.nixosModules.default ];
 
-  wthueb.proxmoxGuest.swapSize = 32 * 1024; # 32GB
+  wthueb.proxmox-guest = {
+    enable = true;
+    swapSize = 32 * 1024; # 32GB
+  };
 
   boot.loader.grub = {
     enable = true;

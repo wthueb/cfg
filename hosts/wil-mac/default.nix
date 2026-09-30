@@ -1,14 +1,11 @@
 {
   self,
   config,
-  inputs,
   lib,
   pkgs,
   ...
 }:
 let
-  codex-lb = inputs.codex-lb.packages.${pkgs.stdenv.hostPlatform.system}.codex-lb;
-  meridian = inputs.meridian.packages.${pkgs.stdenv.hostPlatform.system}.meridian;
   logPath = name: "/Users/wil/Library/Logs/${name}.log";
 in
 {
@@ -63,6 +60,10 @@ in
 
   wthueb = {
     desktop.enable = true;
+    services = {
+      codex-lb.enable = true;
+      meridian.enable = true;
+    };
     video.enable = true;
   };
 
@@ -127,43 +128,7 @@ in
   };
 
   home-manager.users.wil = {
-    home.packages = [
-      codex-lb
-      meridian
-    ];
-
     launchd.agents = {
-      codex-lb = {
-        enable = true;
-        config = {
-          ProgramArguments = [ (lib.getExe codex-lb) ];
-          EnvironmentVariables = {
-            CODEX_LB_DATA_DIR = "/Users/wil/.codex-lb";
-            CODEX_LB_DASHBOARD_AUTH_MODE = "disabled";
-          };
-          RunAtLoad = true;
-          KeepAlive.SuccessfulExit = false;
-          ProcessType = "Background";
-          ThrottleInterval = 5;
-          StandardOutPath = logPath "codex-lb";
-          StandardErrorPath = logPath "codex-lb";
-        };
-      };
-
-      meridian = {
-        enable = true;
-        config = {
-          ProgramArguments = [ (lib.getExe meridian) ];
-          EnvironmentVariables.MERIDIAN_PASSTHROUGH = "1";
-          RunAtLoad = true;
-          KeepAlive.SuccessfulExit = false;
-          ProcessType = "Background";
-          ThrottleInterval = 5;
-          StandardOutPath = logPath "meridian";
-          StandardErrorPath = logPath "meridian";
-        };
-      };
-
       nix-gc.config = {
         StandardOutPath = logPath "nix-gc";
         StandardErrorPath = logPath "nix-gc";

@@ -5,10 +5,9 @@
   ...
 }:
 {
-  imports = [
-    ./hardware.nix
-    ../../modules/nixos/plex.nix
-  ];
+  imports = [ ./hardware.nix ];
+
+  wthueb.plex.enable = true;
 
   wthueb.nas.shares.data.path = "/volume1/data";
 

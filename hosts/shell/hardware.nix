@@ -4,10 +4,9 @@
   ...
 }:
 {
-  imports = [
-    ../../modules/nixos/proxmox-guest.nix
-    inputs.disko.nixosModules.disko
-  ];
+  imports = [ inputs.disko.nixosModules.disko ];
+
+  wthueb.proxmox-guest.enable = true;
 
   boot.loader.systemd-boot = {
     enable = true;

@@ -122,7 +122,7 @@
         home-manager = {
           useGlobalPkgs = true;
           useUserPackages = true;
-          users.wil = import ./home;
+          users.wil = import ./home.nix;
           extraSpecialArgs = { inherit inputs; };
         };
       };
@@ -207,7 +207,7 @@
 
                 wthueb.video.enable = true;
               }
-              ./home
+              ./home.nix
             ];
             extraSpecialArgs = { inherit inputs; };
           };
@@ -224,7 +224,7 @@
 
                 wthueb.video.enable = true;
               }
-              ./home
+              ./home.nix
             ];
             extraSpecialArgs = { inherit inputs; };
           };

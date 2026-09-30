@@ -5,13 +5,9 @@
   ...
 }:
 {
-  imports = [
-    ./services/alloy
-    ./services/mktxp.nix
-    ./exporters.nix
-    ./nas.nix
-  ]
-  ++ (import ../../lib/features.nix).importsFor "nixos";
+  imports =
+    (import ../../lib/module-imports.nix { directory = ./.; })
+    ++ (import ../../lib/features.nix).importsFor "nixos";
 
   determinate.enable = true;
 

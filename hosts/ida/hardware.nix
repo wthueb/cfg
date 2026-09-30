@@ -1,8 +1,6 @@
 { ... }:
 {
-  imports = [
-    ../../modules/nixos/proxmox-guest.nix
-  ];
+  wthueb.proxmox-guest.enable = true;
 
   boot = {
     loader.grub = {

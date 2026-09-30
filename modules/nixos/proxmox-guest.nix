@@ -5,14 +5,12 @@
   ...
 }:
 let
-  cfg = config.wthueb.proxmoxGuest;
+  cfg = config.wthueb.proxmox-guest;
 in
 {
-  imports = [
-    (modulesPath + "/profiles/qemu-guest.nix")
-  ];
+  options.wthueb.proxmox-guest = {
+    enable = lib.mkEnableOption "Proxmox guest integration";
 
-  options.wthueb.proxmoxGuest = {
     swapSize = lib.mkOption {
       type = lib.types.ints.positive;
       default = 8 * 1024;
@@ -20,32 +18,35 @@ in
     };
   };
 
-  # No enable flag: importing this module is the opt-in. Guest hosts import it
-  # from their hardware.nix and override swapSize as needed.
-  config = {
-    services.qemuGuest.enable = true;
-
-    boot.initrd.availableKernelModules = [
-      "uhci_hcd"
-      "ehci_pci"
-      "ahci"
-      "virtio_pci"
-      "virtio_scsi"
-      "sd_mod"
-      "sr_mod"
-    ];
-
-    hardware.cpu.intel.updateMicrocode = true;
-
-    swapDevices = [
+  config = lib.mkIf cfg.enable (
+    lib.mkMerge [
+      (import (modulesPath + "/profiles/qemu-guest.nix") { })
       {
-        device = "/swapfile";
-        size = cfg.swapSize;
+        services.qemuGuest.enable = true;
+
+        boot.initrd.availableKernelModules = [
+          "uhci_hcd"
+          "ehci_pci"
+          "ahci"
+          "virtio_pci"
+          "virtio_scsi"
+          "sd_mod"
+          "sr_mod"
+        ];
+
+        hardware.cpu.intel.updateMicrocode = true;
+
+        swapDevices = [
+          {
+            device = "/swapfile";
+            size = cfg.swapSize;
+          }
+        ];
+
+        networking.useDHCP = lib.mkDefault true;
+
+        nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       }
-    ];
-
-    networking.useDHCP = lib.mkDefault true;
-
-    nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  };
+    ]
+  );
 }

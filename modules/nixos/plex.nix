@@ -1,12 +1,14 @@
-{ ... }:
+{ config, lib, ... }:
 {
-  wthueb.nas.shares.plex.path = "/volume1/plex";
+  options.wthueb.plex.enable = lib.mkEnableOption "Plex host integration";
 
-  networking.firewall.allowedTCPPorts = [ 32400 ];
+  config = lib.mkIf config.wthueb.plex.enable {
+    wthueb.nas.shares.plex.path = "/volume1/plex";
 
-  users.groups.plex.gid = 5000;
+    networking.firewall.allowedTCPPorts = [ 32400 ];
 
-  users.users.wil = {
-    extraGroups = [ "plex" ];
+    users.groups.plex.gid = 5000;
+
+    users.users.wil.extraGroups = [ "plex" ];
   };
 }

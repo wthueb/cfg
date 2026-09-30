@@ -87,6 +87,7 @@ config.hide_tab_bar_if_only_one_tab = false
 --    },
 --}
 
+config.enable_kitty_keyboard = true
 config.disable_default_key_bindings = true
 config.leader = { mods = "CTRL", key = "a", timeout_milliseconds = 5000 }
 config.keys = require("keys").keys

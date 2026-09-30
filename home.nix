@@ -6,13 +6,7 @@
   ...
 }:
 {
-  imports = [
-    inputs.sops-nix.homeManagerModules.sops
-    ../modules/home/services
-    ./nu.nix
-    ./direnv.nix
-  ]
-  ++ (import ../lib/features.nix).importsFor "home";
+  imports = [ ./modules/home ];
 
   programs.home-manager.enable = true;
 
@@ -211,7 +205,7 @@
           }) (listFilesRecursive rootDir "")
         );
     in
-    toHomeFiles ../dotfiles;
+    toHomeFiles ./dotfiles;
 
   sops.age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
 

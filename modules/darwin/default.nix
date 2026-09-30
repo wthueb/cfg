@@ -8,11 +8,9 @@ let
   logPath = name: "${config.users.users.${config.system.primaryUser}.home}/Library/Logs/${name}.log";
 in
 {
-  imports = [
-    ./launchd-cleanup.nix
-    ./security/tcc.nix
-  ]
-  ++ (import ../../lib/features.nix).importsFor "darwin";
+  imports =
+    (import ../../lib/module-imports.nix { directory = ./.; })
+    ++ (import ../../lib/features.nix).importsFor "darwin";
 
   determinateNix = {
     enable = true;

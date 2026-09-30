@@ -70,6 +70,7 @@ in
         "linearmouse" # not in nixpkgs
         "macfuse" # not in nixpkgs
         "mouseless" # no aarch64-darwin
+        "steam"
       ];
     };
 
