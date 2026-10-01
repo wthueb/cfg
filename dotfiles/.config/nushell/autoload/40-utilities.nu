@@ -83,8 +83,8 @@ def atq [] {
     | lines
     | parse --regex '^(?<job>\d+)\s+(?<date>\d+)\s+(?<queue>\S+)\s+(?<user>\w+)'
     | update date {into datetime --format %s}
-    | insert command {^at -c $in.job | lines | last}
     | sort-by date
+    | insert command {^at -c $in.job | lines | last}
 }
 
 # calculate the duration remaining until a given time of day
