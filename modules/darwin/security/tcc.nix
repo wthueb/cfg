@@ -123,11 +123,11 @@ let
   manager = pkgs.writeShellApplication {
     name = "nix-tcc-manager";
     runtimeInputs = [
-      pkgs.coreutils
       pkgs.gnugrep
       pkgs.gnused
       pkgs.jq
       pkgs.sqlite
+      pkgs.uutils-coreutils-noprefix
     ];
     text = builtins.readFile ./tcc-manager.sh;
   };

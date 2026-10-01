@@ -11,7 +11,6 @@ in
 {
   environment.systemPackages = with pkgs; [
     #gimp-with-plugins
-    inetutils
     litecli
     #plex-desktop
     #sabnzbd

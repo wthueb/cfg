@@ -10,7 +10,7 @@
     configDir = "${config.xdg.configHome}/nushell/nix";
     configFile.text = ''
       let vars = (
-        ${lib.getExe pkgs.bashInteractive} -lic ${lib.getExe' pkgs.coreutils "env"}
+        ${lib.getExe pkgs.bashInteractive} -lic ${lib.getExe' pkgs.uutils-coreutils-noprefix "env"}
         | lines
         | parse --regex '^(?<name>[^=]+)=(?<value>.*)$'
         | where name !~ '^(_|FILE_PWD|PWD|OLDPWD|SHELL|SHLVL|CURRENT_FILE|STARSHIP_SESSION_KEY|PROMPT_COMMAND.*|PROMPT.*INDICATOR)$'

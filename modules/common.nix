@@ -15,19 +15,25 @@
   environment = {
     systemPackages = with pkgs; [
       bashInteractive
-      coreutils
       curl
+      diffutils
       fd
       file
+      findutils
       git
       gnugrep
       gnused
       gnutar
       htop
+      inetutils
       neovim
       nushell
+      procps
       rsync
+      unzip
+      uutils-coreutils-noprefix
       wget
+      zip
     ];
     shells = [
       pkgs.bashInteractive

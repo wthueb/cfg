@@ -11,6 +11,11 @@
 
   determinate.enable = true;
 
+  environment.systemPackages = with pkgs; [
+    ethtool
+    pciutils
+  ];
+
   environment.etc."determinate/config.json".text = ''
     {
       "garbageCollector": {
