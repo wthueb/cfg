@@ -152,3 +152,4 @@ def until [
 use ../modules/alloy.nu *
 use ../modules/docker.nu *
 use ../modules/logfmt.nu *
+use (if $nu.os-info.name in [macos linux] { '../modules/processes.nu' } else { null }) *
