@@ -4,7 +4,7 @@ let
   newLaunchd = config.system.build.launchd;
 in
 {
-  system.activationScripts.postActivation.text = lib.mkAfter ''
+  system.activationScripts.postActivation.text = lib.mkBefore ''
     reconcileRemovedLaunchdJobs() {
       local oldDir="$1"
       local newDir="$2"

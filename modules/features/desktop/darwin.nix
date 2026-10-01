@@ -13,7 +13,10 @@ let
   };
 in
 {
-  imports = [ ./yabai.nix ];
+  imports = [
+    ./yabai.nix
+    ../keyboard
+  ];
 
   config = lib.mkIf cfg.enable {
     wthueb.security.tcc =
@@ -51,13 +54,6 @@ in
     ];
 
     homebrew = {
-      taps = [
-        {
-          name = "jackielii/tap";
-          trusted = true;
-        }
-      ];
-
       masApps = {
         "Amphetamine" = 937984704;
         "Bitwarden" = 1352778147;
@@ -66,7 +62,6 @@ in
 
       casks = [
         "cleanshot" # not in nixpkgs
-        "jackielii/tap/skhd-zig"
         "linearmouse" # not in nixpkgs
         "macfuse" # not in nixpkgs
         "mouseless" # no aarch64-darwin

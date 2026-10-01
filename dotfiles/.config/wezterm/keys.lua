@@ -80,7 +80,7 @@ M.keys = {
     {
         mods = "SHIFT",
         key = "Enter",
-        action = wezterm.action.SendString("\x0a"),
+        action = wezterm.action.SendString("\x1b[13;2u"),
     },
 }
 

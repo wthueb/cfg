@@ -30,10 +30,6 @@ in
 
     programs.wezterm.enable = true;
 
-    xdg.configFile."skhd/skhdrc" = lib.mkIf pkgs.stdenv.isDarwin {
-      source = ./skhdrc;
-    };
-
     wthueb.services = {
       bartender.enable = pkgs.stdenv.isDarwin;
       raycast.enable = pkgs.stdenv.isDarwin;

@@ -60,6 +60,7 @@ in
 
   wthueb = {
     desktop.enable = true;
+    keyboard.enable = true;
     services = {
       codex-lb.enable = true;
       #meridian.enable = true;

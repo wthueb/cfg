@@ -1,0 +1,103 @@
+--- a/build.zig
++++ b/build.zig
+@@ -71,25 +71,7 @@
+     };
+ 
+     const version_step = b.addSystemCommand(&[_][]const u8{
+-        "sh", "-c",
+-        b.fmt(
+-            \\VERSION=$(cat VERSION | tr -d '\n')
+-            \\GIT_HASH=$(git rev-parse --short HEAD 2>/dev/null || echo 'unknown')
+-            \\# Check if working tree is dirty
+-            \\if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
+-            \\    DIRTY="-dirty"
+-            \\else
+-            \\    DIRTY=""
+-            \\fi
+-            \\# Check if we're on a tagged commit
+-            \\if git describe --exact-match --tags HEAD >/dev/null 2>&1; then
+-            \\    # On a tag, just show version-hash
+-            \\    printf "%s-%s%s ({s})" "$VERSION" "$GIT_HASH" "$DIRTY"
+-            \\else
+-            \\    # Not on a tag, show version-dev-hash
+-            \\    printf "%s-dev-%s%s ({s})" "$VERSION" "$GIT_HASH" "$DIRTY"
+-            \\fi
+-        , .{ mode_str, mode_str }),
++        "sh", "-c", b.fmt("printf '%s ({s})' \"$(cat VERSION)\"", .{mode_str}),
+     });
+     version_step.has_side_effects = true;
+ 
+@@ -161,7 +143,7 @@
+     // double-prefix paths added with cwd_relative, so we stash the SDK path
+     // in a module-level var instead.
+     if (target.result.os.tag == .macos) {
+-        const out = b.run(&.{ "xcrun", "--sdk", "macosx", "--show-sdk-path" });
++        const out = b.graph.environ_map.get("SDKROOT") orelse @panic("SDKROOT is required");
+         sdk_path = std.mem.trim(u8, out, " \n\r\t");
+     }
+ 
+@@ -218,7 +200,7 @@
+     });
+     // Same codesign headerpad fix as skhd above — the grabber is signed too.
+     grabber_exe.headerpad_size = 0x1000;
+-    b.installArtifact(grabber_exe);
++
+ 
+     // `zig build grabber-app` — build the grabber binary, wrap it in
+     // skhd-grabber-dev.app, and code-sign with the local dev cert.
+@@ -418,30 +400,6 @@
+     const test_step = b.step("test", "Run unit tests");
+     test_step.dependOn(&check_constants_cmd.step);
+ 
+-    // Benchmark executable
+-    const bench_mod = b.createModule(.{
+-        .root_source_file = b.path("src/benchmark.zig"),
+-        .target = target,
+-        .optimize = .ReleaseFast,
+-    });
+-    linkAgentFrameworks(b, bench_mod);
+-    addVersionImport(b, bench_mod);
+-
+-    const zbench = b.dependency("zbench", .{
+-        .target = target,
+-        .optimize = .ReleaseFast,
+-    });
+-    bench_mod.addImport("zbench", zbench.module("zbench"));
+-
+-    const bench_exe = b.addExecutable(.{
+-        .name = "benchmark",
+-        .root_module = bench_mod,
+-    });
+-
+-    const bench_cmd = b.addRunArtifact(bench_exe);
+-    const bench_step = b.step("bench", "Run benchmarks");
+-    bench_step.dependOn(&bench_cmd.step);
+-
+     // Allocation tracking executable. Goes through the same dev .app + sign
+     // path as `zig build run` so TCC's accessibility grant covers it — bare
+     // Mach-O can't be granted on Tahoe. Same skhd-dev-cert + bundle id, so
+@@ -464,7 +422,7 @@
+         .name = "skhd-alloc",
+         .root_module = alloc_mod,
+     });
+-    b.installArtifact(alloc_exe);
++
+     const installed_alloc_exe = b.getInstallPath(.bin, alloc_exe.name);
+ 
+     const alloc_app_cmd = b.addSystemCommand(&[_][]const u8{
+--- a/build.zig.zon
++++ b/build.zig.zon
+@@ -35,12 +35,7 @@
+     // `zig build --fetch` can be used to fetch all dependencies of a package, recursively.
+     // Once all dependencies are fetched, `zig build` no longer requires
+     // internet connectivity.
+-    .dependencies = .{
+-        .zbench = .{
+-            .url = "https://github.com/hendriknielaender/zbench/archive/refs/tags/v0.13.0.tar.gz",
+-            .hash = "zbench-0.13.0-YTdc7xVBAQCCMC-IdLLuotBeiNNNm8k9Pi2V4VYqrwfI",
+-        },
+-    },
++    .dependencies = .{},
+     .paths = .{
+         "build.zig",
+         "build.zig.zon",

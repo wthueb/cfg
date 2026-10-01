@@ -295,6 +295,13 @@
               tccManager = self.darwinConfigurations.wil-mac.config.system.build.tccManager;
             };
           }
+          //
+            nixpkgs.lib.optionalAttrs
+              (system == "aarch64-darwin" && self.darwinConfigurations.wil-mac.config.wthueb.keyboard.enable)
+              {
+                kanata-config = self.darwinConfigurations.wil-mac.config.system.build.kanataConfigCheck;
+                skhd = self.darwinConfigurations.wil-mac.pkgs.skhd-zig;
+              }
         ) deploy-rs.lib;
       };
 
