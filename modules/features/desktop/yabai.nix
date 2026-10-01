@@ -128,6 +128,10 @@ in
               "title!" = "^DBeaver";
               manage = false;
             }
+            {
+              app = "Stickies";
+              manage = false;
+            }
           ];
 
           toValue = v: if builtins.isBool v then (if v then "on" else "off") else toString v;
