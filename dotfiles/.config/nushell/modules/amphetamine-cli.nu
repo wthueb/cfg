@@ -15,6 +15,14 @@ def run-applescript [command: string]: [nothing -> string] {
     $result.stdout | str trim
 }
 
+def refresh-sketchybar []: [nothing -> nothing] {
+    if (which sketchybar | is-not-empty) {
+        try {
+            ^sketchybar --trigger amphetamine_change | complete | ignore
+        } catch { }
+    }
+}
+
 def duration-to-minutes [value: duration]: [nothing -> int] {
     let ns = $value | into int
     let minute_ns = 60_000_000_000
@@ -109,6 +117,7 @@ export def "amphetamine start" [
 
     let started_at = date now
     let _ = run-applescript $command
+    refresh-sketchybar
 
     if $closed_display {
         let _ = run-applescript "enable closed display mode"
@@ -120,6 +129,7 @@ export def "amphetamine start" [
 # End the current Amphetamine session.
 export def "amphetamine stop" []: [nothing -> record] {
     let _ = run-applescript "end session"
+    refresh-sketchybar
 
     amphetamine status
 }

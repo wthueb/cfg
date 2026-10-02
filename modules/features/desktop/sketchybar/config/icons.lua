@@ -2,6 +2,7 @@ local M = {}
 
 M.apple = ""
 M.preferences = ""
+M.amphetamine = "󰐂"
 
 M.battery_100 = ""
 M.battery_75 = ""
