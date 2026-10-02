@@ -20,3 +20,5 @@ $env.config.explore = {
 $env.config.ls.use_ls_colors = true
 
 $env.config.filesize.unit = "metric"
+
+$env.config.datetime_format.table = '%Y-%m-%d %H:%M:%S %z'
