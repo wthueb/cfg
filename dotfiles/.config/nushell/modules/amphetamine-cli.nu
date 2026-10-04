@@ -40,9 +40,24 @@ def display-sleep-allowed []: [nothing -> bool] {
     run-applescript "display sleep allowed" | into bool
 }
 
-# List Amphetamine commands.
-export def amphetamine [] {
-    help amphetamine
+# List Amphetamine commands, or keep the system awake while a closure runs.
+# Collect and return the closure's output, stopping the session on success or error.
+export def amphetamine [closure?: closure] {
+    if $closure == null {
+        return (help amphetamine)
+    }
+
+    amphetamine start | ignore
+
+    let result = try {
+        do --capture-errors $closure | collect
+    } catch {|err|
+        amphetamine stop | ignore
+        error make $err
+    }
+
+    amphetamine stop | ignore
+    $result
 }
 
 # Show a structured summary of Amphetamine's current state.
@@ -116,11 +131,11 @@ export def "amphetamine start" [
     }
 
     let started_at = date now
-    let _ = run-applescript $command
+    run-applescript $command | ignore
     refresh-sketchybar
 
     if $closed_display {
-        let _ = run-applescript "enable closed display mode"
+        run-applescript "enable closed display mode" | ignore
     }
 
     amphetamine status
@@ -128,7 +143,7 @@ export def "amphetamine start" [
 
 # End the current Amphetamine session.
 export def "amphetamine stop" []: [nothing -> record] {
-    let _ = run-applescript "end session"
+    run-applescript "end session" | ignore
     refresh-sketchybar
 
     amphetamine status
