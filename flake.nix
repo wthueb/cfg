@@ -33,7 +33,7 @@
     };
 
     i915-sriov = {
-      url = "github:strongtz/i915-sriov-dkms/2026.08.12.1";
+      url = "github:strongtz/i915-sriov-dkms/2026.09.16";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
