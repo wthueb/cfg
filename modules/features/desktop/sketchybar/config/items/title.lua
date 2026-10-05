@@ -9,6 +9,23 @@ local title = sbar.add("item", "title", {
     associated_display = "active",
 })
 
+local title_popup = sbar.add("item", "title.info", {
+    position = "popup.title",
+    icon = { drawing = false },
+    label = {
+        padding_left = 8,
+        padding_right = 8,
+    },
+})
+
+title:subscribe("mouse.entered", function()
+    title:set({ popup = { drawing = true } })
+end)
+
+title:subscribe("mouse.exited", function()
+    title:set({ popup = { drawing = false } })
+end)
+
 title:subscribe({ "window_focus", "front_app_switched", "space_change", "title_change" }, function()
     sbar.exec("yabai -m query --windows --window", function(window)
         local full_title
@@ -18,10 +35,7 @@ title:subscribe({ "window_focus", "front_app_switched", "space_change", "title_c
             full_title = window.app .. " - " .. window.title
         end
 
-        if #full_title > 75 then
-            full_title = string.sub(full_title, 1, 75)
-        end
-
-        title:set({ label = { string = full_title } })
+        title_popup:set({ label = { string = full_title } })
+        title:set({ label = { string = string.sub(full_title, 1, 75) } })
     end)
 end)
