@@ -1,26 +1,26 @@
-const APP = "Amphetamine"
-const SDEF = "/Applications/Amphetamine.app/Contents/Resources/Amphetamine.sdef"
+use session.nu [run-applescript refresh-sketchybar]
 
-def run-applescript [command: string]: [nothing -> string] {
-    let script = $'tell application "($APP)" to ($command)'
-    let result = ^osascript -e $script | complete
+const SESSION_HELPER = path self session.nu
 
+def session-lease [operation: string, token: string] {
+    let directory = $env.AMPHETAMINE_STATE_DIR? | default ($env.HOME | path join Library Caches amphetamine-cli) | path expand
+    mkdir $directory
+    let permission = ^/bin/chmod 700 $directory | complete
+    if $permission.exit_code != 0 {
+        error make {msg: "Could not secure Amphetamine state directory" help: $permission.stderr}
+    }
+    let lock = $directory | path join session.lock
+    let result = ^/usr/bin/lockf -k -t 30 $lock $nu.current-exe --no-config-file $SESSION_HELPER $operation $directory $token $nu.pid | complete
+    if ($result.stderr | is-not-empty) {
+        print --stderr --no-newline $result.stderr
+    }
     if $result.exit_code != 0 {
         error make {
-            msg: ($result.stderr | str trim)
-            help: $'AppleScript: ($script)'
+            msg: $'Amphetamine session ($operation) failed'
+            help: ($result.stderr | str trim)
         }
     }
-
-    $result.stdout | str trim
-}
-
-def refresh-sketchybar []: [nothing -> nothing] {
-    if (which sketchybar | is-not-empty) {
-        try {
-            ^sketchybar --trigger amphetamine_change | complete | ignore
-        } catch { }
-    }
+    $result.stdout | from json | ignore
 }
 
 def duration-to-minutes [value: duration]: [nothing -> int] {
@@ -41,23 +41,42 @@ def display-sleep-allowed []: [nothing -> bool] {
 }
 
 # List Amphetamine commands, or keep the system awake while a closure runs.
-# Collect and return the closure's output, stopping the session on success or error.
+# Concurrent and nested closures share an indefinite session across shells.
+# Collect the closure's output and restore the original session after the last
+# closure finishes, unless it expired or cannot be restored (a warning is printed).
+# Timed restoration rounds remaining time up to minutes. Dead-process leases
+# recover on subsequent calls; interrupted calls in a live shell may retain leases.
+# Manual session changes during closures are not coordinated. AMPHETAMINE_STATE_DIR
+# optionally overrides the shared state directory, including for isolated tests.
 export def amphetamine [closure?: closure] {
     if $closure == null {
         return (help amphetamine)
     }
 
-    amphetamine start | ignore
+    let token = random uuid
+    session-lease acquire $token
 
     let result = try {
-        do --capture-errors $closure | collect
+        {value: (do --capture-errors $closure | collect) error: null}
     } catch {|err|
-        amphetamine stop | ignore
-        error make $err
+        {value: null error: $err}
     }
 
-    amphetamine stop | ignore
-    $result
+    let cleanup = try {
+        session-lease release $token
+        null
+    } catch {|err| $err }
+
+    if $result.error != null {
+        if $cleanup != null {
+            print --stderr $'Amphetamine cleanup failed: ($cleanup.msg). Recovery will be retried on the next call.'
+        }
+        error make $result.error
+    }
+    if $cleanup != null {
+        error make $cleanup
+    }
+    $result.value
 }
 
 # Show a structured summary of Amphetamine's current state.
