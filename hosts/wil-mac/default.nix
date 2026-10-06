@@ -32,9 +32,7 @@ in
     '';
 
   homebrew = {
-    brews = [
-      "pi-coding-agent" # better updates
-    ];
+    brews = [ ];
 
     masApps = {
       "Home Assistant" = 1099568401;
