@@ -16,13 +16,13 @@ def "path is-relative-to" [base: path] {
 }
 
 def rm-with-parents [path: string] {
-    mut path = $path | path expand
+    mut path = $path | path expand --no-symlink
 
     rm -v $path
 
     mut parent = $path | path parse | get parent
 
-    while not ($parent | is-empty) and (ls $parent | is-empty) {
+    while not ($parent | is-empty) and ($parent | path type) == 'dir' and (ls $parent | is-empty) {
         rm -v $parent
         $parent = $parent | path parse | get parent
     }
@@ -63,14 +63,6 @@ def main [] {
 
     for remove in $to_remove {
         rm-with-parents $remove.source
-    }
-
-    let removed_dirs = $to_remove | each { $in.source | path dirname } | uniq
-
-    for dir in $removed_dirs {
-        if (ls $dir | is-empty) {
-            rm -v $dir
-        }
     }
 
     for create in $to_create {
