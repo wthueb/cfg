@@ -69,11 +69,12 @@ if not (which carapace | is-empty) {
 
 path add ~/.local/bin
 
-use (if (
+const nix_installed = (
     ("/nix/var/nix/profiles/default/bin/nix" | path exists)
     or ("/run/current-system/sw/bin/nix" | path exists)
-    or ("~/.nix-profile/bin/nix" | path expand | path exists)
-) { "./modules/nix.nu" } else { null }) *
+    or ("~/.nix-profile/bin/nix" | path expand | path exists))
+
+use (if $nix_installed { "./modules/nix.nu" } else { null }) *
 
 def "config update" [] {
     git -C ~/.cfg fetch
@@ -87,8 +88,7 @@ def "config update" [] {
 
     git -C ~/.cfg pull --rebase --autostash
 
-    if $nu.os-info.family == "windows" {
-        # windows doesn't need to worry about nix stuff and windows-install.nu is not very performant
+    if $nu.os-info.family == "windows" or (not $nix_installed) {
         let diff = (
             git -C ~/.cfg diff $"($head)..HEAD" --name-only
             | lines
@@ -100,7 +100,7 @@ def "config update" [] {
             return
         }
 
-        ~/.cfg/windows-install.nu
+        ~/.cfg/install.nu
     } else if (cmd-exists darwin-rebuild) or (cmd-exists nixos-rebuild) or (cmd-exists home-manager) {
         nix rebuild
     } else {

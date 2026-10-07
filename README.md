@@ -13,14 +13,14 @@ git clone https://github.com/wthueb/cfg.git ~/.cfg
 # nix run nixpkgs#release-XX.XX -- switch --flake ~/.cfg
 ```
 
-windows systems:
+windows/non-nix systems:
 
 1. install [scoop](https://scoop.sh)
 2. `scoop install git nu`
 3. in `nu`:
     ```nushell
     git clone https://github.com/wthueb/cfg.git ~/.cfg
-    ~/.cfg/windows-install.nu
+    ~/.cfg/install.nu
     ```
 
 ---

@@ -1,9 +1,13 @@
 #!/usr/bin/env nu
 
-let extra_links = {
-    "~/AppData/Roaming/nushell": "~/.config/nushell",
-    "~/AppData/Local/nvim": "~/.config/nvim",
-    "~/Documents/Powershell": "~/.config/powershell",
+let extra_links = if $nu.os-info.name == 'windows' {
+    {
+        "~/AppData/Roaming/nushell": "~/.config/nushell",
+        "~/AppData/Local/nvim": "~/.config/nvim",
+        "~/Documents/Powershell": "~/.config/powershell",
+    }
+} else {
+    {}
 };
 
 def "path is-relative-to" [base: path] {
@@ -52,7 +56,7 @@ def main [] {
     let files = (
         fd --type file --hidden . $dotfiles
         | lines
-        | each { path expand }
+        | each { path expand --no-symlink }
         | where ($it | path basename) not-in ['.gitignore' '.gitkeep']
         | wrap target
         | insert source {|f| $nu.home-dir | path join ($f.target | path relative-to $dotfiles) }
