@@ -152,5 +152,6 @@ def until [
 use ../modules/alloy.nu *
 use (if $nu.os-info.name == macos { '../modules/amphetamine/cli.nu' } else { null }) *
 use ../modules/docker.nu *
+use ../modules/git.nu
 use ../modules/logfmt.nu *
 use (if $nu.os-info.name in [macos linux] { '../modules/processes.nu' } else { null }) *
