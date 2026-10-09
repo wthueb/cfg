@@ -2,12 +2,16 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 {
   imports =
     (import ../../lib/module-imports.nix { directory = ./.; })
     ++ (import ../../lib/features.nix).importsFor "nixos";
+
+  boot.kernelPackages =
+    (import inputs.linux-kernel { system = pkgs.stdenv.hostPlatform.system; }).linuxPackages_6_18;
 
   determinate.enable = true;
 

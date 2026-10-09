@@ -517,6 +517,22 @@
         "type": "github"
       }
     },
+    "linux-kernel": {
+      "locked": {
+        "lastModified": 1790370023,
+        "narHash": "sha256-PA0Ji3hkBd80R4z9J5kVS2IimIWeeHGbNyXTqpfPi20=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "2500f99a0ab083ccadfddb8aa38c54b5926a183f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "2500f99a0ab083ccadfddb8aa38c54b5926a183f",
+        "type": "github"
+      }
+    },
     "meridian": {
       "inputs": {
         "bun2nix": "bun2nix_2",
@@ -854,6 +870,7 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "i915-sriov": "i915-sriov",
+        "linux-kernel": "linux-kernel",
         "meridian": "meridian",
         "nix-darwin": "nix-darwin",
         "nix-minecraft": "nix-minecraft",
