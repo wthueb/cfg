@@ -10,8 +10,9 @@
     (import ../../lib/module-imports.nix { directory = ./.; })
     ++ (import ../../lib/features.nix).importsFor "nixos";
 
-  boot.kernelPackages =
-    (import inputs.linux-kernel { system = pkgs.stdenv.hostPlatform.system; }).linuxPackages_6_18;
+  boot.kernelPackages = pkgs.linuxPackagesFor (
+    inputs.multiverse.multiverse.${pkgs.stdenv.hostPlatform.system}.version "linux_6_18" "6.18.54"
+  );
 
   determinate.enable = true;
 

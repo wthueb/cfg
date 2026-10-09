@@ -5,6 +5,8 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-fork.url = "github:wthueb/nixpkgs/master";
 
+    multiverse.url = "github:fzakaria/nixpkgs-multiverse";
+
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs-darwin";
@@ -32,7 +34,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    linux-kernel.url = "github:NixOS/nixpkgs/2500f99a0ab083ccadfddb8aa38c54b5926a183f";
     i915-sriov = {
       url = "github:strongtz/i915-sriov-dkms/2026.09.16";
       inputs.nixpkgs.follows = "nixpkgs";

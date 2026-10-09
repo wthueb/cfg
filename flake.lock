@@ -517,22 +517,6 @@
         "type": "github"
       }
     },
-    "linux-kernel": {
-      "locked": {
-        "lastModified": 1790370023,
-        "narHash": "sha256-PA0Ji3hkBd80R4z9J5kVS2IimIWeeHGbNyXTqpfPi20=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "2500f99a0ab083ccadfddb8aa38c54b5926a183f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "2500f99a0ab083ccadfddb8aa38c54b5926a183f",
-        "type": "github"
-      }
-    },
     "meridian": {
       "inputs": {
         "bun2nix": "bun2nix_2",
@@ -609,6 +593,21 @@
       "original": {
         "owner": "rynfar",
         "repo": "meridian-plugin-pi-scrub",
+        "type": "github"
+      }
+    },
+    "multiverse": {
+      "locked": {
+        "lastModified": 1791482513,
+        "narHash": "sha256-+sFUL2Vykuk65yb5MxL2H3ykoJnZF9274v9GncvgO8s=",
+        "owner": "fzakaria",
+        "repo": "nixpkgs-multiverse",
+        "rev": "555490a0100ea823302d845e07a75c493e07c973",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fzakaria",
+        "repo": "nixpkgs-multiverse",
         "type": "github"
       }
     },
@@ -870,8 +869,8 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "i915-sriov": "i915-sriov",
-        "linux-kernel": "linux-kernel",
         "meridian": "meridian",
+        "multiverse": "multiverse",
         "nix-darwin": "nix-darwin",
         "nix-minecraft": "nix-minecraft",
         "nixpkgs": "nixpkgs_2",
