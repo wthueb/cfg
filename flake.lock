@@ -728,11 +728,11 @@
     },
     "nixpkgs-fork": {
       "locked": {
-        "lastModified": 1791400117,
-        "narHash": "sha256-ZB2UB05qcnSzbJr4eePpmtsjnh1EstP03LHFqRmiwek=",
+        "lastModified": 1791751064,
+        "narHash": "sha256-kNzPgV/saEoBqKXe+8R4zmH2nsdxlA4rcdcZYvZhuGM=",
         "owner": "wthueb",
         "repo": "nixpkgs",
-        "rev": "3808823c78540ee2f32b9bddd809b60a6c0a9408",
+        "rev": "f930d2f4292e9b3b927e19689c9b7f3a2d4cab72",
         "type": "github"
       },
       "original": {
