@@ -207,6 +207,7 @@
                   homeDirectory = "/home/wil";
                 };
 
+                wthueb.gc.enable = true;
                 wthueb.video.enable = true;
               }
               ./home.nix
@@ -224,6 +225,7 @@
                   homeDirectory = "/home/wil";
                 };
 
+                wthueb.gc.enable = true;
                 wthueb.video.enable = true;
               }
               ./home.nix
@@ -292,6 +294,11 @@
         checks = builtins.mapAttrs (
           system: deployLib:
           deployLib.deployChecks self.deploy
+          // {
+            gc-pruning =
+              nixpkgs.legacyPackages.${system}.callPackage ./modules/features/gc/prune-generations-test.nix
+                { };
+          }
           // nixpkgs.lib.optionalAttrs (system == "aarch64-darwin") {
             tcc = self.darwinConfigurations.wil-mac.pkgs.callPackage ./modules/darwin/security/tcc-test.nix {
               tccManager = self.darwinConfigurations.wil-mac.config.system.build.tccManager;

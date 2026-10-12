@@ -8,6 +8,8 @@
 {
   networking.hostName = hostname;
 
+  wthueb.gc.enable = lib.mkDefault true;
+
   home-manager.users.wil.wthueb = lib.getAttrs (builtins.filter (
     n: builtins.hasAttr n config.wthueb
   ) (import ../lib/features.nix).names) config.wthueb;

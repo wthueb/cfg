@@ -57,6 +57,7 @@ in
 
   wthueb = {
     desktop.enable = true;
+    gc.store.automatic = false;
     keyboard.enable = true;
     services = {
       codex-lb.enable = true;
@@ -127,7 +128,7 @@ in
 
   home-manager.users.wil = {
     launchd.agents = {
-      nix-gc.config = {
+      nix-gc.config = lib.mkIf (config.wthueb.gc.enable && config.wthueb.gc.store.automatic) {
         StandardOutPath = logPath "nix-gc";
         StandardErrorPath = logPath "nix-gc";
       };

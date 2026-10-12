@@ -10,13 +10,6 @@
 
   programs.home-manager.enable = true;
 
-  nix.gc = {
-    automatic = true;
-    options = "--delete-older-than 15d";
-    dates = "weekly";
-    persistent = true;
-  };
-
   home.packages = with pkgs; [
     diffnav
     dig
