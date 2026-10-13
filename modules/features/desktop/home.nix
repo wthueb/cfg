@@ -13,6 +13,7 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       brave
+      element-desktop
       firefox-bin
       nerd-fonts.fira-code
       nerd-fonts.sauce-code-pro
