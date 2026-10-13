@@ -1,4 +1,5 @@
 {
+  "$schema": "https://pi.dev/schemas/settings.schema.json",
   "theme": "catppuccin-tui-mocha",
   "packages": [
     "npm:pi-catppuccin-tui",
