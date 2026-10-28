@@ -27,6 +27,20 @@
     }
   )
   (final: prev: {
+    alcove = prev.alcove.overrideAttrs (old: {
+      version = "1.7.7";
+
+      src = final.fetchurl {
+        url = "https://download.tryalcove.com/Alcove.dmg";
+        hash = "sha256-F8SB/6mvkfx24rqZlflnUFOL8XHl6yvmAsByVfTZROU=";
+      };
+
+      nativeBuildInputs = [ final._7zz ];
+      passthru = builtins.removeAttrs old.passthru [ "updateScript" ];
+      meta = builtins.removeAttrs old.meta [ "changelog" ];
+    });
+  })
+  (final: prev: {
     # web.archive.org having trouble
     filebot = prev.filebot.overrideAttrs (old: {
       src = final.fetchurl {
