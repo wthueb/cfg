@@ -12,6 +12,7 @@
       inherit (unstable)
         alcove
         bartender
+        carapace
         gh-stack
         inetutils
         neovim
