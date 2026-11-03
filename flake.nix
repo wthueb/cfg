@@ -167,6 +167,11 @@
           system = "x86_64-linux";
         };
 
+        nixosConfigurations.transcoder = mkSystem {
+          name = "transcoder";
+          system = "x86_64-linux";
+        };
+
         nixosConfigurations.iso = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
 
@@ -262,6 +267,11 @@
             shell = {
               hostname = "shell";
               profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.shell;
+            };
+
+            transcoder = {
+              hostname = "transcoder";
+              profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.transcoder;
             };
 
             drake = {

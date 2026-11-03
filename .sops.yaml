@@ -7,6 +7,7 @@ keys:
   - &server_ida age1gf5769a6f8r88eeryvn57xvv2vf2ex907akfmlud4cltx38hm4tsj88w6y
   - &server_minecraft age1w84a8pd9przgpgjk33r4t7pau84luy6kxe34kfg4hlckjds5mprsnnp9u5
   - &server_shell age1etsrmxzjxvfr47je00dw7uc9re7vtdyfvu0gjpxgecgvnazeldqqn6q7v4
+  - &server_transcoder age1q5ty0e68nkfhvx0qjfra35qqg4sktldux0qve65e53g5xz8wfcvs9qxfcc
   - &home_drake age1cn3ey3za3msgye9jzqwhf4aave5kgg9gh5sk9dxzvaycam3049us8rfzhw
   - &home_nate age196svzwnwddg64s442l5lhf6fdg8pp54evw06cq9xn7fglsg4cqqsa4cx4x
 
@@ -20,6 +21,7 @@ creation_rules:
       - *server_ida
       - *server_minecraft
       - *server_shell
+      - *server_transcoder
 
   - path_regex: ^secrets/filebot.psm$
     key_groups:
@@ -55,3 +57,9 @@ creation_rules:
     - age:
       - *admin_wil
       - *server_shell
+
+  - path_regex: ^hosts/transcoder/secrets(-\w+)?\.yaml$
+    key_groups:
+    - age:
+      - *admin_wil
+      - *server_transcoder

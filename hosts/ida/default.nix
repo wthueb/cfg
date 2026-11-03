@@ -162,7 +162,11 @@ in
 
   wthueb.services.mktxp = {
     enable = true;
-    settings.listen = "127.0.0.1:49090";
+    settings = {
+      listen = "127.0.0.1:49090";
+      bandwidth = true;
+      bandwidth_test_interval = 900;
+    };
     defaults.credentials_file = config.sops.secrets.mktxp.path;
     routers.mt-pipeline = {
       hostname = "192.168.1.232";
