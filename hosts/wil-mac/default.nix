@@ -12,7 +12,6 @@ in
   environment.systemPackages = with pkgs; [
     #gimp-with-plugins
     litecli
-    #plex-desktop
     #sabnzbd
     #teamviewer
   ];
@@ -47,7 +46,6 @@ in
       "gimp" # no aarch64-darwin
       "google-drive" # not in nixpkgs
       "lyn" # not in nixpkgs
-      "plex" # no aarch64-darwin
       "private-internet-access" # not in nixpkgs
       "sabnzbd" # no aarch64-darwin
       "teamviewer" # no aarch64-darwin
