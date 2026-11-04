@@ -16,6 +16,13 @@ loki.relabel "journal" {
 		replacement   = "$1"
 		target_label  = "service_name"
 	}
+
+	rule {
+		source_labels = ["__journal_container_name"]
+		regex         = "(.+)"
+		replacement   = "$1"
+		target_label  = "service_name"
+	}
 }
 
 loki.source.journal "journal" {
