@@ -274,13 +274,13 @@
               profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.transcoder;
             };
 
-            drake = {
-              hostname = "drake";
-              profiles.home = {
-                user = "wil";
-                path = deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@drake";
-              };
-            };
+            # drake = {
+            #   hostname = "drake";
+            #   profiles.home = {
+            #     user = "wil";
+            #     path = deploy-rs.lib.x86_64-linux.activate.home-manager self.homeConfigurations."wil@drake";
+            #   };
+            # };
 
             nate = {
               hostname = "nate";
