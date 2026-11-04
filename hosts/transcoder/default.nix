@@ -30,7 +30,10 @@ in
   users.users.wil.extraGroups = [ "plex" ];
 
   virtualisation = {
-    podman.enable = true;
+    podman = {
+      enable = true;
+      autoPrune.enable = true;
+    };
     oci-containers = {
       backend = "podman";
       containers.wi1-bot-transcoder = {
