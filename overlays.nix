@@ -42,6 +42,22 @@
     });
   })
   (final: prev: {
+    cadvisor = prev.cadvisor.overrideAttrs (
+      finalAttrs: _: {
+        version = "0.57.0";
+
+        src = final.fetchFromGitHub {
+          owner = "google";
+          repo = "cadvisor";
+          rev = "v${finalAttrs.version}";
+          hash = "sha256-9HeiSO6yedDpv6YUAdZU7CqfGkun4ugZs4RbSZ51MPU=";
+        };
+
+        vendorHash = "sha256-zPn7CqSw+SW0Air5dEs+/wNwNAJjd5XX7wC3hrOHJQU=";
+      }
+    );
+  })
+  (final: prev: {
     # web.archive.org having trouble
     filebot = prev.filebot.overrideAttrs (old: {
       src = final.fetchurl {

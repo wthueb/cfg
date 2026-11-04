@@ -106,6 +106,11 @@ in
       port = cfg.cadvisor.port;
     };
 
+    systemd.services.cadvisor = lib.mkIf (cfg.cadvisor.enable && config.virtualisation.podman.enable) {
+      requires = [ "podman.socket" ];
+      after = [ "podman.socket" ];
+    };
+
     networking.firewall.allowedTCPPorts = lib.optional cfg.cadvisor.enable cfg.cadvisor.port;
 
     wthueb.exporters.scrapeTargets = [
