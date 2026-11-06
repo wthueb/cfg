@@ -6,7 +6,7 @@
     "npm:pi-mcp-adapter",
     "npm:pi-meridian-extension",
     "npm:pi-subagents",
-    "git:github.com/wthueb/pi-vim@fix/editor-action-dispatch",
+    "npm:pi-vim",
     "npm:pi-web-access",
     "npm:@narumitw/pi-btw",
     "npm:@narumitw/pi-caffeinate",
