@@ -34,9 +34,8 @@ in
       enable = true;
       autoPrune.enable = true;
     };
-    oci-containers = {
-      backend = "podman";
-      containers.wi1-bot-transcoder = {
+    oci-containers.containers = {
+      wi1-bot-transcoder = {
         image = "ghcr.io/wthueb/wi1-bot-transcoder:master";
         autoStart = true;
         labels."io.containers.autoupdate" = "registry";
@@ -47,7 +46,7 @@ in
         };
         volumes = [
           "${workerConfig}:/config/config.yaml:ro"
-          "/mnt/plex:/data"
+          "${config.wthueb.nas.shares.plex.mountPoint}:/data"
           "/var/lib/wi1-bot-transcoder:/work"
           "/var/log/wi1-bot-transcoder:/logs"
         ];
@@ -80,7 +79,7 @@ in
     services.podman-wi1-bot-transcoder = {
       requires = [ "network-online.target" ];
       after = [ "network-online.target" ];
-      unitConfig.RequiresMountsFor = [ "/mnt/plex" ];
+      unitConfig.RequiresMountsFor = [ config.wthueb.nas.shares.plex.mountPoint ];
       serviceConfig.RestartSec = "10s";
     };
   };
