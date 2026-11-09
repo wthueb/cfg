@@ -24,7 +24,6 @@ let
   # merged into the matching auto-derived job.
   extraTargets = {
     node = [
-      "drake:9100"
       "ms01-a:9100"
       "ms01-b:9100"
     ];
@@ -44,15 +43,6 @@ let
 
   # External hosts / jobs that need custom scrape options.
   specialJobs = [
-    {
-      job_name = "smart";
-      scrape_interval = "60s";
-      static_configs = [ { targets = [ "drake:9633" ]; } ];
-    }
-    {
-      job_name = "gpu";
-      static_configs = [ { targets = [ "drake:9835" ]; } ];
-    }
     {
       job_name = "mktxp";
       static_configs = [ { targets = [ config.wthueb.services.mktxp.settings.listen ]; } ];

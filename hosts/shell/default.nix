@@ -115,12 +115,6 @@
                   service = "cfb-picks";
                 };
 
-                drake = {
-                  rule = "Host(`drake.wi1.xyz`)";
-                  service = "drake";
-                  middlewares = [ "authelia" ];
-                };
-
                 homeassistant = {
                   rule = "Host(`home.wi1.xyz`)";
                   service = "homeassistant";
@@ -161,7 +155,6 @@
                 homarr.loadBalancer.servers = [ { url = "http://mbk:7575"; } ];
                 jellyfin.loadBalancer.servers = [ { url = "http://mbk:8096"; } ];
 
-                drake.loadBalancer.servers = [ { url = "http://drake"; } ];
                 homeassistant.loadBalancer.servers = [ { url = "http://homeassistant:8123"; } ];
                 jdr.loadBalancer.servers = [ { url = "http://jdr:5000"; } ];
                 grafana.loadBalancer.servers = [ { url = "http://ida:3000"; } ];

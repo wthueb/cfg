@@ -51,11 +51,6 @@ in
           speedFactor = 3;
         })
         (mkBuildMachine {
-          hostName = "drake";
-          maxJobs = 2;
-          speedFactor = 2;
-        })
-        (mkBuildMachine {
           hostName = "mbk";
           maxJobs = 4;
           speedFactor = 1;
