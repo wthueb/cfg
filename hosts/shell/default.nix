@@ -4,7 +4,10 @@
   ...
 }:
 {
-  imports = [ ./hardware.nix ];
+  imports = [
+    ./hardware.nix
+    ./files.nix
+  ];
 
   networking.firewall.allowedTCPPorts = [
     80
