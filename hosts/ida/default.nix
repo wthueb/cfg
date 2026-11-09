@@ -154,7 +154,7 @@ in
     enable = true;
     settings = {
       listen = "127.0.0.1:49090";
-      bandwidth = true;
+      bandwidth = false;
       bandwidth_test_interval = 900;
     };
     defaults.credentials_file = config.sops.secrets.mktxp.path;
