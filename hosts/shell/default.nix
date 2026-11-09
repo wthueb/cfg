@@ -7,6 +7,7 @@
   imports = [
     ./hardware.nix
     ./files.nix
+    ./authelia.nix
   ];
 
   networking.firewall.allowedTCPPorts = [
@@ -109,7 +110,7 @@
           );
         in
         lib.mkMerge (
-          (map (f: (import f { inherit theme; })) files)
+          (map (f: (import f { inherit config lib theme; })) files)
           ++ [
             {
               routers = {

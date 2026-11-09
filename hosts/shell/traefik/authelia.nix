@@ -1,4 +1,13 @@
-{ theme, ... }:
+{
+  config,
+  lib,
+  theme,
+  ...
+}:
+let
+  address = config.services.authelia.instances.main.settings.server.address;
+  url = "http://${lib.removeSuffix "/" (lib.removePrefix "tcp://" address)}";
+in
 {
   routers.authelia = {
     rule = "Host(`auth.wi1.xyz`)";
@@ -8,18 +17,7 @@
 
   middlewares = {
     authelia.forwardAuth = {
-      address = "http://mbk:9091/api/authz/forward-auth";
-      trustForwardHeader = true;
-      authResponseHeaders = [
-        "Remote-User"
-        "Remote-Groups"
-        "Remote-Email"
-        "Remote-Name"
-      ];
-    };
-
-    authelia-basic.forwardAuth = {
-      address = "http://mbk:9091/api/verify?auth=basic";
+      address = "${url}/api/authz/forward-auth";
       trustForwardHeader = true;
       authResponseHeaders = [
         "Remote-User"
@@ -35,5 +33,5 @@
     };
   };
 
-  services.authelia.loadBalancer.servers = [ { url = "http://mbk:9091"; } ];
+  services.authelia.loadBalancer.servers = [ { inherit url; } ];
 }
