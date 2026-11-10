@@ -1,5 +1,12 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  utils,
+  ...
+}:
 let
+  autoUpdateLogFormat = ''level=info msg="Container auto-update result" unit={{printf "%q" .Unit}} container={{printf "%q" .ContainerName}} image={{printf "%q" .Image}} policy={{printf "%q" .Policy}} updated={{printf "%q" .Updated}}'';
   workerConfig = (pkgs.formats.yaml { }).generate "wi1-bot-transcoder.yaml" {
     general.log_format = "logfmt";
     worker = {
@@ -72,6 +79,15 @@ in
         AccuracySec = "1s";
       };
     };
+    services.podman-auto-update.serviceConfig.ExecStart = [
+      ""
+      (utils.escapeSystemdExecArgs [
+        (lib.getExe config.virtualisation.podman.package)
+        "auto-update"
+        "--format"
+        autoUpdateLogFormat
+      ])
+    ];
     tmpfiles.rules = [
       "d /var/lib/wi1-bot-transcoder 0750 wil plex -"
       "d /var/log/wi1-bot-transcoder 0750 wil plex -"

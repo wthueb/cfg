@@ -23,17 +23,65 @@ loki.relabel "journal" {
 		replacement   = "$1"
 		target_label  = "service_name"
 	}
+
+	rule {
+		source_labels = ["__journal_priority"]
+		target_label  = "journal_priority"
+	}
+
+	rule {
+		source_labels = ["__journal__systemd_invocation_id"]
+		regex         = "(.+)"
+		target_label  = "journal_invocation_id"
+	}
+
+	rule {
+		source_labels = ["__journal__boot_id"]
+		regex         = "(.+)"
+		target_label  = "journal_boot_id"
+	}
+
+	rule {
+		source_labels = ["__journal__pid"]
+		regex         = "(.+)"
+		target_label  = "journal_pid"
+	}
+
+	rule {
+		source_labels = ["__journal__comm"]
+		regex         = "(.+)"
+		target_label  = "journal_process"
+	}
+
+	rule {
+		source_labels = ["__journal__exe"]
+		regex         = "(.+)"
+		target_label  = "journal_executable"
+	}
 }
 
 loki.source.journal "journal" {
 	relabel_rules = loki.relabel.journal.rules
-	forward_to    = [loki.process.strip_ansi.receiver]
+	forward_to    = [loki.process.journal_metadata.receiver]
 	labels        = {
 		job = "journal",
 	}
 }
 
-// strip ANSI colour codes
+loki.process "journal_metadata" {
+	forward_to = [loki.process.strip_ansi.receiver]
+
+	stage.structured_metadata {
+		values = {
+			journal_invocation_id = "",
+			journal_boot_id       = "",
+			journal_pid           = "",
+			journal_process       = "",
+			journal_executable    = "",
+		}
+	}
+}
+
 loki.process "strip_ansi" {
 	forward_to = [loki.process.detect_level.receiver]
 
@@ -62,7 +110,7 @@ loki.process "detect_level" {
 
 		stage.json {
 			expressions = {
-				level = `level || lvl || "@l"`,
+				level = `level || lvl || severity || log.level || "@l"`,
 			}
 		}
 
@@ -96,110 +144,16 @@ loki.process "detect_level" {
 		}
 	}
 
-	// klog format (https://github.com/kubernetes/klog), e.g. I0119
-	stage.match {
-		selector = `{level="unknown"} |~ "([IWED]\\d{4}\\s+\\d{2}:\\d{2}:\\d{2}\\.\\d+)"`
-
-		// klog uses a single-letter code followed by the month and day, i.e. I0119
-		stage.regex {
-			expression = `(?P<level>[A-Z])\d{4}`
-		}
-
-		stage.replace {
-			source     = "level"
-			expression = `(I)`
-			replace    = "info"
-		}
-
-		stage.replace {
-			source     = "level"
-			expression = `(W)`
-			replace    = "warn"
-		}
-
-		stage.replace {
-			source     = "level"
-			expression = `(E)`
-			replace    = "error"
-		}
-
-		stage.replace {
-			source     = "level"
-			expression = `(D)`
-			replace    = "debug"
-		}
-
-		stage.labels {
-			values = {
-				level = "",
-			}
-		}
-	}
-
-	// bracketed level, e.g. [INFO], [info]
-	stage.match {
-		selector = `{level="unknown"}`
-
-		stage.regex {
-			expression = `(?i)(^|\s)\[(?P<level>trace?|trc|(debug?|dbg)\d*|info?(mation(al)?)?|wa?rn(ing)?|err(or)?|fatal|ftl|crit(ical)?|panic|pnc)\]\s`
-		}
-
-		stage.labels {
-			values = {
-				level = "",
-			}
-		}
-	}
-
-	// ::LEVEL:: format
-	stage.match {
-		selector = `{level="unknown"}`
-
-		stage.regex {
-			expression = `(?i)::(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)::`
-		}
-
-		stage.labels {
-			values = {
-				level = "",
-			}
-		}
-	}
-
-	// all caps levels by themselves
-	stage.match {
-		selector = `{level="unknown"}`
-
-		stage.regex {
-			expression = `(^|\s)(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|INFO?(MATION(AL)?)?|WA?RN(ING)?|ERR(OR)?|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)($|\s)`
-		}
-
-		stage.labels {
-			values = {
-				level = "",
-			}
-		}
-	}
-
-	// redis logs
 	stage.match {
 		selector = `{level="unknown"} |~ "^\\d+:[A-Z] \\d{2} \\w+ \\d+ \\d{2}:\\d{2}:\\d{2}\\.\\d{3} [#*.\\-] .+$"`
 
 		stage.regex {
-			expression = `^(?P<pid>\d+):(?P<role>[A-Z]{1}) (?P<ts>\d{2} \w+ \d+ \d{2}:\d{2}:\d{2}\.\d{3}) (?P<level>[#*\-.]) (?P<msg>.+)$`
-		}
-
-		stage.timestamp {
-			source            = "ts"
-			format            = "02 Jan 2006 15:04:05.000"
-			location          = "UTC"
-			action_on_failure = "skip"
+			expression = `^(?P<pid>\d+):(?P<role>[A-Z]) (?P<ts>\d{2} \w+ \d+ \d{2}:\d{2}:\d{2}\.\d{3}) (?P<redis_level>[#*\-.]) (?P<msg>.+)$`
 		}
 
 		stage.template {
-			source = "level"
-
-			template = `{{- if eq .level "." -}} debug {{- else if eq .level "-" -}} info {{- else if eq .level "*" -}} info {{- else if eq .level "#" -}} warn {{- else -}} unknown {{- end -}}`
+			source   = "level"
+			template = `{{ if eq .redis_level "." }}debug{{ else if eq .redis_level "#" }}warn{{ else }}info{{ end }}`
 		}
 
 		stage.labels {
@@ -210,15 +164,110 @@ loki.process "detect_level" {
 
 		stage.template {
 			source   = "json"
-			template = `{{- if .pid -}}
-			{"ts":{{ .ts | toJson }},"level":{{ .level | toJson }},"pid":{{ .pid | toJson }},"role":{{ .role | toJson }},"msg":{{ .msg | toRawJson }}}
-			{{- else -}}
-			{"msg":{{ .Entry | toJson }},"parse_error":true}
-			{{- end -}}`
+			template = `{"ts":{{ .ts | toJson }},"level":{{ .level | toJson }},"pid":{{ .pid | toJson }},"role":{{ .role | toJson }},"msg":{{ .msg | toJson }}}`
 		}
 
 		stage.output {
 			source = "json"
+		}
+	}
+
+	// klog format (https://github.com/kubernetes/klog), e.g. I0119
+	stage.match {
+		selector = `{level="unknown"} |~ "^[IWEFD]\\d{4}\\s+\\d{2}:\\d{2}:\\d{2}\\.\\d+"`
+
+		stage.regex {
+			expression = `^(?P<level>[IWEFD])\d{4}`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
+		}
+	}
+
+	stage.match {
+		selector = `{level="unknown"} !~ "^\\s*(\\{|[A-Za-z_][A-Za-z0-9_.-]*=)"`
+
+		stage.regex {
+			expression = `(?i)(^|\s)\[(?P<level>trace?|trc|(debug?|dbg)\d*|inf(o(rmation(al)?)?)?|wa?rn(ing)?|err(or)?|fatal|ftl|crit(ical)?|panic|pnc)\](\s|:|$)`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
+		}
+	}
+
+	stage.match {
+		selector = `{level="unknown"} !~ "^\\s*(\\{|[A-Za-z_][A-Za-z0-9_.-]*=)"`
+
+		stage.regex {
+			expression = `(?i)::(?P<level>trace?|trc|(debug?|dbg)\d*|inf(o(rmation(al)?)?)?|wa?rn(ing)?|err(or)?|fatal|ftl|crit(ical)?|panic|pnc)::`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
+		}
+	}
+
+	stage.match {
+		selector = `{level="unknown"} !~ "^\\s*(\\{|[A-Za-z_][A-Za-z0-9_.-]*=)"`
+
+		stage.regex {
+			expression = `(^|\s)(?P<level>TRACE?|TRC|(DEBUG?|DBG)\d*|DEBG|INFO?(RMATION(AL)?)?|WA?RN(ING)?|ERRO(R)?|ERR|FATAL|FTL|CRIT(ICAL)?|PANIC|PNC)($|[\s:])`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
+		}
+	}
+
+	stage.match {
+		selector = `{level="unknown"} !~ "^\\s*(\\{|[A-Za-z_][A-Za-z0-9_.-]*=)"`
+
+		stage.regex {
+			expression = `(?i)^(?P<level>trace|debug|info|notice|warn(ing)?|err(or)?|critical|fatal):`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
+		}
+	}
+
+	stage.match {
+		selector = `{level="unknown",container_name="homarr"}`
+
+		stage.regex {
+			expression = `^\d{4}-\d{2}-\d{2}T\S+ (?P<level>trace|debug|info|warn|error|fatal):`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
+		}
+	}
+
+	stage.match {
+		selector = `{level="unknown",service_name="ddclient"}`
+
+		stage.regex {
+			expression = `^(?P<level>DEBUG|INFO|SUCCESS|WARNING|FAILED|FATAL):`
+		}
+
+		stage.labels {
+			values = {
+				level = "",
+			}
 		}
 	}
 }
@@ -231,80 +280,66 @@ loki.process "normalize_level" {
 		drop_counter_reason = "too_old_for_loki"
 	}
 
-	// bunyan (https://github.com/trentm/node-bunyan#levels)
-	stage.match {
-		selector = `{level=~"^[1-6]0$"}`
-
-		stage.template {
-			source   = "level"
-			template = "{{ $l := printf \"%v\" .Value }}{{ if eq $l \"10\" }}trace{{ else if eq $l \"20\" }}debug{{ else if eq $l \"30\" }}info{{ else if eq $l \"40\" }}warn{{ else if eq $l \"50\" }}error{{ else if eq $l \"60\" }}fatal{{ else }}unknown{{ end }}"
-		}
-
-		stage.labels {
-			values = {
-				level = "",
-			}
-		}
-	}
-
-	// trace: trc, trac, trace
-	stage.replace {
-		source     = "level"
-		expression = `(?i)(trace?|trc)\d*`
-		replace    = "trace"
-	}
-
-	// debug: dbg, debu, debug, debug1..N
-	stage.replace {
-		source     = "level"
-		expression = `(?i)(debug?|dbg)\d*`
-		replace    = "debug"
-	}
-
-	// info: inf, info, information, informational
-	stage.replace {
-		source     = "level"
-		expression = `(?i)(info?(mation(al)?)?)`
-		replace    = "info"
-	}
-
-	// warning: wrn, warn, warning
-	stage.replace {
-		source     = "level"
-		expression = `(?i)(wa?rn(ing)?)`
-		replace    = "warn"
-	}
-
-	// error: err, error
-	stage.replace {
-		source     = "level"
-		expression = `(?i)(err(or)?)`
-		replace    = "error"
-	}
-
-	// fatal: ftl, fatal
-	stage.replace {
-		source     = "level"
-		expression = `(?i)(fatal|ftl)`
-		replace    = "fatal"
-	}
-
-	// critical: crit, critical, pnc, panic
-	stage.replace {
-		source     = "level"
-		expression = `(?i)(crit(ical)?|panic|pnc)`
-		replace    = "panic"
-	}
-
-	// lower-case anything else (notice, alert, emergency, ...)
 	stage.template {
 		source   = "level"
-		template = "{{ ToLower .Value }}"
+		template = `{{ $l := ToLower (printf "%v" .Value) }}{{ if or (eq $l "10") (eq $l "trac") (eq $l "trace") (eq $l "trc") (eq $l "verbose") }}trace{{ else if or (eq $l "20") (eq $l "d") (eq $l "debu") (eq $l "debug") (eq $l "dbg") (eq $l "debg") (regexMatch "^(debug|dbg)[0-9]+$" $l) }}debug{{ else if or (eq $l "30") (eq $l "i") (eq $l "inf") (eq $l "info") (eq $l "information") (eq $l "informational") (eq $l "notice") (eq $l "success") }}info{{ else if or (eq $l "40") (eq $l "w") (eq $l "warn") (eq $l "warning") (eq $l "wrn") }}warn{{ else if or (eq $l "50") (eq $l "e") (eq $l "err") (eq $l "erro") (eq $l "error") (eq $l "failed") }}error{{ else if or (eq $l "crit") (eq $l "critical") }}critical{{ else if or (eq $l "60") (eq $l "f") (eq $l "fatal") (eq $l "ftl") (eq $l "panic") (eq $l "pnc") (eq $l "emerg") (eq $l "alert") }}fatal{{ else }}unknown{{ end }}`
 	}
 
 	stage.labels {
 		values = {
 			level = "",
 		}
+	}
+
+	stage.match {
+		selector = `{level="unknown",journal_priority=~"0|1"}`
+
+		stage.static_labels {
+			values = {level = "fatal"}
+		}
+	}
+
+	stage.match {
+		selector = `{level="unknown",journal_priority="2"}`
+
+		stage.static_labels {
+			values = {level = "critical"}
+		}
+	}
+
+	stage.match {
+		selector = `{level="unknown",journal_priority="3"}`
+
+		stage.static_labels {
+			values = {level = "error"}
+		}
+	}
+
+	stage.match {
+		selector = `{level="unknown",journal_priority="4"}`
+
+		stage.static_labels {
+			values = {level = "warn"}
+		}
+	}
+
+	stage.match {
+		selector = `{level="unknown",journal_priority=~"5|6"}`
+
+		stage.static_labels {
+			values = {level = "info"}
+		}
+	}
+
+	stage.match {
+		selector = `{level="unknown",journal_priority="7"}`
+
+		stage.static_labels {
+			values = {level = "debug"}
+		}
+	}
+
+	stage.label_drop {
+		values = ["journal_priority"]
 	}
 }
