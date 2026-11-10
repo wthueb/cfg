@@ -34,31 +34,31 @@ creation_rules:
       - *home_drake
       - *home_nate
 
-  - path_regex: ^hosts/mbk/secrets(-\w+)?\.yaml$
+  - path_regex: ^hosts/mbk/(.*/)?secrets(-\w+)?\.yaml$
     key_groups:
     - age:
       - *admin_wil
       - *server_mbk
 
-  - path_regex: ^hosts/ida/secrets(-\w+)?\.yaml$
+  - path_regex: ^hosts/ida/(.*/)?secrets(-\w+)?\.yaml$
     key_groups:
     - age:
       - *admin_wil
       - *server_ida
 
-  - path_regex: ^hosts/minecraft/secrets(-\w+)?\.yaml$
+  - path_regex: ^hosts/minecraft/(.*/)?secrets(-\w+)?\.yaml$
     key_groups:
     - age:
       - *admin_wil
       - *server_minecraft
 
-  - path_regex: ^hosts/shell/secrets(-\w+)?\.yaml$
+  - path_regex: ^hosts/shell/(.*/)?secrets(-\w+)?\.yaml$
     key_groups:
     - age:
       - *admin_wil
       - *server_shell
 
-  - path_regex: ^hosts/transcoder/secrets(-\w+)?\.yaml$
+  - path_regex: ^hosts/transcoder/(.*/)?secrets(-\w+)?\.yaml$
     key_groups:
     - age:
       - *admin_wil
