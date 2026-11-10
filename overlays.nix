@@ -58,6 +58,14 @@
     );
   })
   (final: prev: {
+    grafana-loki = prev.grafana-loki.overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace vendor/github.com/grafana/dskit/tracing/otel.go \
+          --replace-fail '"go.opentelemetry.io/otel/semconv/v1.39.0"' '"go.opentelemetry.io/otel/semconv/v1.43.0"'
+      '';
+    });
+  })
+  (final: prev: {
     plezy = prev.plezy.overrideAttrs (old: {
       version = "2.23.0";
 

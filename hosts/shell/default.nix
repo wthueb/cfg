@@ -38,11 +38,13 @@ in
           web = {
             address = ":80";
             asDefault = true;
+            observability.traceVerbosity = "detailed";
           };
 
           websecure = {
             address = ":443";
             asDefault = true;
+            observability.traceVerbosity = "detailed";
             http.tls = {
               certResolver = "acmeResolver";
               domains = [
@@ -65,6 +67,7 @@ in
           plex = {
             address = ":32400";
             http.tls = { };
+            observability.traceVerbosity = "detailed";
           };
         };
 
@@ -87,6 +90,19 @@ in
           addEntryPointsLabels = true;
           addRoutersLabels = true;
           addServicesLabels = true;
+        };
+
+        tracing = {
+          serviceName = "traefik";
+          sampleRate = 1.0;
+          resourceAttributes."host.name" = config.networking.hostName;
+          capturedRequestHeaders = [ ];
+          capturedResponseHeaders = [ ];
+          safeQueryParams = [ ];
+          otlp.grpc = {
+            endpoint = "127.0.0.1:4317";
+            insecure = true;
+          };
         };
 
         ping.entryPoint = "traefik";
@@ -187,7 +203,45 @@ in
     }
   ];
 
-  wthueb.services.alloy.enable = true;
+  wthueb.services.alloy = {
+    enable = true;
+    extraConfig = ''
+      otelcol.receiver.otlp "traefik" {
+        grpc {
+          endpoint = ${builtins.toJSON config.services.traefik.staticConfigOptions.tracing.otlp.grpc.endpoint}
+        }
+        output {
+          traces = [otelcol.processor.memory_limiter.traces.input]
+        }
+      }
+
+      otelcol.processor.memory_limiter "traces" {
+        check_interval = "1s"
+        limit = "256MiB"
+        output {
+          traces = [otelcol.processor.batch.traces.input]
+        }
+      }
+
+      otelcol.processor.batch "traces" {
+        timeout = "5s"
+        send_batch_size = 512
+        send_batch_max_size = 1024
+        output {
+          traces = [otelcol.exporter.otlp.tempo.input]
+        }
+      }
+
+      otelcol.exporter.otlp "tempo" {
+        client {
+          endpoint = "${ida.networking.hostName}:${lib.last (lib.splitString ":" ida.services.tempo.settings.distributor.receivers.otlp.protocols.grpc.endpoint)}"
+          tls {
+            insecure = true
+          }
+        }
+      }
+    '';
+  };
 
   sops.secrets = {
     cloudflare-token = { };

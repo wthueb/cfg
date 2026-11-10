@@ -7,6 +7,16 @@
 }:
 let
   shell = self.nixosConfigurations.shell.config;
+  traceEndpoint = "127.0.0.1:14317";
+  prometheus = config.services.prometheus;
+  removeNulls =
+    value:
+    if builtins.isAttrs value then
+      lib.mapAttrs (_: removeNulls) (lib.filterAttrs (name: v: name != "_module" && v != null) value)
+    else if builtins.isList value then
+      map removeNulls value
+    else
+      value;
   autheliaUrl =
     (builtins.head shell.services.authelia.instances.main.settings.session.cookies).authelia_url;
 
@@ -157,6 +167,11 @@ in
       port = config.services.loki.configuration.server.http_listen_port;
     }
     {
+      job = "tempo";
+      host = "127.0.0.1";
+      port = config.services.tempo.settings.server.http_listen_port;
+    }
+    {
       job = "influxdb";
       port = lib.toInt (
         lib.last (lib.splitString ":" config.services.influxdb2.settings.http-bind-address)
@@ -169,6 +184,25 @@ in
     globalConfig.scrape_interval = "10s";
     retentionTime = "1y";
     scrapeConfigs = simpleJobs ++ specialJobs;
+    configText = builtins.toJSON (removeNulls {
+      global = prometheus.globalConfig;
+      scrape_configs = prometheus.scrapeConfigs;
+      remote_write = prometheus.remoteWrite;
+      remote_read = prometheus.remoteRead;
+      rule_files = lib.optionals (!prometheus.enableAgentMode) (
+        prometheus.ruleFiles
+        ++ lib.optional (prometheus.rules != [ ]) (
+          pkgs.writeText "prometheus.rules" (lib.concatStringsSep "\n" prometheus.rules)
+        )
+      );
+      alerting.alertmanagers = prometheus.alertmanagers;
+      tracing = {
+        endpoint = traceEndpoint;
+        client_type = "grpc";
+        sampling_fraction = 1.0;
+        insecure = true;
+      };
+    });
   };
 
   services.prometheus.exporters.snmp = {
@@ -241,6 +275,16 @@ in
       };
       analytics.reporting_enabled = false;
       metrics.enabled = true;
+      "tracing.opentelemetry" = {
+        custom_attributes = "service.name:grafana,host.name:${config.networking.hostName}";
+        sampler_type = "probabilistic";
+        sampler_param = 1.0;
+      };
+      "tracing.opentelemetry.otlp" = {
+        address = traceEndpoint;
+        propagation = "w3c";
+        insecure = true;
+      };
       "auth.generic_oauth" = {
         enabled = true;
         allow_sign_up = false;
@@ -288,10 +332,49 @@ in
         }
         {
           name = "Loki";
+          uid = "P8E80F9AEF21F6940";
           type = "loki";
           url = "http://localhost:${toString config.services.loki.configuration.server.http_listen_port}";
           jsonData = {
             maxLines = 5000;
+            derivedFields = [
+              {
+                name = "TraceID";
+                matcherRegex = ''(?:TraceId|traceID|trace_id)"?\s*[:=]\s*"?([0-9a-fA-F]{32})'';
+                datasourceUid = "tempo";
+                url = "$\${__value.raw}";
+                urlDisplayLabel = "View trace";
+              }
+            ];
+          };
+          isDefault = false;
+          editable = false;
+        }
+        {
+          name = "Tempo";
+          uid = "tempo";
+          type = "tempo";
+          access = "proxy";
+          url = "http://127.0.0.1:${toString config.services.tempo.settings.server.http_listen_port}";
+          jsonData = {
+            nodeGraph.enabled = true;
+            tracesToLogsV2 = {
+              datasourceUid = "P8E80F9AEF21F6940";
+              spanStartTimeShift = "-1m";
+              spanEndTimeShift = "1m";
+              tags = [
+                {
+                  key = "host.name";
+                  value = "host_name";
+                }
+                {
+                  key = "service.name";
+                  value = "service_name";
+                }
+              ];
+              filterByTraceID = true;
+              filterBySpanID = false;
+            };
           };
           isDefault = false;
           editable = false;
@@ -314,6 +397,7 @@ in
     enable = true;
     configuration = {
       auth_enabled = false;
+      tracing.enabled = true;
       server = {
         http_listen_port = 3100;
       };
@@ -359,6 +443,119 @@ in
       };
       pattern_ingester = {
         enabled = true;
+      };
+    };
+  };
+
+  systemd.services.loki.environment = {
+    OTEL_TRACES_EXPORTER = "otlp";
+    OTEL_EXPORTER_OTLP_ENDPOINT = "http://${traceEndpoint}";
+    OTEL_EXPORTER_OTLP_PROTOCOL = "grpc";
+    OTEL_PROPAGATORS = "tracecontext,baggage";
+    OTEL_TRACES_SAMPLER = "parentbased_traceidratio";
+    OTEL_TRACES_SAMPLER_ARG = "1.0";
+  };
+
+  wthueb.services.alloy.extraConfig = ''
+    otelcol.receiver.otlp "services" {
+      grpc {
+        endpoint = ${builtins.toJSON traceEndpoint}
+      }
+      output {
+        traces = [otelcol.processor.memory_limiter.traces.input]
+      }
+    }
+
+    otelcol.processor.memory_limiter "traces" {
+      check_interval = "1s"
+      limit = "256MiB"
+      output {
+        traces = [otelcol.processor.transform.traces.input]
+      }
+    }
+
+    otelcol.processor.transform "traces" {
+      trace_statements {
+        context = "resource"
+        statements = [
+          `set(resource.attributes["host.name"], "${config.networking.hostName}")`,
+          `set(resource.attributes["service.name"], "loki") where resource.attributes["service.name"] == "loki-all"`,
+        ]
+      }
+      trace_statements {
+        context = "span"
+        statements = [
+          `delete_key(span.attributes, "url.query")`,
+          `replace_pattern(span.attributes["url.full"], "\\?.*$", "") where span.attributes["url.full"] != nil`,
+          `replace_pattern(span.attributes["http.url"], "\\?.*$", "") where span.attributes["http.url"] != nil`,
+          `replace_pattern(span.attributes["http.target"], "\\?.*$", "") where span.attributes["http.target"] != nil`,
+        ]
+      }
+      output {
+        traces = [otelcol.processor.batch.traces.input]
+      }
+    }
+
+    otelcol.processor.batch "traces" {
+      timeout = "5s"
+      send_batch_size = 512
+      send_batch_max_size = 1024
+      output {
+        traces = [otelcol.exporter.otlp.tempo.input]
+      }
+    }
+
+    otelcol.exporter.otlp "tempo" {
+      client {
+        endpoint = "127.0.0.1:${lib.last (lib.splitString ":" config.services.tempo.settings.distributor.receivers.otlp.protocols.grpc.endpoint)}"
+        tls {
+          insecure = true
+        }
+      }
+    }
+  '';
+
+  services.tempo = {
+    enable = true;
+    settings = {
+      auth_enabled = false;
+      usage_report.reporting_enabled = false;
+      server = {
+        http_listen_address = "127.0.0.1";
+        http_listen_port = 3200;
+        grpc_listen_address = "127.0.0.1";
+        grpc_listen_port = 9096;
+      };
+      distributor.receivers.otlp.protocols.grpc.endpoint = "0.0.0.0:4317";
+      ingester = {
+        max_block_duration = "5m";
+        lifecycler.ring = {
+          kvstore.store = "inmemory";
+          replication_factor = 1;
+        };
+      };
+      compactor.compaction.block_retention = "168h";
+      metrics_generator = {
+        ring = {
+          kvstore.store = "inmemory";
+          instance_addr = "127.0.0.1";
+        };
+        storage.path = "/var/lib/tempo/generator/wal";
+        traces_storage.path = "/var/lib/tempo/generator/traces";
+        processor.local_blocks = {
+          filter_server_spans = false;
+          flush_to_storage = true;
+        };
+      };
+      overrides.defaults.metrics_generator.processors = [ "local-blocks" ];
+      query_frontend.metrics = {
+        max_duration = config.services.tempo.settings.compactor.compaction.block_retention;
+        concurrent_jobs = 8;
+      };
+      storage.trace = {
+        backend = "local";
+        wal.path = "/var/lib/tempo/wal";
+        local.path = "/var/lib/tempo/blocks";
       };
     };
   };
