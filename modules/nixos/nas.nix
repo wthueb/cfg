@@ -42,6 +42,10 @@ in
     };
   };
 
+  config.services.prometheus.exporters.node.enabledCollectors = lib.mkIf (
+    cfg.shares != { } && config.wthueb.exporters.enable
+  ) [ "mountstats" ];
+
   config.fileSystems = lib.mapAttrs' (
     _name: share:
     lib.nameValuePair share.mountPoint {

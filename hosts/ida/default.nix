@@ -14,36 +14,41 @@ let
     lib.mapAttrsToList (_: v: v) self.nixosConfigurations
   );
 
-  # Targets auto-derived from every NixOS host in the flake. Each host declares
-  # its exporters via wthueb.exporters; hosts with none contribute an empty list.
   autoEntries = builtins.concatMap (
     node:
-    map (target: {
-      inherit (target) job;
-      target = "${node.config.networking.hostName}:${toString target.port}";
-    }) node.config.wthueb.exporters.scrapeTargets
+    map (
+      target:
+      target
+      // {
+        sourceHost = node.config.networking.hostName;
+        target = "${
+          if lib.hasInfix ":" target.host then "[${target.host}]" else target.host
+        }:${toString target.port}";
+      }
+    ) node.config.wthueb.exporters.scrapeTargets
   ) hosts;
 
-  # Static targets for hosts that are not NixOS systems in this flake,
-  # merged into the matching auto-derived job.
-  extraTargets = {
-    node = [
-      "ms01-a:9100"
-      "ms01-b:9100"
-    ];
-  };
+  extraEntries =
+    map
+      (target: {
+        inherit target;
+        job = "node";
+        metricsPath = "/metrics";
+        scrapeInterval = "10s";
+      })
+      [
+        "ms01-a:9100"
+        "ms01-b:9100"
+      ];
 
-  jobNames = lib.unique ((map (e: e.job) autoEntries) ++ lib.attrNames extraTargets);
+  jobs = lib.groupBy (entry: entry.job) (autoEntries ++ extraEntries);
 
-  simpleJobs = map (job: {
+  simpleJobs = lib.mapAttrsToList (job: entries: {
     job_name = job;
-    static_configs = [
-      {
-        targets =
-          (map (e: e.target) (lib.filter (e: e.job == job) autoEntries)) ++ (extraTargets.${job} or [ ]);
-      }
-    ];
-  }) jobNames;
+    metrics_path = (builtins.head entries).metricsPath;
+    scrape_interval = (builtins.head entries).scrapeInterval;
+    static_configs = [ { targets = map (entry: entry.target) entries; } ];
+  }) jobs;
 
   # External hosts / jobs that need custom scrape options.
   specialJobs = [
@@ -70,17 +75,6 @@ let
         {
           target_label = "__address__";
           replacement = "localhost:${toString config.services.prometheus.exporters.snmp.port}";
-        }
-      ];
-    }
-    {
-      job_name = "traefik";
-      scrape_interval = "5s";
-      static_configs = [
-        {
-          targets = [
-            "${shell.networking.hostName}:${lib.last (lib.splitString ":" shell.services.traefik.staticConfigOptions.entryPoints.traefik.address)}"
-          ];
         }
       ];
     }
@@ -126,6 +120,48 @@ in
 {
   imports = [
     ./hardware.nix
+  ];
+
+  assertions =
+    lib.mapAttrsToList (job: entries: {
+      assertion = builtins.all (
+        entry:
+        entry.metricsPath == (builtins.head entries).metricsPath
+        && entry.scrapeInterval == (builtins.head entries).scrapeInterval
+      ) entries;
+      message = "Prometheus targets for job ${job} must use the same metrics path and scrape interval.";
+    }) jobs
+    ++ map (entry: {
+      assertion =
+        builtins.elem entry.host [
+          "127.0.0.1"
+          "::1"
+          "localhost"
+        ]
+        -> entry.sourceHost == config.networking.hostName;
+      message = "Prometheus cannot scrape loopback target ${entry.job} on remote host ${entry.sourceHost}.";
+    }) autoEntries;
+
+  wthueb.exporters.scrapeTargets = [
+    {
+      job = "prometheus";
+      host = "127.0.0.1";
+      port = config.services.prometheus.port;
+    }
+    {
+      job = "grafana";
+      port = config.services.grafana.settings.server.http_port;
+    }
+    {
+      job = "loki";
+      port = config.services.loki.configuration.server.http_listen_port;
+    }
+    {
+      job = "influxdb";
+      port = lib.toInt (
+        lib.last (lib.splitString ":" config.services.influxdb2.settings.http-bind-address)
+      );
+    }
   ];
 
   services.prometheus = {
@@ -186,7 +222,10 @@ in
 
   services.influxdb2 = {
     enable = true;
-    settings.http-bind-address = ":8086";
+    settings = {
+      http-bind-address = ":8086";
+      metrics-disabled = false;
+    };
   };
 
   services.grafana = {
@@ -201,6 +240,7 @@ in
         root_url = "https://${config.services.grafana.settings.server.domain}";
       };
       analytics.reporting_enabled = false;
+      metrics.enabled = true;
       "auth.generic_oauth" = {
         enabled = true;
         allow_sign_up = false;

@@ -175,6 +175,18 @@ in
         );
     };
 
+  wthueb.exporters.scrapeTargets = [
+    {
+      job = "traefik";
+      port = lib.toInt (
+        lib.last (
+          lib.splitString ":" config.services.traefik.staticConfigOptions.entryPoints.traefik.address
+        )
+      );
+      scrapeInterval = "5s";
+    }
+  ];
+
   wthueb.services.alloy.enable = true;
 
   sops.secrets = {

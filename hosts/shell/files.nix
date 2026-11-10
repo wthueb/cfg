@@ -22,9 +22,22 @@ in
     "a+ /srv/files/public - - - - default:user::rwx,default:group::r-x,default:mask::r-x,default:other::---"
   ];
 
+  services.prometheus.exporters.nginx = {
+    enable = true;
+    scrapeUri = "http://127.0.0.1:8092/nginx_status";
+  };
+
   services.nginx = {
     enable = true;
+    statusPage = true;
     virtualHosts = {
+      localhost.listen = [
+        {
+          addr = "127.0.0.1";
+          port = 8092;
+        }
+      ];
+
       files-private = common // {
         listen = [
           {

@@ -1,10 +1,25 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  options,
+  ...
+}:
 let
   cfg = config.wthueb.exporters;
+  exporterOptions = options.services.prometheus.exporters.type.getSubOptions [ ];
+  exporterNames = lib.attrNames (
+    lib.filterAttrs (
+      _: option: (option.visible or true) != false && (option.type.name or null) == "submodule"
+    ) exporterOptions
+  );
+  enabledExporters = lib.filterAttrs (_: exporter: exporter.enable) (
+    lib.genAttrs exporterNames (name: config.services.prometheus.exporters.${name})
+  );
+  textfileDirectory = "/var/lib/prometheus-node-exporter";
 in
 {
   options.wthueb.exporters = {
-    enable = lib.mkEnableOption "Prometheus node and process exporters";
+    enable = lib.mkEnableOption "Prometheus service metrics and host exporters";
 
     ports = {
       node = lib.mkOption {
@@ -59,7 +74,25 @@ in
 
             port = lib.mkOption {
               type = lib.types.port;
-              description = "Port the exporter listens on.";
+              description = "Port the metrics endpoint listens on.";
+            };
+
+            host = lib.mkOption {
+              type = lib.types.str;
+              default = config.networking.hostName;
+              description = "Address reachable by ida; loopback is only valid for ida itself.";
+            };
+
+            metricsPath = lib.mkOption {
+              type = lib.types.str;
+              default = "/metrics";
+              description = "HTTP path of the Prometheus metrics endpoint.";
+            };
+
+            scrapeInterval = lib.mkOption {
+              type = lib.types.str;
+              default = "10s";
+              description = "Scrape interval, which must agree across targets in a job.";
             };
           };
         }
@@ -67,8 +100,9 @@ in
       internal = true;
       default = [ ];
       description = ''
-        Exporters this host exposes. Consumed by the ida host to build its
-        Prometheus scrapeConfigs. Computed from the enabled exporters above.
+        Metrics endpoints this host exposes. Consumed by ida to build its
+        Prometheus scrapeConfigs. Enabled NixOS Prometheus exporters are
+        registered automatically; native service endpoints can be appended.
       '';
     };
   };
@@ -86,6 +120,9 @@ in
       extraFlags = [
         "--collector.ethtool.device-exclude=^veth.*$"
         "--collector.netdev.device-exclude=^veth.*$"
+        "--collector.textfile.directory=${textfileDirectory}"
+        "--collector.systemd.enable-restarts-metrics"
+        "--collector.systemd.enable-start-time-metrics"
       ];
     };
 
@@ -113,19 +150,52 @@ in
 
     networking.firewall.allowedTCPPorts = lib.optional cfg.cadvisor.enable cfg.cadvisor.port;
 
-    wthueb.exporters.scrapeTargets = [
-      {
-        job = "node";
-        port = cfg.ports.node;
-      }
-      {
-        job = "process";
-        port = cfg.ports.process;
-      }
-    ]
-    ++ lib.optional cfg.cadvisor.enable {
-      job = "cadvisor";
-      port = cfg.cadvisor.port;
+    services.prometheus.exporters.postfix.enable = lib.mkDefault config.services.postfix.enable;
+
+    systemd.tmpfiles.rules = [ "d ${textfileDirectory} 0755 root root -" ];
+
+    systemd.services.tailscale-metrics = lib.mkIf config.services.tailscale.enable {
+      description = "Write Tailscale client metrics for node-exporter";
+      after = [ "tailscaled.service" ];
+      requires = [ "tailscaled.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${lib.getExe config.services.tailscale.package} metrics write ${textfileDirectory}/tailscale.prom";
+        TimeoutStartSec = "10s";
+        UMask = "0022";
+      };
     };
+
+    systemd.timers.tailscale-metrics = lib.mkIf config.services.tailscale.enable {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnBootSec = "30s";
+        OnUnitActiveSec = "30s";
+        AccuracySec = "1s";
+      };
+    };
+
+    wthueb.exporters.scrapeTargets =
+      lib.mapAttrsToList (name: exporter: {
+        job = name;
+        inherit (exporter) port;
+        host =
+          if
+            builtins.elem exporter.listenAddress [
+              "0.0.0.0"
+              "::"
+              "[::]"
+              ""
+            ]
+          then
+            config.networking.hostName
+          else
+            exporter.listenAddress;
+        metricsPath = exporter.telemetryPath or "/metrics";
+      }) enabledExporters
+      ++ lib.optional cfg.cadvisor.enable {
+        job = "cadvisor";
+        port = cfg.cadvisor.port;
+      };
   };
 }

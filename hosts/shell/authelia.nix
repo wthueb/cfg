@@ -174,6 +174,10 @@ in
     settingsFiles = [ config.sops.templates."authelia-clients.yml".path ];
     settings = {
       theme = "dark";
+      telemetry.metrics = {
+        enabled = true;
+        address = "tcp://0.0.0.0:9959/metrics";
+      };
       default_2fa_method = "webauthn";
       server = {
         address = "tcp://127.0.0.1:9091/";
@@ -297,6 +301,20 @@ in
         ];
       };
     };
+  };
+
+  wthueb.exporters.scrapeTargets = [
+    {
+      job = "authelia";
+      port = 9959;
+    }
+  ];
+
+  services.prometheus.exporters.redis = {
+    enable = true;
+    extraFlags = [
+      "--redis.addr=redis://${config.services.redis.servers.authelia.bind}:${toString config.services.redis.servers.authelia.port}"
+    ];
   };
 
   services.redis.servers.authelia = {

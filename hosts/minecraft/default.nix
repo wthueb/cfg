@@ -4,6 +4,23 @@
   inputs,
   ...
 }:
+let
+  jmxAgent = pkgs.prometheus-jmx-javaagent;
+  jmxConfig = (pkgs.formats.yaml { }).generate "minecraft-jmx.yml" {
+    startDelaySeconds = 30;
+    lowercaseOutputName = true;
+    includeObjectNames = [ "net.minecraft.server:type=Server" ];
+    rules = [
+      {
+        pattern = "net.minecraft.server<type=Server><>averageTickTime";
+        name = "minecraft_server_average_tick_time_seconds";
+        help = "Average Minecraft server tick duration in seconds.";
+        type = "GAUGE";
+        valueFactor = 0.001;
+      }
+    ];
+  };
+in
 {
   imports = [
     ./hardware.nix
@@ -38,13 +55,21 @@
         gamemode = "survival";
         difficulty = "normal";
         white-list = false;
+        enable-jmx-monitoring = true;
         enable-rcon = true;
         "rcon.password" = "@rcon_password@";
       };
 
-      jvmOpts = "-Xms6G -Xmx6G -XX:+UseZGC -XX:+ZGenerational";
+      jvmOpts = "-Xms6G -Xmx6G -XX:+UseZGC -XX:+ZGenerational -javaagent:${jmxAgent}/lib/jmx_prometheus_javaagent-${jmxAgent.version}.jar=0.0.0.0:9225:${jmxConfig}";
     };
   };
+
+  wthueb.exporters.scrapeTargets = [
+    {
+      job = "minecraft";
+      port = 9225;
+    }
+  ];
 
   sops.secrets.minecraft-environment = {
     owner = config.services.minecraft-servers.user;

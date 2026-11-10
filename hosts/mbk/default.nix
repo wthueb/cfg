@@ -26,6 +26,7 @@
   virtualisation.docker = {
     enable = true;
     logDriver = "local";
+    daemon.settings.metrics-addr = "0.0.0.0:9323";
   };
 
   users.users.wil.extraGroups = [ "docker" ];
@@ -38,6 +39,12 @@
   };
 
   wthueb.exporters = {
+    scrapeTargets = [
+      {
+        job = "docker";
+        port = 9323;
+      }
+    ];
     extraProcessNames = [
       {
         name = "sabnzbd";

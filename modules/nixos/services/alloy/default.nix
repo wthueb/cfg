@@ -34,7 +34,17 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    services.alloy.enable = true;
+    services.alloy = {
+      enable = true;
+      extraFlags = [ "--server.http.listen-addr=0.0.0.0:12345" ];
+    };
+
+    wthueb.exporters.scrapeTargets = [
+      {
+        job = "alloy";
+        port = 12345;
+      }
+    ];
 
     environment.etc."alloy/config.alloy".text = ''
       ${sharedConfig}
