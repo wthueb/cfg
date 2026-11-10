@@ -27,6 +27,11 @@ discovery.relabel "set_container_labels" {
 		regex         = `/(seerr|seerr-jellyfin)`
 		action        = "drop"
 	}
+
+	rule {
+		action = "labelkeep"
+		regex  = "__meta_docker_container_id|container_name|job|log_source"
+	}
 }
 
 loki.source.docker "containers" {
