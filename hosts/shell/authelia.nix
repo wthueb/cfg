@@ -182,9 +182,8 @@ in
         headers.csp_template = "default-src 'self'; style-src 'self' 'nonce-\${NONCE}' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'unsafe-inline' theme-park.dev raw.githubusercontent.com use.fontawesome.com; img-src 'self' theme-park.dev raw.githubusercontent.com data:; script-src 'self' 'nonce-\${NONCE}'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; font-src use.fontawesome.com; base-uri 'self';";
       };
       log = {
-        level = "error";
-        format = "text";
-        keep_stdout = false;
+        level = "debug";
+        format = "json";
       };
       totp.disable = true;
       webauthn = {
