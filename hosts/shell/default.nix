@@ -1,8 +1,12 @@
 {
+  self,
   config,
   lib,
   ...
 }:
+let
+  ida = self.nixosConfigurations.ida.config;
+in
 {
   imports = [
     ./hardware.nix
@@ -10,12 +14,9 @@
     ./authelia.nix
   ];
 
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-    8080
-    32400
-  ];
+  networking.firewall.allowedTCPPorts = lib.mapAttrsToList (
+    _: entryPoint: lib.toInt (lib.last (lib.splitString ":" entryPoint.address))
+  ) config.services.traefik.staticConfigOptions.entryPoints;
 
   services.traefik =
     let
@@ -32,6 +33,8 @@
         };
 
         entryPoints = {
+          traefik.address = ":8080";
+
           web = {
             address = ":80";
             asDefault = true;
@@ -130,7 +133,7 @@
                 };
 
                 grafana = {
-                  rule = "Host(`grafana.wi1.xyz`)";
+                  rule = "Host(`${ida.services.grafana.settings.server.domain}`)";
                   service = "grafana";
                 };
 
@@ -161,7 +164,11 @@
 
                 homeassistant.loadBalancer.servers = [ { url = "http://homeassistant:8123"; } ];
                 jdr.loadBalancer.servers = [ { url = "http://jdr:5000"; } ];
-                grafana.loadBalancer.servers = [ { url = "http://ida:3000"; } ];
+                grafana.loadBalancer.servers = [
+                  {
+                    url = "http://${ida.networking.hostName}:${toString ida.services.grafana.settings.server.http_port}";
+                  }
+                ];
               };
             }
           ]

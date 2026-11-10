@@ -1,6 +1,12 @@
-{ config, lib, ... }:
+{
+  self,
+  config,
+  lib,
+  ...
+}:
 let
   cfg = config.wthueb.services.alloy;
+  ida = self.nixosConfigurations.ida.config;
   sharedConfig = builtins.readFile ./config.alloy;
 in
 {
@@ -9,7 +15,7 @@ in
 
     lokiUrl = lib.mkOption {
       type = lib.types.str;
-      default = "http://ida:3100/loki/api/v1/push";
+      default = "http://${ida.networking.hostName}:${toString ida.services.loki.configuration.server.http_listen_port}/loki/api/v1/push";
       description = "Loki HTTP push endpoint used by Alloy.";
     };
 

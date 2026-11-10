@@ -1,11 +1,15 @@
 {
+  self,
   config,
   lib,
   pkgs,
-  self,
   ...
 }:
 let
+  shell = self.nixosConfigurations.shell.config;
+  autheliaUrl =
+    (builtins.head shell.services.authelia.instances.main.settings.session.cookies).authelia_url;
+
   hosts = builtins.filter (node: builtins.hasAttr "wthueb" node.config) (
     lib.mapAttrsToList (_: v: v) self.nixosConfigurations
   );
@@ -65,14 +69,20 @@ let
         }
         {
           target_label = "__address__";
-          replacement = "localhost:9116";
+          replacement = "localhost:${toString config.services.prometheus.exporters.snmp.port}";
         }
       ];
     }
     {
       job_name = "traefik";
       scrape_interval = "5s";
-      static_configs = [ { targets = [ "shell:8080" ]; } ];
+      static_configs = [
+        {
+          targets = [
+            "${shell.networking.hostName}:${lib.last (lib.splitString ":" shell.services.traefik.staticConfigOptions.entryPoints.traefik.address)}"
+          ];
+        }
+      ];
     }
     {
       job_name = "qbittorrent";
@@ -107,7 +117,7 @@ let
         }
         {
           target_label = "__address__";
-          replacement = "localhost:9115";
+          replacement = "localhost:${toString config.services.prometheus.exporters.blackbox.port}";
         }
       ];
     }
@@ -174,7 +184,10 @@ in
     restartUnits = [ "mktxp.service" ];
   };
 
-  services.influxdb2.enable = true;
+  services.influxdb2 = {
+    enable = true;
+    settings.http-bind-address = ":8086";
+  };
 
   services.grafana = {
     enable = true;
@@ -185,7 +198,7 @@ in
         enforce_domain = false;
         enable_gzip = true;
         domain = "grafana.wi1.xyz";
-        root_url = "https://grafana.wi1.xyz";
+        root_url = "https://${config.services.grafana.settings.server.domain}";
       };
       analytics.reporting_enabled = false;
       "auth.generic_oauth" = {
@@ -197,9 +210,9 @@ in
         client_secret = "\$__file{${config.sops.secrets.grafana-client-secret.path}}";
         scopes = "openid profile email groups";
         empty_scopes = false;
-        auth_url = "https://auth.wi1.xyz/api/oidc/authorization";
-        token_url = "https://auth.wi1.xyz/api/oidc/token";
-        api_url = "https://auth.wi1.xyz/api/oidc/userinfo";
+        auth_url = "${autheliaUrl}/api/oidc/authorization";
+        token_url = "${autheliaUrl}/api/oidc/token";
+        api_url = "${autheliaUrl}/api/oidc/userinfo";
         use_pkce = true;
         login_attribute_path = "preferred_username";
         groups_attribute_path = "groups";
@@ -223,7 +236,7 @@ in
           name = "InfluxDB";
           type = "influxdb";
           access = "proxy";
-          url = "http://localhost:8086";
+          url = "http://localhost:${lib.last (lib.splitString ":" config.services.influxdb2.settings.http-bind-address)}";
           jsonData = {
             organization = "admin";
             version = "Flux";

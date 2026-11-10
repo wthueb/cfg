@@ -1,13 +1,21 @@
-{ config, lib, ... }:
+{
+  self,
+  config,
+  lib,
+  ...
+}:
 let
   instance = config.services.authelia.instances.main;
+  domain = "wi1.xyz";
+  baseUrl = "https://${domain}";
   secretPath = name: config.sops.secrets."authelia/${name}".path;
+  tailnet = "tiffany-vega.ts.net";
   clients = [
     {
       client_id = "synology-dsm";
       public = false;
       authorization_policy = "one_factor";
-      redirect_uris = [ "https://jdr.wi1.xyz" ];
+      redirect_uris = [ "https://jdr.${domain}" ];
       scopes = [
         "openid"
         "profile"
@@ -25,7 +33,7 @@ let
       client_id = "homarr";
       public = false;
       authorization_policy = "one_factor";
-      redirect_uris = [ "https://wi1.xyz/api/auth/callback/oidc" ];
+      redirect_uris = [ "${baseUrl}/api/auth/callback/oidc" ];
       scopes = [
         "openid"
         "email"
@@ -40,7 +48,7 @@ let
       client_id = "autobrr";
       public = false;
       authorization_policy = "one_factor";
-      redirect_uris = [ "https://wi1.xyz/autobrr/api/auth/oidc/callback" ];
+      redirect_uris = [ "${baseUrl}/autobrr/api/auth/oidc/callback" ];
       scopes = [
         "openid"
         "email"
@@ -52,7 +60,7 @@ let
       client_id = "qui";
       public = false;
       authorization_policy = "one_factor";
-      redirect_uris = [ "https://wi1.xyz/qui/api/auth/oidc/callback" ];
+      redirect_uris = [ "${baseUrl}/qui/api/auth/oidc/callback" ];
       scopes = [
         "openid"
         "email"
@@ -64,7 +72,9 @@ let
       client_id = "grafana";
       public = false;
       authorization_policy = "one_factor";
-      redirect_uris = [ "https://grafana.wi1.xyz/login/generic_oauth" ];
+      redirect_uris = [
+        "${self.nixosConfigurations.ida.config.services.grafana.settings.server.root_url}/login/generic_oauth"
+      ];
       scopes = [
         "openid"
         "email"
@@ -86,9 +96,9 @@ let
       public = false;
       authorization_policy = "one_factor";
       redirect_uris = [
-        "https://ms01-a.tiffany-vega.ts.net:8006"
+        "https://ms01-a.${tailnet}:8006"
         "https://ms01-a:8006"
-        "https://ms01-b.tiffany-vega.ts.net:8006"
+        "https://ms01-b.${tailnet}:8006"
         "https://ms01-b:8006"
       ];
       scopes = [
@@ -111,7 +121,7 @@ let
       public = false;
       authorization_policy = "one_factor";
       redirect_uris = [
-        "https://pbs.tiffany-vega.ts.net:8007"
+        "https://pbs.${tailnet}:8007"
         "https://pbs:8007"
       ];
       scopes = [
@@ -136,7 +146,7 @@ let
       pre_configured_consent_duration = "1 month";
       require_pkce = true;
       pkce_challenge_method = "S256";
-      redirect_uris = [ "https://home.wi1.xyz/auth/oidc/callback" ];
+      redirect_uris = [ "https://home.${domain}/auth/oidc/callback" ];
       token_endpoint_auth_method = "client_secret_post";
     }
   ];
@@ -223,9 +233,9 @@ in
         remember_me = "6M";
         cookies = [
           {
-            domain = "wi1.xyz";
-            authelia_url = "https://auth.wi1.xyz";
-            default_redirection_url = "https://wi1.xyz";
+            inherit domain;
+            authelia_url = "https://auth.${domain}";
+            default_redirection_url = baseUrl;
           }
         ];
         redis = {
@@ -277,7 +287,7 @@ in
             "introspection"
             "userinfo"
           ];
-          allowed_origins = [ "https://wi1.xyz" ];
+          allowed_origins = [ baseUrl ];
           allowed_origins_from_client_redirect_uris = false;
         };
         claims_policies.grafana.id_token = [
