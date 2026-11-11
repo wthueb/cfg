@@ -341,6 +341,22 @@ return {
         })
         vim.lsp.enable("nil_ls", vim.fn.executable("nil") == 1)
 
+        vim.lsp.config("yamlls", {
+            before_init = function(_, config)
+                if
+                    not config.root_dir
+                    or vim.fn.filereadable(vim.fs.joinpath(config.root_dir, "configuration.yaml")) ~= 1
+                then
+                    return
+                end
+
+                config.settings = config.settings or {}
+                config.settings.yaml = config.settings.yaml or {}
+                config.settings.yaml.customTags =
+                    vim.list_extend(config.settings.yaml.customTags or {}, { "!secret scalar" })
+            end,
+        })
+
         vim.lsp.config("home_assistant", {
             workspace_required = true,
         })
