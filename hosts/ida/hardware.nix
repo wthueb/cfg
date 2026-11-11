@@ -1,19 +1,39 @@
-{ ... }:
+{ inputs, lib, ... }:
 {
+  imports = [ inputs.disko.nixosModules.disko ];
+
   wthueb.proxmox-guest.enable = true;
 
-  boot = {
-    loader.grub = {
-      enable = true;
-      devices = [ "/dev/sda" ];
-    };
-
-    growPartition = true;
+  boot.loader.systemd-boot = {
+    enable = true;
+    configurationLimit = 10;
   };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/4257aff3-ee94-48b9-a8e1-57ba5bbb351e";
-    fsType = "ext4";
-    autoResize = true;
+  disko.devices.disk.main = {
+    device = lib.mkDefault "/dev/sda";
+    type = "disk";
+    content = {
+      type = "gpt";
+      partitions = {
+        ESP = {
+          type = "EF00";
+          size = "500M";
+          content = {
+            type = "filesystem";
+            format = "vfat";
+            mountpoint = "/boot";
+            mountOptions = [ "umask=0077" ];
+          };
+        };
+        root = {
+          size = "100%";
+          content = {
+            type = "filesystem";
+            format = "ext4";
+            mountpoint = "/";
+          };
+        };
+      };
+    };
   };
 }

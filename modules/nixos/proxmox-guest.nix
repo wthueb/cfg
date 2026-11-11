@@ -29,6 +29,9 @@ in
       {
         services.qemuGuest.enable = true;
 
+        boot.growPartition = lib.mkDefault true;
+        fileSystems."/".autoResize = lib.mkDefault true;
+
         boot.initrd.availableKernelModules = [
           "uhci_hcd"
           "ehci_pci"
