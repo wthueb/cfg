@@ -38,7 +38,7 @@
         };
       };
       limits_config = {
-        retention_period = "90d";
+        retention_period = "180d";
       };
       compactor = {
         working_directory = "/var/lib/loki/compactor";

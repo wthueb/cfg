@@ -20,7 +20,7 @@
           replication_factor = 1;
         };
       };
-      compactor.compaction.block_retention = "168h";
+      compactor.compaction.block_retention = "720h";
       metrics_generator = {
         ring = {
           kvstore.store = "inmemory";

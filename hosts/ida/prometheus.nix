@@ -3,7 +3,7 @@
   services.prometheus = {
     enable = true;
     globalConfig.scrape_interval = "10s";
-    retentionTime = "1y";
+    retentionTime = "90d";
   };
 
   wthueb.exporters.scrapeTargets = [
