@@ -4,11 +4,6 @@
 
   wthueb.proxmox-guest.enable = true;
 
-  boot.loader.systemd-boot = {
-    enable = true;
-    configurationLimit = 10;
-  };
-
   disko.devices.disk.main = {
     device = lib.mkDefault "/dev/sda";
     type = "disk";

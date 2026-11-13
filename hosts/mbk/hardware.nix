@@ -1,20 +1,40 @@
-{ ... }:
-
+{ inputs, lib, ... }:
 {
+  imports = [ inputs.disko.nixosModules.disko ];
+
   wthueb.proxmox-guest = {
     enable = true;
     i915-sriov = true;
-    swapSize = 32 * 1024; # 32GB
+    swapSize = 32 * 1024;
   };
 
-  boot.loader.grub = {
-    enable = true;
-    devices = [ "/dev/sda" ];
-  };
   boot.kernelModules = [ "ip_tables" ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/b6eacf5e-de09-44bb-a84c-522c3bde56ed";
-    fsType = "ext4";
+  disko.devices.disk.main = {
+    device = lib.mkDefault "/dev/sda";
+    type = "disk";
+    content = {
+      type = "gpt";
+      partitions = {
+        ESP = {
+          type = "EF00";
+          size = "500M";
+          content = {
+            type = "filesystem";
+            format = "vfat";
+            mountpoint = "/boot";
+            mountOptions = [ "umask=0077" ];
+          };
+        };
+        root = {
+          size = "100%";
+          content = {
+            type = "filesystem";
+            format = "ext4";
+            mountpoint = "/";
+          };
+        };
+      };
+    };
   };
 }

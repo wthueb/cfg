@@ -5,12 +5,7 @@
   wthueb.proxmox-guest = {
     enable = true;
     i915-sriov = true;
-    swapSize = 4096;
-  };
-
-  boot.loader.systemd-boot = {
-    enable = true;
-    configurationLimit = 10;
+    swapSize = 4 * 1024;
   };
 
   disko.devices.disk.main = {

@@ -27,10 +27,10 @@ in
     lib.mkMerge [
       (import (modulesPath + "/profiles/qemu-guest.nix") { })
       {
-        services.qemuGuest.enable = true;
-
-        boot.growPartition = lib.mkDefault true;
-        fileSystems."/".autoResize = lib.mkDefault true;
+        boot.loader.systemd-boot = {
+          enable = true;
+          configurationLimit = 10;
+        };
 
         boot.initrd.availableKernelModules = [
           "uhci_hcd"
@@ -51,9 +51,14 @@ in
           }
         ];
 
+        boot.growPartition = lib.mkDefault true;
+        fileSystems."/".autoResize = lib.mkDefault true;
+
         networking.useDHCP = lib.mkDefault true;
 
         nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+        services.qemuGuest.enable = true;
       }
       (lib.mkIf cfg.i915-sriov {
         boot.extraModulePackages = [ pkgs.i915-sriov ];

@@ -8,11 +8,6 @@
 
   wthueb.proxmox-guest.enable = true;
 
-  boot.loader.systemd-boot = {
-    enable = true;
-    configurationLimit = 10;
-  };
-
   disko.devices = {
     disk = {
       main = {
