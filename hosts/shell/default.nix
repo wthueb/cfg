@@ -96,7 +96,13 @@ in
           serviceName = "traefik";
           sampleRate = 1.0;
           resourceAttributes."host.name" = config.networking.hostName;
-          capturedRequestHeaders = [ ];
+          capturedRequestHeaders = [
+            "CF-Connecting-IP"
+            "CF-Connecting-IPv6"
+            "X-Forwarded-For"
+            "CF-Ray"
+            "CF-IPCountry"
+          ];
           capturedResponseHeaders = [ ];
           safeQueryParams = [ ];
           otlp.grpc = {
