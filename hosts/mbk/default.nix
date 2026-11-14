@@ -44,6 +44,14 @@
         job = "docker";
         port = 9323;
       }
+      {
+        job = "autobrr";
+        port = 9074;
+      }
+      {
+        job = "qui";
+        port = 9075;
+      }
     ];
     extraProcessNames = [
       {

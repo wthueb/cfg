@@ -81,6 +81,14 @@ let
       static_configs = [ { targets = [ "mbk:9000" ]; } ];
     }
     {
+      job_name = "unpackerr";
+      authorization = {
+        type = "Bearer";
+        credentials_file = config.sops.secrets.unpackerr-metrics-api-key.path;
+      };
+      static_configs = [ { targets = [ "mbk:5656" ]; } ];
+    }
+    {
       job_name = "proxmox-api";
       metrics_path = "/probe";
       params.module = [ "proxmox_https" ];
