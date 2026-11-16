@@ -219,6 +219,75 @@ pkgs.runCommand "tcc-manager-test"
       --no-reload)
     grep -Fq 'TCC reconciliation changed 0 row(s)' <<<"$secondRun"
 
+    legacyDb="$fixtureDir/home/Library/Application Support/com.apple.TCC/TCC.db"
+    protectedDb="$fixtureDir/ProtectedSystem/E2621231-AF40-4B32-BB71-C20E446B9704/Data/Library/Application Support/com.apple.TCC/TCC.db"
+    mkdir -p "$(dirname "$legacyDb")" "$(dirname "$protectedDb")"
+    cp "$userDb" "$legacyDb"
+    cp "$userDb" "$protectedDb"
+    tccdFiles="$fixtureDir/tccd-files"
+    targetUid=$(id -u)
+    otherUid=$((targetUid + 1))
+    discoveryArgs=(
+      --manifest "$manifest"
+      --system-db "$systemDb"
+      --user "$testUser"
+      --csr-status-file "$customDisabled"
+      --tccd-files-file "$tccdFiles"
+    )
+
+    writeTccdFiles() {
+      printf '%s\n' \
+        p100 ctccd "u$otherUid" "n$legacyDb" \
+        p101 cother "u$targetUid" "n$legacyDb" \
+        p102 ctccd "u$targetUid" "n$systemDb" \
+        "n$1-wal" "n$1" "n$1" >"$tccdFiles"
+    }
+
+    for discoveredDb in "$legacyDb" "$protectedDb"; do
+      writeTccdFiles "$discoveredDb"
+      beforeHash=$(sha256sum "$discoveredDb")
+      discoveryCheck=$(nix-tcc-manager check "''${discoveryArgs[@]}")
+      grep -Fxq "TCC user database: $discoveredDb" <<<"$discoveryCheck"
+      [[ "$(sha256sum "$discoveredDb")" == "$beforeHash" ]]
+    done
+
+    sqlite3 "$protectedDb" "UPDATE access SET auth_value = 0 WHERE service = 'kTCCServicePhotos';"
+    originalUserHash=$(sha256sum "$userDb")
+    legacyUserHash=$(sha256sum "$legacyDb")
+    nix-tcc-manager apply "''${discoveryArgs[@]}" --live-roots "$liveRoots" --no-reload
+    [[ "$(sqlite3 "$protectedDb" "SELECT count(*) FROM access WHERE service = 'kTCCServicePhotos' AND auth_value = 2;")" == 1 ]]
+    [[ "$(sha256sum "$userDb")" == "$originalUserHash" ]]
+    [[ "$(sha256sum "$legacyDb")" == "$legacyUserHash" ]]
+    discoverySecondRun=$(nix-tcc-manager apply "''${discoveryArgs[@]}" --live-roots "$liveRoots" --no-reload)
+    grep -Fq 'TCC reconciliation changed 0 row(s)' <<<"$discoverySecondRun"
+
+    discoverySystemHash=$(sha256sum "$systemDb")
+    protectedUserHash=$(sha256sum "$protectedDb")
+    expectDiscoveryFailure() {
+      local expected=$1 failureOutput
+      if failureOutput=$(nix-tcc-manager apply "''${discoveryArgs[@]}" --live-roots "$liveRoots" --no-reload 2>&1); then
+        echo 'invalid database discovery unexpectedly passed preflight' >&2
+        exit 1
+      fi
+      grep -Fq "$expected" <<<"$failureOutput"
+      [[ "$(sha256sum "$systemDb")" == "$discoverySystemHash" ]]
+      [[ "$(sha256sum "$protectedDb")" == "$protectedUserHash" ]]
+    }
+
+    : >"$tccdFiles"
+    expectDiscoveryFailure 'no user TCC database found'
+    printf '%s\n' p100 ctccd "u$otherUid" "n$protectedDb" >"$tccdFiles"
+    expectDiscoveryFailure 'no user TCC database found'
+    printf '%s\n' p100 cother "u$targetUid" "n$protectedDb" >"$tccdFiles"
+    expectDiscoveryFailure 'no user TCC database found'
+    printf '%s\n' p100 ctccd "u$targetUid" "n$systemDb" >"$tccdFiles"
+    expectDiscoveryFailure 'no user TCC database found'
+    writeTccdFiles "$protectedDb"
+    printf '%s\n' "n$legacyDb" >>"$tccdFiles"
+    expectDiscoveryFailure 'multiple user TCC databases are open'
+
+    nix-tcc-manager check "''${managerArgs[@]}" --csr-status-file "$customDisabled" --tccd-files-file "$tccdFiles"
+
     brokenDb="$fixtureDir/broken.db"
     sqlite3 "$brokenDb" 'CREATE TABLE access (service TEXT);'
     systemHashBeforeFailure=$(sha256sum "$systemDb")

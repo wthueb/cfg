@@ -117,7 +117,6 @@ let
       );
 
   primaryUser = config.system.primaryUser;
-  userHome = if primaryUser == null then null else config.users.users.${primaryUser}.home;
 
   manifest = pkgs.writeText "nix-tcc-manifest.json" (builtins.toJSON expandedEntries);
   manager = pkgs.writeShellApplication {
@@ -133,14 +132,11 @@ let
   };
 
   systemDatabase = "/Library/Application Support/com.apple.TCC/TCC.db";
-  userDatabase = "${userHome}/Library/Application Support/com.apple.TCC/TCC.db";
   managerArguments = lib.escapeShellArgs [
     "--manifest"
     manifest
     "--system-db"
     systemDatabase
-    "--user-db"
-    userDatabase
     "--user"
     primaryUser
   ];

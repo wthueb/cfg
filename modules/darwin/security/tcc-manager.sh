@@ -7,12 +7,14 @@ die() {
 
 usage() {
   cat >&2 <<'EOF'
-usage: tcc-manager (check|apply) --manifest PATH --system-db PATH --user-db PATH --user NAME [options]
+usage: tcc-manager (check|apply) --manifest PATH --system-db PATH --user NAME [options]
 
 options:
-  --live-roots PATH       newline-delimited live Nix store roots (required for apply)
-  --csr-status-file PATH  use captured csrutil output instead of invoking csrutil
-  --no-reload             do not reload the user's tccd after changes
+  --user-db PATH         override discovery from the target user's running tccd
+  --live-roots PATH      newline-delimited live Nix store roots (required for apply)
+  --csr-status-file PATH use captured csrutil output instead of invoking csrutil
+  --tccd-files-file PATH use captured lsof -Fpcun output instead of invoking lsof
+  --no-reload            do not reload the user's tccd after changes
 EOF
   exit 2
 }
@@ -27,6 +29,7 @@ user_db=
 target_user=
 live_roots=
 csr_status_file=
+tccd_files_file=
 reload_tccd=1
 
 while (($#)); do
@@ -55,6 +58,10 @@ while (($#)); do
       csr_status_file=${2:-}
       shift 2
       ;;
+    --tccd-files-file)
+      tccd_files_file=${2:-}
+      shift 2
+      ;;
     --no-reload)
       reload_tccd=0
       shift
@@ -65,7 +72,6 @@ done
 
 [[ -f "$manifest" ]] || die "manifest does not exist: $manifest"
 [[ -n "$system_db" ]] || die "--system-db is required"
-[[ -n "$user_db" ]] || die "--user-db is required"
 [[ -n "$target_user" ]] || die "--user is required"
 if [[ "$action" == apply ]]; then
   [[ -f "$live_roots" ]] || die "--live-roots is required for apply"
@@ -94,7 +100,6 @@ sqlite_uri() {
 }
 
 system_db_uri=$(sqlite_uri "$system_db")
-user_db_uri=$(sqlite_uri "$user_db")
 sqlite_bin=$(command -v sqlite3)
 
 # shellcheck disable=SC2120 # Called with SQL through check_database.
@@ -168,7 +173,7 @@ check_database() {
   local query=$3
   local columns primary_key unsupported quick_check
 
-  [[ -f "$path" ]] || die "$scope TCC database does not exist: $path"
+  [[ -f "$path" ]] || die "$scope TCC database is missing or inaccessible: $path"
   "$query" 'PRAGMA busy_timeout=10000; BEGIN IMMEDIATE; UPDATE access SET auth_value = auth_value WHERE 0; ROLLBACK;' >/dev/null \
     || die "$scope TCC database cannot complete a rolled-back write transaction: $path"
 
@@ -219,6 +224,45 @@ prepared_ndjson="$tmp_dir/prepared.ndjson"
 prepared_manifest="$tmp_dir/prepared.json"
 normalized_roots="$tmp_dir/live-roots"
 : >"$prepared_ndjson"
+
+discover_user_database() {
+  local files_file=$tccd_files_file
+  local field path
+  local process_uid='' process_command='' discovered=''
+
+  if [[ -n "$files_file" ]]; then
+    [[ -f "$files_file" ]] || die "tccd open-files fixture does not exist: $files_file"
+  else
+    files_file="$tmp_dir/tccd-files"
+    /usr/sbin/lsof -a -u "$target_uid" -c tccd -Fpcun >"$files_file" \
+      || die "could not inspect tccd for $target_user; log into that user's desktop and ensure the deployment has Full Disk Access"
+  fi
+
+  while IFS= read -r field; do
+    case "$field" in
+      p*)
+        process_uid=
+        process_command=
+        ;;
+      u*) process_uid=${field#u} ;;
+      c*) process_command=${field#c} ;;
+      n*)
+        [[ "$process_uid" == "$target_uid" && "$process_command" == tccd ]] || continue
+        path=${field#n}
+        [[ "$path" == /*/Library/Application\ Support/com.apple.TCC/TCC.db ]] || continue
+        [[ "$path" != "$system_db" ]] || continue
+        [[ -z "$discovered" || "$discovered" == "$path" ]] \
+          || die "multiple user TCC databases are open for $target_user: $discovered; $path"
+        discovered=$path
+        ;;
+    esac
+  done <"$files_file"
+
+  [[ -n "$discovered" ]] \
+    || die "no user TCC database found in tccd's open files for $target_user; log into that user's desktop and ensure the deployment has Full Disk Access"
+  user_db=$discovered
+  printf 'TCC user database: %s\n' "$user_db"
+}
 
 normalize_live_roots() {
   local root
@@ -383,6 +427,10 @@ write_reconcile_sql() {
 
 check_sip
 validate_manifest
+if [[ -z "$user_db" ]]; then
+  discover_user_database
+fi
+user_db_uri=$(sqlite_uri "$user_db")
 check_database system "$system_db" sqlite_system
 check_database user "$user_db" sqlite_user
 
