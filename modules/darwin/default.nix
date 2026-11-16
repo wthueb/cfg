@@ -89,6 +89,7 @@ in
 
   launchd.user.agents.startup = {
     script = ''
+      /bin/launchctl setenv PATH ${lib.escapeShellArg config.launchd.user.envVariables.PATH}
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
       ${lib.getExe pkgs.defaultbrowser} browser
       /bin/launchctl setenv ELECTRON_NO_UPDATER 1

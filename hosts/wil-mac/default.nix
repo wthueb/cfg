@@ -65,8 +65,15 @@ in
   };
 
   system = {
+    activationScripts.power.text = lib.mkAfter ''
+      /usr/bin/pmset -b displaysleep 30
+      /usr/bin/pmset -c displaysleep 60
+    '';
+
     primaryUser = "wil";
     defaults = {
+      controlcenter.BatteryShowPercentage = true;
+
       dock = {
         autohide = true;
         minimize-to-application = true;
@@ -102,13 +109,17 @@ in
       };
 
       loginwindow.GuestEnabled = false;
+      trackpad.Clicking = true;
 
       NSGlobalDomain = {
+        _HIHideMenuBar = true;
         AppleInterfaceStyle = "Dark";
         "com.apple.swipescrolldirection" = false; # disable "natural" scrolling
       };
 
       CustomUserPreferences = {
+        NSGlobalDomain.SLSMenuBarUseBlurredAppearance = true;
+
         "com.apple.desktopservices" = {
           DSDontWriteNetworkStores = true;
           DSDontWriteUSBStores = true;
