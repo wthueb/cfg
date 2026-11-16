@@ -149,6 +149,7 @@ in
 
           yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
+          yabai -m signal --add event=window_focused action="sketchybar --trigger window_focus"
           yabai -m signal --add event=window_title_changed active=yes action="sketchybar --trigger title_change"
 
           ${rulesConfig}

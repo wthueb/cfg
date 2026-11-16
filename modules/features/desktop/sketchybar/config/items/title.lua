@@ -26,8 +26,12 @@ title:subscribe("mouse.exited", function()
     title:set({ popup = { drawing = false } })
 end)
 
-title:subscribe({ "window_focus", "front_app_switched", "space_change", "title_change" }, function()
-    sbar.exec("yabai -m query --windows --window", function(window)
+local function update_title()
+    sbar.exec("yabai -m query --windows --window", function(window, exit_code)
+        if exit_code ~= 0 or type(window) ~= "table" or type(window.app) ~= "string" then
+            return
+        end
+
         local full_title
         if window.title == "" or window.title == nil then
             full_title = window.app
@@ -38,4 +42,8 @@ title:subscribe({ "window_focus", "front_app_switched", "space_change", "title_c
         title_popup:set({ label = { string = full_title } })
         title:set({ label = { string = string.sub(full_title, 1, 75) } })
     end)
-end)
+end
+
+title:subscribe({ "window_focus", "front_app_switched", "space_change", "title_change" }, update_title)
+
+update_title()

@@ -87,6 +87,16 @@ in
     ];
   };
 
+  launchd.user.envVariables.PATH = [
+    "/etc/profiles/per-user/${config.system.primaryUser}/bin"
+    "/run/current-system/sw/bin"
+    "/usr/local/bin"
+    "/usr/bin"
+    "/bin"
+    "/usr/sbin"
+    "/sbin"
+  ];
+
   launchd.user.agents.startup = {
     script = ''
       /bin/launchctl setenv PATH ${lib.escapeShellArg config.launchd.user.envVariables.PATH}

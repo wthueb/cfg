@@ -12,6 +12,7 @@ in
     programs.sketchybar = {
       enable = pkgs.stdenv.isDarwin;
       configType = "lua";
+      extraPackages = [ pkgs.yabai ];
       luaPackage = pkgs.lua5_5;
       sbarLuaPackage = pkgs.sbarlua;
       config = {
