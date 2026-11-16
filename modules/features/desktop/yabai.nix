@@ -41,7 +41,7 @@ in
         split_ratio = 0.5;
         split_type = "auto";
         auto_balance = "on";
-        top_padding = 0;
+        top_padding = 5;
         bottom_padding = 0;
         left_padding = 0;
         right_padding = 0;
@@ -153,8 +153,7 @@ in
 
           ${rulesConfig}
 
-          SPACEBAR_HEIGHT=$(sketchybar --query bar | jq .height)
-          yabai -m config external_bar "all:''\${SPACEBAR_HEIGHT}:0"
+          yabai -m config external_bar all:0:0
         '';
     };
 

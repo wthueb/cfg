@@ -28,6 +28,25 @@
     }
   )
   (final: prev: {
+    yabai = prev.yabai.overrideAttrs (
+      finalAttrs: old: {
+        version = "7.3.4";
+
+        src = final.fetchFromGitHub {
+          owner = "Christian-SC26";
+          repo = "yabai";
+          tag = "v${finalAttrs.version}";
+          hash = "sha256-hHgPo8AQTxPnYlO1vPrBgDigzGHu7XHFqJywX57LK5s=";
+        };
+
+        meta = old.meta // {
+          homepage = "https://github.com/Christian-SC26/yabai";
+          changelog = "https://github.com/Christian-SC26/yabai/blob/v${finalAttrs.version}/CHANGELOG.md";
+        };
+      }
+    );
+  })
+  (final: prev: {
     alcove = prev.alcove.overrideAttrs (old: {
       version = "1.7.7";
 

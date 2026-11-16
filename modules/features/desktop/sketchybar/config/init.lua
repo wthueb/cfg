@@ -3,7 +3,7 @@ local sbar = require("sketchybar")
 local colors = require("colors")
 
 sbar.bar({
-    height = 32,
+    height = 45,
     color = colors.bg,
     border_width = 0,
     shadow = false,
