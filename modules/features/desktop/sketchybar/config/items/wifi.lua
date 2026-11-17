@@ -16,19 +16,38 @@ local function update_wifi()
     sbar.exec("networksetup -listallhardwareports | awk '/Wi-Fi/ { getline; print $2 }'", function(adapter)
         adapter = string.gsub(adapter, "%s+", "")
 
-        sbar.exec("ipconfig getsummary " .. adapter .. " | awk -F ' SSID : '  '/ SSID : / {print $2}'", function(ssid)
-            ssid = string.gsub(ssid, "%s+", "")
+        if adapter == "" then
+            wifi:set({ icon = { string = icons.wifi_disconnected } })
+            wifi_popup:set({ label = { string = "No Wi-Fi" } })
+            return
+        end
+
+        sbar.exec("ipconfig getsummary " .. adapter, function(summary)
+            local ssid = summary:match("\n%s*SSID : ([^\n]*)") or ""
+            ssid = ssid:match("^%s*(.-)%s*$")
+            if ssid == "<redacted>" then
+                ssid = ""
+            end
+
+            local connected = summary:match("LinkStatusActive%s*:%s*TRUE") ~= nil
+            local hotspot = summary:match("IsExpensive%s*:%s*TRUE") ~= nil
 
             sbar.exec("ipconfig getifaddr " .. adapter, function(ip)
                 ip = string.gsub(ip, "%s+", "")
 
                 local icon, info
-                if ip == "" then
+                if not connected then
                     info = "No Wi-Fi"
                     icon = icons.wifi_disconnected
                 else
-                    info = ssid .. " (" .. ip .. ")"
-                    icon = icons.wifi_connected
+                    info = ssid ~= "" and ssid or "Wi-Fi"
+                    icon = hotspot and icons.wifi_hotspot or icons.wifi_connected
+                    if hotspot then
+                        info = ssid ~= "" and "Personal Hotspot: " .. ssid or "Personal Hotspot"
+                    end
+                    if ip ~= "" then
+                        info = info .. " (" .. ip .. ")"
+                    end
                 end
 
                 wifi:set({ icon = { string = icon } })

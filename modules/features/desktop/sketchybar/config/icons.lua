@@ -17,6 +17,7 @@ M.volume_33 = "󰕿"
 M.volume_0 = "󰝟"
 
 M.wifi_connected = "󰤨"
+M.wifi_hotspot = "󰌷"
 M.wifi_disconnected = "󰤮"
 
 return M
