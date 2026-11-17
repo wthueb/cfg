@@ -19,13 +19,13 @@ sbar.bar({
 sbar.default({
     updates = "when_shown",
     icon = {
-        font = "SauceCodePro Nerd Font:Bold:14.0",
+        font = "SauceCodePro Nerd Font:Bold:16.0",
         color = colors.icon,
         padding_left = 0,
         padding_right = 0,
     },
     label = {
-        font = "SauceCodePro Nerd Font:Semibold:13.0",
+        font = "SauceCodePro Nerd Font:Semibold:14.0",
         color = colors.text,
         padding_left = 0,
         padding_right = 0,
