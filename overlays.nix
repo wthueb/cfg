@@ -21,6 +21,7 @@
         nushell
         nushellPlugins
         plezy
+        raycast
         starship
         wezterm
         yabai
