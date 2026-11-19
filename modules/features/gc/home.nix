@@ -22,7 +22,7 @@ let
       ];
     }
   );
-  logPath = "${config.home.homeDirectory}/Library/Logs/nix-generation-pruning.log";
+  logPath = name: "${config.home.homeDirectory}/Library/Logs/${name}.log";
 in
 {
   config = lib.mkIf cfg.enable {
@@ -44,6 +44,8 @@ in
             Minute = 15;
           }
         ];
+        StandardOutPath = logPath "nix-gc";
+        StandardErrorPath = logPath "nix-gc";
       };
 
       nix-generation-pruning = lib.mkIf cfg.generations.enable {
@@ -61,8 +63,8 @@ in
               Minute = 0;
             }
           ];
-          StandardOutPath = logPath;
-          StandardErrorPath = logPath;
+          StandardOutPath = logPath "nix-generation-pruning";
+          StandardErrorPath = logPath "nix-generation-pruning";
         };
       };
     };

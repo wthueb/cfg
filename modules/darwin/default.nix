@@ -72,6 +72,71 @@ in
 
   programs.bash.enable = true;
 
+  environment.etc."ssh/sshd_config.d/150-login-path.conf".text =
+    let
+      home = config.home-manager.users.${config.system.primaryUser}.home;
+
+      path = lib.concatStringsSep ":" (home.sessionPath ++ [ config.environment.systemPath ]);
+
+      # environment.systemPath holds literal $HOME/$USER which SetEnv doesn't expand
+      user = config.system.primaryUser;
+      fullPath = builtins.replaceStrings [ "$HOME" "$USER" ] [ home.homeDirectory user ] path;
+    in
+    ''
+      SetEnv PATH=${fullPath}
+    '';
+
+  system = {
+    activationScripts.power.text = lib.mkAfter ''
+      /usr/bin/pmset -b displaysleep 30
+      /usr/bin/pmset -c displaysleep 60
+    '';
+
+    defaults = {
+      controlcenter.BatteryShowPercentage = true;
+
+      dock = {
+        autohide = true;
+        minimize-to-application = true;
+        mru-spaces = false;
+        orientation = "bottom";
+        show-process-indicators = true;
+        show-recents = false;
+        tilesize = 48;
+        wvous-tl-corner = 1; # disabled
+        wvous-tr-corner = 1; # disabled
+        wvous-bl-corner = 1; # disabled
+        wvous-br-corner = 1; # disabled
+      };
+
+      finder = {
+        AppleShowAllExtensions = true;
+        ShowPathbar = true;
+        FXEnableExtensionChangeWarning = false;
+      };
+
+      loginwindow.GuestEnabled = false;
+      trackpad.Clicking = true;
+
+      NSGlobalDomain = {
+        _HIHideMenuBar = true;
+        AppleInterfaceStyle = "Dark";
+        "com.apple.swipescrolldirection" = false; # disable "natural" scrolling
+      };
+
+      CustomSystemPreferences = {
+        NSGlobalDomain.SLSMenuBarUseBlurredAppearance = true;
+
+        "com.apple.desktopservices" = {
+          DSDontWriteNetworkStores = true;
+          DSDontWriteUSBStores = true;
+        };
+
+        "/Library/Preferences/com.apple.iokit.AmbientLightSensor"."Automatic Display Enabled" = false;
+      };
+    };
+  };
+
   homebrew = {
     enable = true;
     onActivation = {
@@ -114,4 +179,6 @@ in
   home-manager.users.wil.home = {
     sessionPath = lib.optional config.homebrew.enable (config.homebrew.prefix + "/bin");
   };
+
+  security.pam.services.sudo_local.touchIdAuth = true;
 }
