@@ -32,7 +32,7 @@ in
         config = {
           Program = "${cfg.package}/Applications/Raycast.app/Contents/MacOS/Raycast";
           RunAtLoad = true;
-          KeepAlive = true;
+          KeepAlive.SuccessfulExit = false;
           StandardOutPath = logPath;
           StandardErrorPath = logPath;
         };
