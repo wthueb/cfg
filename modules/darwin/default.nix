@@ -72,6 +72,8 @@ in
 
   programs.bash.enable = true;
 
+  environment.etc."resolver/ts.net".enable = lib.mkForce false;
+
   environment.etc."ssh/sshd_config.d/150-login-path.conf".text =
     let
       home = config.home-manager.users.${config.system.primaryUser}.home;
