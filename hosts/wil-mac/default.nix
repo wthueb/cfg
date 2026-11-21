@@ -30,7 +30,6 @@ in
       "docker-desktop" # not in nixpkgs
       "gimp" # no aarch64-darwin
       "google-drive" # not in nixpkgs
-      "lyn" # not in nixpkgs
       "private-internet-access" # not in nixpkgs
       "sabnzbd" # no aarch64-darwin
       "teamviewer" # no aarch64-darwin

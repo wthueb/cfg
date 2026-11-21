@@ -50,6 +50,7 @@ in
 
     environment.systemPackages = with pkgs; [
       alcove
+      iina
       keyboardcleantool
     ];
 
@@ -63,6 +64,7 @@ in
       casks = [
         "cleanshot" # not in nixpkgs
         "linearmouse" # not in nixpkgs
+        "lyn" # not in nixpkgs
         "macfuse" # not in nixpkgs
         "mouseless" # no aarch64-darwin
         "steam"
