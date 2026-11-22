@@ -20,6 +20,7 @@ in
 
     masApps = {
       "Home Assistant" = 1099568401;
+      "Xcode" = 497799835;
     };
 
     greedyCasks = true;
