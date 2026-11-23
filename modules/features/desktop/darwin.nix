@@ -49,7 +49,6 @@ in
       };
 
     environment.systemPackages = with pkgs; [
-      alcove
       iina
       keyboardcleantool
     ];
