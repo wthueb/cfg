@@ -6,11 +6,11 @@
 }:
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "thaw";
-  version = "3.0.0-beta.7";
+  version = "3.0.0-alpha.15";
 
   src = fetchurl {
     url = "https://github.com/thaw-app/Thaw/releases/download/${finalAttrs.version}/Thaw_${finalAttrs.version}.zip";
-    hash = "sha256-4TQUtjmkMw7xVWHGw/2S1Bet05m9LY2bjdpOwifEg9I=";
+    hash = "sha256-c9AVNbtUpHxMVMn/b5WCVqKnqnEX0Vf1qYrtG8tR51s=";
   };
 
   sourceRoot = ".";
