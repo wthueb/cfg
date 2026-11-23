@@ -5,7 +5,7 @@ local wifi = sbar.add("item", "wifi", {
     position = "right",
     icon = { string = icons.wifi_disconnected },
     label = { width = 0 },
-    update_freq = 60,
+    update_freq = 10,
 })
 
 local wifi_popup = sbar.add("item", "wifi.info", {
@@ -57,7 +57,14 @@ local function update_wifi()
     end)
 end
 
-wifi:subscribe({ "routine", "wifi_change" }, update_wifi)
+wifi:subscribe({ "routine", "wifi_change", "system_woke" }, function(env)
+    update_wifi()
+    if env.SENDER == "system_woke" then
+        sbar.delay(5, update_wifi)
+    end
+end)
+
+update_wifi()
 
 wifi:subscribe("mouse.entered", function()
     wifi:set({ popup = { drawing = true } })
