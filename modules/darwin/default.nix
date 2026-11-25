@@ -126,8 +126,14 @@ in
 
       NSGlobalDomain = {
         _HIHideMenuBar = true;
+
         AppleInterfaceStyle = "Dark";
+
         "com.apple.swipescrolldirection" = false; # disable "natural" scrolling
+
+        NSAutomaticSpellingCorrectionEnabled = false;
+        NSAutomaticCapitalizationEnabled = false;
+        NSAutomaticPeriodSubstitutionEnabled = false;
       };
 
       CustomSystemPreferences = {
