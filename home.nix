@@ -60,7 +60,6 @@
       enable = true;
       extensions = [
         pkgs.gh-markdown-preview
-        pkgs.gh-stack
       ];
     };
     git.enable = true;

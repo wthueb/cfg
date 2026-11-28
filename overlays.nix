@@ -10,10 +10,7 @@
     in
     {
       inherit (unstable)
-        bartender
         carapace
-        gh-stack
-        inetutils
         neovim
         neovim-unwrapped
         nil
@@ -75,13 +72,13 @@
       version = "2.23.0";
 
       src = final.fetchurl {
-        url = old.src.url;
+        url = "https://github.com/edde746/plezy/releases/download/2.23.0/plezy-macos.dmg";
         hash = "sha256-6s3PZZ4jbD4oVY/KkSsj4HBIbl9vxEeJ8o6gSbXojpQ=";
       };
     });
   })
   (final: prev: {
-    # web.archive.org having trouble
+    # web.archive.org tweaks out sometimes
     filebot = prev.filebot.overrideAttrs (old: {
       src = final.fetchurl {
         url = "https://get.filebot.net/filebot/FileBot_${old.version}/FileBot_${old.version}-portable.tar.xz";
